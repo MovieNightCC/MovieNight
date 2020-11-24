@@ -6,7 +6,7 @@ import (
 	"time"
 
 	"cloud.google.com/go/firestore"
-	"github.com/frikky/firestore-rollback-go"
+	rollback "github.com/frikky/firestore-rollback-go"
 )
 
 var client *firestore.Client
