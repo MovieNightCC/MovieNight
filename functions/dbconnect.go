@@ -37,9 +37,9 @@ func main() {
 	// [START fs_add_data_1]
 	// [START firestore_setup_dataset_pt1]
 	_, _, err := client.Collection("users").Add(ctx, map[string]interface{}{
-		"first": "Ada",
-		"last":  "Lovelace",
-		"born":  1815,
+		"first": "Kenny",
+		"last":  "Ng",
+		"born":  1995,
 	})
 	if err != nil {
 		log.Fatalf("Failed adding alovelace: %v", err)
@@ -50,10 +50,9 @@ func main() {
 	// [START fs_add_data_2]
 	// [START firestore_setup_dataset_pt2]
 	_, _, err = client.Collection("users").Add(ctx, map[string]interface{}{
-		"first":  "Alan",
-		"middle": "Mathison",
-		"last":   "Turing",
-		"born":   1912,
+		"first": "John",
+		"last":  "Morrison",
+		"born":  1960,
 	})
 	if err != nil {
 		log.Fatalf("Failed adding aturing: %v", err)
