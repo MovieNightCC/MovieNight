@@ -1,11 +1,12 @@
 {
   "name": "functions",
   "scripts": {
+    "start": "tsc && firebase emulators:start",
     "lint": "eslint \"src/**/*\"",
     "build": "tsc",
     "serve": "npm run build && firebase emulators:start",
     "shell": "npm run build && firebase functions:shell",
-    "start": "npm run shell",
+    "test": "npm run shell",
     "deploy": "firebase deploy --only functions",
     "logs": "firebase functions:log"
   },
