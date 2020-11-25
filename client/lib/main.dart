@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tindercard/flutter_tindercard.dart';
+import 'package:dio/dio.dart';
 
 void main() => runApp(MyApp());
 
@@ -29,6 +30,16 @@ class Tinderswiper extends StatefulWidget {
 
 class _TinderswiperState extends State<Tinderswiper>
     with TickerProviderStateMixin {
+  void getHttp() async {
+    try {
+      Response response = await Dio().get(
+          "https://asia-northeast1-movie-night-cc.cloudfunctions.net/getAllUsers");
+      print(response);
+    } catch (e) {
+      print(e);
+    }
+  }
+
   List<String> movieImages = [
     "assets/img/bored.jpg",
     "assets/img/carumba.jpg",
@@ -42,6 +53,7 @@ class _TinderswiperState extends State<Tinderswiper>
   ];
   @override
   Widget build(BuildContext context) {
+    getHttp();
     return Scaffold(
       appBar: AppBar(
         title: Text("Swipe Movies"),
