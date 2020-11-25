@@ -31,19 +31,19 @@ class _TinderswiperState extends State<Tinderswiper>
   List<String> movies = [];
 
   List<String> movieImages = [
-    "https://occ-0-2851-38.1.nflxso.net/dnm/api/v6/evlCitJPPCVCry0BZlEFb5-QjKc/AAAABbfzWC5RVgFT8kQt7PgHVZC8NxDbqPHwOc-ItTMpw9As4MPReNZF6WXi9OON2_2eekS6xshj8wsCEzVcvattQT5vsEuI9t-T_wExyo6FsA90ibRTkP8MQ3Oy9QA.jpg?r=848",
-    "https://occ-0-2851-38.1.nflxso.net/dnm/api/v6/evlCitJPPCVCry0BZlEFb5-QjKc/AAAABebXub2bi247otQst_hOZO3nGA_tmisdBih1FgmhhDXizhqyNhSJKmcCkW9EjZSuLw9-4b-yvc89Lf2zK2Zh4Ab4d3dciKVOOTfjYUFoNy96k7C63bzHlETPUaM.jpg?r=08c",
-    "https://occ-0-2851-38.1.nflxso.net/dnm/api/v6/evlCitJPPCVCry0BZlEFb5-QjKc/AAAABZsccQeCfH1sB-4d1WnIKXXEbqLHYALSo1QCOrGrd5vuwXjLSSiNuIfxYmscIU7vRavU6929JPe1NILHC5vZYnKfUMsnhr4IFmnUefvFCgNO3i-vkid-lwt5GXU.jpg?r=4fa",
-    "https://occ-0-2717-360.1.nflxso.net/dnm/api/v6/evlCitJPPCVCry0BZlEFb5-QjKc/AAAABbfqo7mBju7ZQXKtGagr_sgrd13DUqzf8-p6OZeoQbop0fToj4K9JImmM2DvNh2HmPt6_NW6Xnb4NLYUxuWH9ttAEGOPbX7mc0cPLpkX_Nrp18qZVyrr7ZpHVvc.jpg?r=f7e",
-    "assets/img/bored.jpg",
-    "assets/img/carumba.jpg",
-    "assets/img/chocolate.jpg",
-    "assets/img/wumbo.jpg",
-    "assets/img/dead.jpg",
-    "assets/img/dish.jpg",
-    "assets/img/fat.jpg",
-    "assets/img/firm.jpg",
-    "assets/img/god.jpg",
+    "https://occ-0-2851-1432.1.nflxso.net/dnm/api/v6/evlCitJPPCVCry0BZlEFb5-QjKc/AAAABYo08D3k24uEHYsBSuX5CguS0M2I0zrgWmDZxNH0vFlQfVpg_eVvg17agekWnzdboqg-oqoK8R1Aptc0HxkI9EnKSA.jpg?r=b9e",
+    "https://occ-0-2851-1432.1.nflxso.net/dnm/api/v6/evlCitJPPCVCry0BZlEFb5-QjKc/AAAABf0YHTcQ5ZbfdAYXGRs4xVxuhI5K0mmWGqkxtC1V6W712RsYMckydjZ5HT0F7sADOEuRuGWcgp9EJeHyNQRco1hJOQ.jpg?r=884",
+    "https://occ-0-1007-1360.1.nflxso.net/dnm/api/v6/evlCitJPPCVCry0BZlEFb5-QjKc/AAAABfbHqmRyebWamsZa28nK6QrHR5tS3cwd0Pb0nXFMi5MF9luHk0zqViLI8DmzX6SLdHDGvuqLW53uN3V2GG1PMC2xAw.jpg?r=947",
+    // "https://occ-0-2717-360.1.nflxso.net/dnm/api/v6/evlCitJPPCVCry0BZlEFb5-QjKc/AAAABbfqo7mBju7ZQXKtGagr_sgrd13DUqzf8-p6OZeoQbop0fToj4K9JImmM2DvNh2HmPt6_NW6Xnb4NLYUxuWH9ttAEGOPbX7mc0cPLpkX_Nrp18qZVyrr7ZpHVvc.jpg?r=f7e",
+    // "assets/img/bored.jpg",
+    // "assets/img/carumba.jpg",
+    // "assets/img/chocolate.jpg",
+    // "assets/img/wumbo.jpg",
+    // "assets/img/dead.jpg",
+    // "assets/img/dish.jpg",
+    // "assets/img/fat.jpg",
+    // "assets/img/firm.jpg",
+    // "assets/img/god.jpg",
   ];
 
   void getHttp() async {
@@ -72,7 +72,7 @@ class _TinderswiperState extends State<Tinderswiper>
           height: MediaQuery.of(context).size.height * 0.6,
           child: TinderSwapCard(
             orientation: AmassOrientation.TOP,
-            totalNum: 20,
+            totalNum: 100,
             stackNum: 3,
             maxWidth: MediaQuery.of(context).size.width * 0.9,
             maxHeight: MediaQuery.of(context).size.width * 0.9,
