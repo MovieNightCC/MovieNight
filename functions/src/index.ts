@@ -185,6 +185,46 @@ export const updateUserLikes = functions
     }
   });
 
+
+  export const simpleUpdateUserLike = functions
+  .region("asia-northeast1")
+  .https.onRequest(async (request: any, response) => {
+    //Adding to user
+    const userRef = db.collection("users").doc(request.query.userName);
+    const userResult = await userRef.get();
+    const userData = userResult.data();
+    const arr = JSON.parse(request.query.movieArr);
+    arr.map(async (netflixId: Number) => {
+      await userRef.update({
+        likes: admin.firestore.FieldValue.arrayUnion(netflixId),
+      });
+    });
+    response.send(userData)
+  });
+
+
+  export const simpleUpdatePairMatches = functions
+  .region("asia-northeast1")
+  .https.onRequest(async (request: any, response) => {
+    //Adding to user
+    const pairRef = db.collection("pairs").doc(request.query.userName);
+    const pairResult = await pairRef.get();
+    const pairData = pairResult.data();
+    const arr = JSON.parse(request.query.movieArr);
+    arr.map(async (netflixId: Number) => {
+      await pairRef.update({
+        matches: admin.firestore.FieldValue.arrayUnion(netflixId),
+      });
+    });
+    response.send(pairData)
+  });
+
+
+
+
+
+
+
 //Get Pair Name of user (by UserName)
 export const checkIfUserHasPairs = functions
   .region("asia-northeast1")
