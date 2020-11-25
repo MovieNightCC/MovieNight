@@ -102,7 +102,11 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.2.0"
-<<<<<<< HEAD
+  flutter_web_plugins:
+    dependency: transitive
+    description: flutter
+    source: sdk
+    version: "0.0.0"
   http_parser:
     dependency: transitive
     description:
@@ -110,12 +114,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.1.4"
-=======
-  flutter_web_plugins:
-    dependency: transitive
-    description: flutter
-    source: sdk
-    version: "0.0.0"
   js:
     dependency: transitive
     description:
@@ -123,7 +121,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.6.2"
->>>>>>> 40efe113fe1db931d0b1adcc7efcc6068d53e562
   matcher:
     dependency: transitive
     description:
