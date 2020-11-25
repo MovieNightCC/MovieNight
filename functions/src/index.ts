@@ -1,5 +1,6 @@
 import * as functions from "firebase-functions";
 import * as admin from "firebase-admin";
+const unirest = require('unirest');
 // import { UserRecord } from "firebase-functions/lib/providers/auth";
 
 // const axios = require('axios')
@@ -65,6 +66,14 @@ export const getAllUsers = functions.region('asia-northeast1').https.onRequest(
   }
 );
 
+export const getAllMovies = functions.region('asia-northeast1').https.onRequest(
+  async (request:any, response) => {
+    const moviesRef = db.collection('movies');
+    const result= await moviesRef.get();
+    const data = result.docs.map(doc=>doc.data())
+    response.json(data);
+  }
+);
 //Get userbyId
 
 export const getUserByUserName = functions.region('asia-northeast1').https.onRequest(
@@ -80,7 +89,7 @@ export const getUserByUserName = functions.region('asia-northeast1').https.onReq
 
 //Get Pair by PairName
 
-export const getPairByPairsName = functions.region('asia-northeast1').https.onRequest(
+export const getPairByPairName = functions.region('asia-northeast1').https.onRequest(
   async (request:any, response) => {
     const pairsRef = db.collection('pairs').doc(request.query.pairName)
     const result= await pairsRef.get();
@@ -140,3 +149,38 @@ export const createPairs = functions.region('asia-northeast1').https.onRequest(
 //     response.send("Hello from Firebase!");
 //   }
 // );
+
+
+//seed from netflix db
+
+export const addMovies = functions.region('asia-northeast1').https.onRequest(
+  async (req:any, response) => {
+    // const moviesCollection = db.collection("movies").doc("alovelace");
+
+    const APIreq = unirest("GET", "https://unogsng.p.rapidapi.com/search");
+    APIreq.query({
+      "type": "movie",
+      "start_year": "2019",
+      "orderby": "rating",
+      "audiosubtitle_andor": "and",
+      "subtitle": "english",
+      "offset": "0",
+      "end_year": "2021",
+    });
+    APIreq.headers({
+      "x-rapidapi-key": "a9d2dfbe76msh26e338e4a5751f8p1e69bajsn164d1666776a",
+      "x-rapidapi-host": "unogsng.p.rapidapi.com",
+      "useQueryString": true,
+    });
+    APIreq.end(function (APIres:any) {
+      if (APIres.error) throw new Error(APIres.error);
+      const result = APIres.body.results;
+      result.map ( (obj: any) => {
+        console.log(String(obj.nfid))
+        const docRef = db.collection("movies").doc(String(obj.nfid));
+         docRef.set(obj).catch(err=>console.log(err))
+      })
+      response.send(APIres.body)
+    });
+  }
+);
