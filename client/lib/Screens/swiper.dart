@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 import './matches.dart';
 import './profile.dart';
 import 'dart:math';
+import 'package:rflutter_alert/rflutter_alert.dart';
 
 class Swiper extends StatefulWidget {
   static String routeName = "/swiper";
@@ -82,29 +83,38 @@ class _TinderswiperState extends State<Tinderswiper>
       // appBar: AppBar(
       //   title: Text("Swipe Movies"),
       // ),
-      body: Center(
-        child: Container(
-          height: MediaQuery.of(context).size.height * 0.7,
-          child: TinderSwapCard(
-            orientation: AmassOrientation.TOP,
-            totalNum: 100,
-            stackNum: 3,
-            maxWidth: MediaQuery.of(context).size.width * 0.9,
-            maxHeight: MediaQuery.of(context).size.width * 2.0,
-            minWidth: MediaQuery.of(context).size.width * 0.8,
-            minHeight: MediaQuery.of(context).size.width * 0.8,
-            cardBuilder: (context, index) => Card(
-              child: Padding(
-                  padding: EdgeInsets.all(20.0),
-                  child: Image.network(
-                    movieImages[index],
-                    fit: BoxFit.fill,
-                  )),
-              elevation: 10.0,
+      appBar: AppBar(
+        title: Text('Pair online status section here'),
+      ),
+      body: Column(
+        children: [
+          Text('remaining movies counter'),
+          Center(
+            child: Container(
+              height: MediaQuery.of(context).size.height * 0.7,
+              child: TinderSwapCard(
+                orientation: AmassOrientation.TOP,
+                totalNum: 100,
+                stackNum: 3,
+                maxWidth: MediaQuery.of(context).size.width * 0.9,
+                maxHeight: MediaQuery.of(context).size.width * 2.0,
+                minWidth: MediaQuery.of(context).size.width * 0.8,
+                minHeight: MediaQuery.of(context).size.width * 0.8,
+                cardBuilder: (context, index) => Card(
+                  child: Padding(
+                      padding: EdgeInsets.all(20.0),
+                      child: Image.network(
+                        movieImages[index],
+                        fit: BoxFit.fill,
+                      )),
+                  elevation: 10.0,
+                ),
+              ),
             ),
           ),
-        ),
+        ],
       ),
+
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
         type: BottomNavigationBarType.fixed,

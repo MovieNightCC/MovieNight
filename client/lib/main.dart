@@ -1,9 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:provider/provider.dart';
 import 'Screens/swiper.dart';
 import 'routes.dart';
 
-void main() {
+import './Screens/auth.dart';
+import './Screens/home_page.dart';
+import './Screens/sign_in.dart';
+
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(App());
 }
 
@@ -12,52 +20,39 @@ class App extends StatefulWidget {
 }
 
 class _AppState extends State<App> {
-  // Set default `_initialized` and `_error` state to false
-  bool _initialized = false;
-  bool _error = false;
-
-  // Define an async function to initialize FlutterFire
-  void initializeFlutterFire() async {
-    try {
-      // Wait for Firebase to initialize and set `_initialized` state to true
-      await Firebase.initializeApp();
-      setState(() {
-        _initialized = true;
-      });
-    } catch (e) {
-      // Set `_error` state to true if Firebase initialization fails
-      setState(() {
-        _error = true;
-      });
-    }
-  }
-
-  @override
-  void initState() {
-    initializeFlutterFire();
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
-    // Show error message if initialization failed
-    // if (_error) {
-    //   return Text("Something went wrong");
-    // }
-
-    // // Show a loader until FlutterFire is initialized
-    // if (!_initialized) {
-    //   return Text("Loading");
-    // }
-
-    return MaterialApp(
-      title: "Movie Night",
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-          primaryColor: Colors.white,
-          scaffoldBackgroundColor: Colors.grey[100]),
-      home: Swiper(),
-      routes: routes,
+    return MultiProvider(
+      providers: [
+        Provider<AuthenticationService>(
+          create: (_) => AuthenticationService(FirebaseAuth.instance),
+        ),
+        StreamProvider(
+          create: (context) =>
+              context.read<AuthenticationService>().authStateChanges,
+        )
+      ],
+      child: MaterialApp(
+        title: "Movie Night",
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+            primaryColor: Colors.white,
+            scaffoldBackgroundColor: Colors.grey[100]),
+        home: AuthenticationWrapper(),
+        routes: routes,
+      ),
     );
+  }
+}
+
+class AuthenticationWrapper extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final firebaseUser = context.watch<User>();
+
+    if (firebaseUser != null) {
+      return HomePage();
+    }
+    return SignInPage();
   }
 }

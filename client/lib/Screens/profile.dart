@@ -18,14 +18,21 @@ class _ProfileState extends State<Profile> {
       //     Navigator.pop(context);
       //   },
       // ),
+      appBar: AppBar(
+        title: Text('Login and sign up'),
+      ),
       body: Container(
-        child: Center(
-          child: Text(
-            'Profile',
-            style: TextStyle(fontSize: 30.0, fontWeight: FontWeight.bold),
-          ),
+        padding: EdgeInsets.all(20.0),
+        child: Column(
+          children: <Widget>[
+            Text(
+              'Login Information',
+              style: TextStyle(fontSize: 20),
+            ),
+          ],
         ),
       ),
+
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
         type: BottomNavigationBarType.fixed,
