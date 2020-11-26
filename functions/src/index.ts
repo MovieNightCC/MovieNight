@@ -19,29 +19,6 @@ export const helloWorld = functions
     response.send("Hello from Firebase!");
   });
 
-//example GET
-export const testGet = functions
-  .region("asia-northeast1")
-  .https.onRequest(async (_: any, response) => {
-    const docRef = db.collection("test").doc("alovelace");
-    const result = await docRef.get();
-    const data = result.data();
-    response.send(data);
-  });
-
-//example POST
-export const testAdd = functions
-  .region("asia-northeast1")
-  .https.onRequest(async (req: any, response) => {
-    const docRef = db.collection("test").doc("alovelace");
-    await docRef.set({
-      first: "Ada",
-      last: "Lovelace",
-      born: 1815,
-    });
-    response.send("stored!");
-  });
-
 //example DELETE
 export const testDelete = functions
   .region("asia-northeast1")
@@ -176,7 +153,6 @@ export const dummy = functions
 //Modifying Stuffs
 
 
-
 //Add liked movies to User Entity
 //query: userName, movieArr (An array of netflix ids)
 export const updateUserLikes = functions
@@ -283,6 +259,18 @@ export const checkPairLikes = functions
     if (data) response.json(data.likes);
     else response.json("no array found.");
   });
+
+//get list of matched movies of a pair
+export const checkPairMatches = functions
+  .region("asia-northeast1")
+  .https.onRequest(async (request: any, response) => {
+    const pairRef = db.collection("users").doc(request.query.pairName);
+    const result = await pairRef.get();
+    const data = result.data();
+    if (data) response.json(data.matches);
+    else response.json("no array found.");
+  });
+
 
 //seed from netflix db (unogsNG API)
 
