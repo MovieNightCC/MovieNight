@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_tindercard/flutter_tindercard.dart';
 import 'package:dio/dio.dart';
 import './matches.dart';
+import './profile.dart';
+import 'dart:math';
 
 class Swiper extends StatefulWidget {
   static String routeName = "/swiper";
@@ -29,7 +31,7 @@ class Tinderswiper extends StatefulWidget {
 
 class _TinderswiperState extends State<Tinderswiper>
     with TickerProviderStateMixin {
-  List<String> movies = [];
+  int _currentIndex = 1;
 
   List<String> movieImages = [
     "https://occ-0-2851-1432.1.nflxso.net/dnm/api/v6/evlCitJPPCVCry0BZlEFb5-QjKc/AAAABYo08D3k24uEHYsBSuX5CguS0M2I0zrgWmDZxNH0vFlQfVpg_eVvg17agekWnzdboqg-oqoK8R1Aptc0HxkI9EnKSA.jpg?r=b9e",
@@ -50,20 +52,36 @@ class _TinderswiperState extends State<Tinderswiper>
     }
   }
 
+  List shuffle(List items) {
+    var random = new Random();
+
+    // Go through all elements.
+    for (var i = items.length - 1; i > 0; i--) {
+      // Pick a pseudorandom number according to the list length
+      var n = random.nextInt(i + 1);
+
+      var temp = items[i];
+      items[i] = items[n];
+      items[n] = temp;
+    }
+
+    return items;
+  }
+
   @override
   Widget build(BuildContext context) {
     getHttp();
-    print(movieImages);
+    // shuffle(movieImages);
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.push(
-              context, new MaterialPageRoute(builder: (context) => Matches()));
-        },
-      ),
-      appBar: AppBar(
-        title: Text("Swipe Movies"),
-      ),
+      // floatingActionButton: FloatingActionButton(
+      //   onPressed: () {
+      //     Navigator.push(
+      //         context, new MaterialPageRoute(builder: (context) => Matches()));
+      //   },
+      // ),
+      // appBar: AppBar(
+      //   title: Text("Swipe Movies"),
+      // ),
       body: Center(
         child: Container(
           height: MediaQuery.of(context).size.height * 0.7,
@@ -86,6 +104,35 @@ class _TinderswiperState extends State<Tinderswiper>
             ),
           ),
         ),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _currentIndex,
+        type: BottomNavigationBarType.fixed,
+        backgroundColor: Colors.purple[200],
+        items: [
+          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.local_movies_outlined), label: 'Swipe'),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.local_fire_department), label: 'Matches'),
+        ],
+        onTap: (index) {
+          setState(() {
+            _currentIndex = index;
+          });
+          if (_currentIndex == 2) {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => Matches(), maintainState: true));
+          }
+          if (_currentIndex == 0) {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => Profile(), maintainState: true));
+          }
+        },
       ),
     );
   }

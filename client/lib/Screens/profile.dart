@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import './swiper.dart';
-import './profile.dart';
+import './matches.dart';
 
-class Matches extends StatefulWidget {
+class Profile extends StatefulWidget {
   @override
-  _MatchesState createState() => _MatchesState();
+  _ProfileState createState() => _ProfileState();
 }
 
-class _MatchesState extends State<Matches> {
-  int _currentIndex = 2;
+class _ProfileState extends State<Profile> {
+  int _currentIndex = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +21,7 @@ class _MatchesState extends State<Matches> {
       body: Container(
         child: Center(
           child: Text(
-            'Matches',
+            'Profile',
             style: TextStyle(fontSize: 30.0, fontWeight: FontWeight.bold),
           ),
         ),
@@ -29,7 +29,7 @@ class _MatchesState extends State<Matches> {
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
         type: BottomNavigationBarType.fixed,
-        backgroundColor: Colors.pink[200],
+        backgroundColor: Colors.blue[50],
         items: [
           BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
           BottomNavigationBarItem(
@@ -43,15 +43,11 @@ class _MatchesState extends State<Matches> {
           });
           if (_currentIndex == 1) {
             Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => Swiper(), maintainState: true));
+                context, MaterialPageRoute(builder: (context) => Swiper()));
           }
-          if (_currentIndex == 0) {
+          if (_currentIndex == 2) {
             Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => Profile(), maintainState: true));
+                context, MaterialPageRoute(builder: (context) => Matches()));
           }
         },
       ),
