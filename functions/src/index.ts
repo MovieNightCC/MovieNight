@@ -177,8 +177,8 @@ export const dummy = functions
 
 
 
-//Do this, Kenny
 //Add liked movies to User Entity
+//query: userName, movieArr (An array of netflix ids)
 export const updateUserLikes = functions
   .region("asia-northeast1")
   .https.onRequest(async (request: any, response) => {
@@ -194,23 +194,25 @@ export const updateUserLikes = functions
     });
     //Check if user is in a pair. If true, push to pair array or add to matches
     if (userData) {
-      if (userData.pairName)  {
+      if (userData.pairName!== "" || userData.pairName !== undefined)  {
+        //case for user having pair
         const pairRef = db.collection("pairs").doc(userData.pairName);
         const pairResult = await pairRef.get();
         const pairData = pairResult.data();
         arr.map(async (netflixId: Number) => {
-          //check pair
+          //check if movie already exists in like
           if (pairData) {
             if (pairData.likes.includes(netflixId)) {
               console.log("yes match")
               await pairRef.update({
                 matches: admin.firestore.FieldValue.arrayUnion(netflixId),
+                likes: admin.firestore.FieldValue.arrayRemove(netflixId),
               });
               response.send("match!");
             } else {
               console.log("no match")
               await pairRef.update({
-                matches: admin.firestore.FieldValue.arrayUnion(netflixId),
+                likes: admin.firestore.FieldValue.arrayUnion(netflixId),
               });
               response.send("updated to user and pair!");
             }
