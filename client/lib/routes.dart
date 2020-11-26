@@ -7,5 +7,5 @@ import 'Screens/signup/signup.dart';
 // All our routes will be available here
 final Map<String, WidgetBuilder> routes = {
   Swiper.routeName: (context) => Swiper(),
-  SignUp.routeName: (context) => SignUp()
+  LoginScreen.routeName: (context) => LoginScreen()
 };

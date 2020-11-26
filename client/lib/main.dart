@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutterPractice/Screens/signup/signup.dart';
+import 'package:flutterPractice/Screens/swiper.dart';
 import 'routes.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(App());
 }
 
@@ -41,14 +43,14 @@ class _AppState extends State<App> {
   @override
   Widget build(BuildContext context) {
     // Show error message if initialization failed
-    //if (_error) {
-    //  return Text("Error");
-    //}
+    // if (_error) {
+    //   return Text("Something went wrong");
+    // }
 
-    // Show a loader until FlutterFire is initialized
-    //if (!_initialized) {
-    //  return Text("Loading");
-    //}
+    // // Show a loader until FlutterFire is initialized
+    // if (!_initialized) {
+    //   return Text("Loading");
+    // }
 
     return MaterialApp(
       title: "Movie Night",
@@ -56,7 +58,7 @@ class _AppState extends State<App> {
       theme: ThemeData(
           primaryColor: Colors.white,
           scaffoldBackgroundColor: Colors.grey[100]),
-      home: SignUp(),
+      home: LoginScreen(),
       routes: routes,
     );
   }
