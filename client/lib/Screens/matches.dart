@@ -1,20 +1,17 @@
 import 'package:flutter/material.dart';
-//import 'package:cloud_functions/cloud_functions.dart';
-//mport 'package:cloud_firestore/cloud_firestore.dart';
+import './swiper.dart';
+import './profile.dart';
 import "package:http/http.dart" as http;
 import 'dart:convert';
 
-class Matches extends StatelessWidget {
-  // FirebaseFunctions functions = FirebaseFunctions.instance;
-  var _cloudData = "The pope";
-  // Future<void> getFruit() async {
-  //   HttpsCallable callable =
-  //       FirebaseFunctions.instance.httpsCallable('helloWorld');
-  //   final results = await callable();
-  //   var fruit =
-  //       results.data; // ["Apple", "Banana", "Cherry", "Date", "Fig", "Grapes"]
+class Matches extends StatefulWidget {
+  @override
+  _MatchesState createState() => _MatchesState();
+}
 
-  // }
+class _MatchesState extends State<Matches> {
+  int _currentIndex = 2;
+  var _cloudData = "The pope";
 
   @override
   Widget build(BuildContext context) {
@@ -27,6 +24,7 @@ class Matches extends StatelessWidget {
           Navigator.pop(context);
         },
       ),
+
       body: Container(
         child: Center(
           child: Text(
@@ -34,6 +32,35 @@ class Matches extends StatelessWidget {
             style: TextStyle(fontSize: 30.0, fontWeight: FontWeight.bold),
           ),
         ),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _currentIndex,
+        type: BottomNavigationBarType.fixed,
+        backgroundColor: Colors.pink[200],
+        items: [
+          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.local_movies_outlined), label: 'Swipe'),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.local_fire_department), label: 'Matches'),
+        ],
+        onTap: (index) {
+          setState(() {
+            _currentIndex = index;
+          });
+          if (_currentIndex == 1) {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => Swiper(), maintainState: true));
+          }
+          if (_currentIndex == 0) {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => Profile(), maintainState: true));
+          }
+        },
       ),
     );
   }
@@ -55,9 +82,6 @@ class Matches extends StatelessWidget {
     };
     var uri = Uri.https("asia-northeast1-movie-night-cc.cloudfunctions.net",
         "/createUser", queryParams);
-
-// // http://example.org/path?q=dart.
-// Uri.https("asia-northeast1-movie-night-cc.cloudfunctions.net", "/createUser", queryParams);
 
     var response = await http.post(uri);
     print('response status: ${response.statusCode}');
