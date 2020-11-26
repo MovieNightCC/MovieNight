@@ -74,6 +74,7 @@ export const getAllMovies = functions
   });
 
 //Get User Info by User Name
+//query ?userName=<username>
 export const getUserByUserName = functions
   .region("asia-northeast1")
   .https.onRequest(async (request: any, response) => {
@@ -84,7 +85,7 @@ export const getUserByUserName = functions
   });
 
 //Get Pair by PairName
-
+//query ?pairName=<pairName>
 export const getPairByPairName = functions
   .region("asia-northeast1")
   .https.onRequest(async (request: any, response) => {
@@ -117,7 +118,6 @@ export const createUser = functions
 export const createPair = functions
   .region("asia-northeast1")
   .https.onRequest(async (req: any, response) => {
-    // const userCollection = db.collection("test");
     interface Pair {
       pairName?: String;
       members?: Array<String>;
@@ -126,7 +126,37 @@ export const createPair = functions
     }
     const pairInfo: Pair = {
       pairName: req.query.pairName,
-      members: [req.query.member1, req.query.member2],
+      members: [req.query.user1, req.query.user2],
+      matches: [],
+      likes: [],
+    };
+    //create Pair
+    const pairsCollection = db.collection("pairs");
+    const pairsRef = pairsCollection.doc(req.query.pairName);
+    await pairsRef.set(pairInfo);
+    //update pairName to users
+    const usersCollection = db.collection("users");
+    const usersRef1 = usersCollection.doc(req.query.user1);
+    const usersRef2 = usersCollection.doc(req.query.user2);
+    await usersRef1.update({pairName: req.query.pairName})
+    await usersRef2.update({pairName: req.query.pairName})
+    response.send("pair created!");
+  });
+
+
+//dummy create Pair
+export const dummy = functions
+  .region("asia-northeast1")
+  .https.onRequest(async (req: any, response) => {
+    interface Pair {
+      pairName?: String;
+      members?: Array<String>;
+      matches?: Array<Number>; //by netflexId
+      likes?: Array<Number>;
+    }
+    const pairInfo: Pair = {
+      pairName: req.query.pairName,
+      members: [req.query.user1, req.query.user2],
       matches: [],
       likes: [],
     };
@@ -135,7 +165,12 @@ export const createPair = functions
     await pairsRef.set(pairInfo);
     // also please add pairName to userEntity
 
-    response.send("stored!");
+    // const usersCollection = db.collection("users");
+    // const usersRef1 = usersCollection.doc(req.query.user1);
+    // const usersRef2 = usersCollection.doc(req.query.user2);
+    // await usersRef1.update({pairName: req.query.pairName})
+    // await usersRef2.update({pairName: req.query.pairName})
+    response.send("pair created!");
   });
 
 //Modifying Stuffs
@@ -185,7 +220,7 @@ export const updateUserLikes = functions
     }
   });
 
-
+//query ?userName=<userName>&movieArr=[4243423,234234234,234423234]
   export const simpleUpdateUserLike = functions
   .region("asia-northeast1")
   .https.onRequest(async (request: any, response) => {
@@ -202,12 +237,12 @@ export const updateUserLikes = functions
     response.send(userData)
   });
 
-
+  //query ?pairName=<userName>&movieArr=[4243423,234234234,234423234]
   export const simpleUpdatePairMatches = functions
   .region("asia-northeast1")
   .https.onRequest(async (request: any, response) => {
     //Adding to user
-    const pairRef = db.collection("pairs").doc(request.query.userName);
+    const pairRef = db.collection("pairs").doc(request.query.pairName);
     const pairResult = await pairRef.get();
     const pairData = pairResult.data();
     const arr = JSON.parse(request.query.movieArr);
