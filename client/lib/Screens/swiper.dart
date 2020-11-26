@@ -2,17 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_tindercard/flutter_tindercard.dart';
 
 
-class App extends StatefulWidget {
-  _AppState createState() => _AppState();
-}
-
-
 class Swiper extends StatefulWidget {
   static String routeName = "/swiper";
    _AppState createState() => _AppState();
 }
 
-class _AppState extends State<App> {
+class _AppState extends State<Swiper> {
 
  @override
 
