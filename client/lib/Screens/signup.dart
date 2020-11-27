@@ -1,6 +1,7 @@
 import 'auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:http/http.dart' as http;
 
 class SignUpPage extends StatelessWidget {
   final TextEditingController nameController = TextEditingController();
@@ -39,6 +40,9 @@ class SignUpPage extends StatelessWidget {
                     email: emailController.text.trim(),
                     password: passwordController.text.trim(),
                   );
+
+              _postUser(
+                  emailController.text.trim(), nameController.text.trim());
             },
             child: Text("Sign Up"),
           )
@@ -46,4 +50,21 @@ class SignUpPage extends StatelessWidget {
       ),
     );
   }
+}
+
+void _postUser(String email, String name) async {
+  //convert username here  eviljose@gmail => eviljose
+
+  Map<String, String> queryParams = {
+    'userName': email.substring(0, email.indexOf("@")),
+    'name': name,
+    'email': email,
+  };
+  var uri = Uri.https("asia-northeast1-movie-night-cc.cloudfunctions.net",
+      "/createUser", queryParams);
+
+  var response = await http.post(uri);
+  print('response status: ${response.statusCode}');
+  print('response body ${response.body}');
+  var userData = response.body;
 }
