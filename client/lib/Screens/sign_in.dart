@@ -39,6 +39,12 @@ class SignInPage extends StatelessWidget {
           ),
           RaisedButton(
             onPressed: () {
+              context.read<AuthenticationService>().signOut();
+            },
+            child: Text("SIGN OUT"),
+          ),
+          RaisedButton(
+            onPressed: () {
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => SignUpPage()),

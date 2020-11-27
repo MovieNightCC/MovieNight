@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class SignUpPage extends StatelessWidget {
+  final TextEditingController nameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
@@ -15,7 +16,7 @@ class SignUpPage extends StatelessWidget {
       body: Column(
         children: [
           TextField(
-            controller: emailController,
+            controller: nameController,
             decoration: InputDecoration(
               labelText: "Name",
             ),
@@ -34,7 +35,7 @@ class SignUpPage extends StatelessWidget {
           ),
           RaisedButton(
             onPressed: () {
-              context.read<AuthenticationService>().signIn(
+              context.read<AuthenticationService>().signUp(
                     email: emailController.text.trim(),
                     password: passwordController.text.trim(),
                   );
