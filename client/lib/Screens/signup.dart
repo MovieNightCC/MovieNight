@@ -66,5 +66,4 @@ void _postUser(String email, String name) async {
   var response = await http.post(uri);
   print('response status: ${response.statusCode}');
   print('response body ${response.body}');
-  var userData = response.body;
 }

@@ -53,8 +53,9 @@ class AuthenticationWrapper extends StatelessWidget {
 
     if (firebaseUser != null) {
       print(firebaseUser.email);
+      return Swiper();
+    } else {
       return SignInPage();
     }
-    return SignUpPage();
   }
 }

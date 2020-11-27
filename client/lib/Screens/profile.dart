@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_core/firebase_core.dart';
+import 'auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import './swiper.dart';
 import './matches.dart';
+import 'package:provider/provider.dart';
 
 class Profile extends StatefulWidget {
   @override
@@ -62,6 +63,12 @@ class _ProfileState extends State<Profile> {
                         image: AssetImage('assets/img/god.jpg'))),
               )
             ],
+          ),
+          RaisedButton(
+            onPressed: () {
+              context.read<AuthenticationService>().signOut();
+            },
+            child: Text("SIGN OUT"),
           ),
           Padding(
             padding: EdgeInsets.only(bottom: 270, left: 184),

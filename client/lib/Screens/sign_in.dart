@@ -1,8 +1,7 @@
-import 'package:flutterPractice/screens/signup.dart';
-
 import 'auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import './signup.dart';
 
 class SignInPage extends StatelessWidget {
   final TextEditingController emailController = TextEditingController();
@@ -51,10 +50,6 @@ class SignInPage extends StatelessWidget {
               );
             },
             child: Text("Sign Up Here"),
-            //move to next page
-
-            // after sign up go to swiper
-            //if that works add the user to the data base
           ),
         ],
       ),
