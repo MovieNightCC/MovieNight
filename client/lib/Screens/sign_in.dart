@@ -1,3 +1,5 @@
+import 'package:flutterPractice/screens/signup.dart';
+
 import 'auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -31,6 +33,18 @@ class SignInPage extends StatelessWidget {
                   );
             },
             child: Text("Sign in"),
+          ),
+          RaisedButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => SignUpPage()),
+              );
+            },
+            //move to next page
+
+            // after sign up go to swiper
+            //if that works add the user to the data base
           ),
         ],
       ),

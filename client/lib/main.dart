@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+
 import 'package:provider/provider.dart';
 import 'Screens/swiper.dart';
 import 'routes.dart';
@@ -53,8 +54,8 @@ class AuthenticationWrapper extends StatelessWidget {
 
     if (firebaseUser != null) {
       print(firebaseUser.email);
-      return Swiper();
+      return SignInPage();
     }
-    return SignInPage();
+    return SignUpPage();
   }
 }
