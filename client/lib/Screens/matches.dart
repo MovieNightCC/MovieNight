@@ -83,7 +83,6 @@ class _MatchesState extends State<Matches> {
     };
     var uri = Uri.https("asia-northeast1-movie-night-cc.cloudfunctions.net",
         "/createUser", queryParams);
-
     var response = await http.post(uri);
     print('response status: ${response.statusCode}');
     print('response body ${response.body}');

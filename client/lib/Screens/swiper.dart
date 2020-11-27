@@ -19,7 +19,7 @@ class _AppState extends State<Swiper> {
   @override
   void initState() {
     super.initState();
-    futureMovie = fetchMovie();
+    // futureMovie = fetchMovie();
   }
 
   Widget build(BuildContext context) {
@@ -34,24 +34,48 @@ class _AppState extends State<Swiper> {
   }
 }
 
-List<String> movieDataTest = [];
-List<String> movieImagesTest = [];
+List shuffle(List listA, List listB) {
+  var random = new Random();
 
-Future<Response> fetchMovie() async {
-  final response = await Dio().get(
-      "https://asia-northeast1-movie-night-cc.cloudfunctions.net/getAllMovies");
-  if (response.statusCode == 200) {
-    var movies = response.data;
-    for (var i = 0; i < movies.length; i++) {
-      movieDataTest.add(movies[i]["title"]);
-      movieImagesTest.add(movies[i]["img"]);
-    }
-    return response;
-  } else {
-    // If the server did not return a 200 OK response,
-    // then throw an exception.
-    throw Exception('Failed to load album');
+  // Go through all elements.
+  for (var i = listA.length - 1; i > 0; i--) {
+    // Pick a pseudorandom number according to the list length
+    var n = random.nextInt(i + 1);
+
+    var temp = listA[i];
+    var temp2 = listB[i];
+    listA[i] = listA[n];
+    listB[i] = listB[n];
+    listA[n] = temp;
+    listB[n] = temp2;
   }
+  return listA;
+}
+
+List<int> movieDataTest = [];
+List<String> movieImagesTest = [];
+var counter = 0;
+
+// void updateUser(movieName) async {
+//   await Dio().get(
+//       "https://asia-northeast1-movie-night-cc.cloudfunctions.net/updateUserLikes",
+//       queryParameters: {
+//         "userName": "evilVic",
+//         "movieArr": [movieName]
+//       });
+// }
+
+void _updateUser(arrOfNfid) async {
+  var queryParams = new Map();
+  queryParams['userName'] = 'evilVic';
+  queryParams['movieArr'] = '[$arrOfNfid]';
+  var response = await http.get(
+      "https://asia-northeast1-movie-night-cc.cloudfunctions.net/updateUserLikes?userName=Male_a&movieArr=[$arrOfNfid]");
+  print('response status: ${response.statusCode}');
+  print('response body ${response.body}');
+  // var userData = response.body;
+// http.get('https://jsonplaceholder.typicode.com/albums/1');
+// https://asia-northeast1-movie-night-cc.cloudfunctions.net/updateUserLikes?userName=kenny&movieArr=[1,2,3]
 }
 
 class Tinderswiper extends StatefulWidget {
@@ -63,29 +87,16 @@ class _TinderswiperState extends State<Tinderswiper>
     with TickerProviderStateMixin {
   int _currentIndex = 1;
 
-  List shuffle(List listA, List listB) {
-    var random = new Random();
-
-    // Go through all elements.
-    for (var i = listA.length - 1; i > 0; i--) {
-      // Pick a pseudorandom number according to the list length
-      var n = random.nextInt(i + 1);
-
-      var temp = listA[i];
-      var temp2 = listB[i];
-      listA[i] = listA[n];
-      listB[i] = listB[n];
-      listA[n] = temp;
-      listB[n] = temp2;
-    }
-
-    return listA;
-  }
-
   @override
   Widget build(BuildContext context) {
     CardController controller;
     return Scaffold(
+      // appBar: AppBar(
+      //   title: const Text('Movie Night'),
+      //   backgroundColor: Colors.purple[200],
+      //   elevation: 0,
+      //   centerTitle: true,
+      // ),
       body: Stack(alignment: Alignment.center, children: [
         CustomPaint(
           child: Container(
@@ -95,52 +106,46 @@ class _TinderswiperState extends State<Tinderswiper>
           painter: HeaderCurvedContainer(),
         ),
         Center(
-          child: FutureBuilder<Response>(
-            future: fetchMovie(),
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                shuffle(movieDataTest, movieImagesTest);
-                return Center(
-                  child: Container(
-                    height: MediaQuery.of(context).size.height * 0.7,
-                    child: TinderSwapCard(
-                      orientation: AmassOrientation.TOP,
-                      totalNum: 100,
-                      stackNum: 3,
-                      swipeEdge: 5.0,
-                      maxWidth: MediaQuery.of(context).size.width * 0.9,
-                      maxHeight: MediaQuery.of(context).size.width * 2.0,
-                      minWidth: MediaQuery.of(context).size.width * 0.8,
-                      minHeight: MediaQuery.of(context).size.width * 0.8,
-                      cardBuilder: (context, index) => Card(
-                        child: Padding(
-                            padding: EdgeInsets.all(20.0),
-                            child: Image.network(
-                              movieImagesTest[index],
-                              fit: BoxFit.fill,
-                            )),
-                        elevation: 10.0,
-                      ),
-                      cardController: controller = CardController(),
-                      swipeCompleteCallback:
-                          (CardSwipeOrientation orientation, int index) {
-                        if (orientation == CardSwipeOrientation.RIGHT) {
-                          //when liked
-                          print('you liked: ${movieDataTest[index]}');
-                        } else if (orientation == CardSwipeOrientation.LEFT) {
-                          print('you hate: ${movieDataTest[index]}');
-                        }
-                      },
-                    ),
-                  ),
-                );
-              } else if (snapshot.hasError) {
-                return Text("${snapshot.error}");
-              }
+          child: Container(
+            height: MediaQuery.of(context).size.height * 1.0,
+            child: TinderSwapCard(
+              orientation: AmassOrientation.TOP,
+              totalNum: 100,
+              stackNum: 3,
+              swipeEdge: 5.0,
+              maxWidth: MediaQuery.of(context).size.width * 0.9,
+              maxHeight: MediaQuery.of(context).size.width * 1.6,
+              minWidth: MediaQuery.of(context).size.width * 0.899,
+              minHeight: MediaQuery.of(context).size.width * 1.599,
+              cardBuilder: (context, index) => Card(
+                child: Container(
+                    // padding: EdgeInsets.all(20.0),
+                    child: Image.network(
+                  movieImagesTest[index],
+                  fit: BoxFit.fill,
+                )),
+                elevation: 10.0,
+              ),
+              cardController: controller = CardController(),
+              swipeCompleteCallback:
+                  (CardSwipeOrientation orientation, int index) {
+                if (orientation == CardSwipeOrientation.RIGHT) {
+                  //when liked
+                  print('you liked: ${movieDataTest[index]}');
+                  print('${movieDataTest.length}');
+                  //request to firebase server to update likes
+                  _updateUser(movieDataTest[index]);
+                  // print(movieDataTest[index].runtimeType);
 
-              // By default, show a loading spinner.
-              return CircularProgressIndicator();
-            },
+                  //  (?userName=<userName>&movieArr=<An Array of netflix IDs>)
+                  // response = await dio.post("/test", data: {"id": 12, "name": "wendu"});
+
+                } else if (orientation == CardSwipeOrientation.LEFT) {
+                  //when hated
+                  print('you hate: ${movieDataTest[index]}');
+                }
+              },
+            ),
           ),
         ),
       ]),
@@ -194,3 +199,47 @@ class HeaderCurvedContainer extends CustomPainter {
   @override
   bool shouldRepaint(CustomPainter oldDelegate) => false;
 }
+
+// if (snapshot.hasData) {
+//   shuffle(movieDataTest, movieImagesTest);
+//   return Center(
+//     child:
+//   );
+// } else if (snapshot.hasError) {
+//   return Text("${snapshot.error}");
+// }
+
+// // By default, show a loading spinner.
+// return CircularProgressIndicator();
+
+//   Widget build(BuildContext context) {
+//     return MaterialApp(
+//       title: "Movie Night",
+//       debugShowCheckedModeBanner: false,
+//       theme: ThemeData(
+//           primaryColor: Colors.white,
+//           scaffoldBackgroundColor: Colors.grey[100]),
+//       home: Tinderswiper(),
+//     );
+//   }
+// }
+
+// Future<Response> likeMovie() async {
+//   if (movieDataTest.length == 0) {
+//     print("im called");
+//     final response = await Dio().get(
+//         "https://asia-northeast1-movie-night-cc.cloudfunctions.net/getAllMovies");
+//     if (response.statusCode == 200) {
+//       var movies = response.data;
+//       for (var i = 0; i < movies.length; i++) {
+//         movieDataTest.add(movies[i]["title"]);
+//         movieImagesTest.add(movies[i]["img"]);
+//       }
+//       return response;
+//     } else {
+//       // If the server did not return a 200 OK response,
+//       // then throw an exception.
+//       throw Exception('Failed to load album');
+//     }
+//   }
+// }
