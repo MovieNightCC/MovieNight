@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import './swiper.dart';
 import './matches.dart';
 
@@ -12,6 +14,8 @@ class _ProfileState extends State<Profile> {
 
   @override
   Widget build(BuildContext context) {
+    User user = FirebaseAuth.instance.currentUser;
+    final _email = user.email;
     return Scaffold(
       // appBar: AppBar(
       //   elevation: 0.0,
@@ -21,7 +25,7 @@ class _ProfileState extends State<Profile> {
         alignment: Alignment.center,
         children: [
           Container(
-            child: Text("Rick",
+            child: Text(_email,
                 style: TextStyle(fontSize: 30.0, fontWeight: FontWeight.bold)),
           ),
           CustomPaint(
@@ -119,3 +123,9 @@ class HeaderCurvedContainer extends CustomPainter {
   @override
   bool shouldRepaint(CustomPainter oldDelegate) => false;
 }
+
+//   @override
+//   Widget build(BuildContext context) {
+//     final firebaseUser = context.watch<User>();
+
+// }

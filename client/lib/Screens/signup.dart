@@ -2,7 +2,7 @@ import 'auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class SignInPage extends StatelessWidget {
+class SignUpPage extends StatelessWidget {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
@@ -11,6 +11,12 @@ class SignInPage extends StatelessWidget {
     return Scaffold(
       body: Column(
         children: [
+          TextField(
+            controller: emailController,
+            decoration: InputDecoration(
+              labelText: "Name",
+            ),
+          ),
           TextField(
             controller: emailController,
             decoration: InputDecoration(
@@ -30,8 +36,8 @@ class SignInPage extends StatelessWidget {
                     password: passwordController.text.trim(),
                   );
             },
-            child: Text("Sign in"),
-          ),
+            child: Text("Sign Up"),
+          )
         ],
       ),
     );
