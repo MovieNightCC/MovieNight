@@ -14,13 +14,13 @@ class Swiper extends StatefulWidget {
 }
 
 class _AppState extends State<Swiper> {
-  // Future<Movie> futureMovie;
+  Future<Response> futureMovie;
 
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   futureMovie = fetchMovie();
-  // }
+  @override
+  void initState() {
+    super.initState();
+    futureMovie = fetchMovie();
+  }
 
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -34,65 +34,25 @@ class _AppState extends State<Swiper> {
   }
 }
 
-// Future<Movie> fetchMovie() async {
-//   final response = await http.get(
-//       "https://asia-northeast1-movie-night-cc.cloudfunctions.net/getAllMovies");
+List<String> movieDataTest = [];
+List<String> movieImagesTest = [];
 
-//   if (response.statusCode == 200) {
-//     // If the server did return a 200 OK response,
-//     // then parse the JSON.
-//     return Movie.fromJson(jsonDecode(response.body));
-//   } else {
-//     // If the server did not return a 200 OK response,
-//     // then throw an exception.
-//     throw Exception('Failed to load album');
-//   }
-// }
-
-// class Movie {
-//   final String avgrating;
-//   final String img;
-//   final String poster;
-//   final int nfid;
-//   final String title;
-//   final int year;
-//   final String synopsis;
-
-//   Movie(
-//       {this.avgrating,
-//       this.img,
-//       this.poster,
-//       this.nfid,
-//       this.title,
-//       this.year,
-//       this.synopsis});
-
-//   factory Movie.fromJson(Map<String, dynamic> json) {
-//     return Movie(
-//       avgrating: json['avgrating'],
-//       img: json['img'],
-//       poster: json['poster'],
-//       nfid: json['nfid'],
-//       title: json['title'],
-//       year: json['year'],
-//       synopsis: json['synopsis'],
-//     );
-//   }
-// }
-
-// void getHttp() async {
-//   try {
-//     Response response = await Dio().get(
-//         "https://asia-northeast1-movie-night-cc.cloudfunctions.net/getAllMovies");
-//     var movies = response.data;
-//     for (var i = 0; i < movies.length; i++) {
-//       movieData.add(movies[i]["title"]);
-//       movieImages.add(movies[i]["img"]);
-//     }
-//   } catch (e) {
-//     print(e);
-//   }
-// }
+Future<Response> fetchMovie() async {
+  final response = await Dio().get(
+      "https://asia-northeast1-movie-night-cc.cloudfunctions.net/getAllMovies");
+  if (response.statusCode == 200) {
+    var movies = response.data;
+    for (var i = 0; i < movies.length; i++) {
+      movieDataTest.add(movies[i]["title"]);
+      movieImagesTest.add(movies[i]["img"]);
+    }
+    return response;
+  } else {
+    // If the server did not return a 200 OK response,
+    // then throw an exception.
+    throw Exception('Failed to load album');
+  }
+}
 
 class Tinderswiper extends StatefulWidget {
   @override
@@ -103,52 +63,27 @@ class _TinderswiperState extends State<Tinderswiper>
     with TickerProviderStateMixin {
   int _currentIndex = 1;
 
-  List<String> movieImages = [
-    "https://occ-0-2851-1432.1.nflxso.net/dnm/api/v6/evlCitJPPCVCry0BZlEFb5-QjKc/AAAABYo08D3k24uEHYsBSuX5CguS0M2I0zrgWmDZxNH0vFlQfVpg_eVvg17agekWnzdboqg-oqoK8R1Aptc0HxkI9EnKSA.jpg?r=b9e",
-    "https://occ-0-2851-1432.1.nflxso.net/dnm/api/v6/evlCitJPPCVCry0BZlEFb5-QjKc/AAAABf0YHTcQ5ZbfdAYXGRs4xVxuhI5K0mmWGqkxtC1V6W712RsYMckydjZ5HT0F7sADOEuRuGWcgp9EJeHyNQRco1hJOQ.jpg?r=884",
-    "https://occ-0-1007-1360.1.nflxso.net/dnm/api/v6/evlCitJPPCVCry0BZlEFb5-QjKc/AAAABfbHqmRyebWamsZa28nK6QrHR5tS3cwd0Pb0nXFMi5MF9luHk0zqViLI8DmzX6SLdHDGvuqLW53uN3V2GG1PMC2xAw.jpg?r=947",
-  ];
-
-  List<String> movieData = [
-    "Kiss the Ground",
-    "Sky Tour: The Movie",
-    "Hello Carbot The Movie: Save The Moon"
-  ];
-
-  void getHttp() async {
-    try {
-      Response response = await Dio().get(
-          "https://asia-northeast1-movie-night-cc.cloudfunctions.net/getAllMovies");
-      var movies = response.data;
-      for (var i = 0; i < movies.length; i++) {
-        movieData.add(movies[i]["title"]);
-        movieImages.add(movies[i]["img"]);
-      }
-    } catch (e) {
-      print(e);
-    }
-  }
-
-  List shuffle(List items) {
+  List shuffle(List listA, List listB) {
     var random = new Random();
 
     // Go through all elements.
-    for (var i = items.length - 1; i > 0; i--) {
+    for (var i = listA.length - 1; i > 0; i--) {
       // Pick a pseudorandom number according to the list length
       var n = random.nextInt(i + 1);
 
-      var temp = items[i];
-      items[i] = items[n];
-      items[n] = temp;
+      var temp = listA[i];
+      var temp2 = listB[i];
+      listA[i] = listA[n];
+      listB[i] = listB[n];
+      listA[n] = temp;
+      listB[n] = temp2;
     }
 
-    return items;
+    return listA;
   }
 
   @override
   Widget build(BuildContext context) {
-    getHttp();
-    // shuffle(movieImages);
     CardController controller;
     return Scaffold(
       body: Stack(alignment: Alignment.center, children: [
@@ -160,37 +95,52 @@ class _TinderswiperState extends State<Tinderswiper>
           painter: HeaderCurvedContainer(),
         ),
         Center(
-          child: Container(
-            height: MediaQuery.of(context).size.height * 0.7,
-            child: TinderSwapCard(
-              orientation: AmassOrientation.TOP,
-              totalNum: 100,
-              stackNum: 3,
-              swipeEdge: 5.0,
-              maxWidth: MediaQuery.of(context).size.width * 0.9,
-              maxHeight: MediaQuery.of(context).size.width * 2.0,
-              minWidth: MediaQuery.of(context).size.width * 0.8,
-              minHeight: MediaQuery.of(context).size.width * 0.8,
-              cardBuilder: (context, index) => Card(
-                child: Padding(
-                    padding: EdgeInsets.all(20.0),
-                    child: Image.network(
-                      movieImages[index],
-                      fit: BoxFit.fill,
-                    )),
-                elevation: 10.0,
-              ),
-              cardController: controller = CardController(),
-              swipeCompleteCallback:
-                  (CardSwipeOrientation orientation, int index) {
-                if (orientation == CardSwipeOrientation.RIGHT) {
-                  //when liked
-                  print('you liked: ${movieData[index]}');
-                } else if (orientation == CardSwipeOrientation.LEFT) {
-                  print('you hate: ${movieData[index]}');
-                }
-              },
-            ),
+          child: FutureBuilder<Response>(
+            future: fetchMovie(),
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                shuffle(movieDataTest, movieImagesTest);
+                return Center(
+                  child: Container(
+                    height: MediaQuery.of(context).size.height * 0.7,
+                    child: TinderSwapCard(
+                      orientation: AmassOrientation.TOP,
+                      totalNum: 100,
+                      stackNum: 3,
+                      swipeEdge: 5.0,
+                      maxWidth: MediaQuery.of(context).size.width * 0.9,
+                      maxHeight: MediaQuery.of(context).size.width * 2.0,
+                      minWidth: MediaQuery.of(context).size.width * 0.8,
+                      minHeight: MediaQuery.of(context).size.width * 0.8,
+                      cardBuilder: (context, index) => Card(
+                        child: Padding(
+                            padding: EdgeInsets.all(20.0),
+                            child: Image.network(
+                              movieImagesTest[index],
+                              fit: BoxFit.fill,
+                            )),
+                        elevation: 10.0,
+                      ),
+                      cardController: controller = CardController(),
+                      swipeCompleteCallback:
+                          (CardSwipeOrientation orientation, int index) {
+                        if (orientation == CardSwipeOrientation.RIGHT) {
+                          //when liked
+                          print('you liked: ${movieDataTest[index]}');
+                        } else if (orientation == CardSwipeOrientation.LEFT) {
+                          print('you hate: ${movieDataTest[index]}');
+                        }
+                      },
+                    ),
+                  ),
+                );
+              } else if (snapshot.hasError) {
+                return Text("${snapshot.error}");
+              }
+
+              // By default, show a loading spinner.
+              return CircularProgressIndicator();
+            },
           ),
         ),
       ]),

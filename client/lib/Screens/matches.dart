@@ -16,22 +16,23 @@ class _MatchesState extends State<Matches> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          print("hello");
-          _getcloudData();
-          _postUser();
-          Navigator.pop(context);
-        },
-      ),
-
-      body: Container(
-        child: Center(
-          child: Text(
-            _cloudData,
-            style: TextStyle(fontSize: 30.0, fontWeight: FontWeight.bold),
+      body: Stack(
+        alignment: Alignment.center,
+        children: [
+          CustomPaint(
+            child: Container(
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height,
+            ),
+            painter: HeaderCurvedContainer(),
           ),
-        ),
+          Center(
+            child: Text(
+              _cloudData,
+              style: TextStyle(fontSize: 30.0, fontWeight: FontWeight.bold),
+            ),
+          ),
+        ],
       ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
@@ -93,7 +94,7 @@ class _MatchesState extends State<Matches> {
 class HeaderCurvedContainer extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
-    Paint paint = Paint()..color = Colors.blue[200];
+    Paint paint = Paint()..color = Colors.pink[200];
     Path path = Path()
       ..relativeLineTo(0, 150)
       ..quadraticBezierTo(size.width / 2, 225, size.width, 150)
