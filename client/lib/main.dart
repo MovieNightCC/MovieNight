@@ -8,6 +8,7 @@ import 'routes.dart';
 import './Screens/auth.dart';
 import './Screens/home_page.dart';
 import './Screens/sign_in.dart';
+import './Screens/signup.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -51,8 +52,10 @@ class AuthenticationWrapper extends StatelessWidget {
     final firebaseUser = context.watch<User>();
 
     if (firebaseUser != null) {
+      print(firebaseUser.email);
       return Swiper();
+    } else {
+      return SignInPage();
     }
-    return SignInPage();
   }
 }

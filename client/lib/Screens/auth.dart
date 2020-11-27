@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+//import 'package:http/http.dart' as http;
 
 class AuthenticationService {
   final FirebaseAuth _firebaseAuth;
@@ -37,9 +38,27 @@ class AuthenticationService {
     try {
       await _firebaseAuth.createUserWithEmailAndPassword(
           email: email, password: password);
+
+      // await _postUser(email);
+
       return "Signed up";
     } on FirebaseAuthException catch (e) {
       return e.message;
     }
   }
+// }
+
+// void _postUser(email) async {
+//   Map<String, String> queryParams = {
+//     'userName': 'niceVic',
+//     'name': 'tic',
+//     'email': 'ticcode@chihuahua.com',
+//   };
+//   var uri = Uri.https("asia-northeast1-movie-night-cc.cloudfunctions.net",
+//       "/createUser", queryParams);
+
+//   var response = await http.post(uri);
+//   print('response status: ${response.statusCode}');
+//   print('response body ${response.body}');
+//   var userData = response.body;
 }

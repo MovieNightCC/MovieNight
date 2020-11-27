@@ -1,6 +1,7 @@
 import 'auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import './signup.dart';
 
 class SignInPage extends StatelessWidget {
   final TextEditingController emailController = TextEditingController();
@@ -9,6 +10,9 @@ class SignInPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text("Sign in Form"),
+      ),
       body: Column(
         children: [
           TextField(
@@ -31,7 +35,22 @@ class SignInPage extends StatelessWidget {
                   );
             },
             child: Text("Sign in"),
-          )
+          ),
+          RaisedButton(
+            onPressed: () {
+              context.read<AuthenticationService>().signOut();
+            },
+            child: Text("SIGN OUT"),
+          ),
+          RaisedButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => SignUpPage()),
+              );
+            },
+            child: Text("Sign Up Here"),
+          ),
         ],
       ),
     );
