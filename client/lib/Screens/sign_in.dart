@@ -11,6 +11,9 @@ class SignInPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text("Sign in Form"),
+      ),
       body: Column(
         children: [
           TextField(
@@ -41,6 +44,7 @@ class SignInPage extends StatelessWidget {
                 MaterialPageRoute(builder: (context) => SignUpPage()),
               );
             },
+            child: Text("Sign Up Here"),
             //move to next page
 
             // after sign up go to swiper
