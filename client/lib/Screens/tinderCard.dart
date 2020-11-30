@@ -132,7 +132,12 @@ class _TinderSwapCardState extends State<TinderSwapCard>
     if (realIndex < 0) {
       return Container();
     }
+    // _currentFront = realIndex - 1;
     final index = realIndex - _currentFront;
+    print('tinder index $index');
+    print("realIndex $realIndex");
+    print('count $count');
+    print('_currentFront $_currentFront');
 
     if (index == widget._stackNum - 1) {
       return Align(
@@ -157,7 +162,8 @@ class _TinderSwapCardState extends State<TinderSwapCard>
             size: widget._cardSizes[index],
             child: widget._cardBuilder(
               context,
-              widget._totalNum - realIndex - 1,
+              // widget._totalNum - realIndex - 1,
+              widget._totalNum - (99 - count) - 1,
             ),
           ),
         ),
@@ -190,7 +196,7 @@ class _TinderSwapCardState extends State<TinderSwapCard>
             : widget._cardSizes[index],
         child: widget._cardBuilder(
           context,
-          widget._totalNum - realIndex - 1,
+          widget._totalNum - (99 - count),
         ),
       ),
     );

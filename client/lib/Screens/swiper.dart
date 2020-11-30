@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_tindercard/flutter_tindercard.dart';
+// import 'package:flutter_tindercard/flutter_tindercard.dart';
 import 'package:dio/dio.dart';
+import './tinderCard.dart';
+
 import './matches.dart';
 import './profile.dart';
 import './movieInfo.dart';
@@ -118,33 +120,37 @@ class _TinderswiperState extends State<Tinderswiper>
               child: TinderSwapCard(
                 orientation: AmassOrientation.TOP,
                 totalNum: 100,
-                stackNum: 3,
+                stackNum: 2,
                 swipeEdge: 5.0,
                 maxWidth: MediaQuery.of(context).size.width * 0.9,
                 maxHeight: MediaQuery.of(context).size.width * 1.6,
                 minWidth: MediaQuery.of(context).size.width * 0.899,
                 minHeight: MediaQuery.of(context).size.width * 1.599,
-                cardBuilder: (context, index) => Card(
-                  child: Container(
-                      // padding: EdgeInsets.all(20.0),
-                      child: Image.network(
-                    movieImagesTest[index],
-                    fit: BoxFit.fill,
-                  )),
-                  elevation: 10.0,
-                ),
+                cardBuilder: (context, index) {
+                  print('index is $index');
+                  // index = count;
+                  return Card(
+                    child: Container(
+                        // padding: EdgeInsets.all(20.0),
+                        child: Image.network(
+                      movieImagesTest[index],
+                      fit: BoxFit.fill,
+                    )),
+                    elevation: 0,
+                  );
+                },
                 cardController: controller = CardController(),
                 swipeCompleteCallback:
                     (CardSwipeOrientation orientation, int index) {
                   if (orientation == CardSwipeOrientation.RIGHT) {
                     //when liked
-                    count++;
-                    print('you liked: ${movieDataTest[index]}');
+                    print('you liked: ${movieDataTest[count]}');
                     print('you liked: $movieDataTest');
                     print('you liked: $moviesList');
 
                     //request to firebase server to update likes
-                    _updateUser(movieDataTest[index]);
+                    _updateUser(movieDataTest[count]);
+                    count++;
                     // print(movieDataTest[index].runtimeType);
 
                     //  (?userName=<userName>&movieArr=<An Array of netflix IDs>)
@@ -152,8 +158,8 @@ class _TinderswiperState extends State<Tinderswiper>
 
                   } else if (orientation == CardSwipeOrientation.LEFT) {
                     //when hated
+                    print('you hate: ${movieDataTest[count]}');
                     count++;
-                    print('you hate: ${movieDataTest[index]}');
                   }
                 },
               ),

@@ -84,6 +84,7 @@ export const createUser = functions
       likes: [],
       dislikes: [],
       pairName: "",
+      //add a line that says partnered with "" 
     };
     const userCollection = db.collection("users");
     const userRef = userCollection.doc(req.query.email);
@@ -115,8 +116,11 @@ export const createPair = functions
     const usersCollection = db.collection("users");
     const usersRef1 = usersCollection.doc(req.query.user1);
     const usersRef2 = usersCollection.doc(req.query.user2);
+    //get user data and get their display name
+
     await usersRef1.update({pairName: req.query.pairName})
     await usersRef2.update({pairName: req.query.pairName})
+    // await usersRef2.update({partner: <the other user's display name>})
     response.send("pair created!");
   });
 
@@ -157,7 +161,7 @@ export const dummy = functions
 //query: userName, movieArr (An array of netflix ids)
 export const updateUserLikes = functions
   .region("asia-northeast1")
-  .https.onRequest(async (request: any, response) => {
+  .https.onRequest(async (request: any, response: any) => {
     //Adding to user
     const userRef = db.collection("users").doc(request.query.userName);
     const userResult = await userRef.get();

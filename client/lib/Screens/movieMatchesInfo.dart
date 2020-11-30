@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import './swiper.dart';
 import './profile.dart';
+import './matches.dart';
 
-class Info extends StatefulWidget {
+class MatchInfo extends StatefulWidget {
   @override
-  _InfoState createState() => _InfoState();
+  _MatchInfoState createState() => _MatchInfoState();
 }
 
 var count = 0;
 
-class _InfoState extends State<Info> {
+class _MatchInfoState extends State<MatchInfo> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,16 +31,16 @@ class _InfoState extends State<Info> {
           ),
           Column(
             children: [
-              Image.network(movieImagesTest[count]),
+              Image.network(matchesImage[current]),
               // Image.network(movieImagesTest[count]),
-              Text('Title: ${movieTitles[count]}',
+              Text('Title: ${matchesTitles[current]}',
                   style: TextStyle(
                       height: 5.0, fontWeight: FontWeight.bold, fontSize: 20)),
-              Text('Synopsis: ${moviesSynopsis[count]}',
+              Text('Synopsis: ${matchesSynopsis[current]}',
                   style: TextStyle(
                       height: 1.5, fontWeight: FontWeight.bold, fontSize: 20)),
               Text(
-                'Release Year: ${movieYear[count]}',
+                'Release Year: ${matchesYear[current]}',
                 style: TextStyle(
                     height: 4.0, fontWeight: FontWeight.bold, fontSize: 20),
               )

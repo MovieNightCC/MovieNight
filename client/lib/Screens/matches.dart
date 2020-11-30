@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import './swiper.dart';
 import './profile.dart';
+import './movieMatchesInfo.dart';
 import "package:http/http.dart" as http;
 import 'dart:convert';
 import 'package:dio/dio.dart';
@@ -10,16 +11,31 @@ class Matches extends StatefulWidget {
   _MatchesState createState() => _MatchesState();
 }
 
-List<int> matches = [];
+var current = 0;
+
+List<Object> matches = [];
+List<String> matchesTitles = [];
+List<String> matchesSynopsis = [];
+List<String> matchesImage = [];
+List<int> matchesYear = [];
+List<int> matchesNfid = [];
 
 class _MatchesState extends State<Matches> {
   int _currentIndex = 2;
-  var _cloudData = "The pope";
 
   @override
   Widget build(BuildContext context) {
     print(matches.length);
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('Match History',
+            style: TextStyle(
+                height: 1.5, fontWeight: FontWeight.bold, fontSize: 30)),
+        automaticallyImplyLeading: false,
+        centerTitle: true,
+        backgroundColor: Colors.pink[200],
+        elevation: 0,
+      ),
       body: Stack(
         alignment: Alignment.center,
         children: [
@@ -32,16 +48,29 @@ class _MatchesState extends State<Matches> {
           ),
           Center(
             child: GridView.count(
+              childAspectRatio: 0.83,
               // Create a grid with 2 columns. If you change the scrollDirection to
               // horizontal, this produces 2 rows.
               crossAxisCount: 2,
               // Generate 100 widgets that display their index in the List.
               children: List.generate(matches.length, (index) {
-                return Center(
-                  child: Text(
-                    'Item $index',
-                    style: Theme.of(context).textTheme.headline5,
+                return InkWell(
+                  child: Column(
+                    children: [
+                      Image.network(matchesImage[index]),
+                      // Text(
+                      //   '${matchesTitles[index]}',
+                      //   style: Theme.of(context).textTheme.headline5,
+                      // )
+                    ],
                   ),
+                  onTap: () {
+                    current = index;
+                    Navigator.push(
+                        context,
+                        new MaterialPageRoute(
+                            builder: (context) => MatchInfo()));
+                  },
                 );
               }),
             ),

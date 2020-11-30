@@ -115,22 +115,29 @@ Future<Response> fetchMovie() async {
 }
 
 Future<Response> fetchPair() async {
-  if (movieDataTest.length == 0) {
-    print("im called");
-    var url =
-        'https://asia-northeast1-movie-night-cc.cloudfunctions.net/getPairByPairName?pairName=testPairA';
-    final response = await Dio().get(url);
-    var data = response.data['matches'];
-    if (response.statusCode == 200) {
-      for (var i = 0; i < data.length; i++) {
-        matches.add(data[i]);
+  try {
+    if (movieDataTest.length == 0) {
+      print("im called");
+      var url =
+          'https://asia-northeast1-movie-night-cc.cloudfunctions.net/getPairByPairName?pairName=testPairA';
+      final response = await Dio().get(url);
+      var data = response.data['matchMovieData'];
+      if (response.statusCode == 200) {
+        for (var i = 0; i < data.length; i++) {
+          matches.add(data[i]);
+          // movieDataTest.add(movies[i]["nfid"]);
+          matchesSynopsis.add(data[i]["synopsis"]);
+          matchesYear.add(data[i]["year"]);
+          matchesTitles.add(data[i]['title']);
+          matchesImage.add(data[i]["img"]);
+          matchesNfid.add(data[i]["nfid"]);
+        }
+        print(matches);
+        return response;
       }
-      return response;
-    } else {
-      // If the server did not return a 200 OK response,
-      // then throw an exception.
-      throw Exception('Failed to load album');
     }
+  } on Exception catch (_) {
+    print('error!');
   }
 }
 
