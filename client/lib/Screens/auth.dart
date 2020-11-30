@@ -1,4 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
+
+import 'swiper.dart';
 //import 'package:http/http.dart' as http;
 
 class AuthenticationService {
@@ -14,6 +16,10 @@ class AuthenticationService {
   /// after you called this method if you want to pop all routes.
   Future<void> signOut() async {
     await _firebaseAuth.signOut();
+    // set movie images and moviedata to empty array
+    print(movieDataTest);
+    movieDataTest = [];
+    movieImagesTest = [];
   }
 
   /// There are a lot of different ways on how you can do exception handling.
