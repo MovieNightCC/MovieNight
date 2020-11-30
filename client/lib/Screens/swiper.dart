@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 // import 'package:flutter_tindercard/flutter_tindercard.dart';
 import 'package:dio/dio.dart';
 import './tinderCard.dart';
-
 import './matches.dart';
 import './profile.dart';
 import './movieInfo.dart';

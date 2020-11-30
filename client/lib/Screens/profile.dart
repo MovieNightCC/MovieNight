@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'auth.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import './swiper.dart';
 import './matches.dart';
+import 'package:provider/provider.dart';
 
 class Profile extends StatefulWidget {
   @override
@@ -12,6 +15,8 @@ class _ProfileState extends State<Profile> {
 
   @override
   Widget build(BuildContext context) {
+    User user = FirebaseAuth.instance.currentUser;
+    final _email = user.email;
     return Scaffold(
       // appBar: AppBar(
       //   elevation: 0.0,
@@ -21,7 +26,7 @@ class _ProfileState extends State<Profile> {
         alignment: Alignment.center,
         children: [
           Container(
-            child: Text("Rick",
+            child: Text(_email,
                 style: TextStyle(fontSize: 30.0, fontWeight: FontWeight.bold)),
           ),
           CustomPaint(
@@ -59,6 +64,12 @@ class _ProfileState extends State<Profile> {
               )
             ],
           ),
+          RaisedButton(
+            onPressed: () {
+              context.read<AuthenticationService>().signOut();
+            },
+            child: Text("SIGN OUT"),
+          ),
           Padding(
             padding: EdgeInsets.only(bottom: 270, left: 184),
             child: CircleAvatar(
@@ -74,6 +85,7 @@ class _ProfileState extends State<Profile> {
           )
         ],
       ),
+
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
         type: BottomNavigationBarType.fixed,
@@ -118,3 +130,9 @@ class HeaderCurvedContainer extends CustomPainter {
   @override
   bool shouldRepaint(CustomPainter oldDelegate) => false;
 }
+
+//   @override
+//   Widget build(BuildContext context) {
+//     final firebaseUser = context.watch<User>();
+
+// }
