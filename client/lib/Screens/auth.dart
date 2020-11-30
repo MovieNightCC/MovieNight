@@ -16,8 +16,8 @@ class AuthenticationService {
     await _firebaseAuth.signOut();
     // set movie images and moviedata to empty array to avoid overfetching
     print(movieDataTest);
-    movieDataTest = [];
-    movieImagesTest = [];
+    // movieDataTest = [];
+    // movieImagesTest = [];
     userName = "";
     pair = "";
     name = "";

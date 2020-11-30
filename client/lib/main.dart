@@ -28,6 +28,13 @@ class App extends StatefulWidget {
 
 class _AppState extends State<App> {
   @override
+  void initState() {
+    super.initState();
+    futureMovie = fetchMovie();
+    futurePair = fetchPair();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
@@ -115,10 +122,10 @@ class AuthenticationWrapper extends StatelessWidget {
       print(firebaseUser.email);
       userName =
           firebaseUser.email.substring(0, firebaseUser.email.indexOf("@"));
-      if (movieDataTest.length == 0 && movieImagesTest.length == 0) {
-        futureMovie = fetchMovie();
-        futurePair = fetchPair();
-      }
+      // if (movieDataTest.length == 0 && movieImagesTest.length == 0) {
+      //   futureMovie = fetchMovie();
+      //   futurePair = fetchPair();
+      // }
       return MaterialApp(
         title: "Movie Night",
         debugShowCheckedModeBanner: false,

@@ -147,7 +147,7 @@ void _getUserInfo() async {
   var url =
       'https://asia-northeast1-movie-night-cc.cloudfunctions.net/getUserByUserName?userName=$userName';
   final response = await Dio().get(url);
-   userdata = response.data;
+  userdata = response.data;
   name = userdata["name"];
   email = userdata["email"];
   pair = userdata["pairName"];
