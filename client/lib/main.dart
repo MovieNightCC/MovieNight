@@ -16,6 +16,9 @@ Future<void> main() async {
   runApp(App());
 }
 
+// global user name variable accessible from every page
+var userName = "";
+
 class App extends StatefulWidget {
   _AppState createState() => _AppState();
 }
@@ -55,12 +58,11 @@ class AuthenticationWrapper extends StatelessWidget {
 
     if (firebaseUser != null) {
       print(firebaseUser.email);
-      // do future builder stuff he
-      //  only fetch if movie length is zero]
+      userName =
+          firebaseUser.email.substring(0, firebaseUser.email.indexOf("@"));
       if (movieDataTest.length == 0 && movieImagesTest.length == 0) {
         futureMovie = fetchMovie();
       }
-      // futureMovie = fetchMovie();
       return MaterialApp(
         title: "Movie Night",
         debugShowCheckedModeBanner: false,
@@ -71,11 +73,8 @@ class AuthenticationWrapper extends StatelessWidget {
           future: futureMovie,
           builder: (context, snapshot) {
             print("future builder");
-            // print(snapshot.data);
-            // print(movieDataTest);
             print('${movieDataTest.length} how many movies I have');
             if (snapshot.hasData) {
-              print("here in this if");
               shuffle(movieDataTest, movieImagesTest);
               return Swiper();
             } else if (snapshot.hasError) {
@@ -87,8 +86,6 @@ class AuthenticationWrapper extends StatelessWidget {
         ),
         routes: routes,
       );
-
-      //
     } else {
       return SignInPage();
     }
@@ -111,8 +108,6 @@ Future<Response> fetchMovie() async {
       }
     }
   } catch (e) {
-    // If the server did not return a 200 OK response,
-    // then throw an exceptio
     print(e);
     throw Exception(
       'Failed to load album',
