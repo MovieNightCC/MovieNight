@@ -6,9 +6,10 @@ import 'package:provider/provider.dart';
 import 'package:dio/dio.dart';
 import '../main.dart';
 
-var _pair = "";
-var _name = "";
-var _email = "";
+var pair = "";
+var name = "";
+var email = "";
+var userdata = null;
 
 class Profile extends StatefulWidget {
   @override
@@ -60,17 +61,17 @@ class _ProfileState extends State<Profile> {
                         image: AssetImage('assets/img/god.jpg'))),
               ),
               Container(
-                child: Text(_name,
+                child: Text(name,
                     style:
                         TextStyle(fontSize: 30.0, fontWeight: FontWeight.bold)),
               ),
               Container(
-                child: Text(_pair,
+                child: Text(pair,
                     style:
                         TextStyle(fontSize: 30.0, fontWeight: FontWeight.bold)),
               ),
               Container(
-                child: Text(_email,
+                child: Text(email,
                     style:
                         TextStyle(fontSize: 30.0, fontWeight: FontWeight.bold)),
               ),
@@ -146,8 +147,8 @@ void _getUserInfo() async {
   var url =
       'https://asia-northeast1-movie-night-cc.cloudfunctions.net/getUserByUserName?userName=$userName';
   final response = await Dio().get(url);
-  var userdata = response.data;
-  _name = userdata["name"];
-  _email = userdata["email"];
-  _pair = userdata["pairName"];
+   userdata = response.data;
+  name = userdata["name"];
+  email = userdata["email"];
+  pair = userdata["pairName"];
 }

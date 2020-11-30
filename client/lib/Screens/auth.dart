@@ -1,5 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'swiper.dart';
+import 'profile.dart';
+import '../main.dart';
 
 class AuthenticationService {
   final FirebaseAuth _firebaseAuth;
@@ -16,7 +18,14 @@ class AuthenticationService {
     print(movieDataTest);
     movieDataTest = [];
     movieImagesTest = [];
+    userName = "";
+    pair = "";
+    name = "";
+    email = "";
+    userdata = null;
   }
+
+
 
   // Sign in to with firebase authenticator
   Future<String> signIn({String email, String password}) async {

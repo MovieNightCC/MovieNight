@@ -56,8 +56,7 @@ class SignUpPage extends StatelessWidget {
 }
 
 void _postUser(String email, String name) async {
-  //convert username here eviljose@gmail => eviljose
-
+  //convert username here eviljose@gmail.com => eviljose
   Map<String, String> queryParams = {
     'userName': email.substring(0, email.indexOf("@")),
     'name': name,
