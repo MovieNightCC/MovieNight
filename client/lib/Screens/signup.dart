@@ -1,3 +1,5 @@
+import './swiper.dart';
+
 import 'auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -43,6 +45,7 @@ class SignUpPage extends StatelessWidget {
 
               _postUser(
                   emailController.text.trim(), nameController.text.trim());
+              return Swiper();
             },
             child: Text("Sign Up"),
           )
