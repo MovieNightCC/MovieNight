@@ -55,8 +55,12 @@ class AuthenticationWrapper extends StatelessWidget {
 
     if (firebaseUser != null) {
       print(firebaseUser.email);
-      // do future builder stuff here
-      futureMovie = fetchMovie();
+      // do future builder stuff he
+      //  only fetch if movie length is zero]
+      if (movieDataTest.length == 0 && movieImagesTest.length == 0) {
+        futureMovie = fetchMovie();
+      }
+      // futureMovie = fetchMovie();
       return MaterialApp(
         title: "Movie Night",
         debugShowCheckedModeBanner: false,
@@ -69,7 +73,7 @@ class AuthenticationWrapper extends StatelessWidget {
             print("future builder");
             // print(snapshot.data);
             // print(movieDataTest);
-            print(movieDataTest.length);
+            print('${movieDataTest.length} how many movies I have');
             if (snapshot.hasData) {
               print("here in this if");
               shuffle(movieDataTest, movieImagesTest);
