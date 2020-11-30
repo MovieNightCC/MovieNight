@@ -3,6 +3,7 @@ import 'package:flutter_tindercard/flutter_tindercard.dart';
 import 'package:dio/dio.dart';
 import './matches.dart';
 import './profile.dart';
+import './movieInfo.dart';
 import 'dart:math';
 import 'dart:async';
 import 'dart:convert';
@@ -34,7 +35,7 @@ class _AppState extends State<Swiper> {
   }
 }
 
-List shuffle(List listA, List listB) {
+List shuffle(List listA, List listB, List listC, List listD, List listE) {
   var random = new Random();
 
   // Go through all elements.
@@ -44,35 +45,40 @@ List shuffle(List listA, List listB) {
 
     var temp = listA[i];
     var temp2 = listB[i];
+    var temp3 = listC[i];
+    var temp4 = listD[i];
+    var temp5 = listE[i];
+
     listA[i] = listA[n];
     listB[i] = listB[n];
+    listC[i] = listC[n];
+    listD[i] = listD[n];
+    listE[i] = listE[n];
+
     listA[n] = temp;
     listB[n] = temp2;
+    listC[n] = temp3;
+    listD[n] = temp4;
+    listE[n] = temp5;
   }
   return listA;
 }
 
+List<Object> moviesList = [];
 List<int> movieDataTest = [];
 List<String> movieImagesTest = [];
+List<String> movieTitles = [];
+List<String> moviesSynopsis = [];
+List<int> movieYear = [];
 var counter = 0;
 
-// void updateUser(movieName) async {
-//   await Dio().get(
-//       "https://asia-northeast1-movie-night-cc.cloudfunctions.net/updateUserLikes",
-//       queryParameters: {
-//         "userName": "evilVic",
-//         "movieArr": [movieName]
-//       });
-// }
-
 void _updateUser(arrOfNfid) async {
-  var queryParams = new Map();
-  queryParams['userName'] = 'evilVic';
-  queryParams['movieArr'] = '[$arrOfNfid]';
+  // var queryParams = new Map();
+  // queryParams['userName'] = 'evilVic';
+  // queryParams['movieArr'] = '[$arrOfNfid]';
   var response = await http.get(
       "https://asia-northeast1-movie-night-cc.cloudfunctions.net/updateUserLikes?userName=Male_a&movieArr=[$arrOfNfid]");
-  print('response status: ${response.statusCode}');
-  print('response body ${response.body}');
+
   // var userData = response.body;
 // http.get('https://jsonplaceholder.typicode.com/albums/1');
 // https://asia-northeast1-movie-night-cc.cloudfunctions.net/updateUserLikes?userName=kenny&movieArr=[1,2,3]
@@ -106,46 +112,56 @@ class _TinderswiperState extends State<Tinderswiper>
           painter: HeaderCurvedContainer(),
         ),
         Center(
-          child: Container(
-            height: MediaQuery.of(context).size.height * 1.0,
-            child: TinderSwapCard(
-              orientation: AmassOrientation.TOP,
-              totalNum: 100,
-              stackNum: 3,
-              swipeEdge: 5.0,
-              maxWidth: MediaQuery.of(context).size.width * 0.9,
-              maxHeight: MediaQuery.of(context).size.width * 1.6,
-              minWidth: MediaQuery.of(context).size.width * 0.899,
-              minHeight: MediaQuery.of(context).size.width * 1.599,
-              cardBuilder: (context, index) => Card(
-                child: Container(
-                    // padding: EdgeInsets.all(20.0),
-                    child: Image.network(
-                  movieImagesTest[index],
-                  fit: BoxFit.fill,
-                )),
-                elevation: 10.0,
+          child: InkWell(
+            child: Container(
+              height: MediaQuery.of(context).size.height * 1.0,
+              child: TinderSwapCard(
+                orientation: AmassOrientation.TOP,
+                totalNum: 100,
+                stackNum: 3,
+                swipeEdge: 5.0,
+                maxWidth: MediaQuery.of(context).size.width * 0.9,
+                maxHeight: MediaQuery.of(context).size.width * 1.6,
+                minWidth: MediaQuery.of(context).size.width * 0.899,
+                minHeight: MediaQuery.of(context).size.width * 1.599,
+                cardBuilder: (context, index) => Card(
+                  child: Container(
+                      // padding: EdgeInsets.all(20.0),
+                      child: Image.network(
+                    movieImagesTest[index],
+                    fit: BoxFit.fill,
+                  )),
+                  elevation: 10.0,
+                ),
+                cardController: controller = CardController(),
+                swipeCompleteCallback:
+                    (CardSwipeOrientation orientation, int index) {
+                  if (orientation == CardSwipeOrientation.RIGHT) {
+                    //when liked
+                    count++;
+                    print('you liked: ${movieDataTest[index]}');
+                    print('you liked: $movieDataTest');
+                    print('you liked: $moviesList');
+
+                    //request to firebase server to update likes
+                    _updateUser(movieDataTest[index]);
+                    // print(movieDataTest[index].runtimeType);
+
+                    //  (?userName=<userName>&movieArr=<An Array of netflix IDs>)
+                    // response = await dio.post("/test", data: {"id": 12, "name": "wendu"});
+
+                  } else if (orientation == CardSwipeOrientation.LEFT) {
+                    //when hated
+                    count++;
+                    print('you hate: ${movieDataTest[index]}');
+                  }
+                },
               ),
-              cardController: controller = CardController(),
-              swipeCompleteCallback:
-                  (CardSwipeOrientation orientation, int index) {
-                if (orientation == CardSwipeOrientation.RIGHT) {
-                  //when liked
-                  print('you liked: ${movieDataTest[index]}');
-                  print('${movieDataTest.length}');
-                  //request to firebase server to update likes
-                  _updateUser(movieDataTest[index]);
-                  // print(movieDataTest[index].runtimeType);
-
-                  //  (?userName=<userName>&movieArr=<An Array of netflix IDs>)
-                  // response = await dio.post("/test", data: {"id": 12, "name": "wendu"});
-
-                } else if (orientation == CardSwipeOrientation.LEFT) {
-                  //when hated
-                  print('you hate: ${movieDataTest[index]}');
-                }
-              },
             ),
+            onTap: () {
+              Navigator.push(
+                  context, new MaterialPageRoute(builder: (context) => Info()));
+            },
           ),
         ),
       ]),
@@ -200,18 +216,6 @@ class HeaderCurvedContainer extends CustomPainter {
   bool shouldRepaint(CustomPainter oldDelegate) => false;
 }
 
-// if (snapshot.hasData) {
-//   shuffle(movieDataTest, movieImagesTest);
-//   return Center(
-//     child:
-//   );
-// } else if (snapshot.hasError) {
-//   return Text("${snapshot.error}");
-// }
-
-// // By default, show a loading spinner.
-// return CircularProgressIndicator();
-
 //   Widget build(BuildContext context) {
 //     return MaterialApp(
 //       title: "Movie Night",
@@ -221,25 +225,5 @@ class HeaderCurvedContainer extends CustomPainter {
 //           scaffoldBackgroundColor: Colors.grey[100]),
 //       home: Tinderswiper(),
 //     );
-//   }
-// }
-
-// Future<Response> likeMovie() async {
-//   if (movieDataTest.length == 0) {
-//     print("im called");
-//     final response = await Dio().get(
-//         "https://asia-northeast1-movie-night-cc.cloudfunctions.net/getAllMovies");
-//     if (response.statusCode == 200) {
-//       var movies = response.data;
-//       for (var i = 0; i < movies.length; i++) {
-//         movieDataTest.add(movies[i]["title"]);
-//         movieImagesTest.add(movies[i]["img"]);
-//       }
-//       return response;
-//     } else {
-//       // If the server did not return a 200 OK response,
-//       // then throw an exception.
-//       throw Exception('Failed to load album');
-//     }
 //   }
 // }

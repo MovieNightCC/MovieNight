@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'Screens/swiper.dart';
+import 'Screens/matches.dart';
+import 'Screens/profile.dart';
+
 import 'routes.dart';
 import 'dart:async';
 import 'package:dio/dio.dart';
+import 'package:provider/provider.dart';
 
 void main() {
   runApp(App());
@@ -35,12 +39,14 @@ class _AppState extends State<App> {
   }
 
   Future<Response> futureMovie;
+  Future<Response> futurePair;
 
   @override
   void initState() {
     initializeFlutterFire();
     super.initState();
     futureMovie = fetchMovie();
+    futurePair = fetchPair();
   }
 
   @override
@@ -62,14 +68,15 @@ class _AppState extends State<App> {
           primaryColor: Colors.white,
           scaffoldBackgroundColor: Colors.grey[100]),
       home: FutureBuilder(
-        future: futureMovie,
+        future: Future.wait([futureMovie, futurePair]),
+        // future: futureMovie,
         builder: (context, snapshot) {
-          print("future builder");
           // print(snapshot.data);
           // print(movieDataTest);
-          print(movieDataTest.length);
+
           if (snapshot.hasData) {
-            shuffle(movieDataTest, movieImagesTest);
+            shuffle(movieDataTest, movieImagesTest, movieTitles, moviesSynopsis,
+                movieYear);
             return Swiper();
           } else if (snapshot.hasError) {
             return Text("${snapshot.error}");
@@ -91,8 +98,32 @@ Future<Response> fetchMovie() async {
     if (response.statusCode == 200) {
       var movies = response.data;
       for (var i = 0; i < movies.length; i++) {
+        moviesList.add(movies[i]);
         movieDataTest.add(movies[i]["nfid"]);
+        moviesSynopsis.add(movies[i]["synopsis"]);
+        movieYear.add(movies[i]["year"]);
+        movieTitles.add(movies[i]['title']);
         movieImagesTest.add(movies[i]["img"]);
+      }
+      return response;
+    } else {
+      // If the server did not return a 200 OK response,
+      // then throw an exception.
+      throw Exception('Failed to load album');
+    }
+  }
+}
+
+Future<Response> fetchPair() async {
+  if (movieDataTest.length == 0) {
+    print("im called");
+    var url =
+        'https://asia-northeast1-movie-night-cc.cloudfunctions.net/getPairByPairName?pairName=testPairA';
+    final response = await Dio().get(url);
+    var data = response.data['matches'];
+    if (response.statusCode == 200) {
+      for (var i = 0; i < data.length; i++) {
+        matches.add(data[i]);
       }
       return response;
     } else {
