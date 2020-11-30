@@ -16,6 +16,8 @@ Future<void> main() async {
   runApp(App());
 }
 
+var userName = "";
+
 class App extends StatefulWidget {
   _AppState createState() => _AppState();
 }
@@ -55,6 +57,8 @@ class AuthenticationWrapper extends StatelessWidget {
 
     if (firebaseUser != null) {
       print(firebaseUser.email);
+      userName =
+          firebaseUser.email.substring(0, firebaseUser.email.indexOf("@"));
       // do future builder stuff he
       //  only fetch if movie length is zero]
       if (movieDataTest.length == 0 && movieImagesTest.length == 0) {

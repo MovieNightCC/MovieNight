@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 
 import 'swiper.dart';
-//import 'package:http/http.dart' as http;
+import 'package:http/http.dart' as http;
 
 class AuthenticationService {
   final FirebaseAuth _firebaseAuth;
@@ -30,7 +30,8 @@ class AuthenticationService {
     try {
       await _firebaseAuth.signInWithEmailAndPassword(
           email: email, password: password);
-      return "Signed in";
+      //_postPair();
+      return "signed in";
     } on FirebaseAuthException catch (e) {
       return e.message;
     }
@@ -52,19 +53,19 @@ class AuthenticationService {
       return e.message;
     }
   }
-// }
+}
 
-// void _postUser(email) async {
+// void _postPair() async {
 //   Map<String, String> queryParams = {
-//     'userName': 'niceVic',
-//     'name': 'tic',
-//     'email': 'ticcode@chihuahua.com',
+//     'pairName': 'aiko & taka',
+//     'user1': 'aiko',
+//     'user2': 'taka',
 //   };
+
 //   var uri = Uri.https("asia-northeast1-movie-night-cc.cloudfunctions.net",
-//       "/createUser", queryParams);
+//       "/createPair", queryParams);
 
 //   var response = await http.post(uri);
 //   print('response status: ${response.statusCode}');
 //   print('response body ${response.body}');
-//   var userData = response.body;
-}
+// }
