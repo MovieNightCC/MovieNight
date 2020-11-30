@@ -86,7 +86,7 @@ export const createUser = functions
       pairName: "",
     };
     const userCollection = db.collection("users");
-    const userRef = userCollection.doc(req.query.userName);
+    const userRef = userCollection.doc(req.query.email);
     await userRef.set(userInfo);
     response.send("stored!");
   });
