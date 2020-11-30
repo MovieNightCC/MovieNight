@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 import 'auth.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import './swiper.dart';
 import './matches.dart';
 import 'package:provider/provider.dart';
 import 'package:dio/dio.dart';
 import '../main.dart';
 
-var _pair = "pair name";
-var _name = ";";
+var _pair = "";
+var _name = "";
 var _email = "";
 
 class Profile extends StatefulWidget {
@@ -21,8 +20,7 @@ class _ProfileState extends State<Profile> {
 
   @override
   Widget build(BuildContext context) {
-    print('$userName  user name in profile page');
-
+    // Retrieve user info on build
     _getUserInfo();
     return Scaffold(
       body: Stack(
@@ -152,5 +150,4 @@ void _getUserInfo() async {
   _name = userdata["name"];
   _email = userdata["email"];
   _pair = userdata["pairName"];
-  print(userdata);
 }
