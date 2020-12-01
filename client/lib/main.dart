@@ -1,3 +1,4 @@
+//helper and config
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -6,9 +7,11 @@ import 'routes.dart';
 import 'dart:async';
 import 'package:dio/dio.dart';
 
-import './screens/auth.dart';
-import './screens/sign_in.dart';
+/// screens
 import 'screens/swiper.dart';
+import 'screens/matches.dart';
+import 'screens/auth.dart';
+import 'screens/sign_in.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -24,6 +27,13 @@ class App extends StatefulWidget {
 }
 
 class _AppState extends State<App> {
+  @override
+  void initState() {
+    super.initState();
+    futureMovie = fetchMovie();
+    futurePair = fetchPair();
+  }
+
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
@@ -49,7 +59,59 @@ class _AppState extends State<App> {
   }
 }
 
+Future<Response> fetchMovie() async {
+  if (movieDataTest.length == 0) {
+    print("im called");
+    final response = await Dio().get(
+        "https://asia-northeast1-movie-night-cc.cloudfunctions.net/getAllMovies");
+    if (response.statusCode == 200) {
+      var movies = response.data;
+      for (var i = 0; i < movies.length; i++) {
+        moviesList.add(movies[i]);
+        movieDataTest.add(movies[i]["nfid"]);
+        moviesSynopsis.add(movies[i]["synopsis"]);
+        movieYear.add(movies[i]["year"]);
+        movieTitles.add(movies[i]['title']);
+        movieImagesTest.add(movies[i]["img"]);
+      }
+      return response;
+    } else {
+      // If the server did not return a 200 OK response,
+      // then throw an exception.
+      throw Exception('Failed to load album');
+    }
+  }
+}
+
+Future<Response> fetchPair() async {
+  try {
+    if (movieDataTest.length == 0) {
+      print("im called");
+      var url =
+          'https://asia-northeast1-movie-night-cc.cloudfunctions.net/getPairByPairName?pairName=testPairA';
+      final response = await Dio().get(url);
+      var data = response.data['matchMovieData'];
+      if (response.statusCode == 200) {
+        for (var i = 0; i < data.length; i++) {
+          matches.add(data[i]);
+          // movieDataTest.add(movies[i]["nfid"]);
+          matchesSynopsis.add(data[i]["synopsis"]);
+          matchesYear.add(data[i]["year"]);
+          matchesTitles.add(data[i]['title']);
+          matchesImage.add(data[i]["img"]);
+          matchesNfid.add(data[i]["nfid"]);
+        }
+        print(matches);
+        return response;
+      }
+    }
+  } on Exception catch (_) {
+    print('error!');
+  }
+}
+
 Future<Response> futureMovie;
+Future<Response> futurePair;
 
 class AuthenticationWrapper extends StatelessWidget {
   @override
@@ -60,9 +122,10 @@ class AuthenticationWrapper extends StatelessWidget {
       print(firebaseUser.email);
       userName =
           firebaseUser.email.substring(0, firebaseUser.email.indexOf("@"));
-      if (movieDataTest.length == 0 && movieImagesTest.length == 0) {
-        futureMovie = fetchMovie();
-      }
+      // if (movieDataTest.length == 0 && movieImagesTest.length == 0) {
+      //   futureMovie = fetchMovie();
+      //   futurePair = fetchPair();
+      // }
       return MaterialApp(
         title: "Movie Night",
         debugShowCheckedModeBanner: false,
@@ -70,12 +133,13 @@ class AuthenticationWrapper extends StatelessWidget {
             primaryColor: Colors.white,
             scaffoldBackgroundColor: Colors.grey[100]),
         home: FutureBuilder(
-          future: futureMovie,
+          future: Future.wait([futureMovie, futurePair]),
           builder: (context, snapshot) {
             print("future builder");
             print('${movieDataTest.length} how many movies I have');
             if (snapshot.hasData) {
-              shuffle(movieDataTest, movieImagesTest);
+              shuffle(movieDataTest, movieImagesTest, movieTitles,
+                  moviesSynopsis, movieYear);
               return Swiper();
             } else if (snapshot.hasError) {
               return Text("${snapshot.error}");
@@ -89,28 +153,5 @@ class AuthenticationWrapper extends StatelessWidget {
     } else {
       return SignInPage();
     }
-  }
-}
-
-Future<Response> fetchMovie() async {
-  try {
-    if (movieDataTest.length == 0) {
-      print("im called");
-      final response = await Dio().get(
-          "https://asia-northeast1-movie-night-cc.cloudfunctions.net/getAllMovies");
-      if (response.statusCode == 200) {
-        var movies = response.data;
-        for (var i = 0; i < movies.length; i++) {
-          movieDataTest.add(movies[i]["nfid"]);
-          movieImagesTest.add(movies[i]["img"]);
-        }
-        return response;
-      }
-    }
-  } catch (e) {
-    print(e);
-    throw Exception(
-      'Failed to load album',
-    );
   }
 }

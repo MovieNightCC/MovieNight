@@ -33,6 +33,7 @@ class SignInPage extends StatelessWidget {
                     email: emailController.text.trim(),
                     password: passwordController.text.trim(),
                   );
+                  
             },
             child: Text("Sign in"),
           ),

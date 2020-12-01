@@ -1,21 +1,41 @@
 import 'package:flutter/material.dart';
 import './swiper.dart';
 import './profile.dart';
+import './movieMatchesInfo.dart';
 import "package:http/http.dart" as http;
 import 'dart:convert';
+import 'package:dio/dio.dart';
 
 class Matches extends StatefulWidget {
   @override
   _MatchesState createState() => _MatchesState();
 }
 
+var current = 0;
+
+List<Object> matches = [];
+List<String> matchesTitles = [];
+List<String> matchesSynopsis = [];
+List<String> matchesImage = [];
+List<int> matchesYear = [];
+List<int> matchesNfid = [];
+
 class _MatchesState extends State<Matches> {
   int _currentIndex = 2;
-  var _cloudData = "The pope";
 
   @override
   Widget build(BuildContext context) {
+    print(matches.length);
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('Match History',
+            style: TextStyle(
+                height: 1.5, fontWeight: FontWeight.bold, fontSize: 30)),
+        automaticallyImplyLeading: false,
+        centerTitle: true,
+        backgroundColor: Colors.pink[200],
+        elevation: 0,
+      ),
       body: Stack(
         alignment: Alignment.center,
         children: [
@@ -27,9 +47,32 @@ class _MatchesState extends State<Matches> {
             painter: HeaderCurvedContainer(),
           ),
           Center(
-            child: Text(
-              _cloudData,
-              style: TextStyle(fontSize: 30.0, fontWeight: FontWeight.bold),
+            child: GridView.count(
+              childAspectRatio: 0.83,
+              // Create a grid with 2 columns. If you change the scrollDirection to
+              // horizontal, this produces 2 rows.
+              crossAxisCount: 2,
+              // Generate 100 widgets that display their index in the List.
+              children: List.generate(matches.length, (index) {
+                return InkWell(
+                  child: Column(
+                    children: [
+                      Image.network(matchesImage[index]),
+                      // Text(
+                      //   '${matchesTitles[index]}',
+                      //   style: Theme.of(context).textTheme.headline5,
+                      // )
+                    ],
+                  ),
+                  onTap: () {
+                    current = index;
+                    Navigator.push(
+                        context,
+                        new MaterialPageRoute(
+                            builder: (context) => MatchInfo()));
+                  },
+                );
+              }),
             ),
           ),
         ],
@@ -66,48 +109,32 @@ class _MatchesState extends State<Matches> {
     );
   }
 
-  void _getcloudData() async {
+  void _getPairData(pairName) async {
     var url =
-        "https://asia-northeast1-movie-night-cc.cloudfunctions.net/helloWorld";
-    var response = await http.get(url);
-    print('response status: ${response.statusCode}');
-    print('response body ${response.body}');
-    _cloudData = response.body;
+        'https://asia-northeast1-movie-night-cc.cloudfunctions.net/getPairByPairName?pairName=$pairName';
+    final response = await Dio().get(url);
+    var data = response.data['matches'];
+    for (var i = 0; i < data.length; i++) {
+      matches.add(data[i]);
+    }
+    print(matches);
+    // print('response body ${response.data}');
+    // _cloudData = data;
   }
 
-  void _postUser() async {
-    Map<String, String> queryParams = {
-      'userName': 'niceVic',
-      'name': 'tic',
-      'email': 'ticcode@chihuahua.com',
-    };
-    var uri = Uri.https("asia-northeast1-movie-night-cc.cloudfunctions.net",
-        "/createUser", queryParams);
-    var response = await http.post(uri);
-    print('response status: ${response.statusCode}');
-    print('response body ${response.body}');
-    var userData = response.body;
-  }
-
-  void _postPair() async {
-    Map<String, String> queryParams = {
-      'pairName': 'niceVic',
-      'user1': 'evilVic',
-      'user2': 'niceVic',
-    };
-    var uri = Uri.https("asia-northeast1-movie-night-cc.cloudfunctions.net",
-        "/createPair", queryParams);
-
-// createPair (https://asia-northeast1-movie-night-cc.cloudfunctions.net/createPair)
-// query params: userName,email,name
-// (?pairName=<pairName>&user1=<user1>&user2=<user2>)
-// initalizing a user with empty likes,dislikes and pair belonged
-
-    var response = await http.post(uri);
-    print('response status: ${response.statusCode}');
-    print('response body ${response.body}');
-    var pairData = response.body;
-  }
+  // void _postUser() async {
+  //   Map<String, String> queryParams = {
+  //     'userName': 'evilVic',
+  //     'name': 'ric',
+  //     'email': 'viccode@chihuahua.com',
+  //   };
+  //   var uri = Uri.https("asia-northeast1-movie-night-cc.cloudfunctions.net",
+  //       "/createUser", queryParams);
+  //   var response = await http.post(uri);
+  //   print('response status: ${response.statusCode}');
+  //   print('response body ${response.body}');
+  //   var userData = response.body;
+  // }
 }
 
 class HeaderCurvedContainer extends CustomPainter {
