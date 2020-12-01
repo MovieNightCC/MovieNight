@@ -29,10 +29,8 @@ class _InfoState extends State<Info> {
             ),
             painter: HeaderCurvedContainer(),
           ),
-          //movieDataTest[count]
           Column(
             children: [
-              Image.network(movieImagesTest[count]),
               // Image.network(movieImagesTest[count]),
               Text('Title: ${movieTitles[count]}',
                   style: TextStyle(

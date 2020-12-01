@@ -5,6 +5,7 @@ import './tinderCard.dart';
 import './matches.dart';
 import './profile.dart';
 import './movieInfo.dart';
+import './rushMode.dart';
 import 'dart:math';
 import 'dart:async';
 import 'package:http/http.dart' as http;
@@ -186,6 +187,12 @@ class _TinderswiperState extends State<Tinderswiper>
               heroTag: null,
               onPressed: () {
                 print('pressed');
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => RushMode(),
+                      maintainState: true,
+                    ));
               },
               tooltip: 'Increment',
               child: Icon(Icons.flash_on_sharp),
