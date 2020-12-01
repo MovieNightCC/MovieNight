@@ -76,7 +76,7 @@ List<int> movieYear = [];
 var counter = 0;
 List<String> chosenGenre = [];
 
-void _updateUser(arrOfNfid, context) async {
+void updateUser(arrOfNfid, context) async {
   print(userName);
   var response = await http.get(
       "https://asia-northeast1-movie-night-cc.cloudfunctions.net/updateUserLikes?userName=$userName&movieArr=[$arrOfNfid]");
@@ -156,7 +156,7 @@ class _TinderswiperState extends State<Tinderswiper>
                           print('you liked: ${movieDataTest[count]}');
 
                           //request to firebase server to update likes
-                          _updateUser(movieDataTest[count], context);
+                          updateUser(movieDataTest[count], context);
                           count++;
                           // print(movieDataTest[index].runtimeType);
 

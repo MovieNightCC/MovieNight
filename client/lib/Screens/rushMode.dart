@@ -3,6 +3,24 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import './swiper.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:dio/dio.dart';
+import 'package:flutterPractice/main.dart';
+import './tinderCard.dart';
+import './matches.dart';
+import './profile.dart';
+import './movieInfo.dart';
+import 'dart:math';
+import 'dart:async';
+import 'package:http/http.dart' as http;
+import './filterPopup.dart';
+import '../main.dart';
+
+List<Object> rushModeList = [];
+List<int> rushModeNfid = [];
+List<String> rushModeImages = [];
+List<String> rushModeTitles = [];
+List<String> rushModeSynopsis = [];
+List<int> rushModeYear = [];
 
 class RushMode extends StatefulWidget {
   @override
@@ -11,6 +29,7 @@ class RushMode extends StatefulWidget {
 
 class _RushModeState extends State<RushMode> {
   @override
+  CardController controller;
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
@@ -35,16 +54,68 @@ class _RushModeState extends State<RushMode> {
               TimerWidget(),
               //Image.network(movieImagesTest[count]),
               // Image.network(movieImagesTest[count]),
-              Text('Title:',
-                  style: TextStyle(
-                      height: 5.0, fontWeight: FontWeight.bold, fontSize: 20)),
-              Text('Synopsis:',
-                  style: TextStyle(
-                      height: 1.5, fontWeight: FontWeight.bold, fontSize: 20)),
-              Text(
-                'Release Year:',
-                style: TextStyle(
-                    height: 4.0, fontWeight: FontWeight.bold, fontSize: 20),
+              Column(
+                children: [
+                  Center(
+                    child: InkWell(
+                      child: Container(
+                        height: MediaQuery.of(context).size.height * 0.6,
+                        child: TinderSwapCard(
+                          orientation: AmassOrientation.TOP,
+                          totalNum: 100,
+                          stackNum: 2,
+                          swipeEdge: 5.0,
+                          maxWidth: MediaQuery.of(context).size.width * 0.9,
+                          maxHeight: MediaQuery.of(context).size.width * 1.6,
+                          minWidth: MediaQuery.of(context).size.width * 0.899,
+                          minHeight: MediaQuery.of(context).size.width * 1.599,
+                          cardBuilder: (context, index) {
+                            print('index is $index');
+                            // index = count;
+                            return Card(
+                              child: Container(
+                                  // padding: EdgeInsets.all(20.0),
+                                  child: Image.network(
+                                movieImagesTest[index],
+                                fit: BoxFit.fill,
+                              )),
+                              elevation: 0,
+                            );
+                          },
+                          cardController: controller = CardController(),
+                          swipeCompleteCallback:
+                              (CardSwipeOrientation orientation, int index) {
+                            if (orientation == CardSwipeOrientation.RIGHT) {
+                              //when liked
+                              print('you liked: ${movieDataTest[count]}');
+
+                              //request to firebase server to update likes
+                              updateUser(movieDataTest[count], context);
+                              count++;
+                              // print(movieDataTest[index].runtimeType);
+
+                              //  (?userName=<userName>&movieArr=<An Array of netflix IDs>)
+                              // response = await dio.post("/test", data: {"id": 12, "name": "wendu"});
+
+                            } else if (orientation ==
+                                CardSwipeOrientation.LEFT) {
+                              //when hated
+                              print('you hate: ${movieDataTest[count]}');
+                              count++;
+                              print(chosenGenre);
+                            }
+                          },
+                        ),
+                      ),
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            new MaterialPageRoute(
+                                builder: (context) => Info()));
+                      },
+                    ),
+                  ),
+                ],
               ),
               // RaisedButton(
               //   onPressed: () => launch(
@@ -82,7 +153,7 @@ class TimerWidget extends StatefulWidget {
 
 class _TimerWidgetState extends State<TimerWidget> {
   Timer _timer;
-  int _start = 30;
+  int _start = 5;
 
   void startTimer() {
     if (_timer != null) {
@@ -95,6 +166,22 @@ class _TimerWidgetState extends State<TimerWidget> {
           () {
             if (_start < 1) {
               timer.cancel();
+              showDialog(
+                  context: context,
+                  builder: (_) => new AlertDialog(
+                        title: new Text("Alert"),
+                        content: new Text("Time's Up!"),
+                        actions: <Widget>[
+                          FlatButton(
+                            child: Text('Close me!'),
+                            onPressed: () {
+                              Navigator.of(context, rootNavigator: true).pop();
+                            },
+                          )
+                        ],
+                      ));
+
+              _start = 5;
             } else {
               _start = _start - 1;
             }
@@ -113,15 +200,15 @@ class _TimerWidgetState extends State<TimerWidget> {
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
+        Text("$_start",
+            style: TextStyle(
+                height: 1.5, fontWeight: FontWeight.bold, fontSize: 100)),
         RaisedButton(
           onPressed: () {
             startTimer();
           },
           child: Text("start"),
         ),
-        Text(
-          "$_start",
-        )
       ],
     );
   }
