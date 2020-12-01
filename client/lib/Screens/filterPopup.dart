@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import './swiper.dart';
+import './movieArray.dart';
+import './rushMode.dart';
+import 'package:flutter_phoenix/flutter_phoenix.dart';
 
 Map<String, bool> values = {
   'foo': true,
@@ -205,14 +209,73 @@ void filterPop(context) {
               new FlatButton(
                   child: const Text("Confirm"),
                   onPressed: () {
-                    // List<String> chosenGenre = [];
-                    if (chosenGenre.contains("Anime")) {
-                      //push everything into movie Array
-
+                    if (chosenGenre.length == 0) {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => Swiper(),
+                              maintainState: true));
+                    } else if (clickedAll == true) {
+                      Phoenix.rebirth(context);
+                      //placeholder for All Movies
+                    } else {
+                      movieDataTest = [];
+                      movieImagesTest = [];
+                      movieTitles = [];
+                      moviesSynopsis = [];
+                      movieYear = [];
+                      // List<String> chosenGenre = [];
+                      if (chosenGenre.contains("Anime")) {
+                        for (var i = 0; i < animeNfid.length; i++) {
+                          movieDataTest.add(animeNfid[i]);
+                          movieImagesTest.add(animeImages[i]);
+                          movieTitles.add(animeTitles[i]);
+                          moviesSynopsis.add(animeSynopsis[i]);
+                          movieYear.add(animeYear[i]);
+                        }
+                      }
+                      if (chosenGenre.contains("Horror/Thrillers")) {
+                        for (var i = 0; i < horrorNfid.length; i++) {
+                          movieDataTest.add(horrorNfid[i]);
+                          movieImagesTest.add(horrorImages[i]);
+                          movieTitles.add(horrorTitles[i]);
+                          moviesSynopsis.add(horrorSynopsis[i]);
+                          movieYear.add(horrorYear[i]);
+                        }
+                      }
+                      if (chosenGenre.contains("Japanese Movies")) {
+                        for (var i = 0; i < japanNfid.length; i++) {
+                          movieDataTest.add(japanNfid[i]);
+                          movieImagesTest.add(japanImages[i]);
+                          movieTitles.add(japanTitles[i]);
+                          moviesSynopsis.add(japanSynopsis[i]);
+                          movieYear.add(japanYear[i]);
+                        }
+                      }
+                      if (chosenGenre.contains("Korean Movies")) {
+                        for (var i = 0; i < koreaNfid.length; i++) {
+                          movieDataTest.add(koreaNfid[i]);
+                          movieImagesTest.add(koreaImages[i]);
+                          movieTitles.add(koreaTitles[i]);
+                          moviesSynopsis.add(koreaSynopsis[i]);
+                          movieYear.add(koreaYear[i]);
+                        }
+                      }
+                      if (chosenGenre.contains("LGBTQ")) {
+                        for (var i = 0; i < rushModeNfid.length; i++) {
+                          movieDataTest.add(rushModeNfid[i]);
+                          movieImagesTest.add(rushModeImages[i]);
+                          movieTitles.add(rushModeTitles[i]);
+                          moviesSynopsis.add(rushModeSynopsis[i]);
+                          movieYear.add(rushModeYear[i]);
+                        }
+                      }
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => Swiper(),
+                              maintainState: true));
                     }
-
-                    // if chosenGenre.length > 0 then empty the movie array
-                    Navigator.pop(context);
                   }),
             ],
           );

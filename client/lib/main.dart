@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'routes.dart';
 import 'dart:async';
 import 'package:dio/dio.dart';
+import 'package:flutter_phoenix/flutter_phoenix.dart';
 
 /// screens
 import 'screens/swiper.dart';
@@ -18,7 +19,11 @@ import 'screens/movieArray.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  runApp(App());
+  runApp(
+    Phoenix(
+      child: App(),
+    ),
+  );
 }
 
 // global user name variable accessible from every page
@@ -42,11 +47,6 @@ class _AppState extends State<App> {
     futureJapan = fetchJapan();
     futureKorea = fetchKorea();
   }
-
-  Future<Response> futureAnime;
-  Future<Response> futureHorror;
-  Future<Response> futureJapan;
-  Future<Response> futureKorea;
 
   @override
   Widget build(BuildContext context) {
@@ -276,7 +276,7 @@ class AuthenticationWrapper extends StatelessWidget {
             primaryColor: Colors.white,
             scaffoldBackgroundColor: Colors.grey[100]),
         home: FutureBuilder(
-          //           futureAnime = fetchAnime();
+          // futureAnime = fetchAnime();
           // futureHorror = fetchHorror();
           // futureJapan = fetchJapan();
           // futureKorea = fetchKorea();
@@ -284,10 +284,10 @@ class AuthenticationWrapper extends StatelessWidget {
             futureMovie,
             futurePair,
             futureGay,
-            // futureAnime,
-            // futureHorror,
-            // futureJapan,
-            // futureKorea
+            futureAnime,
+            futureHorror,
+            futureJapan,
+            futureKorea
           ]),
           builder: (context, snapshot) {
             print("future builder");
