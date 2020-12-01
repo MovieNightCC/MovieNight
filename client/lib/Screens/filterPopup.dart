@@ -5,15 +5,6 @@ Map<String, bool> values = {
   'bar': false,
 };
 
-List<String> _texts = [
-  "InduceSmile.com",
-  "Flutter.io",
-  "google.com",
-  "youtube.com",
-  "yahoo.com",
-  "gmail.com"
-];
-
 List<bool> isChecked;
 bool clickedAll = false;
 bool clickedAnime = false;
@@ -212,9 +203,17 @@ void filterPop(context) {
             ),
             actions: <Widget>[
               new FlatButton(
-                child: const Text("Exit"),
-                onPressed: () => Navigator.pop(context),
-              ),
+                  child: const Text("Confirm"),
+                  onPressed: () {
+                    // List<String> chosenGenre = [];
+                    if (chosenGenre.contains("Anime")) {
+                      //push everything into movie Array
+
+                    }
+
+                    // if chosenGenre.length > 0 then empty the movie array
+                    Navigator.pop(context);
+                  }),
             ],
           );
         });

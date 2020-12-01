@@ -37,7 +37,16 @@ class _AppState extends State<App> {
     futureMovie = fetchMovie();
     futurePair = fetchPair();
     futureGay = fetchGay();
+    futureAnime = fetchAnime();
+    futureHorror = fetchHorror();
+    futureJapan = fetchJapan();
+    futureKorea = fetchKorea();
   }
+
+  Future<Response> futureAnime;
+  Future<Response> futureHorror;
+  Future<Response> futureJapan;
+  Future<Response> futureKorea;
 
   @override
   Widget build(BuildContext context) {
@@ -66,7 +75,6 @@ class _AppState extends State<App> {
 
 Future<Response> fetchMovie() async {
   if (movieDataTest.length == 0) {
-    print("im called");
     final response = await Dio().get(
         "https://asia-northeast1-movie-night-cc.cloudfunctions.net/getAllMovies");
     if (response.statusCode == 200) {
@@ -89,8 +97,7 @@ Future<Response> fetchMovie() async {
 }
 
 Future<Response> fetchGay() async {
-  if (movieDataTest.length == 0) {
-    print("im called");
+  if (rushModeList.length == 0) {
     final response = await Dio().get(
         "https://asia-northeast1-movie-night-cc.cloudfunctions.net/getGayMovies");
     if (response.statusCode == 200) {
@@ -115,13 +122,12 @@ Future<Response> fetchGay() async {
 //anime,horror,japan,korea
 
 Future<Response> fetchAnime() async {
-  if (movieDataTest.length == 0) {
-    print("im called");
+  if (animeList.length == 0) {
     final response = await Dio().get(
         "https://asia-northeast1-movie-night-cc.cloudfunctions.net/getAnimeMovies");
     if (response.statusCode == 200) {
       var movies = response.data;
-      for (var i = 0; i < 31; i++) {
+      for (var i = 0; i < movies.length; i++) {
         animeList.add(movies[i]);
         animeNfid.add(movies[i]["nfid"]);
         animeImages.add(movies[i]["img"]);
@@ -139,13 +145,12 @@ Future<Response> fetchAnime() async {
 }
 
 Future<Response> fetchHorror() async {
-  if (movieDataTest.length == 0) {
-    print("im called");
+  if (horrorList.length == 0) {
     final response = await Dio().get(
         "https://asia-northeast1-movie-night-cc.cloudfunctions.net/getHorrorMovies");
     if (response.statusCode == 200) {
       var movies = response.data;
-      for (var i = 0; i < 31; i++) {
+      for (var i = 0; i < movies.length; i++) {
         horrorList.add(movies[i]);
         horrorNfid.add(movies[i]["nfid"]);
         horrorImages.add(movies[i]["img"]);
@@ -163,13 +168,12 @@ Future<Response> fetchHorror() async {
 }
 
 Future<Response> fetchJapan() async {
-  if (movieDataTest.length == 0) {
-    print("im called");
+  if (japanList.length == 0) {
     final response = await Dio().get(
         "https://asia-northeast1-movie-night-cc.cloudfunctions.net/getJapanMovies");
     if (response.statusCode == 200) {
       var movies = response.data;
-      for (var i = 0; i < 31; i++) {
+      for (var i = 0; i < movies.length; i++) {
         japanList.add(movies[i]);
         japanNfid.add(movies[i]["nfid"]);
         japanImages.add(movies[i]["img"]);
@@ -177,6 +181,7 @@ Future<Response> fetchJapan() async {
         japanSynopsis.add(movies[i]["synopsis"]);
         japanYear.add(movies[i]["year"]);
       }
+      print("japanList length from main.dart ${japanList.length}");
       return response;
     } else {
       // If the server did not return a 200 OK response,
@@ -187,13 +192,12 @@ Future<Response> fetchJapan() async {
 }
 
 Future<Response> fetchKorea() async {
-  if (movieDataTest.length == 0) {
-    print("im called");
+  if (koreaList.length == 0) {
     final response = await Dio().get(
         "https://asia-northeast1-movie-night-cc.cloudfunctions.net/getKoreaMovies");
     if (response.statusCode == 200) {
       var movies = response.data;
-      for (var i = 0; i < 31; i++) {
+      for (var i = 0; i < movies.length; i++) {
         koreaList.add(movies[i]);
         koreaNfid.add(movies[i]["nfid"]);
         koreaImages.add(movies[i]["img"]);
@@ -213,7 +217,6 @@ Future<Response> fetchKorea() async {
 Future<Response> fetchPair() async {
   try {
     if (movieDataTest.length == 0) {
-      print("im called");
       var url =
           'https://asia-northeast1-movie-night-cc.cloudfunctions.net/getPairByPairName?pairName=testPairA';
       final response = await Dio().get(url);
@@ -221,7 +224,7 @@ Future<Response> fetchPair() async {
       if (response.statusCode == 200) {
         for (var i = 0; i < data.length; i++) {
           matches.add(data[i]);
-          // movieDataTest.add(movies[i]["nfid"]);
+          //    movieDataTest.add(movies[i]["nfid"]);
           matchesSynopsis.add(data[i]["synopsis"]);
           matchesYear.add(data[i]["year"]);
           matchesTitles.add(data[i]['title']);
@@ -240,6 +243,11 @@ Future<Response> fetchPair() async {
 Future<Response> futureMovie;
 Future<Response> futurePair;
 Future<Response> futureGay;
+Future<Response> futureAnime;
+Future<Response> futureHorror;
+Future<Response> futureJapan;
+Future<Response> futureKorea;
+
 void getUserInfo() async {
   var url =
       'https://asia-northeast1-movie-night-cc.cloudfunctions.net/getUserByUserName?userName=$userName';
@@ -268,7 +276,19 @@ class AuthenticationWrapper extends StatelessWidget {
             primaryColor: Colors.white,
             scaffoldBackgroundColor: Colors.grey[100]),
         home: FutureBuilder(
-          future: Future.wait([futureMovie, futurePair, futureGay]),
+          //           futureAnime = fetchAnime();
+          // futureHorror = fetchHorror();
+          // futureJapan = fetchJapan();
+          // futureKorea = fetchKorea();
+          future: Future.wait([
+            futureMovie,
+            futurePair,
+            futureGay,
+            // futureAnime,
+            // futureHorror,
+            // futureJapan,
+            // futureKorea
+          ]),
           builder: (context, snapshot) {
             print("future builder");
             print('${movieDataTest.length} how many movies I have');
