@@ -1,7 +1,4 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import './swiper.dart';
-import 'profile.dart';
-import '../main.dart';
 
 class AuthenticationService {
   final FirebaseAuth _firebaseAuth;
@@ -14,15 +11,6 @@ class AuthenticationService {
 
   Future<void> signOut() async {
     await _firebaseAuth.signOut();
-    // set movie images and moviedata to empty array to avoid overfetching
-    print(movieDataTest);
-    // movieDataTest = [];
-    // movieImagesTest = [];
-    // userName = "";
-    // pair = "";
-    // name = "";
-    // email = "";
-    // userdata = null;
   }
 
   // Sign in to with firebase authenticator

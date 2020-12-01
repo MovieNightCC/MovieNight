@@ -6,7 +6,6 @@ import 'package:provider/provider.dart';
 import 'routes.dart';
 import 'dart:async';
 import 'package:dio/dio.dart';
-import './Screens/profile.dart';
 
 /// screens
 import 'screens/swiper.dart';
@@ -121,7 +120,6 @@ void getUserInfo() async {
       'https://asia-northeast1-movie-night-cc.cloudfunctions.net/getUserByUserName?userName=$userName';
   final response = await Dio().get(url);
   var userdata = response.data;
-  // userName = userdata["name"];
   userEmail = userdata["email"];
   userPair = userdata["pairName"];
   print('got user info $userdata');

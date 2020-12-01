@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import './swiper.dart';
-import './profile.dart';
 import './matches.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -34,7 +32,6 @@ class _MatchInfoState extends State<MatchInfo> {
           Column(
             children: [
               Image.network(matchesImage[current]),
-              // Image.network(movieImagesTest[count]),
               Text('Title: ${matchesTitles[current]}',
                   style: TextStyle(
                       height: 5.0, fontWeight: FontWeight.bold, fontSize: 20)),

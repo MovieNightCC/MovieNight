@@ -3,7 +3,6 @@ import 'auth.dart';
 import './swiper.dart';
 import './matches.dart';
 import 'package:provider/provider.dart';
-import 'package:dio/dio.dart';
 import '../main.dart';
 
 class Profile extends StatefulWidget {
@@ -16,8 +15,6 @@ class _ProfileState extends State<Profile> {
 
   @override
   Widget build(BuildContext context) {
-    // Retrieve user info on build
-    // _getUserInfo();
     return Scaffold(
       body: Stack(
         alignment: Alignment.center,

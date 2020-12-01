@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import './swiper.dart';
-import './profile.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class Info extends StatefulWidget {

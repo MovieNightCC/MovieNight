@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-// import 'package:flutter_tindercard/flutter_tindercard.dart';
 import 'package:dio/dio.dart';
 import 'package:flutterPractice/main.dart';
 import './tinderCard.dart';
@@ -10,8 +9,6 @@ import 'dart:math';
 import 'dart:async';
 import 'package:http/http.dart' as http;
 import './filterPopup.dart';
-import 'package:smart_select/smart_select.dart';
-import './choices.dart' as choices;
 import '../main.dart';
 
 class Swiper extends StatefulWidget {
@@ -79,9 +76,6 @@ var counter = 0;
 List<String> chosenGenre = [];
 
 void _updateUser(arrOfNfid, context) async {
-  // var queryParams = new Map();
-  // queryParams['userName'] = 'evilVic';
-  // queryParams['movieArr'] = '[$arrOfNfid]';
   print(userName);
   var response = await http.get(
       "https://asia-northeast1-movie-night-cc.cloudfunctions.net/updateUserLikes?userName=$userName&movieArr=[$arrOfNfid]");
@@ -102,9 +96,6 @@ void _updateUser(arrOfNfid, context) async {
               ],
             ));
   }
-  // var userData = response.body;
-// http.get('https://jsonplaceholder.typicode.com/albums/1');
-// https://asia-northeast1-movie-night-cc.cloudfunctions.net/updateUserLikes?userName=kenny&movieArr=[1,2,3]
 }
 
 class Tinderswiper extends StatefulWidget {
@@ -130,11 +121,6 @@ class _TinderswiperState extends State<Tinderswiper>
           ),
           Column(
             children: [
-              // RaisedButton(
-              //   onPressed: () {
-              //     print('pressed');
-              //   },
-              // ),
               Center(
                 child: InkWell(
                   child: Container(
@@ -273,15 +259,3 @@ class HeaderCurvedContainer extends CustomPainter {
   @override
   bool shouldRepaint(CustomPainter oldDelegate) => false;
 }
-
-//   Widget build(BuildContext context) {
-//     return MaterialApp(
-//       title: "Movie Night",
-//       debugShowCheckedModeBanner: false,
-//       theme: ThemeData(
-//           primaryColor: Colors.white,
-//           scaffoldBackgroundColor: Colors.grey[100]),
-//       home: Tinderswiper(),
-//     );
-//   }
-// }

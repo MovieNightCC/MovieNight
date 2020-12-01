@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:smart_select/smart_select.dart';
-import './swiper.dart';
-import './choices.dart' as choices;
 
 Map<String, bool> values = {
   'foo': true,

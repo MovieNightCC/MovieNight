@@ -56,10 +56,6 @@ class _MatchesState extends State<Matches> {
                   child: Column(
                     children: [
                       Image.network(matchesImage[index]),
-                      // Text(
-                      //   '${matchesTitles[index]}',
-                      //   style: Theme.of(context).textTheme.headline5,
-                      // )
                     ],
                   ),
                   onTap: () {
@@ -73,13 +69,6 @@ class _MatchesState extends State<Matches> {
               }),
             ),
           ),
-          // ValueListenableBuilder(
-          //   valueListenable: _matchCount,
-          //   child: Text("CHILD"),
-          //   builder: (BuildContext context, int _matchCount, Widget child) {
-
-          //   },
-          // ),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
