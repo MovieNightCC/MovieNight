@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 // import 'package:flutter_tindercard/flutter_tindercard.dart';
 import 'package:dio/dio.dart';
+import 'package:flutterPractice/main.dart';
 import './tinderCard.dart';
 import './matches.dart';
 import './profile.dart';
@@ -9,6 +10,10 @@ import 'dart:math';
 import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import './filterPopup.dart';
+import 'package:smart_select/smart_select.dart';
+import './choices.dart' as choices;
+import '../main.dart';
 
 class Swiper extends StatefulWidget {
   static String routeName = "/swiper";
@@ -72,14 +77,32 @@ List<String> movieTitles = [];
 List<String> moviesSynopsis = [];
 List<int> movieYear = [];
 var counter = 0;
+List<String> chosenGenre = [];
 
-void _updateUser(arrOfNfid) async {
+void _updateUser(arrOfNfid, context) async {
   // var queryParams = new Map();
   // queryParams['userName'] = 'evilVic';
   // queryParams['movieArr'] = '[$arrOfNfid]';
+  print(userName);
   var response = await http.get(
-      "https://asia-northeast1-movie-night-cc.cloudfunctions.net/updateUserLikes?userName=Male_a&movieArr=[$arrOfNfid]");
-
+      "https://asia-northeast1-movie-night-cc.cloudfunctions.net/updateUserLikes?userName=$userName&movieArr=[$arrOfNfid]");
+  print(response.body);
+  if (response.body == "match!") {
+    showDialog(
+        context: context,
+        builder: (_) => new AlertDialog(
+              title: new Text("Alert"),
+              content: new Text("You got a Match!"),
+              actions: <Widget>[
+                FlatButton(
+                  child: Text('Close me!'),
+                  onPressed: () {
+                    Navigator.of(context, rootNavigator: true).pop();
+                  },
+                )
+              ],
+            ));
+  }
   // var userData = response.body;
 // http.get('https://jsonplaceholder.typicode.com/albums/1');
 // https://asia-northeast1-movie-night-cc.cloudfunctions.net/updateUserLikes?userName=kenny&movieArr=[1,2,3]
@@ -98,110 +121,141 @@ class _TinderswiperState extends State<Tinderswiper>
   Widget build(BuildContext context) {
     CardController controller;
     return Scaffold(
-      // appBar: AppBar(
-      //   title: const Text('Movie Night'),
-      //   backgroundColor: Colors.purple[200],
-      //   elevation: 0,
-      //   centerTitle: true,
-      // ),
-      body: Stack(alignment: Alignment.center, children: [
-        CustomPaint(
-          child: Container(
-            width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height,
-          ),
-          painter: HeaderCurvedContainer(),
-        ),
-        Center(
-          child: InkWell(
+        body: Stack(alignment: Alignment.center, children: [
+          CustomPaint(
             child: Container(
-              height: MediaQuery.of(context).size.height * 1.0,
-              child: TinderSwapCard(
-                orientation: AmassOrientation.TOP,
-                totalNum: 100,
-                stackNum: 2,
-                swipeEdge: 5.0,
-                maxWidth: MediaQuery.of(context).size.width * 0.9,
-                maxHeight: MediaQuery.of(context).size.width * 1.6,
-                minWidth: MediaQuery.of(context).size.width * 0.899,
-                minHeight: MediaQuery.of(context).size.width * 1.599,
-                cardBuilder: (context, index) {
-                  print('index is $index');
-                  // index = count;
-                  return Card(
-                    child: Container(
-                        // padding: EdgeInsets.all(20.0),
-                        child: Image.network(
-                      movieImagesTest[index],
-                      fit: BoxFit.fill,
-                    )),
-                    elevation: 0,
-                  );
-                },
-                cardController: controller = CardController(),
-                swipeCompleteCallback:
-                    (CardSwipeOrientation orientation, int index) {
-                  if (orientation == CardSwipeOrientation.RIGHT) {
-                    //when liked
-                    print('you liked: ${movieDataTest[count]}');
-                    print('you liked: $movieDataTest');
-                    print('you liked: $moviesList');
-
-                    //request to firebase server to update likes
-                    _updateUser(movieDataTest[count]);
-                    count++;
-                    // print(movieDataTest[index].runtimeType);
-
-                    //  (?userName=<userName>&movieArr=<An Array of netflix IDs>)
-                    // response = await dio.post("/test", data: {"id": 12, "name": "wendu"});
-
-                  } else if (orientation == CardSwipeOrientation.LEFT) {
-                    //when hated
-                    print('you hate: ${movieDataTest[count]}');
-                    count++;
-                  }
-                },
-              ),
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height,
             ),
-            onTap: () {
-              Navigator.push(
-                  context, new MaterialPageRoute(builder: (context) => Info()));
-            },
+            painter: HeaderCurvedContainer(),
           ),
-        ),
-      ]),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _currentIndex,
-        type: BottomNavigationBarType.fixed,
-        backgroundColor: Colors.purple[200],
-        items: [
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.local_movies_outlined), label: 'Swipe'),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.local_fire_department), label: 'Matches'),
-        ],
-        onTap: (index) {
-          setState(() {
-            _currentIndex = index;
-          });
-          if (_currentIndex == 2) {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => Matches(), maintainState: true));
-          }
-          if (_currentIndex == 0) {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => Profile(),
-                  maintainState: true,
-                ));
-          }
-        },
-      ),
-    );
+          Column(
+            children: [
+              // RaisedButton(
+              //   onPressed: () {
+              //     print('pressed');
+              //   },
+              // ),
+              Center(
+                child: InkWell(
+                  child: Container(
+                    height: MediaQuery.of(context).size.height * 0.9,
+                    child: TinderSwapCard(
+                      orientation: AmassOrientation.TOP,
+                      totalNum: 100,
+                      stackNum: 2,
+                      swipeEdge: 5.0,
+                      maxWidth: MediaQuery.of(context).size.width * 0.9,
+                      maxHeight: MediaQuery.of(context).size.width * 1.6,
+                      minWidth: MediaQuery.of(context).size.width * 0.899,
+                      minHeight: MediaQuery.of(context).size.width * 1.599,
+                      cardBuilder: (context, index) {
+                        print('index is $index');
+                        // index = count;
+                        return Card(
+                          child: Container(
+                              // padding: EdgeInsets.all(20.0),
+                              child: Image.network(
+                            movieImagesTest[index],
+                            fit: BoxFit.fill,
+                          )),
+                          elevation: 0,
+                        );
+                      },
+                      cardController: controller = CardController(),
+                      swipeCompleteCallback:
+                          (CardSwipeOrientation orientation, int index) {
+                        if (orientation == CardSwipeOrientation.RIGHT) {
+                          //when liked
+                          print('you liked: ${movieDataTest[count]}');
+
+                          //request to firebase server to update likes
+                          _updateUser(movieDataTest[count], context);
+                          count++;
+                          // print(movieDataTest[index].runtimeType);
+
+                          //  (?userName=<userName>&movieArr=<An Array of netflix IDs>)
+                          // response = await dio.post("/test", data: {"id": 12, "name": "wendu"});
+
+                        } else if (orientation == CardSwipeOrientation.LEFT) {
+                          //when hated
+                          print('you hate: ${movieDataTest[count]}');
+                          count++;
+                          print(chosenGenre);
+                        }
+                      },
+                    ),
+                  ),
+                  onTap: () {
+                    Navigator.push(context,
+                        new MaterialPageRoute(builder: (context) => Info()));
+                  },
+                ),
+              ),
+            ],
+          ),
+          Positioned(
+            left: 80,
+            bottom: 20,
+            child: FloatingActionButton(
+              heroTag: null,
+              onPressed: () {
+                print('pressed');
+              },
+              tooltip: 'Increment',
+              child: Icon(Icons.flash_on_sharp),
+              elevation: 2.0,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10)),
+              backgroundColor: Colors.red[400],
+            ),
+          ),
+          Positioned(
+            right: 80,
+            bottom: 20,
+            child: FloatingActionButton(
+              heroTag: null,
+              onPressed: () => filterPop(context),
+              tooltip: 'Increment',
+              child: Icon(Icons.filter_list),
+              elevation: 2.0,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10)),
+              backgroundColor: Colors.blue[200],
+            ),
+          ),
+        ]),
+        bottomNavigationBar: BottomNavigationBar(
+          currentIndex: _currentIndex,
+          type: BottomNavigationBarType.fixed,
+          backgroundColor: Colors.purple[200],
+          items: [
+            BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.local_movies_outlined), label: 'Swipe'),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.local_fire_department), label: 'Matches'),
+          ],
+          onTap: (index) {
+            setState(() {
+              _currentIndex = index;
+            });
+            if (_currentIndex == 2) {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => Matches(), maintainState: true));
+            }
+            if (_currentIndex == 0) {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => Profile(),
+                    maintainState: true,
+                  ));
+            }
+          },
+        ));
   }
 }
 

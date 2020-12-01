@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import './swiper.dart';
 import './profile.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class Info extends StatefulWidget {
   @override
@@ -14,6 +15,7 @@ class _InfoState extends State<Info> {
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.arrow_back),
         onPressed: () {
           Navigator.pop(context);
         },
@@ -28,6 +30,7 @@ class _InfoState extends State<Info> {
             ),
             painter: HeaderCurvedContainer(),
           ),
+          //movieDataTest[count]
           Column(
             children: [
               Image.network(movieImagesTest[count]),
@@ -42,7 +45,13 @@ class _InfoState extends State<Info> {
                 'Release Year: ${movieYear[count]}',
                 style: TextStyle(
                     height: 4.0, fontWeight: FontWeight.bold, fontSize: 20),
-              )
+              ),
+              RaisedButton(
+                onPressed: () => launch(
+                    'https://www.netflix.com/title/${movieDataTest[count]}'),
+                child:
+                    const Text('Go to Netflix', style: TextStyle(fontSize: 20)),
+              ),
             ],
           ),
         ],
