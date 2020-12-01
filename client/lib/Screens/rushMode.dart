@@ -15,12 +15,15 @@ import 'package:http/http.dart' as http;
 import './filterPopup.dart';
 import '../main.dart';
 
+//https://www.netflix.com/title/80191740?preventIntent=true
+//https://www.netflix.com/jp-en/title/70080038?preventIntent=true
 List<Object> rushModeList = [];
 List<int> rushModeNfid = [];
 List<String> rushModeImages = [];
 List<String> rushModeTitles = [];
 List<String> rushModeSynopsis = [];
 List<int> rushModeYear = [];
+var rushIndex = 0;
 
 class RushMode extends StatefulWidget {
   @override
@@ -48,12 +51,9 @@ class _RushModeState extends State<RushMode> {
             ),
             painter: HeaderCurvedContainer(),
           ),
-          //movieDataTest[count]
           Column(
             children: [
               TimerWidget(),
-              //Image.network(movieImagesTest[count]),
-              // Image.network(movieImagesTest[count]),
               Column(
                 children: [
                   Center(
@@ -70,13 +70,14 @@ class _RushModeState extends State<RushMode> {
                           minWidth: MediaQuery.of(context).size.width * 0.899,
                           minHeight: MediaQuery.of(context).size.width * 1.599,
                           cardBuilder: (context, index) {
+                            rushIndex = index;
+                            rushIndex += 50;
                             print('index is $index');
-                            // index = count;
                             return Card(
                               child: Container(
                                   // padding: EdgeInsets.all(20.0),
                                   child: Image.network(
-                                movieImagesTest[index],
+                                rushModeImages[index],
                                 fit: BoxFit.fill,
                               )),
                               elevation: 0,
@@ -90,7 +91,7 @@ class _RushModeState extends State<RushMode> {
                               print('you liked: ${movieDataTest[count]}');
 
                               //request to firebase server to update likes
-                              updateUser(movieDataTest[count], context);
+                              updateUser(rushModeNfid[count], context);
                               count++;
                               // print(movieDataTest[index].runtimeType);
 
@@ -173,8 +174,13 @@ class _TimerWidgetState extends State<TimerWidget> {
                         content: new Text("Time's Up!"),
                         actions: <Widget>[
                           FlatButton(
-                            child: Text('Close me!'),
+                            child: Text('Go Back to Swiper!'),
                             onPressed: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => Swiper(),
+                                      maintainState: true));
                               Navigator.of(context, rootNavigator: true).pop();
                             },
                           )

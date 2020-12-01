@@ -31,7 +31,7 @@ class _InfoState extends State<Info> {
           ),
           Column(
             children: [
-              // Image.network(movieImagesTest[count]),
+              Image.network(movieImagesTest[count]),
               Text('Title: ${movieTitles[count]}',
                   style: TextStyle(
                       height: 5.0, fontWeight: FontWeight.bold, fontSize: 20)),

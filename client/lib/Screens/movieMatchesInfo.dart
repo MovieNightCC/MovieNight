@@ -7,8 +7,6 @@ class MatchInfo extends StatefulWidget {
   _MatchInfoState createState() => _MatchInfoState();
 }
 
-var count = 0;
-
 class _MatchInfoState extends State<MatchInfo> {
   @override
   Widget build(BuildContext context) {

@@ -12,6 +12,7 @@ import 'screens/swiper.dart';
 import 'screens/matches.dart';
 import 'screens/auth.dart';
 import 'screens/sign_in.dart';
+import 'screens/rushMode.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -34,6 +35,7 @@ class _AppState extends State<App> {
     super.initState();
     futureMovie = fetchMovie();
     futurePair = fetchPair();
+    futureGay = fetchGay();
   }
 
   @override
@@ -85,6 +87,30 @@ Future<Response> fetchMovie() async {
   }
 }
 
+Future<Response> fetchGay() async {
+  if (movieDataTest.length == 0) {
+    print("im called");
+    final response = await Dio().get(
+        "https://asia-northeast1-movie-night-cc.cloudfunctions.net/getGayMovies");
+    if (response.statusCode == 200) {
+      var movies = response.data;
+      for (var i = 0; i < 31; i++) {
+        rushModeList.add(movies[i]);
+        rushModeNfid.add(movies[i]["nfid"]);
+        rushModeSynopsis.add(movies[i]["synopsis"]);
+        rushModeYear.add(movies[i]["year"]);
+        rushModeTitles.add(movies[i]['title']);
+        rushModeImages.add(movies[i]["img"]);
+      }
+      return response;
+    } else {
+      // If the server did not return a 200 OK response,
+      // then throw an exception.
+      throw Exception('Failed to load album');
+    }
+  }
+}
+
 Future<Response> fetchPair() async {
   try {
     if (movieDataTest.length == 0) {
@@ -114,7 +140,7 @@ Future<Response> fetchPair() async {
 
 Future<Response> futureMovie;
 Future<Response> futurePair;
-
+Future<Response> futureGay;
 void getUserInfo() async {
   var url =
       'https://asia-northeast1-movie-night-cc.cloudfunctions.net/getUserByUserName?userName=$userName';
@@ -143,7 +169,7 @@ class AuthenticationWrapper extends StatelessWidget {
             primaryColor: Colors.white,
             scaffoldBackgroundColor: Colors.grey[100]),
         home: FutureBuilder(
-          future: Future.wait([futureMovie, futurePair]),
+          future: Future.wait([futureMovie, futurePair, futureGay]),
           builder: (context, snapshot) {
             print("future builder");
             print('${movieDataTest.length} how many movies I have');

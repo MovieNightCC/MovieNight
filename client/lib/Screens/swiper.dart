@@ -136,8 +136,6 @@ class _TinderswiperState extends State<Tinderswiper>
                       minWidth: MediaQuery.of(context).size.width * 0.899,
                       minHeight: MediaQuery.of(context).size.width * 1.599,
                       cardBuilder: (context, index) {
-                        print('index is $index');
-                        // index = count;
                         return Card(
                           child: Container(
                               // padding: EdgeInsets.all(20.0),
