@@ -35,6 +35,15 @@ class _RushModeState extends State<RushMode> {
   CardController controller;
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('Rush Mode!',
+            style: TextStyle(
+                height: 1.5, fontWeight: FontWeight.bold, fontSize: 30)),
+        automaticallyImplyLeading: false,
+        centerTitle: true,
+        backgroundColor: Colors.red[400],
+        elevation: 0,
+      ),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.arrow_back),
         onPressed: () {
@@ -108,12 +117,12 @@ class _RushModeState extends State<RushMode> {
                           },
                         ),
                       ),
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            new MaterialPageRoute(
-                                builder: (context) => Info()));
-                      },
+                      // onTap: () {
+                      //   Navigator.push(
+                      //       context,
+                      //       new MaterialPageRoute(
+                      //           builder: (context) => Info()));
+                      // },
                     ),
                   ),
                 ],
