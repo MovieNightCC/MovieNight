@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import './swiper.dart';
-import './profile.dart';
 import './matches.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class MatchInfo extends StatefulWidget {
   @override
@@ -15,6 +14,7 @@ class _MatchInfoState extends State<MatchInfo> {
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.arrow_back),
         onPressed: () {
           Navigator.pop(context);
         },
@@ -32,7 +32,6 @@ class _MatchInfoState extends State<MatchInfo> {
           Column(
             children: [
               Image.network(matchesImage[current]),
-              // Image.network(movieImagesTest[count]),
               Text('Title: ${matchesTitles[current]}',
                   style: TextStyle(
                       height: 5.0, fontWeight: FontWeight.bold, fontSize: 20)),
@@ -43,7 +42,13 @@ class _MatchInfoState extends State<MatchInfo> {
                 'Release Year: ${matchesYear[current]}',
                 style: TextStyle(
                     height: 4.0, fontWeight: FontWeight.bold, fontSize: 20),
-              )
+              ), //matchesNfid,
+              RaisedButton(
+                onPressed: () => launch(
+                    'https://www.netflix.com/title/${matchesNfid[current]}'),
+                child:
+                    const Text('Go to Netflix', style: TextStyle(fontSize: 20)),
+              ),
             ],
           ),
         ],
@@ -55,7 +60,7 @@ class _MatchInfoState extends State<MatchInfo> {
 class HeaderCurvedContainer extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
-    Paint paint = Paint()..color = Colors.purple[200];
+    Paint paint = Paint()..color = Colors.pink[200];
     Path path = Path()
       ..relativeLineTo(0, 150)
       ..quadraticBezierTo(size.width / 2, 225, size.width, 150)

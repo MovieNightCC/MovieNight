@@ -21,6 +21,8 @@ Future<void> main() async {
 
 // global user name variable accessible from every page
 var userName = "";
+var userPair = "";
+var userEmail = "";
 
 class App extends StatefulWidget {
   _AppState createState() => _AppState();
@@ -113,6 +115,16 @@ Future<Response> fetchPair() async {
 Future<Response> futureMovie;
 Future<Response> futurePair;
 
+void getUserInfo() async {
+  var url =
+      'https://asia-northeast1-movie-night-cc.cloudfunctions.net/getUserByUserName?userName=$userName';
+  final response = await Dio().get(url);
+  var userdata = response.data;
+  userEmail = userdata["email"];
+  userPair = userdata["pairName"];
+  print('got user info $userdata');
+}
+
 class AuthenticationWrapper extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -122,10 +134,8 @@ class AuthenticationWrapper extends StatelessWidget {
       print(firebaseUser.email);
       userName =
           firebaseUser.email.substring(0, firebaseUser.email.indexOf("@"));
-      // if (movieDataTest.length == 0 && movieImagesTest.length == 0) {
-      //   futureMovie = fetchMovie();
-      //   futurePair = fetchPair();
-      // }
+      //put the function here
+      getUserInfo();
       return MaterialApp(
         title: "Movie Night",
         debugShowCheckedModeBanner: false,

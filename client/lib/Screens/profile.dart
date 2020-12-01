@@ -3,13 +3,7 @@ import 'auth.dart';
 import './swiper.dart';
 import './matches.dart';
 import 'package:provider/provider.dart';
-import 'package:dio/dio.dart';
 import '../main.dart';
-
-var pair = "";
-var name = "";
-var email = "";
-var userdata = null;
 
 class Profile extends StatefulWidget {
   @override
@@ -21,8 +15,6 @@ class _ProfileState extends State<Profile> {
 
   @override
   Widget build(BuildContext context) {
-    // Retrieve user info on build
-    _getUserInfo();
     return Scaffold(
       body: Stack(
         alignment: Alignment.center,
@@ -61,17 +53,17 @@ class _ProfileState extends State<Profile> {
                         image: AssetImage('assets/img/god.jpg'))),
               ),
               Container(
-                child: Text(name,
+                child: Text(userName,
                     style:
                         TextStyle(fontSize: 30.0, fontWeight: FontWeight.bold)),
               ),
               Container(
-                child: Text(pair,
+                child: Text(userPair,
                     style:
                         TextStyle(fontSize: 30.0, fontWeight: FontWeight.bold)),
               ),
               Container(
-                child: Text(email,
+                child: Text(userEmail,
                     style:
                         TextStyle(fontSize: 30.0, fontWeight: FontWeight.bold)),
               ),
@@ -141,14 +133,4 @@ class HeaderCurvedContainer extends CustomPainter {
 
   @override
   bool shouldRepaint(CustomPainter oldDelegate) => false;
-}
-
-void _getUserInfo() async {
-  var url =
-      'https://asia-northeast1-movie-night-cc.cloudfunctions.net/getUserByUserName?userName=$userName';
-  final response = await Dio().get(url);
-  userdata = response.data;
-  name = userdata["name"];
-  email = userdata["email"];
-  pair = userdata["pairName"];
 }
