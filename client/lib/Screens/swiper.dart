@@ -7,7 +7,6 @@ import './profile.dart';
 import './movieInfo.dart';
 import 'dart:math';
 import 'dart:async';
-import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class Swiper extends StatefulWidget {

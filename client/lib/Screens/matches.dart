@@ -2,9 +2,6 @@ import 'package:flutter/material.dart';
 import './swiper.dart';
 import './profile.dart';
 import './movieMatchesInfo.dart';
-import "package:http/http.dart" as http;
-import 'dart:convert';
-import 'package:dio/dio.dart';
 
 class Matches extends StatefulWidget {
   @override
@@ -22,6 +19,7 @@ List<int> matchesNfid = [];
 
 class _MatchesState extends State<Matches> {
   int _currentIndex = 2;
+  // notify the snack bar when there is a change in match length
 
   @override
   Widget build(BuildContext context) {
@@ -75,6 +73,13 @@ class _MatchesState extends State<Matches> {
               }),
             ),
           ),
+          // ValueListenableBuilder(
+          //   valueListenable: _matchCount,
+          //   child: Text("CHILD"),
+          //   builder: (BuildContext context, int _matchCount, Widget child) {
+
+          //   },
+          // ),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
@@ -108,33 +113,6 @@ class _MatchesState extends State<Matches> {
       ),
     );
   }
-
-  void _getPairData(pairName) async {
-    var url =
-        'https://asia-northeast1-movie-night-cc.cloudfunctions.net/getPairByPairName?pairName=$pairName';
-    final response = await Dio().get(url);
-    var data = response.data['matches'];
-    for (var i = 0; i < data.length; i++) {
-      matches.add(data[i]);
-    }
-    print(matches);
-    // print('response body ${response.data}');
-    // _cloudData = data;
-  }
-
-  // void _postUser() async {
-  //   Map<String, String> queryParams = {
-  //     'userName': 'evilVic',
-  //     'name': 'ric',
-  //     'email': 'viccode@chihuahua.com',
-  //   };
-  //   var uri = Uri.https("asia-northeast1-movie-night-cc.cloudfunctions.net",
-  //       "/createUser", queryParams);
-  //   var response = await http.post(uri);
-  //   print('response status: ${response.statusCode}');
-  //   print('response body ${response.body}');
-  //   var userData = response.body;
-  // }
 }
 
 class HeaderCurvedContainer extends CustomPainter {
