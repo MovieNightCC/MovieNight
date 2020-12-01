@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
 import 'auth.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import './swiper.dart';
 import './matches.dart';
 import 'package:provider/provider.dart';
+import 'package:dio/dio.dart';
+import '../main.dart';
+
+var _pair = "";
+var _name = "";
+var _email = "";
 
 class Profile extends StatefulWidget {
   @override
@@ -15,20 +20,12 @@ class _ProfileState extends State<Profile> {
 
   @override
   Widget build(BuildContext context) {
-    User user = FirebaseAuth.instance.currentUser;
-    final _email = user.email;
+    // Retrieve user info on build
+    _getUserInfo();
     return Scaffold(
-      // appBar: AppBar(
-      //   elevation: 0.0,
-      //   backgroundColor: Color(0xff555555),
-      // ),
       body: Stack(
         alignment: Alignment.center,
         children: [
-          Container(
-            child: Text(_email,
-                style: TextStyle(fontSize: 30.0, fontWeight: FontWeight.bold)),
-          ),
           CustomPaint(
             child: Container(
               width: MediaQuery.of(context).size.width,
@@ -61,14 +58,29 @@ class _ProfileState extends State<Profile> {
                     image: DecorationImage(
                         fit: BoxFit.cover,
                         image: AssetImage('assets/img/god.jpg'))),
-              )
+              ),
+              Container(
+                child: Text(_name,
+                    style:
+                        TextStyle(fontSize: 30.0, fontWeight: FontWeight.bold)),
+              ),
+              Container(
+                child: Text(_pair,
+                    style:
+                        TextStyle(fontSize: 30.0, fontWeight: FontWeight.bold)),
+              ),
+              Container(
+                child: Text(_email,
+                    style:
+                        TextStyle(fontSize: 30.0, fontWeight: FontWeight.bold)),
+              ),
+              RaisedButton(
+                onPressed: () {
+                  context.read<AuthenticationService>().signOut();
+                },
+                child: Text("SIGN OUT"),
+              ),
             ],
-          ),
-          RaisedButton(
-            onPressed: () {
-              context.read<AuthenticationService>().signOut();
-            },
-            child: Text("SIGN OUT"),
           ),
           Padding(
             padding: EdgeInsets.only(bottom: 270, left: 184),
@@ -85,7 +97,6 @@ class _ProfileState extends State<Profile> {
           )
         ],
       ),
-
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
         type: BottomNavigationBarType.fixed,
@@ -131,8 +142,12 @@ class HeaderCurvedContainer extends CustomPainter {
   bool shouldRepaint(CustomPainter oldDelegate) => false;
 }
 
-//   @override
-//   Widget build(BuildContext context) {
-//     final firebaseUser = context.watch<User>();
-
-// }
+void _getUserInfo() async {
+  var url =
+      'https://asia-northeast1-movie-night-cc.cloudfunctions.net/getUserByUserName?userName=$userName';
+  final response = await Dio().get(url);
+  var userdata = response.data;
+  _name = userdata["name"];
+  _email = userdata["email"];
+  _pair = userdata["pairName"];
+}

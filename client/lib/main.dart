@@ -1,49 +1,34 @@
+//helper and config
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'Screens/swiper.dart';
-import 'Screens/matches.dart';
-import 'Screens/profile.dart';
-
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:provider/provider.dart';
 import 'routes.dart';
 import 'dart:async';
 import 'package:dio/dio.dart';
-import 'package:provider/provider.dart';
 
-void main() {
+/// screens
+import 'screens/swiper.dart';
+import 'screens/matches.dart';
+import 'screens/auth.dart';
+import 'screens/sign_in.dart';
+
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(App());
 }
+
+// global user name variable accessible from every page
+var userName = "";
 
 class App extends StatefulWidget {
   _AppState createState() => _AppState();
 }
 
 class _AppState extends State<App> {
-  // Set default `_initialized` and `_error` state to false
-  bool _initialized = false;
-  bool _error = false;
-
-  // Define an async function to initialize FlutterFire
-  void initializeFlutterFire() async {
-    try {
-      // Wait for Firebase to initialize and set `_initialized` state to true
-      await Firebase.initializeApp();
-      setState(() {
-        _initialized = true;
-      });
-    } catch (e) {
-      // Set `_error` state to true if Firebase initialization fails
-      setState(() {
-        _error = true;
-      });
-    }
-  }
-
-  Future<Response> futureMovie;
-  Future<Response> futurePair;
-
   @override
   void initState() {
-    initializeFlutterFire();
     super.initState();
     futureMovie = fetchMovie();
     futurePair = fetchPair();
@@ -51,41 +36,25 @@ class _AppState extends State<App> {
 
   @override
   Widget build(BuildContext context) {
-    // Show error message if initialization failed
-    // if (_error) {
-    //   return Text("Something went wrong");
-    // }
-
-    // // Show a loader until FlutterFire is initialized
-    // if (!_initialized) {
-    //   return Text("Loading");
-    // }
-
-    return MaterialApp(
-      title: "Movie Night",
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-          primaryColor: Colors.white,
-          scaffoldBackgroundColor: Colors.grey[100]),
-      home: FutureBuilder(
-        future: Future.wait([futureMovie, futurePair]),
-        // future: futureMovie,
-        builder: (context, snapshot) {
-          // print(snapshot.data);
-          // print(movieDataTest);
-
-          if (snapshot.hasData) {
-            shuffle(movieDataTest, movieImagesTest, movieTitles, moviesSynopsis,
-                movieYear);
-            return Swiper();
-          } else if (snapshot.hasError) {
-            return Text("${snapshot.error}");
-          }
-          // By default, show a loading spinner.
-          return Center(child: CircularProgressIndicator());
-        },
+    return MultiProvider(
+      providers: [
+        Provider<AuthenticationService>(
+          create: (_) => AuthenticationService(FirebaseAuth.instance),
+        ),
+        StreamProvider(
+          create: (context) =>
+              context.read<AuthenticationService>().authStateChanges,
+        )
+      ],
+      child: MaterialApp(
+        title: "Movie Night",
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+            primaryColor: Colors.white,
+            scaffoldBackgroundColor: Colors.grey[100]),
+        home: AuthenticationWrapper(),
+        routes: routes,
       ),
-      routes: routes,
     );
   }
 }
@@ -141,14 +110,48 @@ Future<Response> fetchPair() async {
   }
 }
 
-//     return MaterialApp(
-//       title: "Movie Night",
-//       debugShowCheckedModeBanner: false,
-//       theme: ThemeData(
-//           primaryColor: Colors.white,
-//           scaffoldBackgroundColor: Colors.grey[100]),
-//       home: Swiper(),
-//       routes: routes,
-//     );
-//   }
-// }
+Future<Response> futureMovie;
+Future<Response> futurePair;
+
+class AuthenticationWrapper extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final firebaseUser = context.watch<User>();
+
+    if (firebaseUser != null) {
+      print(firebaseUser.email);
+      userName =
+          firebaseUser.email.substring(0, firebaseUser.email.indexOf("@"));
+      // if (movieDataTest.length == 0 && movieImagesTest.length == 0) {
+      //   futureMovie = fetchMovie();
+      //   futurePair = fetchPair();
+      // }
+      return MaterialApp(
+        title: "Movie Night",
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+            primaryColor: Colors.white,
+            scaffoldBackgroundColor: Colors.grey[100]),
+        home: FutureBuilder(
+          future: Future.wait([futureMovie, futurePair]),
+          builder: (context, snapshot) {
+            print("future builder");
+            print('${movieDataTest.length} how many movies I have');
+            if (snapshot.hasData) {
+              shuffle(movieDataTest, movieImagesTest, movieTitles,
+                  moviesSynopsis, movieYear);
+              return Swiper();
+            } else if (snapshot.hasError) {
+              return Text("${snapshot.error}");
+            }
+            // By default, show a loading spinner.
+            return Center(child: CircularProgressIndicator());
+          },
+        ),
+        routes: routes,
+      );
+    } else {
+      return SignInPage();
+    }
+  }
+}
