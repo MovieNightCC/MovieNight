@@ -74,7 +74,6 @@ List<String> movieTitles = [];
 List<String> moviesSynopsis = [];
 List<int> movieYear = [];
 var counter = 0;
-List<String> chosenGenre = [];
 
 void updateUser(arrOfNfid, context) async {
   print(userName);
@@ -165,7 +164,6 @@ class _TinderswiperState extends State<Tinderswiper>
                           //when hated
                           print('you hate: ${movieDataTest[count]}');
                           count++;
-                          print(chosenGenre);
                         }
                       },
                     ),

@@ -23,7 +23,6 @@ List<String> rushModeImages = [];
 List<String> rushModeTitles = [];
 List<String> rushModeSynopsis = [];
 List<int> rushModeYear = [];
-var rushIndex = 0;
 
 class RushMode extends StatefulWidget {
   @override
@@ -79,8 +78,6 @@ class _RushModeState extends State<RushMode> {
                           minWidth: MediaQuery.of(context).size.width * 0.899,
                           minHeight: MediaQuery.of(context).size.width * 1.599,
                           cardBuilder: (context, index) {
-                            rushIndex = index;
-                            rushIndex += 50;
                             print('index is $index');
                             return Card(
                               child: Container(

@@ -13,6 +13,7 @@ import 'screens/matches.dart';
 import 'screens/auth.dart';
 import 'screens/sign_in.dart';
 import 'screens/rushMode.dart';
+import 'screens/movieArray.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -101,6 +102,104 @@ Future<Response> fetchGay() async {
         rushModeYear.add(movies[i]["year"]);
         rushModeTitles.add(movies[i]['title']);
         rushModeImages.add(movies[i]["img"]);
+      }
+      return response;
+    } else {
+      // If the server did not return a 200 OK response,
+      // then throw an exception.
+      throw Exception('Failed to load album');
+    }
+  }
+}
+
+//anime,horror,japan,korea
+
+Future<Response> fetchAnime() async {
+  if (movieDataTest.length == 0) {
+    print("im called");
+    final response = await Dio().get(
+        "https://asia-northeast1-movie-night-cc.cloudfunctions.net/getAnimeMovies");
+    if (response.statusCode == 200) {
+      var movies = response.data;
+      for (var i = 0; i < 31; i++) {
+        animeList.add(movies[i]);
+        animeNfid.add(movies[i]["nfid"]);
+        animeImages.add(movies[i]["img"]);
+        animeTitles.add(movies[i]['title']);
+        animeSynopsis.add(movies[i]["synopsis"]);
+        animeYear.add(movies[i]["year"]);
+      }
+      return response;
+    } else {
+      // If the server did not return a 200 OK response,
+      // then throw an exception.
+      throw Exception('Failed to load album');
+    }
+  }
+}
+
+Future<Response> fetchHorror() async {
+  if (movieDataTest.length == 0) {
+    print("im called");
+    final response = await Dio().get(
+        "https://asia-northeast1-movie-night-cc.cloudfunctions.net/getHorrorMovies");
+    if (response.statusCode == 200) {
+      var movies = response.data;
+      for (var i = 0; i < 31; i++) {
+        horrorList.add(movies[i]);
+        horrorNfid.add(movies[i]["nfid"]);
+        horrorImages.add(movies[i]["img"]);
+        horrorTitles.add(movies[i]['title']);
+        horrorSynopsis.add(movies[i]["synopsis"]);
+        horrorYear.add(movies[i]["year"]);
+      }
+      return response;
+    } else {
+      // If the server did not return a 200 OK response,
+      // then throw an exception.
+      throw Exception('Failed to load album');
+    }
+  }
+}
+
+Future<Response> fetchJapan() async {
+  if (movieDataTest.length == 0) {
+    print("im called");
+    final response = await Dio().get(
+        "https://asia-northeast1-movie-night-cc.cloudfunctions.net/getJapanMovies");
+    if (response.statusCode == 200) {
+      var movies = response.data;
+      for (var i = 0; i < 31; i++) {
+        japanList.add(movies[i]);
+        japanNfid.add(movies[i]["nfid"]);
+        japanImages.add(movies[i]["img"]);
+        japanTitles.add(movies[i]['title']);
+        japanSynopsis.add(movies[i]["synopsis"]);
+        japanYear.add(movies[i]["year"]);
+      }
+      return response;
+    } else {
+      // If the server did not return a 200 OK response,
+      // then throw an exception.
+      throw Exception('Failed to load album');
+    }
+  }
+}
+
+Future<Response> fetchKorea() async {
+  if (movieDataTest.length == 0) {
+    print("im called");
+    final response = await Dio().get(
+        "https://asia-northeast1-movie-night-cc.cloudfunctions.net/getKoreaMovies");
+    if (response.statusCode == 200) {
+      var movies = response.data;
+      for (var i = 0; i < 31; i++) {
+        koreaList.add(movies[i]);
+        koreaNfid.add(movies[i]["nfid"]);
+        koreaImages.add(movies[i]["img"]);
+        koreaTitles.add(movies[i]['title']);
+        koreaSynopsis.add(movies[i]["synopsis"]);
+        koreaYear.add(movies[i]["year"]);
       }
       return response;
     } else {

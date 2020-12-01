@@ -27,6 +27,8 @@ bool clickedMusic = false;
 bool clickedScifi = false;
 bool clickedSuperhero = false;
 
+List<String> chosenGenre = [];
+
 void filterPop(context) {
   showDialog(
       context: context,
@@ -52,6 +54,13 @@ void filterPop(context) {
                   onChanged: (val) {
                     setState(() {
                       clickedAnime = val;
+                      if (clickedAnime) {
+                        chosenGenre.add('Anime');
+                      }
+                      if (!clickedAnime) {
+                        chosenGenre.remove('Anime');
+                      }
+                      print('$chosenGenre IAM GENRE ARRAY');
                     });
                   },
                 ),
@@ -61,6 +70,13 @@ void filterPop(context) {
                   onChanged: (val) {
                     setState(() {
                       clickedLGBT = val;
+                      if (clickedLGBT) {
+                        chosenGenre.add('LGBTQ');
+                      }
+                      if (!clickedLGBT) {
+                        chosenGenre.remove('LGBTQ');
+                      }
+                      print('$chosenGenre IAM GENRE ARRAY');
                     });
                   },
                 ),
@@ -70,24 +86,45 @@ void filterPop(context) {
                   onChanged: (val) {
                     setState(() {
                       clickedHorror = val;
+                      if (clickedHorror) {
+                        chosenGenre.add('Horror/Thrillers');
+                      }
+                      if (!clickedHorror) {
+                        chosenGenre.remove('Horror/Thrillers');
+                      }
+                      print('$chosenGenre IAM GENRE ARRAY');
                     });
                   },
                 ),
-                CheckboxListTile(
-                  title: Text("Independent Films"),
-                  value: clickedIndie,
-                  onChanged: (val) {
-                    setState(() {
-                      clickedIndie = val;
-                    });
-                  },
-                ),
+                // CheckboxListTile(
+                //   title: Text("Independent Films"),
+                //   value: clickedIndie,
+                //   onChanged: (val) {
+                //     setState(() {
+                //       clickedIndie = val;
+                //       if (clickedIndie) {
+                //         chosenGenre.add('Independent Films');
+                //       }
+                //       if (!clickedIndie) {
+                //         chosenGenre.remove('Independent Films');
+                //       }
+                //       print('$chosenGenre IAM GENRE ARRAY');
+                //     });
+                //   },
+                // ),
                 CheckboxListTile(
                   title: Text("Japanese Movies"),
                   value: clickedJapan,
                   onChanged: (val) {
                     setState(() {
                       clickedJapan = val;
+                      if (clickedJapan) {
+                        chosenGenre.add('Japanese Movies');
+                      }
+                      if (!clickedJapan) {
+                        chosenGenre.remove('Japanese Movies');
+                      }
+                      print('$chosenGenre IAM GENRE ARRAY');
                     });
                   },
                 ),
@@ -97,45 +134,80 @@ void filterPop(context) {
                   onChanged: (val) {
                     setState(() {
                       clickedKorea = val;
+                      if (clickedKorea) {
+                        chosenGenre.add('Korean Movies');
+                      }
+                      if (!clickedKorea) {
+                        chosenGenre.remove('Korean Movies');
+                      }
+                      print('$chosenGenre IAM GENRE ARRAY');
                     });
                   },
                 ),
-                CheckboxListTile(
-                  title: Text("Martial Arts Movies"),
-                  value: clickedMartial,
-                  onChanged: (val) {
-                    setState(() {
-                      clickedMartial = val;
-                    });
-                  },
-                ),
-                CheckboxListTile(
-                  title: Text("Music-related Movies"),
-                  value: clickedMusic,
-                  onChanged: (val) {
-                    setState(() {
-                      clickedMusic = val;
-                    });
-                  },
-                ),
-                CheckboxListTile(
-                  title: Text("Sci-fi Movies"),
-                  value: clickedScifi,
-                  onChanged: (val) {
-                    setState(() {
-                      clickedScifi = val;
-                    });
-                  },
-                ),
-                CheckboxListTile(
-                  title: Text("Superheroes Movies"),
-                  value: clickedSuperhero,
-                  onChanged: (val) {
-                    setState(() {
-                      clickedSuperhero = val;
-                    });
-                  },
-                )
+                // CheckboxListTile(
+                //   title: Text("Martial Arts Movies"),
+                //   value: clickedMartial,
+                //   onChanged: (val) {
+                //     setState(() {
+                //       clickedMartial = val;
+                //       if (clickedMartial) {
+                //         chosenGenre.add('Martial Arts Movies');
+                //       }
+                //       if (!clickedMartial) {
+                //         chosenGenre.remove('Martial Arts Movies');
+                //       }
+                //       print('$chosenGenre IAM GENRE ARRAY');
+                //     });
+                //   },
+                // ),
+                // CheckboxListTile(
+                //   title: Text("Music-related Movies"),
+                //   value: clickedMusic,
+                //   onChanged: (val) {
+                //     setState(() {
+                //       clickedMusic = val;
+                //       if (clickedMusic) {
+                //         chosenGenre.add('Music-related Movies');
+                //       }
+                //       if (!clickedMusic) {
+                //         chosenGenre.remove('Music-related Movies');
+                //       }
+                //       print('$chosenGenre IAM GENRE ARRAY');
+                //     });
+                //   },
+                // ),
+                // CheckboxListTile(
+                //   title: Text("Sci-fi Movies"),
+                //   value: clickedScifi,
+                //   onChanged: (val) {
+                //     setState(() {
+                //       clickedScifi = val;
+                //       if (clickedScifi) {
+                //         chosenGenre.add('Sci-fi Movies');
+                //       }
+                //       if (!clickedScifi) {
+                //         chosenGenre.remove('Sci-fi Movies');
+                //       }
+                //       print('$chosenGenre IAM GENRE ARRAY');
+                //     });
+                //   },
+                // ),
+                // CheckboxListTile(
+                //   title: Text("Superheroes Movies"),
+                //   value: clickedSuperhero,
+                //   onChanged: (val) {
+                //     setState(() {
+                //       clickedSuperhero = val;
+                //       if (clickedSuperhero) {
+                //         chosenGenre.add('Superheroes Movies');
+                //       }
+                //       if (!clickedSuperhero) {
+                //         chosenGenre.remove('Superheroes Movies');
+                //       }
+                //       print('$chosenGenre IAM GENRE ARRAY');
+                //     });
+                //   },
+                // )
               ]),
             ),
             actions: <Widget>[
