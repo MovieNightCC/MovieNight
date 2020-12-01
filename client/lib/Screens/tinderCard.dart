@@ -134,6 +134,11 @@ class _TinderSwapCardState extends State<TinderSwapCard>
     }
     // _currentFront = realIndex - 1;
     final index = realIndex - _currentFront;
+    // print('tinder index $index');
+    // print("realIndex $realIndex");
+    // print('count $count');
+    // print('_currentFront $_currentFront');
+
     if (index == widget._stackNum - 1) {
       return Align(
         alignment: _animationController.status == AnimationStatus.forward
