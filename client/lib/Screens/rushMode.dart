@@ -166,7 +166,7 @@ class TimerWidget extends StatefulWidget {
 
 class _TimerWidgetState extends State<TimerWidget> {
   Timer _timer;
-  int _start = 5;
+  int _start = 10;
 
   void startTimer() {
     if (_timer != null) {
@@ -199,7 +199,7 @@ class _TimerWidgetState extends State<TimerWidget> {
                         ],
                       ));
 
-              _start = 5;
+              _start = 10;
             } else {
               _start = _start - 1;
             }

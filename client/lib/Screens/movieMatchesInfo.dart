@@ -32,14 +32,23 @@ class _MatchInfoState extends State<MatchInfo> {
               Image.network(matchesImage[current]),
               Text('Title: ${matchesTitles[current]}',
                   style: TextStyle(
-                      height: 5.0, fontWeight: FontWeight.bold, fontSize: 20)),
+                      color: Colors.white,
+                      height: 5.0,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20)),
               Text('Synopsis: ${matchesSynopsis[current]}',
                   style: TextStyle(
-                      height: 1.5, fontWeight: FontWeight.bold, fontSize: 20)),
+                      color: Colors.white,
+                      height: 1.5,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20)),
               Text(
                 'Release Year: ${matchesYear[current]}',
                 style: TextStyle(
-                    height: 4.0, fontWeight: FontWeight.bold, fontSize: 20),
+                    color: Colors.white,
+                    height: 4.0,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20),
               ), //matchesNfid,
               RaisedButton(
                 onPressed: () => launch(

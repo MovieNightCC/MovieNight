@@ -34,14 +34,23 @@ class _InfoState extends State<Info> {
               Image.network(movieImagesTest[count]),
               Text('Title: ${movieTitles[count]}',
                   style: TextStyle(
-                      height: 5.0, fontWeight: FontWeight.bold, fontSize: 20)),
+                      color: Colors.white,
+                      height: 5.0,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20)),
               Text('Synopsis: ${moviesSynopsis[count]}',
                   style: TextStyle(
-                      height: 1.5, fontWeight: FontWeight.bold, fontSize: 20)),
+                      color: Colors.white,
+                      height: 1.5,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20)),
               Text(
                 'Release Year: ${movieYear[count]}',
                 style: TextStyle(
-                    height: 4.0, fontWeight: FontWeight.bold, fontSize: 20),
+                    color: Colors.white,
+                    height: 4.0,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20),
               ),
               RaisedButton(
                 onPressed: () => launch(

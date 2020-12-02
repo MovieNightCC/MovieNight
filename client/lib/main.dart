@@ -64,8 +64,8 @@ class _AppState extends State<App> {
         title: "Movie Night",
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
-            primaryColor: Colors.white,
-            scaffoldBackgroundColor: Colors.grey[100]),
+            primaryColor: Colors.grey[900],
+            scaffoldBackgroundColor: Colors.grey[900]),
         home: AuthenticationWrapper(),
         routes: routes,
       ),
@@ -297,8 +297,13 @@ class AuthenticationWrapper extends StatelessWidget {
             print("future builder");
             print('${movieDataTest.length} how many movies I have');
             if (snapshot.hasData) {
-              shuffle(movieDataTest, movieImagesTest, movieTitles,
-                  moviesSynopsis, movieYear);
+              shuffle(
+                movieDataTest,
+                movieImagesTest,
+                movieTitles,
+                moviesSynopsis,
+                movieYear,
+              );
               return Swiper();
             } else if (snapshot.hasError) {
               return Text("${snapshot.error}");
