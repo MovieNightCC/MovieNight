@@ -5,6 +5,7 @@ import './tinderCard.dart';
 import './matches.dart';
 import './profile.dart';
 import './movieInfo.dart';
+import './rushMode.dart';
 import 'dart:math';
 import 'dart:async';
 import 'package:http/http.dart' as http;
@@ -73,9 +74,8 @@ List<String> movieTitles = [];
 List<String> moviesSynopsis = [];
 List<int> movieYear = [];
 var counter = 0;
-List<String> chosenGenre = [];
 
-void _updateUser(arrOfNfid, context) async {
+void updateUser(arrOfNfid, context) async {
   print(userName);
   var response = await http.get(
       "https://asia-northeast1-movie-night-cc.cloudfunctions.net/updateUserLikes?userName=$userName&movieArr=[$arrOfNfid]");
@@ -135,8 +135,6 @@ class _TinderswiperState extends State<Tinderswiper>
                       minWidth: MediaQuery.of(context).size.width * 0.899,
                       minHeight: MediaQuery.of(context).size.width * 1.599,
                       cardBuilder: (context, index) {
-                        print('index is $index');
-                        // index = count;
                         return Card(
                           child: Container(
                               // padding: EdgeInsets.all(20.0),
@@ -155,7 +153,7 @@ class _TinderswiperState extends State<Tinderswiper>
                           print('you liked: ${movieDataTest[count]}');
 
                           //request to firebase server to update likes
-                          _updateUser(movieDataTest[count], context);
+                          updateUser(movieDataTest[count], context);
                           count++;
                           // print(movieDataTest[index].runtimeType);
 
@@ -166,7 +164,6 @@ class _TinderswiperState extends State<Tinderswiper>
                           //when hated
                           print('you hate: ${movieDataTest[count]}');
                           count++;
-                          print(chosenGenre);
                         }
                       },
                     ),
@@ -186,6 +183,12 @@ class _TinderswiperState extends State<Tinderswiper>
               heroTag: null,
               onPressed: () {
                 print('pressed');
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => RushMode(),
+                      maintainState: true,
+                    ));
               },
               tooltip: 'Increment',
               child: Icon(Icons.flash_on_sharp),
