@@ -97,7 +97,13 @@ class _RushModeState extends State<RushMode> {
                               print('you liked: ${movieDataTest[count]}');
 
                               //request to firebase server to update likes
-                              updateUser(rushModeNfid[count], context);
+                              updateUser(
+                                  rushModeNfid[count],
+                                  context,
+                                  rushModeImages[count],
+                                  rushModeTitles[count],
+                                  rushModeYear[count],
+                                  rushModeSynopsis[count]);
                               count++;
                               // print(movieDataTest[index].runtimeType);
 

@@ -89,8 +89,6 @@ Future<Response> fetchMovie() async {
       }
       return response;
     } else {
-      // If the server did not return a 200 OK response,
-      // then throw an exception.
       throw Exception('Failed to load album');
     }
   }
@@ -109,6 +107,12 @@ Future<Response> fetchGay() async {
         rushModeYear.add(movies[i]["year"]);
         rushModeTitles.add(movies[i]['title']);
         rushModeImages.add(movies[i]["img"]);
+        gayList.add(movies[i]);
+        gayNfid.add(movies[i]["nfid"]);
+        gaySynopsis.add(movies[i]["synopsis"]);
+        gayYear.add(movies[i]["year"]);
+        gayTitles.add(movies[i]['title']);
+        gayImages.add(movies[i]["img"]);
       }
       return response;
     } else {

@@ -1,5 +1,12 @@
 //anime,horror,japan,korea
 
+List<Object> gayList = [];
+List<int> gayNfid = [];
+List<String> gayImages = [];
+List<String> gayTitles = [];
+List<String> gaySynopsis = [];
+List<int> gayYear = [];
+
 List<Object> animeList = [];
 List<int> animeNfid = [];
 List<String> animeImages = [];

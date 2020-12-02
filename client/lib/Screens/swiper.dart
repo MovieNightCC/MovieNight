@@ -75,12 +75,20 @@ List<String> moviesSynopsis = [];
 List<int> movieYear = [];
 var counter = 0;
 
-void updateUser(arrOfNfid, context) async {
+void updateUser(arrOfNfid, context, image, title, year, synopsis) async {
   print(userName);
   var response = await http.get(
       "https://asia-northeast1-movie-night-cc.cloudfunctions.net/updateUserLikes?userName=$userName&movieArr=[$arrOfNfid]");
   print(response.body);
   if (response.body == "match!") {
+    //push to matches array
+
+    matchesTitles.add(title);
+    matchesSynopsis.add(synopsis);
+    matchesImage.add(image);
+    matchesYear.add(year);
+    matchesNfid.add(arrOfNfid);
+
     showDialog(
         context: context,
         builder: (_) => new AlertDialog(
@@ -151,9 +159,21 @@ class _TinderswiperState extends State<Tinderswiper>
                         if (orientation == CardSwipeOrientation.RIGHT) {
                           //when liked
                           print('you liked: ${movieDataTest[count]}');
+// List<Object> moviesList = [];
+// List<int> movieDataTest = [];
+// List<String> movieImagesTest = [];
+// List<String> movieTitles = [];
+// List<String> moviesSynopsis = [];
+// List<int> movieYear = [];
 
                           //request to firebase server to update likes
-                          updateUser(movieDataTest[count], context);
+                          updateUser(
+                              movieDataTest[count],
+                              context,
+                              movieImagesTest[count],
+                              movieTitles[count],
+                              movieYear[count],
+                              moviesSynopsis[count]);
                           count++;
                           // print(movieDataTest[index].runtimeType);
 
