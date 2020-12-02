@@ -177,12 +177,6 @@ class _TinderswiperState extends State<Tinderswiper>
                         if (orientation == CardSwipeOrientation.RIGHT) {
                           //when liked
                           print('you liked: ${movieDataTest[count]}');
-// List<Object> moviesList = [];
-// List<int> movieDataTest = [];
-// List<String> movieImagesTest = [];
-// List<String> movieTitles = [];
-// List<String> moviesSynopsis = [];
-// List<int> movieYear = [];
 
                           //request to firebase server to update likes
                           updateUser(

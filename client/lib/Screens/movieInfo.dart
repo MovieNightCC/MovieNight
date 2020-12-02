@@ -48,7 +48,7 @@ class _InfoState extends State<Info> {
                 'Release Year: ${movieYear[count]}',
                 style: TextStyle(
                     color: Colors.white,
-                    height: 4.0,
+                    height: 2.5,
                     fontWeight: FontWeight.bold,
                     fontSize: 20),
               ),
@@ -58,6 +58,63 @@ class _InfoState extends State<Info> {
                 child:
                     const Text('Go to Netflix', style: TextStyle(fontSize: 20)),
               ),
+              Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
+                Positioned(
+                  left: 40,
+                  bottom: 20,
+                  child: FloatingActionButton(
+                    heroTag: null,
+                    onPressed: () {
+                      print('you hate: ${movieDataTest[count]}');
+                      count++;
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => Swiper(),
+                            maintainState: true,
+                          ));
+                    },
+                    tooltip: 'Increment',
+                    child: Icon(Icons.sentiment_very_dissatisfied),
+                    elevation: 2.0,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10)),
+                    backgroundColor: Colors.red[900],
+                  ),
+                ),
+                Positioned(
+                  right: 80,
+                  bottom: 20,
+                  child: FloatingActionButton(
+                    heroTag: null,
+                    onPressed: () {
+                      print('you liked: ${movieDataTest[count]}');
+
+                      //request to firebase server to update likes
+                      updateUser(
+                          movieDataTest[count],
+                          context,
+                          movieImagesTest[count],
+                          movieTitles[count],
+                          movieYear[count],
+                          moviesSynopsis[count]);
+                      count++;
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => Swiper(),
+                            maintainState: true,
+                          ));
+                    },
+                    tooltip: 'Increment',
+                    child: Icon(Icons.sentiment_very_satisfied),
+                    elevation: 2.0,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10)),
+                    backgroundColor: Colors.blue,
+                  ),
+                ),
+              ]),
             ],
           ),
         ],
