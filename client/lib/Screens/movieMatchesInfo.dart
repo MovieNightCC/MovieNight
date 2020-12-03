@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-
 import './matches.dart';
+import './movieArray.dart';
 import 'package:url_launcher/url_launcher.dart';
-
 import 'package:http/http.dart' as http;
 
 class MatchInfo extends StatefulWidget {
@@ -13,7 +12,8 @@ class MatchInfo extends StatefulWidget {
 void deleteMatch(nfid) async {
   print(nfid);
   var response = await http.get(
-      "https://asia-northeast1-movie-night-cc.cloudfunctions.net/deleteMatch?pairName=testPairA&nfid=$nfid");
+      "https://asia-northeast1-movie-night-cc.cloudfunctions.net/deleteMatch?pairName=$userPair&nfid=$nfid");
+
   print(response.body);
 }
 
@@ -70,6 +70,11 @@ class _MatchInfoState extends State<MatchInfo> {
                 color: Colors.red[900],
                 onPressed: () => {
                   deleteMatch(matchesNfid[current]),
+                  matchesTitles.remove(matchesTitles[current]),
+                  matchesSynopsis.remove(matchesSynopsis[current]),
+                  matchesImage.remove(matchesImage[current]),
+                  matchesYear.remove(matchesYear[current]),
+                  matchesNfid.remove(matchesNfid[current]),
                   Navigator.push(
                       context,
                       MaterialPageRoute(

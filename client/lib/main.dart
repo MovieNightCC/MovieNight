@@ -33,6 +33,9 @@ var userName = "";
 var userPair = "";
 var userEmail = "";
 var displayName = "";
+var matchOriLength = 0;
+var cutInHalfCalled = false;
+
 
 class App extends StatefulWidget {
   _AppState createState() => _AppState();
@@ -42,8 +45,9 @@ class _AppState extends State<App> {
   @override
   void initState() {
     super.initState();
+    // getUserInfo();
     futureMovie = fetchMovie();
-    futurePair = fetchPair();
+    // futurePair = fetchPair();
     futureGay = fetchGay();
     futureAnime = fetchAnime();
     futureHorror = fetchHorror();
@@ -73,6 +77,41 @@ class _AppState extends State<App> {
         routes: routes,
       ),
     );
+  }
+}
+
+void getUserInfo() async {
+  print("getUserInfo is Called");
+
+  try {
+    var url =
+        'https://asia-northeast1-movie-night-cc.cloudfunctions.net/getUserByUserName?userName=$userName';
+    final response = await Dio().get(url);
+    var userdata = response.data;
+    userEmail = userdata["email"];
+    userPair = userdata["pairName"];
+    print('got user info ${userdata["email"]} in ${userdata["pairName"]}');
+
+    if (matchesTitles.length == 0) {
+      var url =
+          'https://asia-northeast1-movie-night-cc.cloudfunctions.net/getPairByPairName?pairName=$userPair';
+      final response = await Dio().get(url);
+      var data = response.data['matchMovieData'];
+      if (response.statusCode == 200) {
+        for (var i = 0; i < data.length; i++) {
+          matches.add(data[i]);
+          //    movieDataTest.add(movies[i]["nfid"]);
+          matchesSynopsis.add(data[i]["synopsis"].replaceAll('&#39;', "'"));
+          matchesYear.add(data[i]["year"]);
+          matchesTitles.add(data[i]['title'].replaceAll('&#39;', "'"));
+          matchesImage.add(data[i]["img"]);
+          matchesNfid.add(data[i]["nfid"]);
+          matchOriLength += 1;
+        }
+      }
+    }
+  } on Exception catch (_) {
+    print('error!');
   }
 }
 
@@ -191,7 +230,6 @@ Future<Response> fetchJapan() async {
         japanSynopsis.add(movies[i]["synopsis"].replaceAll('&#39;', "'"));
         japanYear.add(movies[i]["year"]);
       }
-      print("japanList length from main.dart ${japanList.length}");
       return response;
     } else {
       // If the server did not return a 200 OK response,
@@ -224,34 +262,34 @@ Future<Response> fetchKorea() async {
   }
 }
 
-Future<Response> fetchPair() async {
-  try {
-    if (movieDataTest.length == 0) {
-      var url =
-          'https://asia-northeast1-movie-night-cc.cloudfunctions.net/getPairByPairName?pairName=testPairA';
-      final response = await Dio().get(url);
-      var data = response.data['matchMovieData'];
-      if (response.statusCode == 200) {
-        for (var i = 0; i < data.length; i++) {
-          matches.add(data[i]);
-          //    movieDataTest.add(movies[i]["nfid"]);
-          matchesSynopsis.add(data[i]["synopsis"].replaceAll('&#39;', "'"));
-          matchesYear.add(data[i]["year"]);
-          matchesTitles.add(data[i]['title'].replaceAll('&#39;', "'"));
-          matchesImage.add(data[i]["img"]);
-          matchesNfid.add(data[i]["nfid"]);
-        }
-        print(matches);
-        return response;
-      }
-    }
-  } on Exception catch (_) {
-    print('error!');
-  }
-}
+// Future<Response> fetchMatches() async {
+//   print("fetchMatches is Called");
+//   try {
+//     if (movieDataTest.length == 0) {
+//       var url =
+//           'https://asia-northeast1-movie-night-cc.cloudfunctions.net/getPairByPairName?pairName=testPairA';
+//       final response = await Dio().get(url);
+//       var data = response.data['matchMovieData'];
+//       if (response.statusCode == 200) {
+//         for (var i = 0; i < data.length; i++) {
+//           matches.add(data[i]);
+//           //    movieDataTest.add(movies[i]["nfid"]);
+//           matchesSynopsis.add(data[i]["synopsis"].replaceAll('&#39;', "'"));
+//           matchesYear.add(data[i]["year"]);
+//           matchesTitles.add(data[i]['title'].replaceAll('&#39;', "'"));
+//           matchesImage.add(data[i]["img"]);
+//           matchesNfid.add(data[i]["nfid"]);
+//         }
+//         return response;
+//       }
+//     }
+//   } on Exception catch (_) {
+//     print('error!');
+//   }
+// }
 
 Future<Response> futureMovie;
-Future<Response> futurePair;
+// Future<Response> futurePair;
 Future<Response> futureGay;
 Future<Response> futureAnime;
 Future<Response> futureHorror;
@@ -275,7 +313,6 @@ class AuthenticationWrapper extends StatelessWidget {
     final firebaseUser = context.watch<User>();
 
     if (firebaseUser != null) {
-      print(firebaseUser.email);
       userName =
           firebaseUser.email.substring(0, firebaseUser.email.indexOf("@"));
       //put the function here
@@ -288,13 +325,8 @@ class AuthenticationWrapper extends StatelessWidget {
             primaryColor: Colors.white,
             scaffoldBackgroundColor: Colors.grey[100]),
         home: FutureBuilder(
-          // futureAnime = fetchAnime();
-          // futureHorror = fetchHorror();
-          // futureJapan = fetchJapan();
-          // futureKorea = fetchKorea();
           future: Future.wait([
             futureMovie,
-            futurePair,
             futureGay,
             futureAnime,
             futureHorror,
@@ -302,8 +334,7 @@ class AuthenticationWrapper extends StatelessWidget {
             futureKorea
           ]),
           builder: (context, snapshot) {
-            print("future builder");
-            print('${movieDataTest.length} how many movies I have');
+            // print('${movieDataTest.length} how many movies I have');
             if (snapshot.hasData) {
               shuffle(
                 movieDataTest,

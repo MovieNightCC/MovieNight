@@ -1,5 +1,5 @@
 import 'package:flutter/widgets.dart';
-import 'Screens/swiper.dart';
+import 'screens/swiper.dart';
 
 // We use name route
 // All our routes will be available here
