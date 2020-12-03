@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
-import 'package:flutterPractice/screens/movieArray.dart';
 import './tinderCard.dart';
 import './matches.dart';
 import './profile.dart';
@@ -106,6 +105,12 @@ void cutInHalf() {
   matchesYear = matchesYear.sublist(0, halfLength);
   matchesSynopsis = matchesSynopsis.sublist(0, halfLength);
   matchesNfid = matchesNfid.sublist(0, halfLength);
+
+  matchesTitles = matchesTitles.reversed.toList();
+  matchesImage = matchesImage.reversed.toList();
+  matchesYear = matchesYear.reversed.toList();
+  matchesSynopsis = matchesSynopsis.reversed.toList();
+  matchesNfid = matchesNfid.reversed.toList();
 }
 
 void updateUser(arrOfNfid, context, image, title, year, synopsis) async {
@@ -116,11 +121,11 @@ void updateUser(arrOfNfid, context, image, title, year, synopsis) async {
   if (response.body == "match!") {
     //push to matches array
     print("old list $matchesTitles");
-    matchesTitles.add(title);
-    matchesSynopsis.add(synopsis);
-    matchesImage.add(image);
-    matchesYear.add(year);
-    matchesNfid.add(arrOfNfid);
+    matchesTitles.insert(0, title);
+    matchesSynopsis.insert(0, synopsis);
+    matchesImage.insert(0, image);
+    matchesYear.insert(0, year);
+    matchesNfid.insert(0, arrOfNfid);
     print("new list $matchesTitles");
     showDialog(
         context: context,
