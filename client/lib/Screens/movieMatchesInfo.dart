@@ -14,6 +14,7 @@ void deleteMatch(nfid) async {
   print(nfid);
   var response = await http.get(
       "https://asia-northeast1-movie-night-cc.cloudfunctions.net/deleteMatch?pairName=testPairA&nfid=$nfid");
+
   print(response.body);
 }
 
@@ -70,6 +71,11 @@ class _MatchInfoState extends State<MatchInfo> {
                 color: Colors.red[900],
                 onPressed: () => {
                   deleteMatch(matchesNfid[current]),
+                  matchesTitles.remove(matchesTitles[current]),
+                  matchesSynopsis.remove(matchesSynopsis[current]),
+                  matchesImage.remove(matchesImage[current]),
+                  matchesYear.remove(matchesYear[current]),
+                  matchesNfid.remove(matchesNfid[current]),
                   Navigator.push(
                       context,
                       MaterialPageRoute(

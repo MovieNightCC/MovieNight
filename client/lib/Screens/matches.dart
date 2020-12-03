@@ -51,7 +51,7 @@ class _MatchesState extends State<Matches> {
               // horizontal, this produces 2 rows.
               crossAxisCount: 2,
               // Generate 100 widgets that display their index in the List.
-              children: List.generate(matches.length, (index) {
+              children: List.generate(matchesImage.length, (index) {
                 return InkWell(
                   child: Column(
                     children: [
