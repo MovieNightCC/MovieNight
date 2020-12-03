@@ -13,15 +13,15 @@ class _BodyState extends State<Body> {
   List<Map<String, String>> splashData = [
     {
       "text": "Welcome to Movie Night, Let’s start!",
-      "image": "//s3.amazonaws.com/appforest_uf/f1600064155749x124567606870334980/NIVIA-01.jpg"
+      "image": "assets/img/Movienight1.png"
     },
     {
       "text": "Find a movie you both LOVE",
-      "image": "client/assets/img/bored.jpg"
+      "image": "assets/img/bored.jpg"
     },
     {
       "text": "In a few swipes you will be ready for movie night",
-      "image": "client/assets/img/bored.jpg"
+      "image": "assets/img/bored.jpg"
     },
   ];
   @override

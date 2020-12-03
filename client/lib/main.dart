@@ -69,8 +69,7 @@ class _AppState extends State<App> {
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
             primaryColor: Colors.pink[400],
-            primarySwatch: Colors.blueAccent[500],
-            scaffoldBackgroundColor: Colors.black),
+            scaffoldBackgroundColor: Colors.black87),
         home: AuthenticationWrapper(),
         routes: routes,
       ),
