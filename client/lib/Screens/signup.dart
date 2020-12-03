@@ -1,10 +1,9 @@
-import './swiper.dart';
-
 import 'auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
 import 'package:url_launcher/url_launcher.dart';
+import './addPairPage.dart';
 
 class SignUpPage extends StatelessWidget {
   final TextEditingController nameController = TextEditingController();
@@ -49,7 +48,8 @@ class SignUpPage extends StatelessWidget {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => Swiper(), maintainState: true));
+                      builder: (context) => AddPairPage(),
+                      maintainState: true));
             },
             child: Text("Sign Up"),
           ),
