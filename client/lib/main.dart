@@ -5,14 +5,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
 import 'routes.dart';
 import 'dart:async';
-import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
-import 'package:html/dom.dart' as htmlParser;
+import './utitilities/colors.dart';
 
 /// screens
 import 'screens/swiper.dart';
-import 'screens/matches.dart';
 import 'screens/auth.dart';
 import 'screens/sign_in.dart';
 import 'screens/rushMode.dart';
@@ -28,6 +26,25 @@ Future<void> main() async {
   );
 }
 
+final ThemeData _kShrineTheme = _buildShrineTheme();
+ThemeData _buildShrineTheme() {
+  final ThemeData base = ThemeData.dark();
+  return base.copyWith(
+    primaryColor: Colors.black,
+    brightness: Brightness.dark,
+    backgroundColor: const Color(0xFF212121),
+    accentColor: Colors.white,
+    accentIconTheme: IconThemeData(color: Colors.black),
+    dividerColor: Colors.black12,
+    buttonTheme: base.buttonTheme.copyWith(
+      buttonColor: Colors.pink[400],
+      colorScheme: base.colorScheme.copyWith(
+        secondary: Colors.white,
+      ),
+    ),
+  );
+}
+
 // global user name variable accessible from every page
 var userName = "";
 var userPair = "";
@@ -35,7 +52,6 @@ var userEmail = "";
 var displayName = "";
 var matchOriLength = 0;
 var cutInHalfCalled = false;
-
 
 class App extends StatefulWidget {
   _AppState createState() => _AppState();
@@ -55,6 +71,8 @@ class _AppState extends State<App> {
     futureKorea = fetchKorea();
   }
 
+//
+
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
@@ -70,9 +88,7 @@ class _AppState extends State<App> {
       child: MaterialApp(
         title: "Movie Night",
         debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-            primaryColor: Colors.grey[900],
-            scaffoldBackgroundColor: Colors.grey[900]),
+        theme: _kShrineTheme,
         home: AuthenticationWrapper(),
         routes: routes,
       ),
@@ -90,6 +106,7 @@ void getUserInfo() async {
     var userdata = response.data;
     userEmail = userdata["email"];
     userPair = userdata["pairName"];
+    displayName = userdata["name"];
     print('got user info ${userdata["email"]} in ${userdata["pairName"]}');
 
     if (matchesTitles.length == 0) {
@@ -262,50 +279,12 @@ Future<Response> fetchKorea() async {
   }
 }
 
-// Future<Response> fetchMatches() async {
-//   print("fetchMatches is Called");
-//   try {
-//     if (movieDataTest.length == 0) {
-//       var url =
-//           'https://asia-northeast1-movie-night-cc.cloudfunctions.net/getPairByPairName?pairName=testPairA';
-//       final response = await Dio().get(url);
-//       var data = response.data['matchMovieData'];
-//       if (response.statusCode == 200) {
-//         for (var i = 0; i < data.length; i++) {
-//           matches.add(data[i]);
-//           //    movieDataTest.add(movies[i]["nfid"]);
-//           matchesSynopsis.add(data[i]["synopsis"].replaceAll('&#39;', "'"));
-//           matchesYear.add(data[i]["year"]);
-//           matchesTitles.add(data[i]['title'].replaceAll('&#39;', "'"));
-//           matchesImage.add(data[i]["img"]);
-//           matchesNfid.add(data[i]["nfid"]);
-//         }
-//         return response;
-//       }
-//     }
-//   } on Exception catch (_) {
-//     print('error!');
-//   }
-// }
-
 Future<Response> futureMovie;
-// Future<Response> futurePair;
 Future<Response> futureGay;
 Future<Response> futureAnime;
 Future<Response> futureHorror;
 Future<Response> futureJapan;
 Future<Response> futureKorea;
-
-void getUserInfo() async {
-  var url =
-      'https://asia-northeast1-movie-night-cc.cloudfunctions.net/getUserByUserName?userName=$userName';
-  final response = await Dio().get(url);
-  var userdata = response.data;
-  userEmail = userdata["email"];
-  userPair = userdata["pairName"];
-  displayName = userdata["name"];
-  print('got user info $userdata');
-}
 
 class AuthenticationWrapper extends StatelessWidget {
   @override

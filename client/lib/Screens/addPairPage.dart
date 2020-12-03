@@ -19,37 +19,22 @@ class AddPairPage extends StatelessWidget {
       appBar: AppBar(title: Text("Add pair page")),
       body: Column(
         children: [
-          Text("Please enter you partner's username",
-              style: TextStyle(
-                  color: Colors.lightBlueAccent,
-                  height: 2.5,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 20)),
+          Text(
+            "Please enter you partner's username",
+          ),
           TextField(
-              controller: pairNameController,
-              decoration: InputDecoration(
-                fillColor: Colors.amberAccent,
-                labelText: "username",
-              ),
-              style: TextStyle(
-                  color: Colors.lightGreenAccent,
-                  height: 2.5,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 20)),
-          Text("Please enter the name for your couple",
-              style: TextStyle(
-                  color: Colors.lightBlueAccent,
-                  height: 2.5,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 20)),
+            controller: pairNameController,
+            decoration: InputDecoration(
+              labelText: "username",
+            ),
+          ),
+          Text(
+            "Please enter the name for your couple",
+          ),
           TextField(
-              controller: coupleNameController,
-              decoration: InputDecoration(labelText: "couple name"),
-              style: TextStyle(
-                  color: Colors.lightGreenAccent,
-                  height: 2.5,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 20)),
+            controller: coupleNameController,
+            decoration: InputDecoration(labelText: "couple name"),
+          ),
           RaisedButton(
             onPressed: () {
               // ignore: todo
