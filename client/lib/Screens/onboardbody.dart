@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 //import 'splashcontent.dart';
 import 'package:flutterPractice/sizeconfig.dart';
-import './sign_in.dart';
+import './signinscaffold.dart';
 
 class Body extends StatefulWidget {
   @override
@@ -12,16 +12,16 @@ class _BodyState extends State<Body> {
   int currentPage = 0;
   List<Map<String, String>> splashData = [
     {
-      "text": "Welcome to Movie Night, Let’s start!",
+    "text": "Welcome to Movie Night, Let’s start!",
+      "image": "assets/img/App-logo.png"
+    },
+    {
+    "text": "Find a movie you both LOVE",
+      "image": "assets/img/bored.jpg"
+    },
+    {
+    "text": "In a few swipes you will be ready for movie night",
       "image": "assets/img/Movienight1.png"
-    },
-    {
-      "text": "Find a movie you both LOVE",
-      "image": "assets/img/bored.jpg"
-    },
-    {
-      "text": "In a few swipes you will be ready for movie night",
-      "image": "assets/img/bored.jpg"
     },
   ];
   @override
@@ -56,12 +56,16 @@ class _BodyState extends State<Body> {
                     Spacer(),
                     
                     Spacer(flex: 3),
-                    RaisedButton(
-                      child: Text("Continue"),
+                    FlatButton(
+                      color: Colors.pink,
+                      child: Text("Continue", 
+                      style: TextStyle(
+            color: Colors.white
+                      ),),
                       onPressed: () {
                         Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => SignInPage()),
+                MaterialPageRoute(builder: (context) => SignInScreen()),
               );
                       },
                     ),
@@ -92,10 +96,9 @@ class SplashContent extends StatelessWidget {
       children: <Widget>[
         Spacer(),
         Text(
-          "MOVIE NIGHT",
+          "Movie Night",
           style: TextStyle(
             fontSize: getProportionateScreenWidth(36),
-            fontWeight: FontWeight.bold,
             color: Colors.pink
           ),
         ),
