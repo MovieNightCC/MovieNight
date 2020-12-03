@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'splashcontent.dart';
 import 'package:movie_night/sizeconfig.dart';
-import 'sign_in.dart';
+//import './sign_in.dart';
 
 class Body extends StatefulWidget {
   @override
@@ -16,8 +16,7 @@ class _BodyState extends State<Body> {
       "image": "/client/assets/img/bored.jpg"
     },
     {
-      "text":
-          "Find a movie you both LOVE",
+      "text": "Find a movie you both LOVE",
       "image": "/client/assets/img/bored.jpg"
     },
     {
@@ -55,19 +54,10 @@ class _BodyState extends State<Body> {
                 child: Column(
                   children: <Widget>[
                     Spacer(),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: List.generate(
-                        splashData.length,
-                        (index) => buildDot(index: index),
-                      ),
-                    ),
                     Spacer(flex: 3),
                     RaisedButton(
-                      text: "Continue",
-                      press: () {
-                        Navigator.pushNamed(context, SignUpPage.routeName);
-                      },
+                      child: Text("Continue"),
+                      onPressed: () {},
                     ),
                     Spacer(),
                   ],
@@ -79,3 +69,4 @@ class _BodyState extends State<Body> {
       ),
     );
   }
+}

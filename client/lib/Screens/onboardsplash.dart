@@ -2,10 +2,8 @@ import 'auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import './signup.dart';
-import 'package:url_launcher/url_launcher.dart';
 import '../sizeconfig.dart';
-import 'onboardbody.dart';'
-
+import 'onboardbody.dart';
 
 class SplashScreen extends StatelessWidget {
   static String routeName = "/splash";
@@ -18,6 +16,3 @@ class SplashScreen extends StatelessWidget {
     );
   }
 }
-
-
-
