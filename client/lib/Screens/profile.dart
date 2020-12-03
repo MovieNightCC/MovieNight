@@ -54,6 +54,14 @@ class _ProfileState extends State<Profile> {
                         image: AssetImage('assets/img/god.jpg'))),
               ),
               Container(
+                child: Text(displayName,
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 30.0,
+                        height: 3.0,
+                        fontWeight: FontWeight.bold)),
+              ),
+              Container(
                 child: Text(userName,
                     style: TextStyle(
                         color: Colors.white,

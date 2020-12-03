@@ -32,6 +32,7 @@ Future<void> main() async {
 var userName = "";
 var userPair = "";
 var userEmail = "";
+var displayName = "";
 
 class App extends StatefulWidget {
   _AppState createState() => _AppState();
@@ -264,6 +265,7 @@ void getUserInfo() async {
   var userdata = response.data;
   userEmail = userdata["email"];
   userPair = userdata["pairName"];
+  displayName = userdata["name"];
   print('got user info $userdata');
 }
 
