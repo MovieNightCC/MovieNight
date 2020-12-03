@@ -1,4 +1,10 @@
 //anime,horror,japan,korea
+List<Object> matches = [];
+List<String> matchesTitles = [];
+List<String> matchesSynopsis = [];
+List<String> matchesImage = [];
+List<int> matchesYear = [];
+List<int> matchesNfid = [];
 
 List<Object> gayList = [];
 List<int> gayNfid = [];
