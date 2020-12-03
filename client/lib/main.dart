@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutterPractice/screens/onboard.dart';
 import 'package:provider/provider.dart';
 import 'routes.dart';
 import 'dart:async';
@@ -14,9 +15,10 @@ import 'package:html/dom.dart' as htmlParser;
 import 'screens/swiper.dart';
 import 'screens/matches.dart';
 import 'screens/auth.dart';
-import 'screens/sign_in.dart';
+//import 'screens/sign_in.dart';
 import 'screens/rushMode.dart';
 import 'screens/movieArray.dart';
+
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -66,8 +68,9 @@ class _AppState extends State<App> {
         title: "Movie Night",
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
-            primaryColor: Colors.grey[900],
-            scaffoldBackgroundColor: Colors.grey[900]),
+            primaryColor: Colors.pink[400],
+            primarySwatch: Colors.blueAccent[500],
+            scaffoldBackgroundColor: Colors.black),
         home: AuthenticationWrapper(),
         routes: routes,
       ),
@@ -320,7 +323,7 @@ class AuthenticationWrapper extends StatelessWidget {
         routes: routes,
       );
     } else {
-      return SignInPage();
+      return OnBoardScreen();
     }
   }
 }
