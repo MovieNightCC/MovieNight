@@ -97,7 +97,13 @@ class _RushModeState extends State<RushMode> {
                               print('you liked: ${movieDataTest[count]}');
 
                               //request to firebase server to update likes
-                              updateUser(rushModeNfid[count], context);
+                              updateUser(
+                                  rushModeNfid[count],
+                                  context,
+                                  rushModeImages[count],
+                                  rushModeTitles[count],
+                                  rushModeYear[count],
+                                  rushModeSynopsis[count]);
                               count++;
                               // print(movieDataTest[index].runtimeType);
 
@@ -160,7 +166,7 @@ class TimerWidget extends StatefulWidget {
 
 class _TimerWidgetState extends State<TimerWidget> {
   Timer _timer;
-  int _start = 5;
+  int _start = 10;
 
   void startTimer() {
     if (_timer != null) {
@@ -193,7 +199,7 @@ class _TimerWidgetState extends State<TimerWidget> {
                         ],
                       ));
 
-              _start = 5;
+              _start = 10;
             } else {
               _start = _start - 1;
             }

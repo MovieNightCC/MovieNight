@@ -233,6 +233,14 @@ void filterPop(context) {
                           moviesSynopsis.add(animeSynopsis[i]);
                           movieYear.add(animeYear[i]);
                         }
+
+                        shuffle(
+                          movieDataTest,
+                          movieImagesTest,
+                          movieTitles,
+                          moviesSynopsis,
+                          movieYear,
+                        );
                       }
                       if (chosenGenre.contains("Horror/Thrillers")) {
                         for (var i = 0; i < horrorNfid.length; i++) {
@@ -242,6 +250,13 @@ void filterPop(context) {
                           moviesSynopsis.add(horrorSynopsis[i]);
                           movieYear.add(horrorYear[i]);
                         }
+                        shuffle(
+                          movieDataTest,
+                          movieImagesTest,
+                          movieTitles,
+                          moviesSynopsis,
+                          movieYear,
+                        );
                       }
                       if (chosenGenre.contains("Japanese Movies")) {
                         for (var i = 0; i < japanNfid.length; i++) {
@@ -251,6 +266,13 @@ void filterPop(context) {
                           moviesSynopsis.add(japanSynopsis[i]);
                           movieYear.add(japanYear[i]);
                         }
+                        shuffle(
+                          movieDataTest,
+                          movieImagesTest,
+                          movieTitles,
+                          moviesSynopsis,
+                          movieYear,
+                        );
                       }
                       if (chosenGenre.contains("Korean Movies")) {
                         for (var i = 0; i < koreaNfid.length; i++) {
@@ -260,15 +282,36 @@ void filterPop(context) {
                           moviesSynopsis.add(koreaSynopsis[i]);
                           movieYear.add(koreaYear[i]);
                         }
+                        shuffle(
+                          movieDataTest,
+                          movieImagesTest,
+                          movieTitles,
+                          moviesSynopsis,
+                          movieYear,
+                        );
                       }
                       if (chosenGenre.contains("LGBTQ")) {
-                        for (var i = 0; i < rushModeNfid.length; i++) {
-                          movieDataTest.add(rushModeNfid[i]);
-                          movieImagesTest.add(rushModeImages[i]);
-                          movieTitles.add(rushModeTitles[i]);
-                          moviesSynopsis.add(rushModeSynopsis[i]);
-                          movieYear.add(rushModeYear[i]);
+                        // for (var i = 0; i < rushModeNfid.length; i++) {
+                        //   movieDataTest.add(rushModeNfid[i]);
+                        //   movieImagesTest.add(rushModeImages[i]);
+                        //   movieTitles.add(rushModeTitles[i]);
+                        //   moviesSynopsis.add(rushModeSynopsis[i]);
+                        //   movieYear.add(rushModeYear[i]);
+                        // }
+                        for (var i = 0; i < gayNfid.length; i++) {
+                          movieDataTest.add(gayNfid[i]);
+                          movieImagesTest.add(gayImages[i]);
+                          movieTitles.add(gayTitles[i]);
+                          moviesSynopsis.add(gaySynopsis[i]);
+                          movieYear.add(gayYear[i]);
                         }
+                        shuffle(
+                          movieDataTest,
+                          movieImagesTest,
+                          movieTitles,
+                          moviesSynopsis,
+                          movieYear,
+                        );
                       }
                       Navigator.push(
                           context,

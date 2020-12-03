@@ -4,6 +4,7 @@ import './swiper.dart';
 import './matches.dart';
 import 'package:provider/provider.dart';
 import '../main.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class Profile extends StatefulWidget {
   @override
@@ -54,24 +55,39 @@ class _ProfileState extends State<Profile> {
               ),
               Container(
                 child: Text(userName,
-                    style:
-                        TextStyle(fontSize: 30.0, fontWeight: FontWeight.bold)),
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 30.0,
+                        height: 3.0,
+                        fontWeight: FontWeight.bold)),
               ),
               Container(
                 child: Text(userPair,
-                    style:
-                        TextStyle(fontSize: 30.0, fontWeight: FontWeight.bold)),
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 30.0,
+                        height: 2.0,
+                        fontWeight: FontWeight.bold)),
               ),
               Container(
                 child: Text(userEmail,
-                    style:
-                        TextStyle(fontSize: 30.0, fontWeight: FontWeight.bold)),
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 30.0,
+                        height: 2.0,
+                        fontWeight: FontWeight.bold)),
               ),
               RaisedButton(
                 onPressed: () {
                   context.read<AuthenticationService>().signOut();
                 },
-                child: Text("SIGN OUT"),
+                child: Text("Sign Out"),
+              ),
+              RaisedButton(
+                onPressed: () {
+                  launch('https://movie-night.flycricket.io/privacy.html');
+                },
+                child: Text("Privacy Policy"),
               ),
             ],
           ),

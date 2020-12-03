@@ -5,8 +5,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
 import 'routes.dart';
 import 'dart:async';
+import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
+import 'package:html/dom.dart' as htmlParser;
 
 /// screens
 import 'screens/swiper.dart';
@@ -64,8 +66,8 @@ class _AppState extends State<App> {
         title: "Movie Night",
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
-            primaryColor: Colors.white,
-            scaffoldBackgroundColor: Colors.grey[100]),
+            primaryColor: Colors.grey[900],
+            scaffoldBackgroundColor: Colors.grey[900]),
         home: AuthenticationWrapper(),
         routes: routes,
       ),
@@ -80,17 +82,18 @@ Future<Response> fetchMovie() async {
     if (response.statusCode == 200) {
       var movies = response.data;
       for (var i = 0; i < movies.length; i++) {
+        // htmlParser.DocumentFragment.html("&#8211;").text
+        // json.decode(utf8.decode(movies[i]["synopsis"]));
         moviesList.add(movies[i]);
         movieDataTest.add(movies[i]["nfid"]);
-        moviesSynopsis.add(movies[i]["synopsis"]);
+        // moviesSynopsis.add(json.decode(utf8.decode(movies[i]["synopsis"])
+        moviesSynopsis.add(movies[i]["synopsis"].replaceAll('&#39;', "'"));
         movieYear.add(movies[i]["year"]);
-        movieTitles.add(movies[i]['title']);
+        movieTitles.add(movies[i]['title'].replaceAll('&#39;', "'"));
         movieImagesTest.add(movies[i]["img"]);
       }
       return response;
     } else {
-      // If the server did not return a 200 OK response,
-      // then throw an exception.
       throw Exception('Failed to load album');
     }
   }
@@ -105,10 +108,16 @@ Future<Response> fetchGay() async {
       for (var i = 0; i < 31; i++) {
         rushModeList.add(movies[i]);
         rushModeNfid.add(movies[i]["nfid"]);
-        rushModeSynopsis.add(movies[i]["synopsis"]);
+        rushModeSynopsis.add(movies[i]["synopsis"].replaceAll('&#39;', "'"));
         rushModeYear.add(movies[i]["year"]);
-        rushModeTitles.add(movies[i]['title']);
+        rushModeTitles.add(movies[i]['title'].replaceAll('&#39;', "'"));
         rushModeImages.add(movies[i]["img"]);
+        gayList.add(movies[i]);
+        gayNfid.add(movies[i]["nfid"]);
+        gaySynopsis.add(movies[i]["synopsis"].replaceAll('&#39;', "'"));
+        gayYear.add(movies[i]["year"]);
+        gayTitles.add(movies[i]['title'].replaceAll('&#39;', "'"));
+        gayImages.add(movies[i]["img"]);
       }
       return response;
     } else {
@@ -131,8 +140,8 @@ Future<Response> fetchAnime() async {
         animeList.add(movies[i]);
         animeNfid.add(movies[i]["nfid"]);
         animeImages.add(movies[i]["img"]);
-        animeTitles.add(movies[i]['title']);
-        animeSynopsis.add(movies[i]["synopsis"]);
+        animeTitles.add(movies[i]['title'].replaceAll('&#39;', "'"));
+        animeSynopsis.add(movies[i]["synopsis"].replaceAll('&#39;', "'"));
         animeYear.add(movies[i]["year"]);
       }
       return response;
@@ -154,8 +163,8 @@ Future<Response> fetchHorror() async {
         horrorList.add(movies[i]);
         horrorNfid.add(movies[i]["nfid"]);
         horrorImages.add(movies[i]["img"]);
-        horrorTitles.add(movies[i]['title']);
-        horrorSynopsis.add(movies[i]["synopsis"]);
+        horrorTitles.add(movies[i]['title'].replaceAll('&#39;', "'"));
+        horrorSynopsis.add(movies[i]["synopsis"].replaceAll('&#39;', "'"));
         horrorYear.add(movies[i]["year"]);
       }
       return response;
@@ -177,8 +186,8 @@ Future<Response> fetchJapan() async {
         japanList.add(movies[i]);
         japanNfid.add(movies[i]["nfid"]);
         japanImages.add(movies[i]["img"]);
-        japanTitles.add(movies[i]['title']);
-        japanSynopsis.add(movies[i]["synopsis"]);
+        japanTitles.add(movies[i]['title'].replaceAll('&#39;', "'"));
+        japanSynopsis.add(movies[i]["synopsis"].replaceAll('&#39;', "'"));
         japanYear.add(movies[i]["year"]);
       }
       print("japanList length from main.dart ${japanList.length}");
@@ -201,8 +210,8 @@ Future<Response> fetchKorea() async {
         koreaList.add(movies[i]);
         koreaNfid.add(movies[i]["nfid"]);
         koreaImages.add(movies[i]["img"]);
-        koreaTitles.add(movies[i]['title']);
-        koreaSynopsis.add(movies[i]["synopsis"]);
+        koreaTitles.add(movies[i]['title'].replaceAll('&#39;', "'"));
+        koreaSynopsis.add(movies[i]["synopsis"].replaceAll('&#39;', "'"));
         koreaYear.add(movies[i]["year"]);
       }
       return response;
@@ -225,9 +234,9 @@ Future<Response> fetchPair() async {
         for (var i = 0; i < data.length; i++) {
           matches.add(data[i]);
           //    movieDataTest.add(movies[i]["nfid"]);
-          matchesSynopsis.add(data[i]["synopsis"]);
+          matchesSynopsis.add(data[i]["synopsis"].replaceAll('&#39;', "'"));
           matchesYear.add(data[i]["year"]);
-          matchesTitles.add(data[i]['title']);
+          matchesTitles.add(data[i]['title'].replaceAll('&#39;', "'"));
           matchesImage.add(data[i]["img"]);
           matchesNfid.add(data[i]["nfid"]);
         }
@@ -293,8 +302,13 @@ class AuthenticationWrapper extends StatelessWidget {
             print("future builder");
             print('${movieDataTest.length} how many movies I have');
             if (snapshot.hasData) {
-              shuffle(movieDataTest, movieImagesTest, movieTitles,
-                  moviesSynopsis, movieYear);
+              shuffle(
+                movieDataTest,
+                movieImagesTest,
+                movieTitles,
+                moviesSynopsis,
+                movieYear,
+              );
               return Swiper();
             } else if (snapshot.hasError) {
               return Text("${snapshot.error}");

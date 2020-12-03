@@ -31,8 +31,8 @@ class _AppState extends State<Swiper> {
       title: "Movie Night",
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-          primaryColor: Colors.white,
-          scaffoldBackgroundColor: Colors.grey[100]),
+          primaryColor: Colors.grey[900],
+          scaffoldBackgroundColor: Colors.grey[900]),
       home: Tinderswiper(),
     );
   }
@@ -51,18 +51,36 @@ List shuffle(List listA, List listB, List listC, List listD, List listE) {
     var temp3 = listC[i];
     var temp4 = listD[i];
     var temp5 = listE[i];
+    // var temp6 = listF[i];
+    // var temp7 = listG[i];
+    // var temp8 = listH[i];
+    // var temp9 = listI[i];
+    // var temp10 = listJ[i];
+    // var temp11 = listK[i];
 
     listA[i] = listA[n];
     listB[i] = listB[n];
     listC[i] = listC[n];
     listD[i] = listD[n];
     listE[i] = listE[n];
+    // listF[i] = listF[n];
+    // listG[i] = listG[n];
+    // listH[i] = listH[n];
+    // listI[i] = listI[n];
+    // listJ[i] = listJ[n];
+    // listK[i] = listK[n];
 
     listA[n] = temp;
     listB[n] = temp2;
     listC[n] = temp3;
     listD[n] = temp4;
     listE[n] = temp5;
+    // listF[n] = temp6;
+    // listG[n] = temp7;
+    // listH[n] = temp8;
+    // listI[n] = temp9;
+    // listJ[n] = temp10;
+    // listK[n] = temp11;
   }
   return listA;
 }
@@ -75,12 +93,20 @@ List<String> moviesSynopsis = [];
 List<int> movieYear = [];
 var counter = 0;
 
-void updateUser(arrOfNfid, context) async {
+void updateUser(arrOfNfid, context, image, title, year, synopsis) async {
   print(userName);
   var response = await http.get(
       "https://asia-northeast1-movie-night-cc.cloudfunctions.net/updateUserLikes?userName=$userName&movieArr=[$arrOfNfid]");
   print(response.body);
   if (response.body == "match!") {
+    //push to matches array
+
+    matchesTitles.add(title);
+    matchesSynopsis.add(synopsis);
+    matchesImage.add(image);
+    matchesYear.add(year);
+    matchesNfid.add(arrOfNfid);
+
     showDialog(
         context: context,
         builder: (_) => new AlertDialog(
@@ -153,7 +179,13 @@ class _TinderswiperState extends State<Tinderswiper>
                           print('you liked: ${movieDataTest[count]}');
 
                           //request to firebase server to update likes
-                          updateUser(movieDataTest[count], context);
+                          updateUser(
+                              movieDataTest[count],
+                              context,
+                              movieImagesTest[count],
+                              movieTitles[count],
+                              movieYear[count],
+                              moviesSynopsis[count]);
                           count++;
                           // print(movieDataTest[index].runtimeType);
 
@@ -205,7 +237,7 @@ class _TinderswiperState extends State<Tinderswiper>
               heroTag: null,
               onPressed: () => filterPop(context),
               tooltip: 'Increment',
-              child: Icon(Icons.filter_list),
+              child: Icon(Icons.swap_calls, size: 40),
               elevation: 2.0,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10)),
