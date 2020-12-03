@@ -46,7 +46,10 @@ class SignUpPage extends StatelessWidget {
 
               _postUser(
                   emailController.text.trim(), nameController.text.trim());
-              return Swiper();
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => Swiper(), maintainState: true));
             },
             child: Text("Sign Up"),
           ),
@@ -64,11 +67,14 @@ class SignUpPage extends StatelessWidget {
 
 void _postUser(String email, String name) async {
   //convert username here eviljose@gmail.com => eviljose
+  var userName = email.substring(0, email.indexOf("@"));
   Map<String, String> queryParams = {
-    'userName': email.substring(0, email.indexOf("@")),
+    'userName': userName,
     'name': name,
     'email': email,
   };
+
+  print(queryParams);
   var uri = Uri.https("asia-northeast1-movie-night-cc.cloudfunctions.net",
       "/createUser", queryParams);
 

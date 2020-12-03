@@ -100,7 +100,9 @@ class _ProfileState extends State<Profile> {
                   Icons.edit,
                   color: Colors.white,
                 ),
-                onPressed: () {},
+                onPressed: () {
+                  print(userEmail);
+                },
               ),
             ),
           )
