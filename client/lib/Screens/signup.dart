@@ -4,6 +4,7 @@ import 'auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
+import 'package:url_launcher/url_launcher.dart';
 
 class SignUpPage extends StatelessWidget {
   final TextEditingController nameController = TextEditingController();
@@ -48,7 +49,13 @@ class SignUpPage extends StatelessWidget {
               return Swiper();
             },
             child: Text("Sign Up"),
-          )
+          ),
+          RaisedButton(
+            onPressed: () {
+              launch('https://movie-night.flycricket.io/privacy.html');
+            },
+            child: Text("Privacy Policy"),
+          ),
         ],
       ),
     );

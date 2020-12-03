@@ -28,6 +28,26 @@ export const testDelete = functions
     response.send("deleted!");
   });
 
+//Deleting Stuffs 
+export const deleteMatch = functions
+.region("asia-northeast1")
+.https.onRequest(async (request: any, response) => {
+  const netflixId = JSON.parse(request.query.nfid);
+  //Adding to user
+  const pairRef = db.collection("pairs").doc(request.query.pairName);
+  const pairResult = await pairRef.get();
+  const pairData = pairResult.data();
+  if (pairData) {
+    const oldMatches = pairData.matchMovieData;
+    await pairRef.update({
+      matchMovieData: oldMatches.filter((one: any)=> one.nfid !== netflixId),
+      matches: admin.firestore.FieldValue.arrayRemove(netflixId),
+      // posts.filter(post => post.id !== deleteId);
+    });
+    response.send("deleted!");
+  }
+  response.send("error!");
+});
 //Getting Stuffs
 
 //Get all Users
@@ -44,11 +64,58 @@ export const getAllUsers = functions
 export const getAllMovies = functions
   .region("asia-northeast1")
   .https.onRequest(async (request: any, response) => {
-    const moviesRef = db.collection("movies");
+    const moviesRef = db.collection("allMovies");
     const result = await moviesRef.get();
     const data = result.docs.map((doc) => doc.data());
     response.json(data);
   });
+
+  export const getGayMovies = functions
+  .region("asia-northeast1")
+  .https.onRequest(async (request: any, response) => {
+    const moviesRef = db.collection("gayLesbianMovies");
+    const result = await moviesRef.get();
+    const data = result.docs.map((doc) => doc.data());
+    response.json(data);
+  });
+
+  export const getAnimeMovies = functions
+  .region("asia-northeast1")
+  .https.onRequest(async (request: any, response) => {
+    const moviesRef = db.collection("animeMovies");
+    const result = await moviesRef.get();
+    const data = result.docs.map((doc) => doc.data());
+    response.json(data);
+  });
+
+  export const getHorrorMovies = functions
+  .region("asia-northeast1")
+  .https.onRequest(async (request: any, response) => {
+    const moviesRef = db.collection("horrorMovies");
+    const result = await moviesRef.get();
+    const data = result.docs.map((doc) => doc.data());
+    response.json(data);
+  });
+
+  export const getJapanMovies = functions
+  .region("asia-northeast1")
+  .https.onRequest(async (request: any, response) => {
+    const moviesRef = db.collection("japanMovies");
+    const result = await moviesRef.get();
+    const data = result.docs.map((doc) => doc.data());
+    response.json(data);
+  });
+
+
+  export const getKoreaMovies = functions
+  .region("asia-northeast1")
+  .https.onRequest(async (request: any, response) => {
+    const moviesRef = db.collection("koreanMovies");
+    const result = await moviesRef.get();
+    const data = result.docs.map((doc) => doc.data());
+    response.json(data);
+  });
+
 
 //Get User Info by User Name
 //query ?userName=<username>
@@ -180,6 +247,9 @@ export const updateUserLikes = functions
         const pairResult = await pairRef.get();
         const pairData = pairResult.data();
         arr.map(async (netflixId: Number) => {
+          const movieRef = db.collection("allMoives").doc(String(netflixId));
+          const movieResult = await movieRef.get();
+          const movieData = movieResult.data();
           //check if movie already exists in like
           if (pairData) {
             if (pairData.likes.includes(netflixId)) {
@@ -187,6 +257,7 @@ export const updateUserLikes = functions
               await pairRef.update({
                 matches: admin.firestore.FieldValue.arrayUnion(netflixId),
                 likes: admin.firestore.FieldValue.arrayRemove(netflixId),
+                matchMovieData: admin.firestore.FieldValue.arrayUnion(movieData),
               });
               response.send("match!");
             } else {

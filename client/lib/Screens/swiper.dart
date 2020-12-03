@@ -5,6 +5,7 @@ import './tinderCard.dart';
 import './matches.dart';
 import './profile.dart';
 import './movieInfo.dart';
+import './rushMode.dart';
 import 'dart:math';
 import 'dart:async';
 import 'package:http/http.dart' as http;
@@ -30,8 +31,8 @@ class _AppState extends State<Swiper> {
       title: "Movie Night",
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-          primaryColor: Colors.white,
-          scaffoldBackgroundColor: Colors.grey[100]),
+          primaryColor: Colors.grey[900],
+          scaffoldBackgroundColor: Colors.grey[900]),
       home: Tinderswiper(),
     );
   }
@@ -50,18 +51,36 @@ List shuffle(List listA, List listB, List listC, List listD, List listE) {
     var temp3 = listC[i];
     var temp4 = listD[i];
     var temp5 = listE[i];
+    // var temp6 = listF[i];
+    // var temp7 = listG[i];
+    // var temp8 = listH[i];
+    // var temp9 = listI[i];
+    // var temp10 = listJ[i];
+    // var temp11 = listK[i];
 
     listA[i] = listA[n];
     listB[i] = listB[n];
     listC[i] = listC[n];
     listD[i] = listD[n];
     listE[i] = listE[n];
+    // listF[i] = listF[n];
+    // listG[i] = listG[n];
+    // listH[i] = listH[n];
+    // listI[i] = listI[n];
+    // listJ[i] = listJ[n];
+    // listK[i] = listK[n];
 
     listA[n] = temp;
     listB[n] = temp2;
     listC[n] = temp3;
     listD[n] = temp4;
     listE[n] = temp5;
+    // listF[n] = temp6;
+    // listG[n] = temp7;
+    // listH[n] = temp8;
+    // listI[n] = temp9;
+    // listJ[n] = temp10;
+    // listK[n] = temp11;
   }
   return listA;
 }
@@ -73,14 +92,21 @@ List<String> movieTitles = [];
 List<String> moviesSynopsis = [];
 List<int> movieYear = [];
 var counter = 0;
-List<String> chosenGenre = [];
 
-void _updateUser(arrOfNfid, context) async {
+void updateUser(arrOfNfid, context, image, title, year, synopsis) async {
   print(userName);
   var response = await http.get(
       "https://asia-northeast1-movie-night-cc.cloudfunctions.net/updateUserLikes?userName=$userName&movieArr=[$arrOfNfid]");
   print(response.body);
   if (response.body == "match!") {
+    //push to matches array
+
+    matchesTitles.add(title);
+    matchesSynopsis.add(synopsis);
+    matchesImage.add(image);
+    matchesYear.add(year);
+    matchesNfid.add(arrOfNfid);
+
     showDialog(
         context: context,
         builder: (_) => new AlertDialog(
@@ -135,8 +161,6 @@ class _TinderswiperState extends State<Tinderswiper>
                       minWidth: MediaQuery.of(context).size.width * 0.899,
                       minHeight: MediaQuery.of(context).size.width * 1.599,
                       cardBuilder: (context, index) {
-                        print('index is $index');
-                        // index = count;
                         return Card(
                           child: Container(
                               // padding: EdgeInsets.all(20.0),
@@ -155,7 +179,13 @@ class _TinderswiperState extends State<Tinderswiper>
                           print('you liked: ${movieDataTest[count]}');
 
                           //request to firebase server to update likes
-                          _updateUser(movieDataTest[count], context);
+                          updateUser(
+                              movieDataTest[count],
+                              context,
+                              movieImagesTest[count],
+                              movieTitles[count],
+                              movieYear[count],
+                              moviesSynopsis[count]);
                           count++;
                           // print(movieDataTest[index].runtimeType);
 
@@ -166,7 +196,6 @@ class _TinderswiperState extends State<Tinderswiper>
                           //when hated
                           print('you hate: ${movieDataTest[count]}');
                           count++;
-                          print(chosenGenre);
                         }
                       },
                     ),
@@ -186,6 +215,12 @@ class _TinderswiperState extends State<Tinderswiper>
               heroTag: null,
               onPressed: () {
                 print('pressed');
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => RushMode(),
+                      maintainState: true,
+                    ));
               },
               tooltip: 'Increment',
               child: Icon(Icons.flash_on_sharp),
@@ -202,7 +237,7 @@ class _TinderswiperState extends State<Tinderswiper>
               heroTag: null,
               onPressed: () => filterPop(context),
               tooltip: 'Increment',
-              child: Icon(Icons.filter_list),
+              child: Icon(Icons.swap_calls, size: 40),
               elevation: 2.0,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10)),

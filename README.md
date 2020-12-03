@@ -1,4 +1,9 @@
 # MovieNight
+
+https://movie-night.flycricket.io/privacy.html 
+^^^^^^
+Alex this is the privacy policy link
+
 Find a movie with your friend or partner
 Jack
 

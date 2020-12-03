@@ -1,18 +1,13 @@
 import 'package:flutter/material.dart';
+import './swiper.dart';
+import './movieArray.dart';
+import './rushMode.dart';
+import 'package:flutter_phoenix/flutter_phoenix.dart';
 
 Map<String, bool> values = {
   'foo': true,
   'bar': false,
 };
-
-List<String> _texts = [
-  "InduceSmile.com",
-  "Flutter.io",
-  "google.com",
-  "youtube.com",
-  "yahoo.com",
-  "gmail.com"
-];
 
 List<bool> isChecked;
 bool clickedAll = false;
@@ -26,6 +21,8 @@ bool clickedMartial = false;
 bool clickedMusic = false;
 bool clickedScifi = false;
 bool clickedSuperhero = false;
+
+List<String> chosenGenre = [];
 
 void filterPop(context) {
   showDialog(
@@ -52,6 +49,13 @@ void filterPop(context) {
                   onChanged: (val) {
                     setState(() {
                       clickedAnime = val;
+                      if (clickedAnime) {
+                        chosenGenre.add('Anime');
+                      }
+                      if (!clickedAnime) {
+                        chosenGenre.remove('Anime');
+                      }
+                      print('$chosenGenre IAM GENRE ARRAY');
                     });
                   },
                 ),
@@ -61,6 +65,13 @@ void filterPop(context) {
                   onChanged: (val) {
                     setState(() {
                       clickedLGBT = val;
+                      if (clickedLGBT) {
+                        chosenGenre.add('LGBTQ');
+                      }
+                      if (!clickedLGBT) {
+                        chosenGenre.remove('LGBTQ');
+                      }
+                      print('$chosenGenre IAM GENRE ARRAY');
                     });
                   },
                 ),
@@ -70,24 +81,45 @@ void filterPop(context) {
                   onChanged: (val) {
                     setState(() {
                       clickedHorror = val;
+                      if (clickedHorror) {
+                        chosenGenre.add('Horror/Thrillers');
+                      }
+                      if (!clickedHorror) {
+                        chosenGenre.remove('Horror/Thrillers');
+                      }
+                      print('$chosenGenre IAM GENRE ARRAY');
                     });
                   },
                 ),
-                CheckboxListTile(
-                  title: Text("Independent Films"),
-                  value: clickedIndie,
-                  onChanged: (val) {
-                    setState(() {
-                      clickedIndie = val;
-                    });
-                  },
-                ),
+                // CheckboxListTile(
+                //   title: Text("Independent Films"),
+                //   value: clickedIndie,
+                //   onChanged: (val) {
+                //     setState(() {
+                //       clickedIndie = val;
+                //       if (clickedIndie) {
+                //         chosenGenre.add('Independent Films');
+                //       }
+                //       if (!clickedIndie) {
+                //         chosenGenre.remove('Independent Films');
+                //       }
+                //       print('$chosenGenre IAM GENRE ARRAY');
+                //     });
+                //   },
+                // ),
                 CheckboxListTile(
                   title: Text("Japanese Movies"),
                   value: clickedJapan,
                   onChanged: (val) {
                     setState(() {
                       clickedJapan = val;
+                      if (clickedJapan) {
+                        chosenGenre.add('Japanese Movies');
+                      }
+                      if (!clickedJapan) {
+                        chosenGenre.remove('Japanese Movies');
+                      }
+                      print('$chosenGenre IAM GENRE ARRAY');
                     });
                   },
                 ),
@@ -97,52 +129,197 @@ void filterPop(context) {
                   onChanged: (val) {
                     setState(() {
                       clickedKorea = val;
+                      if (clickedKorea) {
+                        chosenGenre.add('Korean Movies');
+                      }
+                      if (!clickedKorea) {
+                        chosenGenre.remove('Korean Movies');
+                      }
+                      print('$chosenGenre IAM GENRE ARRAY');
                     });
                   },
                 ),
-                CheckboxListTile(
-                  title: Text("Martial Arts Movies"),
-                  value: clickedMartial,
-                  onChanged: (val) {
-                    setState(() {
-                      clickedMartial = val;
-                    });
-                  },
-                ),
-                CheckboxListTile(
-                  title: Text("Music-related Movies"),
-                  value: clickedMusic,
-                  onChanged: (val) {
-                    setState(() {
-                      clickedMusic = val;
-                    });
-                  },
-                ),
-                CheckboxListTile(
-                  title: Text("Sci-fi Movies"),
-                  value: clickedScifi,
-                  onChanged: (val) {
-                    setState(() {
-                      clickedScifi = val;
-                    });
-                  },
-                ),
-                CheckboxListTile(
-                  title: Text("Superheroes Movies"),
-                  value: clickedSuperhero,
-                  onChanged: (val) {
-                    setState(() {
-                      clickedSuperhero = val;
-                    });
-                  },
-                )
+                // CheckboxListTile(
+                //   title: Text("Martial Arts Movies"),
+                //   value: clickedMartial,
+                //   onChanged: (val) {
+                //     setState(() {
+                //       clickedMartial = val;
+                //       if (clickedMartial) {
+                //         chosenGenre.add('Martial Arts Movies');
+                //       }
+                //       if (!clickedMartial) {
+                //         chosenGenre.remove('Martial Arts Movies');
+                //       }
+                //       print('$chosenGenre IAM GENRE ARRAY');
+                //     });
+                //   },
+                // ),
+                // CheckboxListTile(
+                //   title: Text("Music-related Movies"),
+                //   value: clickedMusic,
+                //   onChanged: (val) {
+                //     setState(() {
+                //       clickedMusic = val;
+                //       if (clickedMusic) {
+                //         chosenGenre.add('Music-related Movies');
+                //       }
+                //       if (!clickedMusic) {
+                //         chosenGenre.remove('Music-related Movies');
+                //       }
+                //       print('$chosenGenre IAM GENRE ARRAY');
+                //     });
+                //   },
+                // ),
+                // CheckboxListTile(
+                //   title: Text("Sci-fi Movies"),
+                //   value: clickedScifi,
+                //   onChanged: (val) {
+                //     setState(() {
+                //       clickedScifi = val;
+                //       if (clickedScifi) {
+                //         chosenGenre.add('Sci-fi Movies');
+                //       }
+                //       if (!clickedScifi) {
+                //         chosenGenre.remove('Sci-fi Movies');
+                //       }
+                //       print('$chosenGenre IAM GENRE ARRAY');
+                //     });
+                //   },
+                // ),
+                // CheckboxListTile(
+                //   title: Text("Superheroes Movies"),
+                //   value: clickedSuperhero,
+                //   onChanged: (val) {
+                //     setState(() {
+                //       clickedSuperhero = val;
+                //       if (clickedSuperhero) {
+                //         chosenGenre.add('Superheroes Movies');
+                //       }
+                //       if (!clickedSuperhero) {
+                //         chosenGenre.remove('Superheroes Movies');
+                //       }
+                //       print('$chosenGenre IAM GENRE ARRAY');
+                //     });
+                //   },
+                // )
               ]),
             ),
             actions: <Widget>[
               new FlatButton(
-                child: const Text("Exit"),
-                onPressed: () => Navigator.pop(context),
-              ),
+                  child: const Text("Confirm"),
+                  onPressed: () {
+                    if (chosenGenre.length == 0) {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => Swiper(),
+                              maintainState: true));
+                    } else if (clickedAll == true) {
+                      Phoenix.rebirth(context);
+                      //placeholder for All Movies
+                    } else {
+                      movieDataTest = [];
+                      movieImagesTest = [];
+                      movieTitles = [];
+                      moviesSynopsis = [];
+                      movieYear = [];
+                      // List<String> chosenGenre = [];
+                      if (chosenGenre.contains("Anime")) {
+                        for (var i = 0; i < animeNfid.length; i++) {
+                          movieDataTest.add(animeNfid[i]);
+                          movieImagesTest.add(animeImages[i]);
+                          movieTitles.add(animeTitles[i]);
+                          moviesSynopsis.add(animeSynopsis[i]);
+                          movieYear.add(animeYear[i]);
+                        }
+
+                        shuffle(
+                          movieDataTest,
+                          movieImagesTest,
+                          movieTitles,
+                          moviesSynopsis,
+                          movieYear,
+                        );
+                      }
+                      if (chosenGenre.contains("Horror/Thrillers")) {
+                        for (var i = 0; i < horrorNfid.length; i++) {
+                          movieDataTest.add(horrorNfid[i]);
+                          movieImagesTest.add(horrorImages[i]);
+                          movieTitles.add(horrorTitles[i]);
+                          moviesSynopsis.add(horrorSynopsis[i]);
+                          movieYear.add(horrorYear[i]);
+                        }
+                        shuffle(
+                          movieDataTest,
+                          movieImagesTest,
+                          movieTitles,
+                          moviesSynopsis,
+                          movieYear,
+                        );
+                      }
+                      if (chosenGenre.contains("Japanese Movies")) {
+                        for (var i = 0; i < japanNfid.length; i++) {
+                          movieDataTest.add(japanNfid[i]);
+                          movieImagesTest.add(japanImages[i]);
+                          movieTitles.add(japanTitles[i]);
+                          moviesSynopsis.add(japanSynopsis[i]);
+                          movieYear.add(japanYear[i]);
+                        }
+                        shuffle(
+                          movieDataTest,
+                          movieImagesTest,
+                          movieTitles,
+                          moviesSynopsis,
+                          movieYear,
+                        );
+                      }
+                      if (chosenGenre.contains("Korean Movies")) {
+                        for (var i = 0; i < koreaNfid.length; i++) {
+                          movieDataTest.add(koreaNfid[i]);
+                          movieImagesTest.add(koreaImages[i]);
+                          movieTitles.add(koreaTitles[i]);
+                          moviesSynopsis.add(koreaSynopsis[i]);
+                          movieYear.add(koreaYear[i]);
+                        }
+                        shuffle(
+                          movieDataTest,
+                          movieImagesTest,
+                          movieTitles,
+                          moviesSynopsis,
+                          movieYear,
+                        );
+                      }
+                      if (chosenGenre.contains("LGBTQ")) {
+                        // for (var i = 0; i < rushModeNfid.length; i++) {
+                        //   movieDataTest.add(rushModeNfid[i]);
+                        //   movieImagesTest.add(rushModeImages[i]);
+                        //   movieTitles.add(rushModeTitles[i]);
+                        //   moviesSynopsis.add(rushModeSynopsis[i]);
+                        //   movieYear.add(rushModeYear[i]);
+                        // }
+                        for (var i = 0; i < gayNfid.length; i++) {
+                          movieDataTest.add(gayNfid[i]);
+                          movieImagesTest.add(gayImages[i]);
+                          movieTitles.add(gayTitles[i]);
+                          moviesSynopsis.add(gaySynopsis[i]);
+                          movieYear.add(gayYear[i]);
+                        }
+                        shuffle(
+                          movieDataTest,
+                          movieImagesTest,
+                          movieTitles,
+                          moviesSynopsis,
+                          movieYear,
+                        );
+                      }
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => Swiper(),
+                              maintainState: true));
+                    }
+                  }),
             ],
           );
         });
