@@ -85,6 +85,7 @@ class _ProfileState extends State<Profile> {
               ),
               RaisedButton(
                 onPressed: () {
+                  print('$userEmail tried to retrieve email');
                   launch('https://movie-night.flycricket.io/privacy.html');
                 },
                 child: Text("Privacy Policy"),
@@ -100,9 +101,7 @@ class _ProfileState extends State<Profile> {
                   Icons.edit,
                   color: Colors.white,
                 ),
-                onPressed: () {
-                  print(userEmail);
-                },
+                onPressed: () {},
               ),
             ),
           )

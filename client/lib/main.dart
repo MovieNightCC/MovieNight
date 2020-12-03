@@ -278,6 +278,7 @@ class AuthenticationWrapper extends StatelessWidget {
           firebaseUser.email.substring(0, firebaseUser.email.indexOf("@"));
       //put the function here
       getUserInfo();
+      print('$userEmail');
       return MaterialApp(
         title: "Movie Night",
         debugShowCheckedModeBanner: false,

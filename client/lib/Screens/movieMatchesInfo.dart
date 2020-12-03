@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutterPractice/main.dart';
+
 import './matches.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:dio/dio.dart';
+
 import 'package:http/http.dart' as http;
 
 class MatchInfo extends StatefulWidget {
