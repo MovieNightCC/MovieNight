@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import './sign_in.dart';
 import 'auth.dart';
 import './swiper.dart';
 import './matches.dart';
@@ -88,6 +89,8 @@ class _ProfileState extends State<Profile> {
               RaisedButton(
                 onPressed: () {
                   context.read<AuthenticationService>().signOut();
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => SignInPage()));
                 },
                 child: Text("Sign Out"),
               ),
