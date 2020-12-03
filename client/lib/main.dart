@@ -32,8 +32,10 @@ Future<void> main() async {
 var userName = "";
 var userPair = "";
 var userEmail = "";
+var displayName = "";
 var matchOriLength = 0;
 var cutInHalfCalled = false;
+
 
 class App extends StatefulWidget {
   _AppState createState() => _AppState();
@@ -294,6 +296,17 @@ Future<Response> futureHorror;
 Future<Response> futureJapan;
 Future<Response> futureKorea;
 
+void getUserInfo() async {
+  var url =
+      'https://asia-northeast1-movie-night-cc.cloudfunctions.net/getUserByUserName?userName=$userName';
+  final response = await Dio().get(url);
+  var userdata = response.data;
+  userEmail = userdata["email"];
+  userPair = userdata["pairName"];
+  displayName = userdata["name"];
+  print('got user info $userdata');
+}
+
 class AuthenticationWrapper extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -304,6 +317,7 @@ class AuthenticationWrapper extends StatelessWidget {
           firebaseUser.email.substring(0, firebaseUser.email.indexOf("@"));
       //put the function here
       getUserInfo();
+      print('$userEmail');
       return MaterialApp(
         title: "Movie Night",
         debugShowCheckedModeBanner: false,
@@ -311,13 +325,8 @@ class AuthenticationWrapper extends StatelessWidget {
             primaryColor: Colors.white,
             scaffoldBackgroundColor: Colors.grey[100]),
         home: FutureBuilder(
-          // futureAnime = fetchAnime();
-          // futureHorror = fetchHorror();
-          // futureJapan = fetchJapan();
-          // futureKorea = fetchKorea();
           future: Future.wait([
             futureMovie,
-            // futurePair,
             futureGay,
             futureAnime,
             futureHorror,

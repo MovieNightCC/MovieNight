@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:movie_night/screens/addPairPage.dart';
+import './sign_in.dart';
 import 'auth.dart';
 import './swiper.dart';
 import './matches.dart';
@@ -54,10 +56,18 @@ class _ProfileState extends State<Profile> {
                         image: AssetImage('assets/img/god.jpg'))),
               ),
               Container(
+                child: Text(displayName,
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 14.0,
+                        height: 3.0,
+                        fontWeight: FontWeight.bold)),
+              ),
+              Container(
                 child: Text(userName,
                     style: TextStyle(
                         color: Colors.white,
-                        fontSize: 30.0,
+                        fontSize: 14.0,
                         height: 3.0,
                         fontWeight: FontWeight.bold)),
               ),
@@ -65,7 +75,7 @@ class _ProfileState extends State<Profile> {
                 child: Text(userPair,
                     style: TextStyle(
                         color: Colors.white,
-                        fontSize: 30.0,
+                        fontSize: 14.0,
                         height: 2.0,
                         fontWeight: FontWeight.bold)),
               ),
@@ -73,18 +83,28 @@ class _ProfileState extends State<Profile> {
                 child: Text(userEmail,
                     style: TextStyle(
                         color: Colors.white,
-                        fontSize: 30.0,
+                        fontSize: 14.0,
                         height: 2.0,
                         fontWeight: FontWeight.bold)),
               ),
               RaisedButton(
                 onPressed: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => AddPairPage()));
+                },
+                child: Text("Add a partner"),
+              ),
+              RaisedButton(
+                onPressed: () {
                   context.read<AuthenticationService>().signOut();
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => SignInPage()));
                 },
                 child: Text("Sign Out"),
               ),
               RaisedButton(
                 onPressed: () {
+                  print('$userEmail tried to retrieve email');
                   launch('https://movie-night.flycricket.io/privacy.html');
                 },
                 child: Text("Privacy Policy"),

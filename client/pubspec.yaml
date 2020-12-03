@@ -1,5 +1,5 @@
-name: flutterPractice
-description: A new Flutter project.
+name: movie_night
+description: Find a movie to watch with your partner tonight
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `pub publish`. This is preferred for private packages.
@@ -30,10 +30,8 @@ dependencies:
   dio: ^3.0.10
   flutter_svg: ^0.18.0
   flushbar: ^1.5.0
-  # multi_select_flutter: ^3.1.2
-  cloud_functions:
-    "^0.7.1"
-    # flutter_multiselect: 0.0.1
+
+  cloud_functions: "^0.7.1"
   smart_select: ^4.3.2
   url_launcher: ^5.7.10
   http: ^0.12.2

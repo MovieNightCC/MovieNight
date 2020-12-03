@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
-import 'package:flutterPractice/screens/movieArray.dart';
 import './tinderCard.dart';
 import './matches.dart';
 import './profile.dart';
