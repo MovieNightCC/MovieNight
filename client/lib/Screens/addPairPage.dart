@@ -72,6 +72,15 @@ class AddPairPage extends StatelessWidget {
               }
             },
             child: Text("Add Partner"),
+          ),
+          RaisedButton(
+            onPressed: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => Profile(), maintainState: true));
+            },
+            child: Text("Skip do not add a partner for now"),
           )
         ],
       ),
