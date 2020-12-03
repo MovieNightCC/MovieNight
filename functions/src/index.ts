@@ -9,6 +9,23 @@ const unirest = require("unirest");
 admin.initializeApp();
 const db = admin.firestore();
 
+interface oneMovie {
+  top250?: Number;
+  imdbrating?: Number;
+  title?: String; //by netflexId
+  avgrating?: Number;
+  top250tv?: Number;
+  poster?: String;
+  titledate?: String;
+  synopsis?: String;
+  year?: Number;
+  img?: String;
+  nfid?: Number;
+  runtime?: Number;
+  id?: Number;
+  clist: String;
+  vtype: String;
+}
 // // Start writing Firebase Functions
 // // https://firebase.google.com/docs/functions/typescript
 //
@@ -28,26 +45,31 @@ export const testDelete = functions
     response.send("deleted!");
   });
 
-//Deleting Stuffs 
+//Deleting Stuffs
+//params: pairName, nfid
 export const deleteMatch = functions
-.region("asia-northeast1")
-.https.onRequest(async (request: any, response) => {
-  const netflixId = JSON.parse(request.query.nfid);
-  //Adding to user
-  const pairRef = db.collection("pairs").doc(request.query.pairName);
-  const pairResult = await pairRef.get();
-  const pairData = pairResult.data();
-  if (pairData) {
-    const oldMatches = pairData.matchMovieData;
-    await pairRef.update({
-      matchMovieData: oldMatches.filter((one: any)=> one.nfid !== netflixId),
-      matches: admin.firestore.FieldValue.arrayRemove(netflixId),
-      // posts.filter(post => post.id !== deleteId);
-    });
-    response.send("deleted!");
-  }
-  response.send("error!");
-});
+  .region("asia-northeast1")
+  .https.onRequest(async (request: any, response) => {
+    try {
+      const netflixId = Number(request.query.nfid);
+      //Adding to user
+      const pairRef = db.collection("pairs").doc(request.query.pairName);
+      const pairResult = await pairRef.get();
+      const pairData = pairResult.data();
+      if (pairData) {
+        await pairRef.update({
+          matchMovieData: pairData.matchMovieData.filter(
+            (movie: any) => movie.nfid !== netflixId
+          ),
+          matches: admin.firestore.FieldValue.arrayRemove(netflixId),
+        });
+
+        response.send("deleted!");
+      }
+    } catch {
+      response.send("error!");
+    }
+  });
 //Getting Stuffs
 
 //Get all Users
@@ -70,7 +92,7 @@ export const getAllMovies = functions
     response.json(data);
   });
 
-  export const getGayMovies = functions
+export const getGayMovies = functions
   .region("asia-northeast1")
   .https.onRequest(async (request: any, response) => {
     const moviesRef = db.collection("gayLesbianMovies");
@@ -79,7 +101,7 @@ export const getAllMovies = functions
     response.json(data);
   });
 
-  export const getAnimeMovies = functions
+export const getAnimeMovies = functions
   .region("asia-northeast1")
   .https.onRequest(async (request: any, response) => {
     const moviesRef = db.collection("animeMovies");
@@ -88,7 +110,7 @@ export const getAllMovies = functions
     response.json(data);
   });
 
-  export const getHorrorMovies = functions
+export const getHorrorMovies = functions
   .region("asia-northeast1")
   .https.onRequest(async (request: any, response) => {
     const moviesRef = db.collection("horrorMovies");
@@ -97,7 +119,7 @@ export const getAllMovies = functions
     response.json(data);
   });
 
-  export const getJapanMovies = functions
+export const getJapanMovies = functions
   .region("asia-northeast1")
   .https.onRequest(async (request: any, response) => {
     const moviesRef = db.collection("japanMovies");
@@ -106,8 +128,7 @@ export const getAllMovies = functions
     response.json(data);
   });
 
-
-  export const getKoreaMovies = functions
+export const getKoreaMovies = functions
   .region("asia-northeast1")
   .https.onRequest(async (request: any, response) => {
     const moviesRef = db.collection("koreanMovies");
@@ -115,7 +136,6 @@ export const getAllMovies = functions
     const data = result.docs.map((doc) => doc.data());
     response.json(data);
   });
-
 
 //Get User Info by User Name
 //query ?userName=<username>
@@ -143,18 +163,21 @@ export const getPairByPairName = functions
 export const createUser = functions
   .region("asia-northeast1")
   .https.onRequest(async (req: any, response) => {
+    let userEmail = req.query.email;
+    const atIndex = userEmail.indexOf("@");
+    const userUserName = userEmail.slice(0,atIndex);
     // const userCollection = db.collection("test");
     const userInfo: Object = {
       email: req.query.email,
-      userName: req.query.userName,
+      userName: userUserName,
       name: req.query.name,
       likes: [],
       dislikes: [],
       pairName: "",
-      //add a line that says partnered with "" 
+      //add a line that says partnered with ""
     };
     const userCollection = db.collection("users");
-    const userRef = userCollection.doc(req.query.email);
+    const userRef = userCollection.doc(userUserName);
     await userRef.set(userInfo);
     response.send("stored!");
   });
@@ -168,12 +191,14 @@ export const createPair = functions
       members?: Array<String>;
       matches?: Array<Number>; //by netflexId
       likes?: Array<Number>;
+      matchMovieData?: Array<Object>;
     }
     const pairInfo: Pair = {
       pairName: req.query.pairName,
       members: [req.query.user1, req.query.user2],
       matches: [],
       likes: [],
+      matchMovieData: [],
     };
     //create Pair
     const pairsCollection = db.collection("pairs");
@@ -185,12 +210,11 @@ export const createPair = functions
     const usersRef2 = usersCollection.doc(req.query.user2);
     //get user data and get their display name
 
-    await usersRef1.update({pairName: req.query.pairName})
-    await usersRef2.update({pairName: req.query.pairName})
+    await usersRef1.update({ pairName: req.query.pairName });
+    await usersRef2.update({ pairName: req.query.pairName });
     // await usersRef2.update({partner: <the other user's display name>})
     response.send("pair created!");
   });
-
 
 //dummy create Pair
 export const dummy = functions
@@ -223,7 +247,6 @@ export const dummy = functions
 
 //Modifying Stuffs
 
-
 //Add liked movies to User Entity
 //query: userName, movieArr (An array of netflix ids)
 export const updateUserLikes = functions
@@ -241,27 +264,29 @@ export const updateUserLikes = functions
     });
     //Check if user is in a pair. If true, push to pair array or add to matches
     if (userData) {
-      if (userData.pairName!== "" || userData.pairName !== undefined)  {
+      if (userData.pairName !== "" || userData.pairName !== undefined) {
         //case for user having pair
         const pairRef = db.collection("pairs").doc(userData.pairName);
         const pairResult = await pairRef.get();
         const pairData = pairResult.data();
         arr.map(async (netflixId: Number) => {
-          const movieRef = db.collection("allMoives").doc(String(netflixId));
+          const movieRef = db.collection("allMovies").doc(String(netflixId));
           const movieResult = await movieRef.get();
           const movieData = movieResult.data();
           //check if movie already exists in like
           if (pairData) {
             if (pairData.likes.includes(netflixId)) {
-              console.log("yes match")
+              console.log("yes match");
               await pairRef.update({
                 matches: admin.firestore.FieldValue.arrayUnion(netflixId),
                 likes: admin.firestore.FieldValue.arrayRemove(netflixId),
-                matchMovieData: admin.firestore.FieldValue.arrayUnion(movieData),
+                matchMovieData: admin.firestore.FieldValue.arrayUnion(
+                  movieData
+                ),
               });
               response.send("match!");
             } else {
-              console.log("no match")
+              console.log("no match");
               await pairRef.update({
                 likes: admin.firestore.FieldValue.arrayUnion(netflixId),
               });
@@ -274,7 +299,7 @@ export const updateUserLikes = functions
   });
 
 //query ?userName=<userName>&movieArr=[4243423,234234234,234423234]
-  export const simpleUpdateUserLike = functions
+export const simpleUpdateUserLike = functions
   .region("asia-northeast1")
   .https.onRequest(async (request: any, response) => {
     //Adding to user
@@ -287,11 +312,11 @@ export const updateUserLikes = functions
         likes: admin.firestore.FieldValue.arrayUnion(netflixId),
       });
     });
-    response.send(userData)
+    response.send(userData);
   });
 
-  //query ?pairName=<userName>&movieArr=[4243423,234234234,234423234]
-  export const simpleUpdatePairMatches = functions
+//query ?pairName=<userName>&movieArr=[4243423,234234234,234423234]
+export const simpleUpdatePairMatches = functions
   .region("asia-northeast1")
   .https.onRequest(async (request: any, response) => {
     //Adding to user
@@ -304,14 +329,8 @@ export const updateUserLikes = functions
         matches: admin.firestore.FieldValue.arrayUnion(netflixId),
       });
     });
-    response.send(pairData)
+    response.send(pairData);
   });
-
-
-
-
-
-
 
 //Get Pair Name of user (by UserName)
 export const checkIfUserHasPairs = functions
@@ -346,7 +365,6 @@ export const checkPairMatches = functions
     else response.json("no array found.");
   });
 
-
 //seed from netflix db (unogsNG API)
 
 export const addMovies = functions
@@ -372,7 +390,7 @@ export const addMovies = functions
     APIreq.end(function (APIres: any) {
       if (APIres.error) throw new Error(APIres.error);
       const result = APIres.body.results;
-      result.map((obj: any) => {
+      result.map((obj: oneMovie) => {
         console.log(String(obj.nfid));
         const docRef = db.collection("movies").doc(String(obj.nfid));
         docRef.set(obj).catch((err) => console.log(err));

@@ -1,18 +1,18 @@
+import 'auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import './signup.dart';
 import '../sizeconfig.dart';
-import 'signinform.dart';
+import 'onboardbody.dart';
 
-class SignInScreen extends StatelessWidget {
+class SplashScreen extends StatelessWidget {
+  static String routeName = "/splash";
   @override
   Widget build(BuildContext context) {
     // You have to call it on your starting screen
     SizeConfig().init(context);
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Sign in Form"),
-      ),
-      body: SignInBody(),
-      backgroundColor: Colors.pink,
+      body: Body(),
     );
   }
 }

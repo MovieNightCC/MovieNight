@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import './swiper.dart';
 import './profile.dart';
 import './movieMatchesInfo.dart';
+import './movieArray.dart';
 
 class Matches extends StatefulWidget {
   @override
@@ -10,20 +11,13 @@ class Matches extends StatefulWidget {
 
 var current = 0;
 
-List<Object> matches = [];
-List<String> matchesTitles = [];
-List<String> matchesSynopsis = [];
-List<String> matchesImage = [];
-List<int> matchesYear = [];
-List<int> matchesNfid = [];
-
 class _MatchesState extends State<Matches> {
   int _currentIndex = 2;
   // notify the snack bar when there is a change in match length
 
   @override
   Widget build(BuildContext context) {
-    print(matches.length);
+    print(matchesTitles);
     return Scaffold(
       appBar: AppBar(
         title: const Text('Match History',
@@ -51,7 +45,7 @@ class _MatchesState extends State<Matches> {
               // horizontal, this produces 2 rows.
               crossAxisCount: 2,
               // Generate 100 widgets that display their index in the List.
-              children: List.generate(matches.length, (index) {
+              children: List.generate(matchesTitles.length, (index) {
                 return InkWell(
                   child: Column(
                     children: [

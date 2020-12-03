@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
-import 'package:flutterPractice/main.dart';
 import './tinderCard.dart';
 import './matches.dart';
 import './profile.dart';
 import './movieInfo.dart';
+import './movieArray.dart';
 import './rushMode.dart';
 import 'dart:math';
 import 'dart:async';
@@ -23,7 +23,9 @@ class _AppState extends State<Swiper> {
   @override
   void initState() {
     super.initState();
-    // futureMovie = fetchMovie();
+    if (matchesImage.length == matchOriLength && cutInHalfCalled == false) {
+      cutInHalf();
+    }
   }
 
   Widget build(BuildContext context) {
@@ -93,6 +95,18 @@ List<String> moviesSynopsis = [];
 List<int> movieYear = [];
 var counter = 0;
 
+void cutInHalf() {
+  cutInHalfCalled = true;
+  print('cutinhalf is called');
+  print('matchorilength is $matchOriLength');
+  int halfLength = (matchesTitles.length / 2).toInt();
+  matchesTitles = matchesTitles.sublist(0, halfLength);
+  matchesImage = matchesImage.sublist(0, halfLength);
+  matchesYear = matchesYear.sublist(0, halfLength);
+  matchesSynopsis = matchesSynopsis.sublist(0, halfLength);
+  matchesNfid = matchesNfid.sublist(0, halfLength);
+}
+
 void updateUser(arrOfNfid, context, image, title, year, synopsis) async {
   print(userName);
   var response = await http.get(
@@ -100,13 +114,13 @@ void updateUser(arrOfNfid, context, image, title, year, synopsis) async {
   print(response.body);
   if (response.body == "match!") {
     //push to matches array
-
+    print("old list $matchesTitles");
     matchesTitles.add(title);
     matchesSynopsis.add(synopsis);
     matchesImage.add(image);
     matchesYear.add(year);
     matchesNfid.add(arrOfNfid);
-
+    print("new list $matchesTitles");
     showDialog(
         context: context,
         builder: (_) => new AlertDialog(
@@ -145,68 +159,71 @@ class _TinderswiperState extends State<Tinderswiper>
             ),
             painter: HeaderCurvedContainer(),
           ),
-          Column(
-            children: [
-              Center(
-                child: InkWell(
-                  child: Container(
-                    height: MediaQuery.of(context).size.height * 0.9,
-                    child: TinderSwapCard(
-                      orientation: AmassOrientation.TOP,
-                      totalNum: 100,
-                      stackNum: 2,
-                      swipeEdge: 5.0,
-                      maxWidth: MediaQuery.of(context).size.width * 0.9,
-                      maxHeight: MediaQuery.of(context).size.width * 1.6,
-                      minWidth: MediaQuery.of(context).size.width * 0.899,
-                      minHeight: MediaQuery.of(context).size.width * 1.599,
-                      cardBuilder: (context, index) {
-                        return Card(
-                          child: Container(
-                              // padding: EdgeInsets.all(20.0),
-                              child: Image.network(
-                            movieImagesTest[index],
-                            fit: BoxFit.fill,
-                          )),
-                          elevation: 0,
-                        );
-                      },
-                      cardController: controller = CardController(),
-                      swipeCompleteCallback:
-                          (CardSwipeOrientation orientation, int index) {
-                        if (orientation == CardSwipeOrientation.RIGHT) {
-                          //when liked
-                          print('you liked: ${movieDataTest[count]}');
+          Padding(
+            padding: EdgeInsets.fromLTRB(0, 50, 0, 0),
+            child: Column(
+              children: [
+                Center(
+                  child: InkWell(
+                    child: Container(
+                      height: MediaQuery.of(context).size.height * 0.7,
+                      child: TinderSwapCard(
+                        orientation: AmassOrientation.TOP,
+                        totalNum: 100,
+                        stackNum: 2,
+                        swipeEdge: 5.0,
+                        maxWidth: MediaQuery.of(context).size.width * 0.9,
+                        maxHeight: MediaQuery.of(context).size.width * 1.6,
+                        minWidth: MediaQuery.of(context).size.width * 0.899,
+                        minHeight: MediaQuery.of(context).size.width * 1.599,
+                        cardBuilder: (context, index) {
+                          return Card(
+                            child: Container(
+                                // padding: EdgeInsets.all(20.0),
+                                child: Image.network(
+                              movieImagesTest[index],
+                              fit: BoxFit.fill,
+                            )),
+                            elevation: 0,
+                          );
+                        },
+                        cardController: controller = CardController(),
+                        swipeCompleteCallback:
+                            (CardSwipeOrientation orientation, int index) {
+                          if (orientation == CardSwipeOrientation.RIGHT) {
+                            //when liked
+                            print('you liked: ${movieDataTest[count]}');
 
-                          //request to firebase server to update likes
-                          updateUser(
-                              movieDataTest[count],
-                              context,
-                              movieImagesTest[count],
-                              movieTitles[count],
-                              movieYear[count],
-                              moviesSynopsis[count]);
-                          count++;
-                          // print(movieDataTest[index].runtimeType);
+                            //request to firebase server to update likes
+                            updateUser(
+                                movieDataTest[count],
+                                context,
+                                movieImagesTest[count],
+                                movieTitles[count],
+                                movieYear[count],
+                                moviesSynopsis[count]);
+                            count++;
+                            // print(movieDataTest[index].runtimeType);
 
-                          //  (?userName=<userName>&movieArr=<An Array of netflix IDs>)
-                          // response = await dio.post("/test", data: {"id": 12, "name": "wendu"});
+                            //  (?userName=<userName>&movieArr=<An Array of netflix IDs>)
+                            // response = await dio.post("/test", data: {"id": 12, "name": "wendu"});
 
-                        } else if (orientation == CardSwipeOrientation.LEFT) {
-                          //when hated
-                          print('you hate: ${movieDataTest[count]}');
-                          count++;
-                        }
-                      },
+                          } else if (orientation == CardSwipeOrientation.LEFT) {
+                            //when hated
+                            print('you hate: ${movieDataTest[count]}');
+                            count++;
+                          }
+                        },
+                      ),
                     ),
+                    onTap: () {
+                      Navigator.push(context,
+                          new MaterialPageRoute(builder: (context) => Info()));
+                    },
                   ),
-                  onTap: () {
-                    Navigator.push(context,
-                        new MaterialPageRoute(builder: (context) => Info()));
-                  },
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
           Positioned(
             left: 80,

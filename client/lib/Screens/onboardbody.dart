@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'signinscaffold.dart';
 //import 'splashcontent.dart';
-import 'package:flutterPractice/sizeconfig.dart';
+import '../sizeconfig.dart';
 import './signinscaffold.dart';
 
 class Body extends StatefulWidget {

@@ -1,13 +1,10 @@
-import 'package:flutterPractice/screens/swiper.dart';
 import './swiper.dart';
-import 'auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import './signup.dart';
-import 'package:url_launcher/url_launcher.dart';
-import 'package:flutterPractice/sizeconfig.dart';
-import 'package:flutterPractice/constants.dart';
+import '../sizeconfig.dart';
+import '../constants.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:movie_night/screens/auth.dart';
 
 class SignForm extends StatefulWidget {
   @override
@@ -75,7 +72,10 @@ class _SignFormState extends State<SignForm> {
             onPressed: () {
               if (_formKey.currentState.validate()) {
                 _formKey.currentState.save();
-                // if all are valid then go to success screen
+                context.read<AuthenticationService>().signIn(
+                      email: email,
+                      password: password,
+                    );
                 Navigator.pushNamed(context, Swiper.routeName);
               }
             },
@@ -92,7 +92,7 @@ class _SignFormState extends State<SignForm> {
       onChanged: (value) {
         if (value.isNotEmpty) {
           removeError(error: kPassNullError);
-        } else if (value.length >= 8) {
+        } else if (value.length >= 6) {
           removeError(error: kShortPassError);
         }
         return null;
@@ -101,7 +101,7 @@ class _SignFormState extends State<SignForm> {
         if (value.isEmpty) {
           addError(error: kPassNullError);
           return "";
-        } else if (value.length < 8) {
+        } else if (value.length < 6) {
           addError(error: kShortPassError);
           return "";
         }
@@ -292,13 +292,99 @@ class _ForgotPassFormState extends State<ForgotPassForm> {
             child: Text("Continue"),
             onPressed: () {
               if (_formKey.currentState.validate()) {
-                // Do what you want to do
+                print("inside Forgot Pass");
               }
             },
           ),
           SizedBox(height: SizeConfig.screenHeight * 0.1),
           //NoAccountText(),
         ],
+      ),
+    );
+  }
+}
+
+class SignInBody extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return SafeArea(
+      child: SizedBox(
+        width: double.infinity,
+        child: Padding(
+          padding:
+              EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20)),
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                SizedBox(height: SizeConfig.screenHeight * 0.04),
+                Text(
+                  "Welcome Back",
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: getProportionateScreenWidth(28),
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                Text(
+                  "Sign in with your email and password  \nor continue with social media",
+                  textAlign: TextAlign.center,
+                ),
+                SizedBox(height: SizeConfig.screenHeight * 0.08),
+                SignForm(),
+                SizedBox(height: SizeConfig.screenHeight * 0.08),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SocalCard(
+                      icon: "assets/icons/google-icon.svg",
+                      press: () {},
+                    ),
+                    SocalCard(
+                      icon: "assets/icons/facebook-2.svg",
+                      press: () {},
+                    ),
+                    SocalCard(
+                      icon: "assets/icons/twitter.svg",
+                      press: () {},
+                    ),
+                  ],
+                ),
+                SizedBox(height: getProportionateScreenHeight(20)),
+                //NoAccountText(),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class SocalCard extends StatelessWidget {
+  const SocalCard({
+    Key key,
+    this.icon,
+    this.press,
+  }) : super(key: key);
+
+  final String icon;
+  final Function press;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: press,
+      child: Container(
+        margin:
+            EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10)),
+        padding: EdgeInsets.all(getProportionateScreenWidth(12)),
+        height: getProportionateScreenHeight(40),
+        width: getProportionateScreenWidth(40),
+        decoration: BoxDecoration(
+          color: Color(0xFFF5F6F9),
+          shape: BoxShape.circle,
+        ),
+        child: SvgPicture.asset(icon),
       ),
     );
   }
