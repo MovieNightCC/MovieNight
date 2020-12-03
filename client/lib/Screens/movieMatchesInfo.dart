@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutterPractice/main.dart';
 import './matches.dart';
+import './movieArray.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:dio/dio.dart';
 import 'package:http/http.dart' as http;
 
 class MatchInfo extends StatefulWidget {
@@ -13,7 +13,7 @@ class MatchInfo extends StatefulWidget {
 void deleteMatch(nfid) async {
   print(nfid);
   var response = await http.get(
-      "https://asia-northeast1-movie-night-cc.cloudfunctions.net/deleteMatch?pairName=testPairA&nfid=$nfid");
+      "https://asia-northeast1-movie-night-cc.cloudfunctions.net/deleteMatch?pairName=$userPair&nfid=$nfid");
 
   print(response.body);
 }

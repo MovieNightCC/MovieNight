@@ -163,10 +163,13 @@ export const getPairByPairName = functions
 export const createUser = functions
   .region("asia-northeast1")
   .https.onRequest(async (req: any, response) => {
+    let userEmail = req.query.email;
+    const atIndex = userEmail.indexOf("@");
+    const userUserName = userEmail.slice(0,atIndex);
     // const userCollection = db.collection("test");
     const userInfo: Object = {
       email: req.query.email,
-      userName: req.query.userName,
+      userName: userUserName,
       name: req.query.name,
       likes: [],
       dislikes: [],
@@ -174,7 +177,7 @@ export const createUser = functions
       //add a line that says partnered with ""
     };
     const userCollection = db.collection("users");
-    const userRef = userCollection.doc(req.query.email);
+    const userRef = userCollection.doc(userUserName);
     await userRef.set(userInfo);
     response.send("stored!");
   });
@@ -188,12 +191,14 @@ export const createPair = functions
       members?: Array<String>;
       matches?: Array<Number>; //by netflexId
       likes?: Array<Number>;
+      matchMovieData?: Array<Object>;
     }
     const pairInfo: Pair = {
       pairName: req.query.pairName,
       members: [req.query.user1, req.query.user2],
       matches: [],
       likes: [],
+      matchMovieData: [],
     };
     //create Pair
     const pairsCollection = db.collection("pairs");
