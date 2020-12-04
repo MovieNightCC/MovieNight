@@ -7,13 +7,11 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:movie_night/screens/auth.dart';
 
 class SignForm extends StatefulWidget {
-    
   @override
   _SignFormState createState() => _SignFormState();
 }
 
 class _SignFormState extends State<SignForm> {
-
   final _formKey = GlobalKey<FormState>();
   String email;
   String password;
@@ -307,7 +305,7 @@ class _ForgotPassFormState extends State<ForgotPassForm> {
   }
 }
 
-class SignInBody extends StatelessWidget {
+class SignUpBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SafeArea(

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:movie_night/screens/swiper.dart';
 import 'signinscaffold.dart';
 //import 'splashcontent.dart';
 import '../sizeconfig.dart';
 import './signinscaffold.dart';
+import './signupscaffold.dart';
 
 class Body extends StatefulWidget {
   @override
@@ -51,26 +53,39 @@ class _BodyState extends State<Body> {
               flex: 2,
               child: Padding(
                 padding: EdgeInsets.symmetric(
-                    horizontal: getProportionateScreenWidth(20)),
+                   horizontal: getProportionateScreenWidth(100)),
                 child: Column(
                   children: <Widget>[
                     Spacer(),
                     
-                    Spacer(flex: 3),
+                    Spacer(),
                     FlatButton(
+                      autofocus: true,
+                      shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.all(Radius.circular(50.0)),
+    ),
+                      child: Text("Sign Up", style: TextStyle(color: Colors.white),
+                      ),
                       color: Colors.pink,
-                      child: Text("Continue", 
-                      style: TextStyle(
-            color: Colors.white
-                      ),),
                       onPressed: () {
                         Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => SignInScreen()),
+                MaterialPageRoute(builder: (context) => SignUpScreen()),
               );
                       },
                     ),
                     Spacer(),
+                    GestureDetector(
+                onTap: () => Navigator.pushNamed(
+                    context, SignInScreen.routeName),
+                child: Text(
+                  "Already a user ? Sign in",
+                  style: TextStyle(
+                    color: Colors.white,
+                    decoration: TextDecoration.underline),
+                ),
+              ),
+              Spacer(),
                   ],
                 ),
               ),

@@ -6,19 +6,16 @@ import './Screens/onboard.dart';
 import 'package:provider/provider.dart';
 import 'routes.dart';
 import 'dart:async';
-import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
-import 'package:html/dom.dart' as htmlParser;
+import 'app-theme.dart';
 
 /// screens
 import 'screens/swiper.dart';
-import 'screens/matches.dart';
 import 'screens/auth.dart';
 //import 'screens/sign_in.dart';
 import 'screens/rushMode.dart';
 import 'screens/movieArray.dart';
-
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -37,7 +34,6 @@ var userEmail = "";
 var displayName = "";
 var matchOriLength = 0;
 var cutInHalfCalled = false;
-
 
 class App extends StatefulWidget {
   _AppState createState() => _AppState();
@@ -72,9 +68,7 @@ class _AppState extends State<App> {
       child: MaterialApp(
         title: "Movie Night",
         debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-            primaryColor: Colors.pink[400],
-            scaffoldBackgroundColor: Colors.black),
+        theme: movieNightTheme,
         home: AuthenticationWrapper(),
         routes: routes,
       ),
@@ -298,7 +292,6 @@ Future<Response> futureHorror;
 Future<Response> futureJapan;
 Future<Response> futureKorea;
 
-
 class AuthenticationWrapper extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -314,8 +307,7 @@ class AuthenticationWrapper extends StatelessWidget {
         title: "Movie Night",
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
-            primaryColor: Colors.white,
-            scaffoldBackgroundColor: Colors.pink),
+            primaryColor: Colors.white, scaffoldBackgroundColor: Colors.pink),
         home: FutureBuilder(
           future: Future.wait([
             futureMovie,
