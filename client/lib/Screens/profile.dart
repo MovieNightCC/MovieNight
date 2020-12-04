@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:movie_night/screens/addPairPage.dart';
+import 'package:movie_night/screens/onboardsplash.dart';
 import './sign_in.dart';
 import 'auth.dart';
 import './swiper.dart';
@@ -9,6 +10,7 @@ import '../main.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class Profile extends StatefulWidget {
+    static String routeName = "/splash";
   @override
   _ProfileState createState() => _ProfileState();
 }
@@ -59,7 +61,6 @@ class _ProfileState extends State<Profile> {
               userInfoElement(userName),
               userInfoElement(userPair),
               userInfoElement(userEmail),
-            
               RaisedButton(
                 onPressed: () {
                   Navigator.push(context,
@@ -68,13 +69,12 @@ class _ProfileState extends State<Profile> {
                 child: Text("Add a partner"),
               ),
               RaisedButton(
-                onPressed: () {
-                  context.read<AuthenticationService>().signOut();
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => SignInPage()));
-                },
-                child: Text("Sign Out"),
-              ),
+                  child: Text("Sign Out"),
+                  onPressed: () {
+                    context.read<AuthenticationService>().signOut();
+                   Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => App()));
+                }),
               RaisedButton(
                 onPressed: () {
                   print('$userEmail tried to retrieve email');
@@ -127,15 +127,16 @@ class _ProfileState extends State<Profile> {
     );
   }
 }
+
 Widget userInfoElement(String input) {
   return Container(
-                child: Text(input,
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 14.0,
-                        height: 2.0,
-                        fontWeight: FontWeight.bold)),
-              );
+    child: Text(input,
+        style: TextStyle(
+            color: Colors.white,
+            fontSize: 14.0,
+            height: 2.0,
+            fontWeight: FontWeight.bold)),
+  );
 }
 
 class HeaderCurvedContainer extends CustomPainter {

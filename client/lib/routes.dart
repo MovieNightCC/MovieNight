@@ -1,5 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:movie_night/screens/signinscaffold.dart';
+import 'package:movie_night/screens/onboardsplash.dart';
 import 'screens/swiper.dart';
 
 // We use name route
@@ -7,4 +8,5 @@ import 'screens/swiper.dart';
 final Map<String, WidgetBuilder> routes = {
   Swiper.routeName: (context) => Swiper(),
   SignInScreen.routeName: (context) => SignInScreen(),
+  SplashScreen.routeName: (context) => SplashScreen(),
 };

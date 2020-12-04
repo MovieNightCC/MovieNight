@@ -293,7 +293,7 @@ Future<Response> futureJapan;
 Future<Response> futureKorea;
 
 class AuthenticationWrapper extends StatelessWidget {
-  @override
+
   Widget build(BuildContext context) {
     final firebaseUser = context.watch<User>();
 
@@ -306,8 +306,7 @@ class AuthenticationWrapper extends StatelessWidget {
       return MaterialApp(
         title: "Movie Night",
         debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-            primaryColor: Colors.white, scaffoldBackgroundColor: Colors.pink),
+        theme: movieNightTheme,
         home: FutureBuilder(
           future: Future.wait([
             futureMovie,

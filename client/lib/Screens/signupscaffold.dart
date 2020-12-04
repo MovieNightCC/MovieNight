@@ -13,7 +13,6 @@ class SignUpScreen extends StatelessWidget {
         title: Text("Sign Up"),
       ),
       body: SignUpBody(),
-      backgroundColor: Colors.pink,
     );
     
   }

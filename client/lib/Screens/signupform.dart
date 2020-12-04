@@ -48,8 +48,13 @@ class _SignFormState extends State<SignForm> {
           FormError(errors: errors),
           SizedBox(height: getProportionateScreenHeight(20)),
           FlatButton(
-            child: Text("Create Account"),
-            color: Colors.white,
+            shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.all(Radius.circular(50.0)),
+    ),
+            child: Text("Create Account", 
+            style: TextStyle(color: Colors.white),
+            ),
+            color: Colors.pink,
             onPressed: () {
               if (_formKey.currentState.validate()) {
                 _formKey.currentState.save();
@@ -90,6 +95,8 @@ class _SignFormState extends State<SignForm> {
       },
       decoration: InputDecoration(
         labelText: "Password",
+        labelStyle: TextStyle(color: Colors.pink),
+        hintStyle: TextStyle(color: Colors.purple),
         hintText: "Enter your password",
         // If  you are using latest version of flutter then lable text and hint text shown like this
         // if you r using flutter less then 1.20.* then maybe this is not working properly
@@ -123,6 +130,8 @@ class _SignFormState extends State<SignForm> {
       },
       decoration: InputDecoration(
         labelText: "Email",
+        labelStyle: TextStyle(color: Colors.pink),
+        hintStyle: TextStyle(color: Colors.purple),
         hintText: "Enter your email",
         // If  you are using latest version of flutter then lable text and hint text shown like this
         // if you r using flutter less then 1.20.* then maybe this is not working properly
@@ -134,6 +143,8 @@ class _SignFormState extends State<SignForm> {
 
   TextFormField buildNameFormField() {
     return TextFormField(
+      cursorColor: Colors.pink,
+      autofocus: true,
       keyboardType: TextInputType.text,
       onSaved: (newValue) => name = newValue,
       onChanged: (value) {
@@ -141,6 +152,8 @@ class _SignFormState extends State<SignForm> {
       },
       decoration: InputDecoration(
         labelText: "Name",
+        labelStyle: TextStyle(color: Colors.pink),
+        hintStyle: TextStyle(color: Colors.purple),
         hintText: "Enter your name",
         // If  you are using latest version of flutter then lable text and hint text shown like this
         // if you r using flutter less then 1.20.* then maybe this is not working properly
@@ -319,7 +332,7 @@ class SignUpBody extends StatelessWidget {
                 Text(
                   "Create your account on Movie Night",
                   style: TextStyle(
-                    color: Colors.black,
+                    color: Colors.pink,
                     fontSize: getProportionateScreenWidth(28),
                     fontWeight: FontWeight.bold,
                   ),
@@ -327,6 +340,7 @@ class SignUpBody extends StatelessWidget {
                 Text(
                   "You are only a few steps away  \nof a great Movie Night ",
                   textAlign: TextAlign.center,
+                  style: TextStyle(color: Colors.purple),
                 ),
                 SizedBox(height: SizeConfig.screenHeight * 0.08),
                 SignForm(),

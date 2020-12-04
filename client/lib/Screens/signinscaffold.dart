@@ -14,7 +14,6 @@ class SignInScreen extends StatelessWidget {
         title: Text("Sign in Form"),
       ),
       body: SignInBody(),
-      backgroundColor: Colors.pink,
     );
     
   }

@@ -46,23 +46,15 @@ class _SignFormState extends State<SignForm> {
           SizedBox(height: getProportionateScreenHeight(30)),
           Row(
             children: [
-              Checkbox(
-                value: remember,
-                activeColor: kPrimaryColor,
-                onChanged: (value) {
-                  setState(() {
-                    remember = value;
-                  });
-                },
-              ),
-              Text("Remember me"),
-              Spacer(),
+              
               GestureDetector(
                 onTap: () => Navigator.pushNamed(
                     context, ForgotPasswordScreen.routeName),
                 child: Text(
-                  "Forgot Password",
-                  style: TextStyle(decoration: TextDecoration.underline),
+                  "Forgot your Password ?",
+                  style: TextStyle(
+                    color: Colors.purple, 
+                    decoration: TextDecoration.underline),
                 ),
               )
             ],
@@ -70,8 +62,12 @@ class _SignFormState extends State<SignForm> {
           FormError(errors: errors),
           SizedBox(height: getProportionateScreenHeight(20)),
           FlatButton(
-            child: Text("Continue"),
-            color: Colors.white,
+            shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.all(Radius.circular(50.0)),
+    ),
+            child: Text("Continue", 
+            style: TextStyle(color: Colors.white),),
+            color: Colors.pink,
             onPressed: () {
               if (_formKey.currentState.validate()) {
                 _formKey.currentState.save();
@@ -112,6 +108,8 @@ class _SignFormState extends State<SignForm> {
       },
       decoration: InputDecoration(
         labelText: "Password",
+        labelStyle: TextStyle(color: Colors.pink),
+        hintStyle: TextStyle(color: Colors.purple),
         hintText: "Enter your password",
         // If  you are using latest version of flutter then lable text and hint text shown like this
         // if you r using flutter less then 1.20.* then maybe this is not working properly
@@ -123,6 +121,8 @@ class _SignFormState extends State<SignForm> {
 
   TextFormField buildEmailFormField() {
     return TextFormField(
+      cursorColor: Colors.pink,
+      autofocus: true,
       keyboardType: TextInputType.emailAddress,
       onSaved: (newValue) => email = newValue,
       onChanged: (value) {
@@ -145,6 +145,8 @@ class _SignFormState extends State<SignForm> {
       },
       decoration: InputDecoration(
         labelText: "Email",
+        labelStyle: TextStyle(color: Colors.pink),
+        hintStyle: TextStyle(color: Colors.purple),
         hintText: "Enter your email",
         // If  you are using latest version of flutter then lable text and hint text shown like this
         // if you r using flutter less then 1.20.* then maybe this is not working properly
@@ -217,7 +219,7 @@ class BodyForgot extends StatelessWidget {
                 "Forgot Password",
                 style: TextStyle(
                   fontSize: getProportionateScreenWidth(28),
-                  color: Colors.black,
+                  color: Colors.purple,
                   fontWeight: FontWeight.bold,
                 ),
               ),
@@ -323,13 +325,14 @@ class SignInBody extends StatelessWidget {
                 Text(
                   "Welcome Back",
                   style: TextStyle(
-                    color: Colors.black,
+                    color: Colors.pink,
                     fontSize: getProportionateScreenWidth(28),
                     fontWeight: FontWeight.bold,
                   ),
                 ),
                 Text(
                   "Sign in with your email and password  \nor continue with social media",
+                  style: TextStyle(color: Colors.purple),
                   textAlign: TextAlign.center,
                 ),
                 SizedBox(height: SizeConfig.screenHeight * 0.08),
