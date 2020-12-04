@@ -125,13 +125,13 @@
     ),
     inputDecorationTheme:   InputDecorationTheme(
     labelStyle: TextStyle(
-      color: Color( 0xdd000000 ),
+      color: Colors.purple,
       fontSize: null,
       fontWeight: FontWeight.w400,
       fontStyle: FontStyle.normal,
     ),
     helperStyle: TextStyle(
-      color: Color( 0xdd000000 ),
+      color: Colors.purple,
       fontSize: null,
       fontWeight: FontWeight.w400,
       fontStyle: FontStyle.normal,
@@ -153,13 +153,13 @@
     contentPadding: EdgeInsets.only(top:12,bottom:12,left:0, right:0),
     isCollapsed : false,
     prefixStyle: TextStyle(
-      color: Color( 0xdd000000 ),
+      color: Colors.purple,
       fontSize: null,
       fontWeight: FontWeight.w400,
       fontStyle: FontStyle.normal,
     ),
     suffixStyle: TextStyle(
-      color: Color( 0xdd000000 ),
+      color: Colors.purple,
       fontSize: null,
       fontWeight: FontWeight.w400,
       fontStyle: FontStyle.normal,
@@ -173,19 +173,19 @@
     filled: false,
     fillColor: Color( 0x00000000 ),
     errorBorder: UnderlineInputBorder(
-      borderSide: BorderSide(color: Color( 0xff000000 ), width: 1, style: BorderStyle.solid, ),
+      borderSide: BorderSide(color: Colors.red, width: 1, style: BorderStyle.solid, ),
       borderRadius: BorderRadius.all(Radius.circular(4.0)),
     ),
     focusedBorder: UnderlineInputBorder(
-      borderSide: BorderSide(color: Color( 0xff000000 ), width: 1, style: BorderStyle.solid, ),
+      borderSide: BorderSide(color: Colors.pink, width: 1, style: BorderStyle.solid, ),
       borderRadius: BorderRadius.all(Radius.circular(4.0)),
     ),
     focusedErrorBorder: UnderlineInputBorder(
-      borderSide: BorderSide(color: Color( 0xff000000 ), width: 1, style: BorderStyle.solid, ),
+      borderSide: BorderSide(color: Colors.pink, width: 1, style: BorderStyle.solid, ),
       borderRadius: BorderRadius.all(Radius.circular(4.0)),
     ),
     disabledBorder: UnderlineInputBorder(
-      borderSide: BorderSide(color: Color( 0xff000000 ), width: 1, style: BorderStyle.solid, ),
+      borderSide: BorderSide(color: Colors.white, width: 1, style: BorderStyle.solid, ),
       borderRadius: BorderRadius.all(Radius.circular(4.0)),
     ),
     enabledBorder: UnderlineInputBorder(
@@ -193,7 +193,7 @@
       borderRadius: BorderRadius.all(Radius.circular(4.0)),
     ),
     border: UnderlineInputBorder(
-      borderSide: BorderSide(color: Color( 0xff000000 ), width: 1, style: BorderStyle.solid, ),
+      borderSide: BorderSide(color: Colors.pink, width: 1, style: BorderStyle.solid, ),
       borderRadius: BorderRadius.all(Radius.circular(4.0)),
     ),
   ),
