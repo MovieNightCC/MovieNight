@@ -8,7 +8,6 @@ import 'routes.dart';
 import 'dart:async';
 import 'package:dio/dio.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
-import 'app-theme.dart';
 
 /// screens
 import 'screens/swiper.dart';
@@ -27,6 +26,53 @@ Future<void> main() async {
       child: App(),
     ),
   );
+}
+
+final ThemeData _kShrineTheme = _buildShrineTheme();
+ThemeData _buildShrineTheme() {
+  final ThemeData base = ThemeData.dark();
+  return base.copyWith(
+      brightness: Brightness.light,
+      primaryColor: Color(0xffe91e63),
+      primaryColorBrightness: Brightness.dark,
+      primaryColorLight: Color(0xfff8bbd0),
+      primaryColorDark: Color(0xffc2185b),
+      accentColor: Color(0xffe91e63),
+      accentColorBrightness: Brightness.dark,
+      canvasColor: Color(0xfffafafa),
+      scaffoldBackgroundColor: Colors.black,
+      bottomAppBarColor: Color(0xffffffff),
+      cardColor: Color(0xffffffff),
+      dividerColor: Color(0x1f000000),
+      highlightColor: Color(0x66bcbcbc),
+      splashColor: Color(0x66c8c8c8),
+      selectedRowColor: Color(0xfff5f5f5),
+      unselectedWidgetColor: Color(0x8a000000),
+      disabledColor: Color(0x61000000),
+      buttonColor: Colors.orange,
+      toggleableActiveColor: Color(0xffd81b60),
+      secondaryHeaderColor: Color(0xfffce4ec),
+      textSelectionColor: Color(0xfff48fb1),
+      cursorColor: Color(0xff4285f4),
+      textSelectionHandleColor: Color(0xfff06292),
+      backgroundColor: Color(0xfff48fb1),
+      dialogBackgroundColor: Color(0xffffffff),
+      indicatorColor: Color(0xffe91e63),
+      hintColor: Colors.pinkAccent,
+      errorColor: Colors.purple[900],
+      buttonTheme: ButtonThemeData(
+          textTheme: ButtonTextTheme.normal,
+          minWidth: 88,
+          height: 36,
+          padding: EdgeInsets.only(top: 0, bottom: 0, left: 16, right: 16),
+          shape: RoundedRectangleBorder(
+            side: BorderSide(
+              color: Colors.pink,
+              width: 1,
+              style: BorderStyle.none,
+            ),
+            borderRadius: BorderRadius.all(Radius.circular(2.0)),
+          )));
 }
 
 // global user name variable accessible from every page
@@ -70,7 +116,7 @@ class _AppState extends State<App> {
       child: MaterialApp(
         title: "Movie Night",
         debugShowCheckedModeBanner: false,
-        theme: movieNightTheme,
+        theme: _kShrineTheme,
         home: AuthenticationWrapper(),
         routes: routes,
       ),
@@ -312,7 +358,6 @@ Future<Response> futureJapan;
 Future<Response> futureKorea;
 
 class AuthenticationWrapper extends StatelessWidget {
-
   Widget build(BuildContext context) {
     final firebaseUser = context.watch<User>();
 
@@ -325,7 +370,7 @@ class AuthenticationWrapper extends StatelessWidget {
       return MaterialApp(
         title: "Movie Night",
         debugShowCheckedModeBanner: false,
-        theme: movieNightTheme,
+        theme: _kShrineTheme,
         home: FutureBuilder(
           future: Future.wait([
             futureMovie,
