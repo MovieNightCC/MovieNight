@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import './swiper.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'dart:math';
 
 class Info extends StatefulWidget {
   @override
@@ -8,6 +9,29 @@ class Info extends StatefulWidget {
 }
 
 var count = 0;
+List minutesList;
+List hourList;
+void changeToHours() {
+  hourList = [...movieRuntime];
+  minutesList = [];
+  for (var j = 0; j < movieRuntime.length; j++) {
+    hourList[j] = (hourList[j] / 3600).toInt();
+  }
+  for (var i = 0; i < movieRuntime.length; i++) {
+    if (movieRuntime[i] < 7200 && movieRuntime[i] > 3600) {
+      movieRuntime[i] = movieRuntime[i] - 3600;
+      movieRuntime[i] = (movieRuntime[i] / 60).toInt();
+      minutesList.add(movieRuntime[i]);
+    } else if (movieRuntime[i] < 3600) {
+      movieRuntime[i] = (movieRuntime[i] / 60).toInt();
+      minutesList.add(movieRuntime[i]);
+    } else {
+      movieRuntime[i] = movieRuntime[i] - 7200;
+      movieRuntime[i] = (movieRuntime[i] / 60).toInt();
+      minutesList.add(movieRuntime[i]);
+    }
+  }
+}
 
 class _InfoState extends State<Info> {
   @override
@@ -36,6 +60,18 @@ class _InfoState extends State<Info> {
                 child: Image.network(movieImagesTest[count]),
               ),
               Text('Title: ${movieTitles[count]}',
+                  style: TextStyle(
+                      color: Colors.white,
+                      height: 3.0,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20)),
+              Text('Genre: ${movieGenre[count]}',
+                  style: TextStyle(
+                      color: Colors.white,
+                      height: 3.0,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20)),
+              Text('Runtime: ${hourList[count]}h ${minutesList[count]}m',
                   style: TextStyle(
                       color: Colors.white,
                       height: 3.0,
@@ -104,7 +140,9 @@ class _InfoState extends State<Info> {
                                 movieImagesTest[count],
                                 movieTitles[count],
                                 movieYear[count],
-                                moviesSynopsis[count]);
+                                moviesSynopsis[count],
+                                movieGenre[count],
+                                movieRuntime[count]);
                             count++;
                             Navigator.push(
                                 context,
