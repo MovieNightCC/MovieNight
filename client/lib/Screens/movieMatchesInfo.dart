@@ -3,6 +3,7 @@ import './matches.dart';
 import './movieArray.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:http/http.dart' as http;
+import '../main.dart';
 
 class MatchInfo extends StatefulWidget {
   @override
