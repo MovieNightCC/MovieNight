@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import './swiper.dart';
 import './profile.dart';
 import './movieMatchesInfo.dart';
@@ -17,7 +18,7 @@ class _MatchesState extends State<Matches> {
 
   @override
   Widget build(BuildContext context) {
-    print(matchesTitles);
+    print(matchesGenre);
     return Scaffold(
       appBar: AppBar(
         title: const Text('Match History',

@@ -28,9 +28,12 @@ class AddPairPage extends StatelessWidget {
               labelText: "username",
             ),
           ),
-          Text(
-            "Please enter the name for your couple",
-          ),
+          Text("Please enter the name for your couple",
+              style: TextStyle(
+                  color: Colors.lightBlueAccent,
+                  height: 2.5,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20)),
           TextField(
             controller: coupleNameController,
             decoration: InputDecoration(labelText: "couple name"),

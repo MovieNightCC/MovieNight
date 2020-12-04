@@ -4,6 +4,7 @@ import './matches.dart';
 import './movieArray.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:http/http.dart' as http;
+import '../main.dart';
 
 class MatchInfo extends StatefulWidget {
   @override
@@ -16,6 +17,32 @@ void deleteMatch(nfid) async {
       "https://asia-northeast1-movie-night-cc.cloudfunctions.net/deleteMatch?pairName=$userPair&nfid=$nfid");
 
   print(response.body);
+}
+
+List minutesListMatches;
+List hourListMatches;
+void changeToHoursMatches() {
+  hourListMatches = [...matchesRuntime];
+  minutesListMatches = [];
+  for (var j = 0; j < matchesRuntime.length; j++) {
+    hourListMatches[j] = (hourListMatches[j] / 3600).toInt();
+  }
+  for (var i = 0; i < matchesRuntime.length; i++) {
+    if (matchesRuntime[i] < 7200 && matchesRuntime[i] > 3600) {
+      matchesRuntime[i] = matchesRuntime[i] - 3600;
+      matchesRuntime[i] = matchesRuntime[i] ~/ 60;
+      minutesListMatches.add(matchesRuntime[i]);
+    } else if (matchesRuntime[i] < 3600) {
+      matchesRuntime[i] = matchesRuntime[i] ~/ 60;
+
+      minutesListMatches.add(matchesRuntime[i]);
+    } else {
+      matchesRuntime[i] = matchesRuntime[i] - 7200;
+      matchesRuntime[i] = matchesRuntime[i] ~/ 60;
+
+      minutesListMatches.add(matchesRuntime[i]);
+    }
+  }
 }
 
 class _MatchInfoState extends State<MatchInfo> {
@@ -38,26 +65,39 @@ class _MatchInfoState extends State<MatchInfo> {
             ),
             painter: HeaderCurvedContainer(),
           ),
-          Column(
+          ListView(
             children: [
               Image.network(matchesImage[current]),
               Text('Title: ${matchesTitles[current]}',
                   style: TextStyle(
                       color: Colors.white,
-                      height: 5.0,
+                      //height: 5.0,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20)),
+              Text('Genre: ${matchesGenre[current]}',
+                  style: TextStyle(
+                      color: Colors.white,
+                      //height: 5.0,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20)),
+              Text(
+                  'Runtime: ${hourListMatches[current]}h ${minutesListMatches[current]}m',
+                  style: TextStyle(
+                      color: Colors.white,
+                      // height: 5.0,
                       fontWeight: FontWeight.bold,
                       fontSize: 20)),
               Text('Synopsis: ${matchesSynopsis[current]}',
                   style: TextStyle(
                       color: Colors.white,
-                      height: 1.5,
+                      // height: 1.5,
                       fontWeight: FontWeight.bold,
                       fontSize: 20)),
               Text(
                 'Release Year: ${matchesYear[current]}',
                 style: TextStyle(
                     color: Colors.white,
-                    height: 4.0,
+                    //height: 4.0,
                     fontWeight: FontWeight.bold,
                     fontSize: 20),
               ), //matchesNfid,
@@ -75,6 +115,10 @@ class _MatchInfoState extends State<MatchInfo> {
                   matchesSynopsis.remove(matchesSynopsis[current]),
                   matchesImage.remove(matchesImage[current]),
                   matchesYear.remove(matchesYear[current]),
+                  matchesGenre.remove(matchesGenre[current]),
+                  matchesRuntime.remove(matchesRuntime[current]),
+                  hourListMatches.remove(hourListMatches[current]),
+                  minutesListMatches.remove(minutesListMatches[current]),
                   matchesNfid.remove(matchesNfid[current]),
                   Navigator.push(
                       context,
