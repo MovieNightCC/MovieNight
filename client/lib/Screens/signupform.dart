@@ -5,6 +5,7 @@ import '../sizeconfig.dart';
 import '../constants.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:movie_night/screens/auth.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class SignForm extends StatefulWidget {
   @override
@@ -66,6 +67,16 @@ class _SignFormState extends State<SignForm> {
               }
             },
           ),
+          GestureDetector(
+                onTap: () => launch('https://movie-night.flycricket.io/privacy.html'),
+                child: Text(
+                  "Read our privacy policy",
+                  style: TextStyle(
+                    color: Colors.purple, 
+                    decoration: TextDecoration.underline),
+                    textAlign: TextAlign.center,
+                ),
+              )
         ],
       ),
     );
