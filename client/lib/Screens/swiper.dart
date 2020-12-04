@@ -11,6 +11,7 @@ import 'dart:async';
 import 'package:http/http.dart' as http;
 import './filterPopup.dart';
 import '../main.dart';
+import './movieMatchesInfo.dart';
 
 class Swiper extends StatefulWidget {
   static String routeName = "/swiper";
@@ -23,7 +24,8 @@ class _AppState extends State<Swiper> {
   @override
   void initState() {
     super.initState();
-    if (matchesImage.length == matchOriLength && cutInHalfCalled == false) {
+    print("fetchArr $fetchArr");
+    if (fetchArr.length > 1 && cutInHalfCalled == false) {
       cutInHalf();
     }
   }
@@ -40,7 +42,8 @@ class _AppState extends State<Swiper> {
   }
 }
 
-List shuffle(List listA, List listB, List listC, List listD, List listE) {
+List shuffle(List listA, List listB, List listC, List listD, List listE,
+    List listF, List listG) {
   var random = new Random();
 
   // Go through all elements.
@@ -53,8 +56,8 @@ List shuffle(List listA, List listB, List listC, List listD, List listE) {
     var temp3 = listC[i];
     var temp4 = listD[i];
     var temp5 = listE[i];
-    // var temp6 = listF[i];
-    // var temp7 = listG[i];
+    var temp6 = listF[i];
+    var temp7 = listG[i];
     // var temp8 = listH[i];
     // var temp9 = listI[i];
     // var temp10 = listJ[i];
@@ -65,8 +68,8 @@ List shuffle(List listA, List listB, List listC, List listD, List listE) {
     listC[i] = listC[n];
     listD[i] = listD[n];
     listE[i] = listE[n];
-    // listF[i] = listF[n];
-    // listG[i] = listG[n];
+    listF[i] = listF[n];
+    listG[i] = listG[n];
     // listH[i] = listH[n];
     // listI[i] = listI[n];
     // listJ[i] = listJ[n];
@@ -77,8 +80,8 @@ List shuffle(List listA, List listB, List listC, List listD, List listE) {
     listC[n] = temp3;
     listD[n] = temp4;
     listE[n] = temp5;
-    // listF[n] = temp6;
-    // listG[n] = temp7;
+    listF[n] = temp6;
+    listG[n] = temp7;
     // listH[n] = temp8;
     // listI[n] = temp9;
     // listJ[n] = temp10;
@@ -92,28 +95,52 @@ List<int> movieDataTest = [];
 List<String> movieImagesTest = [];
 List<String> movieTitles = [];
 List<String> moviesSynopsis = [];
+List<String> movieGenre = [];
 List<int> movieYear = [];
+List<int> movieRuntime = [];
 var counter = 0;
 
 void cutInHalf() {
   cutInHalfCalled = true;
   print('cutinhalf is called');
   print('matchorilength is $matchOriLength');
-  int halfLength = (matchesTitles.length / 2).toInt();
+  int halfLength = matchesTitles.length ~/ 2;
   matchesTitles = matchesTitles.sublist(0, halfLength);
   matchesImage = matchesImage.sublist(0, halfLength);
   matchesYear = matchesYear.sublist(0, halfLength);
+  matchesGenre = matchesGenre.sublist(0, halfLength);
+  matchesRuntime = matchesRuntime.sublist(0, halfLength);
   matchesSynopsis = matchesSynopsis.sublist(0, halfLength);
   matchesNfid = matchesNfid.sublist(0, halfLength);
 
   matchesTitles = matchesTitles.reversed.toList();
   matchesImage = matchesImage.reversed.toList();
   matchesYear = matchesYear.reversed.toList();
+  matchesGenre = matchesGenre.reversed.toList();
+  matchesRuntime = matchesRuntime.reversed.toList();
   matchesSynopsis = matchesSynopsis.reversed.toList();
   matchesNfid = matchesNfid.reversed.toList();
 }
 
-void updateUser(arrOfNfid, context, image, title, year, synopsis) async {
+void makeHour() {
+  hourListMatches[0] = (hourListMatches[0] / 3600).toInt();
+  if (matchesRuntime[0] < 7200 && matchesRuntime[0] > 3600) {
+    matchesRuntime[0] = matchesRuntime[0] - 3600;
+    matchesRuntime[0] = matchesRuntime[0] ~/ 60;
+
+    minutesListMatches.add(matchesRuntime[0]);
+  } else if (matchesRuntime[0] < 3600) {
+    matchesRuntime[0] = matchesRuntime[0] ~/ 60;
+    minutesListMatches.add(matchesRuntime[0]);
+  } else {
+    matchesRuntime[0] = matchesRuntime[0] - 7200;
+    matchesRuntime[0] = matchesRuntime[0] ~/ 60;
+    minutesListMatches.add(matchesRuntime[0]);
+  }
+}
+
+void updateUser(
+    arrOfNfid, context, image, title, year, synopsis, genre, runtime) async {
   print(userName);
   var response = await http.get(
       "https://asia-northeast1-movie-night-cc.cloudfunctions.net/updateUserLikes?userName=$userName&movieArr=[$arrOfNfid]");
@@ -125,7 +152,13 @@ void updateUser(arrOfNfid, context, image, title, year, synopsis) async {
     matchesSynopsis.insert(0, synopsis);
     matchesImage.insert(0, image);
     matchesYear.insert(0, year);
+    matchesRuntime.insert(0, runtime);
+    hourListMatches.insert(0, runtime);
     matchesNfid.insert(0, arrOfNfid);
+    matchesGenre.insert(0, genre);
+    print("new match nfid $matchesNfid");
+    print("new list $matchesTitles");
+
     print("new list $matchesTitles");
     showDialog(
         context: context,
@@ -141,6 +174,7 @@ void updateUser(arrOfNfid, context, image, title, year, synopsis) async {
                 )
               ],
             ));
+    makeHour();
   }
 }
 
@@ -207,7 +241,9 @@ class _TinderswiperState extends State<Tinderswiper>
                                 movieImagesTest[count],
                                 movieTitles[count],
                                 movieYear[count],
-                                moviesSynopsis[count]);
+                                moviesSynopsis[count],
+                                movieGenre[count],
+                                movieRuntime[count]);
                             count++;
                             // print(movieDataTest[index].runtimeType);
 

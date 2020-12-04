@@ -3,6 +3,7 @@ import './swiper.dart';
 import './movieArray.dart';
 import './rushMode.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
+import './movieInfo.dart';
 
 Map<String, bool> values = {
   'foo': true,
@@ -224,94 +225,109 @@ void filterPop(context) {
                       movieTitles = [];
                       moviesSynopsis = [];
                       movieYear = [];
+                      movieRuntime = [];
+                      movieGenre = [];
                       // List<String> chosenGenre = [];
                       if (chosenGenre.contains("Anime")) {
                         for (var i = 0; i < animeNfid.length; i++) {
                           movieDataTest.add(animeNfid[i]);
                           movieImagesTest.add(animeImages[i]);
                           movieTitles.add(animeTitles[i]);
+                          movieGenre.add(animeGenre[i]);
                           moviesSynopsis.add(animeSynopsis[i]);
                           movieYear.add(animeYear[i]);
+                          movieRuntime.add(animeRuntime[i]);
                         }
 
                         shuffle(
-                          movieDataTest,
-                          movieImagesTest,
-                          movieTitles,
-                          moviesSynopsis,
-                          movieYear,
-                        );
+                            movieDataTest,
+                            movieImagesTest,
+                            movieTitles,
+                            moviesSynopsis,
+                            movieYear,
+                            movieGenre,
+                            movieRuntime);
+                        changeToHours();
                       }
                       if (chosenGenre.contains("Horror/Thrillers")) {
                         for (var i = 0; i < horrorNfid.length; i++) {
                           movieDataTest.add(horrorNfid[i]);
                           movieImagesTest.add(horrorImages[i]);
                           movieTitles.add(horrorTitles[i]);
+                          movieGenre.add(horrorGenre[i]);
                           moviesSynopsis.add(horrorSynopsis[i]);
                           movieYear.add(horrorYear[i]);
+                          movieRuntime.add(horrorRuntime[i]);
                         }
                         shuffle(
-                          movieDataTest,
-                          movieImagesTest,
-                          movieTitles,
-                          moviesSynopsis,
-                          movieYear,
-                        );
+                            movieDataTest,
+                            movieImagesTest,
+                            movieTitles,
+                            moviesSynopsis,
+                            movieYear,
+                            movieGenre,
+                            movieRuntime);
+                        changeToHours();
                       }
                       if (chosenGenre.contains("Japanese Movies")) {
                         for (var i = 0; i < japanNfid.length; i++) {
                           movieDataTest.add(japanNfid[i]);
                           movieImagesTest.add(japanImages[i]);
                           movieTitles.add(japanTitles[i]);
+                          movieGenre.add(japanGenre[i]);
                           moviesSynopsis.add(japanSynopsis[i]);
                           movieYear.add(japanYear[i]);
+                          movieRuntime.add(japanRuntime[i]);
                         }
                         shuffle(
-                          movieDataTest,
-                          movieImagesTest,
-                          movieTitles,
-                          moviesSynopsis,
-                          movieYear,
-                        );
+                            movieDataTest,
+                            movieImagesTest,
+                            movieTitles,
+                            moviesSynopsis,
+                            movieYear,
+                            movieGenre,
+                            movieRuntime);
+                        changeToHours();
                       }
                       if (chosenGenre.contains("Korean Movies")) {
                         for (var i = 0; i < koreaNfid.length; i++) {
                           movieDataTest.add(koreaNfid[i]);
                           movieImagesTest.add(koreaImages[i]);
                           movieTitles.add(koreaTitles[i]);
+                          movieGenre.add(koreaGenre[i]);
                           moviesSynopsis.add(koreaSynopsis[i]);
                           movieYear.add(koreaYear[i]);
+                          movieRuntime.add(koreaRuntime[i]);
                         }
                         shuffle(
-                          movieDataTest,
-                          movieImagesTest,
-                          movieTitles,
-                          moviesSynopsis,
-                          movieYear,
-                        );
+                            movieDataTest,
+                            movieImagesTest,
+                            movieTitles,
+                            moviesSynopsis,
+                            movieYear,
+                            movieGenre,
+                            movieRuntime);
+                        changeToHours();
                       }
                       if (chosenGenre.contains("LGBTQ")) {
-                        // for (var i = 0; i < rushModeNfid.length; i++) {
-                        //   movieDataTest.add(rushModeNfid[i]);
-                        //   movieImagesTest.add(rushModeImages[i]);
-                        //   movieTitles.add(rushModeTitles[i]);
-                        //   moviesSynopsis.add(rushModeSynopsis[i]);
-                        //   movieYear.add(rushModeYear[i]);
-                        // }
                         for (var i = 0; i < gayNfid.length; i++) {
                           movieDataTest.add(gayNfid[i]);
                           movieImagesTest.add(gayImages[i]);
                           movieTitles.add(gayTitles[i]);
+                          movieGenre.add(gayGenre[i]);
                           moviesSynopsis.add(gaySynopsis[i]);
                           movieYear.add(gayYear[i]);
+                          movieRuntime.add(gayRuntime[i]);
                         }
                         shuffle(
-                          movieDataTest,
-                          movieImagesTest,
-                          movieTitles,
-                          moviesSynopsis,
-                          movieYear,
-                        );
+                            movieDataTest,
+                            movieImagesTest,
+                            movieTitles,
+                            moviesSynopsis,
+                            movieYear,
+                            movieGenre,
+                            movieRuntime);
+                        changeToHours();
                       }
                       Navigator.push(
                           context,

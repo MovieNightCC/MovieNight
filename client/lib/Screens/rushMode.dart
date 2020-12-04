@@ -22,7 +22,9 @@ List<int> rushModeNfid = [];
 List<String> rushModeImages = [];
 List<String> rushModeTitles = [];
 List<String> rushModeSynopsis = [];
+List<String> rushModeGenre = [];
 List<int> rushModeYear = [];
+List<int> rushModeRuntime = [];
 
 class RushMode extends StatefulWidget {
   @override
@@ -103,7 +105,9 @@ class _RushModeState extends State<RushMode> {
                                   rushModeImages[count],
                                   rushModeTitles[count],
                                   rushModeYear[count],
-                                  rushModeSynopsis[count]);
+                                  rushModeSynopsis[count],
+                                  rushModeGenre[count],
+                                  rushModeRuntime[count]);
                               count++;
                               // print(movieDataTest[index].runtimeType);
 
