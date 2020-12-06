@@ -53,12 +53,9 @@ class _InfoState extends State<Info> {
             ),
             painter: HeaderCurvedContainer(),
           ),
-          Column(
+          ListView(
             children: [
-              Padding(
-                padding: EdgeInsets.fromLTRB(0, 40, 0, 0),
-                child: Image.network(movieImagesTest[count]),
-              ),
+              Image.network(movieImagesTest[count]),
               Text('Title: ${movieTitles[count]}',
                   style: TextStyle(
                       color: Colors.white,
