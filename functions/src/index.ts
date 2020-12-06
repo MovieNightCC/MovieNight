@@ -65,7 +65,7 @@ export const deleteMatch = functions
         response.send("deleted!");
       }
     } catch {
-      response.send("error!");
+      response.send("delete matcherror!");
     }
   });
 //Getting Stuffs

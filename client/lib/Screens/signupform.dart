@@ -5,6 +5,7 @@ import '../sizeconfig.dart';
 import '../constants.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:movie_night/screens/auth.dart';
+import 'package:http/http.dart' as http;
 
 class SignForm extends StatefulWidget {
   @override
@@ -49,19 +50,24 @@ class _SignFormState extends State<SignForm> {
           SizedBox(height: getProportionateScreenHeight(20)),
           FlatButton(
             shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.all(Radius.circular(50.0)),
-    ),
-            child: Text("Create Account", 
-            style: TextStyle(color: Colors.white),
+              borderRadius: BorderRadius.all(Radius.circular(50.0)),
+            ),
+            child: Text(
+              "Create Account",
+              style: TextStyle(color: Colors.white),
             ),
             color: Colors.pink,
             onPressed: () {
               if (_formKey.currentState.validate()) {
                 _formKey.currentState.save();
+                // need to add user here on to database
+
                 context.read<AuthenticationService>().signUp(
                       email: email,
                       password: password,
                     );
+
+                _postUser(email, name);
                 Navigator.pushNamed(context, Swiper.routeName);
               }
             },
@@ -147,9 +153,7 @@ class _SignFormState extends State<SignForm> {
       autofocus: true,
       keyboardType: TextInputType.text,
       onSaved: (newValue) => name = newValue,
-      onChanged: (value) {
-        
-      },
+      onChanged: (value) {},
       decoration: InputDecoration(
         labelText: "Name",
         labelStyle: TextStyle(color: Colors.pink),
@@ -393,4 +397,22 @@ class SocalCard extends StatelessWidget {
       ),
     );
   }
+}
+
+void _postUser(String email, String name) async {
+  //convert username here eviljose@gmail.com => eviljose
+  var userName = email.substring(0, email.indexOf("@"));
+  Map<String, String> queryParams = {
+    'userName': userName,
+    'name': name,
+    'email': email,
+  };
+
+  print(queryParams);
+  var uri = Uri.https("asia-northeast1-movie-night-cc.cloudfunctions.net",
+      "/createUser", queryParams);
+
+  var response = await http.post(uri);
+  print('response status: ${response.statusCode}');
+  print('response body ${response.body}');
 }

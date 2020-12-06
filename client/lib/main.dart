@@ -17,7 +17,7 @@ import './utitilities/colors.dart';
 /// screens
 import 'screens/swiper.dart';
 import 'package:movie_night/screens/auth.dart';
-import 'screens/sign_in.dart';
+//import 'screens/sign_in.dart';
 import 'screens/rushMode.dart';
 import 'screens/movieArray.dart';
 
@@ -165,7 +165,7 @@ void getUserInfo() async {
     }
   } catch (e) {
     if (e is DioError) {
-      print('error!');
+      print('user info error or match movie fetching error!');
     }
   }
 }
@@ -195,7 +195,7 @@ Future<Response> fetchMovie() async {
     }
   } catch (e) {
     if (e is DioError) {
-      print('error!');
+      print('fetch all movie error!');
     }
   }
 }
@@ -230,7 +230,7 @@ Future<Response> fetchGay() async {
     }
   } catch (e) {
     if (e is DioError) {
-      print('error!');
+      print('_fetch gay error');
     }
   }
 }
@@ -263,7 +263,7 @@ Future<Response> fetchAnime() async {
     }
   } catch (e) {
     if (e is DioError) {
-      print('error!');
+      print('fetch anime error!');
     }
   }
 }
@@ -294,7 +294,7 @@ Future<Response> fetchHorror() async {
     }
   } catch (e) {
     if (e is DioError) {
-      print('error!');
+      print('fetch horror error!');
     }
   }
 }
@@ -325,7 +325,7 @@ Future<Response> fetchJapan() async {
     }
   } catch (e) {
     if (e is DioError) {
-      print('error!');
+      print('fetch japanese error!');
     }
   }
 }
@@ -356,7 +356,7 @@ Future<Response> fetchKorea() async {
     }
   } catch (e) {
     if (e is DioError) {
-      print('error!');
+      print('fetch korea error!');
     }
   }
 }
