@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import './swiper.dart';
 import './movieArray.dart';
-import './rushMode.dart';
-import 'package:flutter_phoenix/flutter_phoenix.dart';
+// import './rushMode.dart';
 import './movieInfo.dart';
 
 Map<String, bool> values = {
@@ -217,7 +216,6 @@ void filterPop(context) {
                               builder: (context) => Swiper(),
                               maintainState: true));
                     } else if (clickedAll == true) {
-                      Phoenix.rebirth(context);
                       //placeholder for All Movies
                     } else {
                       movieDataTest = [];
