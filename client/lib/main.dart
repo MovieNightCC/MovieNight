@@ -2,17 +2,20 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import './Screens/onboard.dart';
 import 'package:provider/provider.dart';
 import 'routes.dart';
 import 'dart:async';
-import 'dart:convert';
 import 'package:dio/dio.dart';
+
+
+import 'package:flutter_phoenix/flutter_phoenix.dart';
+
 
 /// screens
 import 'screens/swiper.dart';
-import 'screens/matches.dart';
 import 'screens/auth.dart';
-import 'screens/sign_in.dart';
+//import 'screens/sign_in.dart';
 import 'screens/rushMode.dart';
 import 'screens/movieArray.dart';
 import './screens/movieInfo.dart';
@@ -26,11 +29,59 @@ Future<void> main() async {
   );
 }
 
+final ThemeData _kShrineTheme = _buildShrineTheme();
+ThemeData _buildShrineTheme() {
+  final ThemeData base = ThemeData.dark();
+  return base.copyWith(
+      brightness: Brightness.light,
+      primaryColor: Color(0xffe91e63),
+      primaryColorBrightness: Brightness.dark,
+      primaryColorLight: Color(0xfff8bbd0),
+      primaryColorDark: Color(0xffc2185b),
+      accentColor: Color(0xffe91e63),
+      accentColorBrightness: Brightness.dark,
+      canvasColor: Color(0xfffafafa),
+      scaffoldBackgroundColor: Colors.black,
+      bottomAppBarColor: Color(0xffffffff),
+      cardColor: Color(0xffffffff),
+      dividerColor: Color(0x1f000000),
+      highlightColor: Color(0x66bcbcbc),
+      splashColor: Color(0x66c8c8c8),
+      selectedRowColor: Color(0xfff5f5f5),
+      unselectedWidgetColor: Color(0x8a000000),
+      disabledColor: Color(0x61000000),
+      buttonColor: Colors.orange,
+      toggleableActiveColor: Color(0xffd81b60),
+      secondaryHeaderColor: Color(0xfffce4ec),
+      textSelectionColor: Color(0xfff48fb1),
+      cursorColor: Color(0xff4285f4),
+      textSelectionHandleColor: Color(0xfff06292),
+      backgroundColor: Color(0xfff48fb1),
+      dialogBackgroundColor: Color(0xffffffff),
+      indicatorColor: Color(0xffe91e63),
+      hintColor: Colors.pinkAccent,
+      errorColor: Colors.purple[900],
+      buttonTheme: ButtonThemeData(
+          textTheme: ButtonTextTheme.normal,
+          minWidth: 88,
+          height: 36,
+          padding: EdgeInsets.only(top: 0, bottom: 0, left: 16, right: 16),
+          shape: RoundedRectangleBorder(
+            side: BorderSide(
+              color: Colors.pink,
+              width: 1,
+              style: BorderStyle.none,
+            ),
+            borderRadius: BorderRadius.all(Radius.circular(2.0)),
+          )));
+}
+
 // global user name variable accessible from every page
 var userName = "";
 var userIcon = "";
 var userPair = "";
 var userEmail = "";
+var displayName = "";
 var matchOriLength = 0;
 var cutInHalfCalled = false;
 var pairFetchCounter = 0;
@@ -67,9 +118,7 @@ class _AppState extends State<App> {
       child: MaterialApp(
         title: "Movie Night",
         debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-            primaryColor: Colors.grey[900],
-            scaffoldBackgroundColor: Colors.grey[900]),
+        theme: _kShrineTheme,
         home: AuthenticationWrapper(),
         routes: routes,
       ),
@@ -344,7 +393,6 @@ Future<Response> futureJapan;
 Future<Response> futureKorea;
 
 class AuthenticationWrapper extends StatelessWidget {
-  @override
   Widget build(BuildContext context) {
     final firebaseUser = context.watch<User>();
 
@@ -353,20 +401,14 @@ class AuthenticationWrapper extends StatelessWidget {
           firebaseUser.email.substring(0, firebaseUser.email.indexOf("@"));
       //put the function here
       getUserInfo();
+      print('$userEmail');
       return MaterialApp(
         title: "Movie Night",
         debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-            primaryColor: Colors.white,
-            scaffoldBackgroundColor: Colors.grey[100]),
+        theme: _kShrineTheme,
         home: FutureBuilder(
-          // futureAnime = fetchAnime();
-          // futureHorror = fetchHorror();
-          // futureJapan = fetchJapan();
-          // futureKorea = fetchKorea();
           future: Future.wait([
             futureMovie,
-            // futurePair,
             futureGay,
             futureAnime,
             futureHorror,
@@ -391,7 +433,7 @@ class AuthenticationWrapper extends StatelessWidget {
         routes: routes,
       );
     } else {
-      return SignInPage();
+      return OnBoardScreen();
     }
   }
 }
