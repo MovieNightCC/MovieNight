@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../main.dart';
 import './matches.dart';
 import './movieArray.dart';
 import 'package:url_launcher/url_launcher.dart';

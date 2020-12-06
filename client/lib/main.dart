@@ -2,24 +2,24 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import './Screens/onboard.dart';
+import 'package:movie_night/screens/movieInfo.dart';
+import 'package:movie_night/screens/movieMatchesInfo.dart';
+import 'package:movie_night/screens/onboard.dart';
 import 'package:provider/provider.dart';
 import 'routes.dart';
 import 'dart:async';
 import 'package:dio/dio.dart';
 
-
-import 'package:flutter_phoenix/flutter_phoenix.dart';
-
+import "package:flutter_phoenix/flutter_phoenix.dart";
+import './utitilities/colors.dart';
+//import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 /// screens
 import 'screens/swiper.dart';
-import 'screens/auth.dart';
+import 'package:movie_night/screens/auth.dart';
 //import 'screens/sign_in.dart';
 import 'screens/rushMode.dart';
 import 'screens/movieArray.dart';
-import './screens/movieInfo.dart';
-import './screens/movieMatchesInfo.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -128,6 +128,7 @@ class _AppState extends State<App> {
 
 void getUserInfo() async {
   print("getUserInfo is Called");
+
   try {
     var url =
         'https://asia-northeast1-movie-night-cc.cloudfunctions.net/getUserByUserName?userName=$userName';
@@ -135,14 +136,16 @@ void getUserInfo() async {
     var userdata = response.data;
     userEmail = userdata["email"];
     userPair = userdata["pairName"];
+    displayName = userdata["name"];
+    print('got user info ${userdata["email"]} in ${userdata["pairName"]}');
     userIcon = userdata["userIcon"];
     print('got user info ${userdata["userIcon"]} in ${userdata["pairName"]}');
 
     if (matchesTitles.length == 0) {
       var url =
-          'https://asia-northeast1-movie-night-cc.cloudfunctions.net/getPairMatches?pairName=$userPair';
+          'https://asia-northeast1-movie-night-cc.cloudfunctions.net/getPairByPairName?pairName=$userPair';
       final response = await Dio().get(url);
-      var data = response.data;
+      var data = response.data['matchMovieData'];
       if (response.statusCode == 200) {
         for (var i = 0; i < data.length; i++) {
           matches.add(data[i]);
@@ -162,7 +165,7 @@ void getUserInfo() async {
     }
   } catch (e) {
     if (e is DioError) {
-      print('error!');
+      print('user info error or match movie fetching error!');
     }
   }
 }
@@ -192,7 +195,7 @@ Future<Response> fetchMovie() async {
     }
   } catch (e) {
     if (e is DioError) {
-      print('error!');
+      print('fetch all movie error!');
     }
   }
 }
@@ -227,7 +230,7 @@ Future<Response> fetchGay() async {
     }
   } catch (e) {
     if (e is DioError) {
-      print('error!');
+      print('_fetch gay error');
     }
   }
 }
@@ -260,7 +263,7 @@ Future<Response> fetchAnime() async {
     }
   } catch (e) {
     if (e is DioError) {
-      print('error!');
+      print('fetch anime error!');
     }
   }
 }
@@ -291,7 +294,7 @@ Future<Response> fetchHorror() async {
     }
   } catch (e) {
     if (e is DioError) {
-      print('error!');
+      print('fetch horror error!');
     }
   }
 }
@@ -322,7 +325,7 @@ Future<Response> fetchJapan() async {
     }
   } catch (e) {
     if (e is DioError) {
-      print('error!');
+      print('fetch japanese error!');
     }
   }
 }
@@ -353,39 +356,12 @@ Future<Response> fetchKorea() async {
     }
   } catch (e) {
     if (e is DioError) {
-      print('error!');
+      print('fetch korea error!');
     }
   }
 }
 
-// Future<Response> fetchMatches() async {
-//   print("fetchMatches is Called");
-//   try {
-//     if (movieDataTest.length == 0) {
-//       var url =
-//           'https://asia-northeast1-movie-night-cc.cloudfunctions.net/getPairByPairName?pairName=testPairA';
-//       final response = await Dio().get(url);
-//       var data = response.data['matchMovieData'];
-//       if (response.statusCode == 200) {
-//         for (var i = 0; i < data.length; i++) {
-//           matches.add(data[i]);
-//           //    movieDataTest.add(movies[i]["nfid"]);
-//           matchesSynopsis.add(data[i]["synopsis"].replaceAll('&#39;', "'"));
-//           matchesYear.add(data[i]["year"]);
-//           matchesTitles.add(data[i]['title'].replaceAll('&#39;', "'"));
-//           matchesImage.add(data[i]["img"]);
-//           matchesNfid.add(data[i]["nfid"]);
-//         }
-//         return response;
-//       }
-//     }
-//   } on Exception catch (_) {
-//     print('error!');
-//   }
-// }
-
 Future<Response> futureMovie;
-// Future<Response> futurePair;
 Future<Response> futureGay;
 Future<Response> futureAnime;
 Future<Response> futureHorror;
@@ -393,6 +369,7 @@ Future<Response> futureJapan;
 Future<Response> futureKorea;
 
 class AuthenticationWrapper extends StatelessWidget {
+  @override
   Widget build(BuildContext context) {
     final firebaseUser = context.watch<User>();
 
@@ -405,7 +382,9 @@ class AuthenticationWrapper extends StatelessWidget {
       return MaterialApp(
         title: "Movie Night",
         debugShowCheckedModeBanner: false,
-        theme: _kShrineTheme,
+        theme: ThemeData(
+            primaryColor: Colors.white,
+            scaffoldBackgroundColor: Colors.grey[100]),
         home: FutureBuilder(
           future: Future.wait([
             futureMovie,
