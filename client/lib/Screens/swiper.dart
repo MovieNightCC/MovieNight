@@ -93,7 +93,7 @@ void updateUser(
     arrOfNfid, context, image, title, year, synopsis, genre, runtime) async {
   print(userName);
   var response = await http.get(
-      "https://asia-northeast1-movie-night-cc.cloudfunctions.net/updateUserLikes?userName=$userName&movieArr=[$arrOfNfid]");
+      "https://asia-northeast1-movie-night-cc.cloudfunctions.net/updateUserLikes?userName=$userName&movieArr=[$arrOfNfid]&genre=$genre");
   print(response.body);
   if (response.body == "match!") {
     //push to matches array
