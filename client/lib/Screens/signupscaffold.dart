@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../sizeconfig.dart';
-import 'signupform.dart';
 
+import './signupform.dart';
 
 class SignUpScreen extends StatelessWidget {
   @override
@@ -14,6 +14,5 @@ class SignUpScreen extends StatelessWidget {
       ),
       body: SignUpBody(),
     );
-    
   }
 }

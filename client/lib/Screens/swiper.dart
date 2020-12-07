@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 import 'package:movie_night/app-theme.dart';
+
+import 'dart:async';
+import 'package:http/http.dart' as http;
+
+import '../main.dart';
+
 import './tinderCard.dart';
 import './matches.dart';
 import './profile.dart';
 import './movieInfo.dart';
 import './movieArray.dart';
 import './rushMode.dart';
-import 'dart:async';
-import 'package:http/http.dart' as http;
 import './filterPopup.dart';
-import '../main.dart';
 import './movieMatchesInfo.dart';
 
 class Swiper extends StatefulWidget {

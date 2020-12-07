@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import './swiper.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'dart:math';
 
 class Info extends StatefulWidget {
   @override

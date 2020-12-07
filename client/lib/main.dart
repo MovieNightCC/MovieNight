@@ -2,10 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:movie_night/Screens/movieArray.dart';
-import 'package:movie_night/screens/movieInfo.dart';
-import 'package:movie_night/screens/movieMatchesInfo.dart';
-import 'package:movie_night/screens/onboard.dart';
+
 import 'package:provider/provider.dart';
 import 'routes.dart';
 import 'dart:async';
@@ -14,10 +11,13 @@ import 'package:dio/dio.dart';
 
 /// screens
 import './utils/helpers.dart';
-
-import 'screens/swiper.dart';
-import 'package:movie_night/screens/auth.dart';
-import 'screens/rushMode.dart';
+import './screens/movieArray.dart';
+import './screens/movieInfo.dart';
+import './screens/movieMatchesInfo.dart';
+import './screens/onboard.dart';
+import './screens/swiper.dart';
+import './screens/auth.dart';
+import './screens/rushMode.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -159,16 +159,16 @@ void getUserInfo() async {
   userPair = userdata["pairName"];
   displayName = userdata["name"];
   print("pairName is $userPair");
-  howManyGay = userdata["recommendations"]["LGBTQ"];
-  howManyAnime = userdata["recommendations"]["Anime"];
-  howManyHorror = userdata["recommendations"]["Horror"];
-  howManyJapan = userdata["recommendations"]["Japanese"];
-  howManyKorea = userdata["recommendations"]["Korean"];
-  howManyRomance = userdata["recommendations"]["Romance"];
-  howManyMartialArts = userdata["recommendations"]["MartialArts"];
-  howManyMusic = userdata["recommendations"]["MusicInspired"];
-  howManyScifi = userdata["recommendations"]["Scifi"];
-  howManySuperHero = userdata["recommendations"]["Superhero"];
+  howManyGay = userdata["recommendations"]["LGBTQ"].round();
+  howManyAnime = userdata["recommendations"]["Anime"].round();
+  howManyHorror = userdata["recommendations"]["Horror"].round();
+  howManyJapan = userdata["recommendations"]["Japanese"].round();
+  howManyKorea = userdata["recommendations"]["Korean"].round();
+  howManyRomance = userdata["recommendations"]["Romance"].round();
+  howManyMartialArts = userdata["recommendations"]["MartialArts"].round();
+  howManyMusic = userdata["recommendations"]["MusicInspired"].round();
+  howManyScifi = userdata["recommendations"]["Scifi"].round();
+  howManySuperHero = userdata["recommendations"]["Superhero"].round();
 
   print('got user info ${userdata["email"]} in ${userdata["pairName"]}');
   userIcon = userdata["userIcon"];

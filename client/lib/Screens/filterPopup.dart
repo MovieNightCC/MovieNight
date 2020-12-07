@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import './swiper.dart';
-import './movieArray.dart';
-// import './rushMode.dart';
-import './movieInfo.dart';
 import '../utils/helpers.dart';
+import './movieArray.dart';
+import './movieInfo.dart';
+import './swiper.dart';
 
 Map<String, bool> values = {
   'foo': true,

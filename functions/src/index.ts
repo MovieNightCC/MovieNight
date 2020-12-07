@@ -175,7 +175,7 @@ export const userRecommendAlgo = functions.firestore
               MusicInspired: oldUserData["recommendations"]["MusicInspired"] + 1,
               Romance: oldUserData["recommendations"]["Romance"] - 0.1,
               Scifi: oldUserData["recommendations"]["Scifi"] - 0.1,
-              Superhero: oldUserData["recommendations"]["Superhero"] - 0.1,
+              Superhero: oldUserData["recommendations"]["Superhero"] - 0.1
             },
           },
           { merge: true }

@@ -1,11 +1,12 @@
-import './swiper.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../sizeconfig.dart';
 import '../constants.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:movie_night/screens/auth.dart';
 import 'package:http/http.dart' as http;
+
+import './swiper.dart';
+import './auth.dart';
 
 class SignForm extends StatefulWidget {
   @override
