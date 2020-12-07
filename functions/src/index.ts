@@ -9,9 +9,24 @@ const unirest = require("unirest");
 admin.initializeApp();
 const db = admin.firestore();
 
-// // Start writing Firebase Functions
-// // https://firebase.google.com/docs/functions/typescript
-//
+interface oneMovie {
+  top250?: Number;
+  imdbrating?: Number;
+  title?: String; //by netflexId
+  avgrating?: Number;
+  top250tv?: Number;
+  poster?: String;
+  titledate?: String;
+  synopsis?: String;
+  year?: Number;
+  img?: String;
+  nfid?: Number;
+  runtime?: Number;
+  id?: Number;
+  clist: String;
+  vtype: String;
+}
+
 export const helloWorld = functions
   .region("asia-northeast1")
   .https.onRequest(async (request: any, response) => {
@@ -28,6 +43,31 @@ export const testDelete = functions
     response.send("deleted!");
   });
 
+//Deleting Stuffs
+//params: pairName, nfid
+export const deleteMatch = functions
+  .region("asia-northeast1")
+  .https.onRequest(async (request: any, response) => {
+    try {
+      const netflixId = Number(request.query.nfid);
+      //Adding to user
+      const pairRef = db.collection("pairs").doc(request.query.pairName);
+      const pairResult = await pairRef.get();
+      const pairData = pairResult.data();
+      if (pairData) {
+        await pairRef.update({
+          matchMovieData: pairData.matchMovieData.filter(
+            (movie: any) => movie.nfid !== netflixId
+          ),
+          matches: admin.firestore.FieldValue.arrayRemove(netflixId),
+        });
+
+        response.send("deleted!");
+      }
+    } catch {
+      response.send("delete matcherror!");
+    }
+  });
 //Getting Stuffs
 
 //Get all Users
@@ -44,7 +84,52 @@ export const getAllUsers = functions
 export const getAllMovies = functions
   .region("asia-northeast1")
   .https.onRequest(async (request: any, response) => {
-    const moviesRef = db.collection("movies");
+    const moviesRef = db.collection("allMovies");
+    const result = await moviesRef.get();
+    const data = result.docs.map((doc) => doc.data());
+    response.json(data);
+  });
+
+export const getGayMovies = functions
+  .region("asia-northeast1")
+  .https.onRequest(async (request: any, response) => {
+    const moviesRef = db.collection("gayLesbianMovies");
+    const result = await moviesRef.get();
+    const data = result.docs.map((doc) => doc.data());
+    response.json(data);
+  });
+
+export const getAnimeMovies = functions
+  .region("asia-northeast1")
+  .https.onRequest(async (request: any, response) => {
+    const moviesRef = db.collection("animeMovies");
+    const result = await moviesRef.get();
+    const data = result.docs.map((doc) => doc.data());
+    response.json(data);
+  });
+
+export const getHorrorMovies = functions
+  .region("asia-northeast1")
+  .https.onRequest(async (request: any, response) => {
+    const moviesRef = db.collection("horrorMovies");
+    const result = await moviesRef.get();
+    const data = result.docs.map((doc) => doc.data());
+    response.json(data);
+  });
+
+export const getJapanMovies = functions
+  .region("asia-northeast1")
+  .https.onRequest(async (request: any, response) => {
+    const moviesRef = db.collection("japanMovies");
+    const result = await moviesRef.get();
+    const data = result.docs.map((doc) => doc.data());
+    response.json(data);
+  });
+
+export const getKoreaMovies = functions
+  .region("asia-northeast1")
+  .https.onRequest(async (request: any, response) => {
+    const moviesRef = db.collection("koreanMovies");
     const result = await moviesRef.get();
     const data = result.docs.map((doc) => doc.data());
     response.json(data);
@@ -76,6 +161,9 @@ export const getPairByPairName = functions
 export const createUser = functions
   .region("asia-northeast1")
   .https.onRequest(async (req: any, response) => {
+    let userEmail = req.query.email;
+    const atIndex = userEmail.indexOf("@");
+    const userUserName = userEmail.slice(0, atIndex);
     // const userCollection = db.collection("test");
     const userInfo: Object = {
       email: req.query.email,
@@ -84,10 +172,20 @@ export const createUser = functions
       likes: [],
       dislikes: [],
       pairName: "",
-      //add a line that says partnered with "" 
+      genreCount: {
+        Anime: 0,
+        LGBTQ: 0,
+        "Horror/Thriller": 0,
+        "Japanese Movies": 0,
+        "Korean Movies": 0,
+        "Sci-fi":0,
+        "Superhero":0,
+        "Martial Arts":0,
+        "Music Inspired":0,
+      },
     };
     const userCollection = db.collection("users");
-    const userRef = userCollection.doc(req.query.email);
+    const userRef = userCollection.doc(userUserName);
     await userRef.set(userInfo);
     response.send("stored!");
   });
@@ -101,12 +199,25 @@ export const createPair = functions
       members?: Array<String>;
       matches?: Array<Number>; //by netflexId
       likes?: Array<Number>;
+      matchMovieData?: Array<Object>;
+      genreCount?: Object;
     }
     const pairInfo: Pair = {
       pairName: req.query.pairName,
       members: [req.query.user1, req.query.user2],
       matches: [],
       likes: [],
+      genreCount: {
+        Anime: 0,
+        LGBTQ: 0,
+        "Horror/Thriller": 0,
+        "Japanese Movies": 0,
+        "Korean Movies": 0,
+        "Sci-fi":0,
+        "Superhero":0,
+        "Martial Arts":0,
+        "Music Inspired":0,
+      },
     };
     //create Pair
     const pairsCollection = db.collection("pairs");
@@ -118,44 +229,13 @@ export const createPair = functions
     const usersRef2 = usersCollection.doc(req.query.user2);
     //get user data and get their display name
 
-    await usersRef1.update({pairName: req.query.pairName})
-    await usersRef2.update({pairName: req.query.pairName})
+    await usersRef1.update({ pairName: req.query.pairName });
+    await usersRef2.update({ pairName: req.query.pairName });
     // await usersRef2.update({partner: <the other user's display name>})
     response.send("pair created!");
   });
 
-
-//dummy create Pair
-export const dummy = functions
-  .region("asia-northeast1")
-  .https.onRequest(async (req: any, response) => {
-    interface Pair {
-      pairName?: String;
-      members?: Array<String>;
-      matches?: Array<Number>; //by netflexId
-      likes?: Array<Number>;
-    }
-    const pairInfo: Pair = {
-      pairName: req.query.pairName,
-      members: [req.query.user1, req.query.user2],
-      matches: [],
-      likes: [],
-    };
-    const pairsCollection = db.collection("pairs");
-    const pairsRef = pairsCollection.doc(req.query.pairName);
-    await pairsRef.set(pairInfo);
-    // also please add pairName to userEntity
-
-    // const usersCollection = db.collection("users");
-    // const usersRef1 = usersCollection.doc(req.query.user1);
-    // const usersRef2 = usersCollection.doc(req.query.user2);
-    // await usersRef1.update({pairName: req.query.pairName})
-    // await usersRef2.update({pairName: req.query.pairName})
-    response.send("pair created!");
-  });
-
 //Modifying Stuffs
-
 
 //Add liked movies to User Entity
 //query: userName, movieArr (An array of netflix ids)
@@ -167,14 +247,20 @@ export const updateUserLikes = functions
     const userResult = await userRef.get();
     const userData = userResult.data();
     const arr = JSON.parse(request.query.movieArr);
-    arr.map(async (netflixId: Number) => {
-      await userRef.update({
-        likes: admin.firestore.FieldValue.arrayUnion(netflixId),
+    const movieRef = db.collection("allMovies").doc(String(arr[0]));
+    const movieResult = await movieRef.get();
+    const movieData = movieResult.data();
+
+    if (userData && movieData) {//dummy check
+      const movieGenre = movieData["genre"];
+      arr.map(async (netflixId: Number) => {
+        await userRef.update({
+          likes: admin.firestore.FieldValue.arrayUnion(netflixId),
+          ["genreCount." + movieGenre]: userData["genreCount"][movieGenre] + 1,
+        });
       });
-    });
-    //Check if user is in a pair. If true, push to pair array or add to matches
-    if (userData) {
-      if (userData.pairName!== "" || userData.pairName !== undefined)  {
+      //Check if user is in a pair. If true, push to pair array or add to matches
+      if (userData.pairName !== "" || userData.pairName !== undefined) {
         //case for user having pair
         const pairRef = db.collection("pairs").doc(userData.pairName);
         const pairResult = await pairRef.get();
@@ -183,14 +269,19 @@ export const updateUserLikes = functions
           //check if movie already exists in like
           if (pairData) {
             if (pairData.likes.includes(netflixId)) {
-              console.log("yes match")
+              console.log("yes match");
               await pairRef.update({
                 matches: admin.firestore.FieldValue.arrayUnion(netflixId),
                 likes: admin.firestore.FieldValue.arrayRemove(netflixId),
+                matchMovieData: admin.firestore.FieldValue.arrayUnion(
+                  movieData
+                ),
+                ["genreCount." + movieGenre]:
+                  pairData.genreCount.movieGenre + 1,
               });
               response.send("match!");
             } else {
-              console.log("no match")
+              console.log("no match");
               await pairRef.update({
                 likes: admin.firestore.FieldValue.arrayUnion(netflixId),
               });
@@ -202,8 +293,25 @@ export const updateUserLikes = functions
     }
   });
 
+
+  export const testAiko = functions
+  .region("asia-northeast1")
+  .https.onRequest(async (_, response) => {
+    const userRef = db.collection("users").doc("aiko");
+    const snapshot = await userRef.get();
+    const userData = snapshot.data();
+    if (userData) {
+      await userRef.update({
+        ["genreCount"+".Anime"] : userData["genreCount"]["Anime"]+1,
+      })
+      response.json(`new aiko anime count is ${userData["genreCount"]["Anime"]}`);
+    }
+
+  });
+
+
 //query ?userName=<userName>&movieArr=[4243423,234234234,234423234]
-  export const simpleUpdateUserLike = functions
+export const simpleUpdateUserLike = functions
   .region("asia-northeast1")
   .https.onRequest(async (request: any, response) => {
     //Adding to user
@@ -216,11 +324,11 @@ export const updateUserLikes = functions
         likes: admin.firestore.FieldValue.arrayUnion(netflixId),
       });
     });
-    response.send(userData)
+    response.send(userData);
   });
 
-  //query ?pairName=<userName>&movieArr=[4243423,234234234,234423234]
-  export const simpleUpdatePairMatches = functions
+//query ?pairName=<userName>&movieArr=[4243423,234234234,234423234]
+export const simpleUpdatePairMatches = functions
   .region("asia-northeast1")
   .https.onRequest(async (request: any, response) => {
     //Adding to user
@@ -233,14 +341,8 @@ export const updateUserLikes = functions
         matches: admin.firestore.FieldValue.arrayUnion(netflixId),
       });
     });
-    response.send(pairData)
+    response.send(pairData);
   });
-
-
-
-
-
-
 
 //Get Pair Name of user (by UserName)
 export const checkIfUserHasPairs = functions
@@ -275,7 +377,6 @@ export const checkPairMatches = functions
     else response.json("no array found.");
   });
 
-
 //seed from netflix db (unogsNG API)
 
 export const addMovies = functions
@@ -301,7 +402,7 @@ export const addMovies = functions
     APIreq.end(function (APIres: any) {
       if (APIres.error) throw new Error(APIres.error);
       const result = APIres.body.results;
-      result.map((obj: any) => {
+      result.map((obj: oneMovie) => {
         console.log(String(obj.nfid));
         const docRef = db.collection("movies").doc(String(obj.nfid));
         docRef.set(obj).catch((err) => console.log(err));
@@ -309,3 +410,71 @@ export const addMovies = functions
       response.send(APIres.body);
     });
   });
+
+export const setUpImageAndAlgo = functions
+  .region("asia-northeast1")
+  .https.onRequest(async (_, response) => {
+    // const allMoviesObj: { [key: string]: Object } = {};
+    const userRef = db.collection("users");
+    const snapshot = await userRef.get();
+
+    snapshot.forEach(async (doc) => {
+      await doc.ref.update({
+        genreCount: {
+          Anime: 0,
+          LGBTQ: 0,
+          "Horror/Thriller": 0,
+          "Japanese Movies": 0,
+          "Korean Movies": 0,
+          "Sci-fi":0,
+          "Superhero":0,
+          "Martial Arts":0,
+          "Music Inspired":0,
+        },
+        likeCount: 0,
+        userIcon: "gs://movie-night-cc.appspot.com/default_avatar.jpg",
+      });
+    });
+    response.json("success");
+  });
+
+export const pairSetup = functions
+  .region("asia-northeast1")
+  .https.onRequest(async (_, response) => {
+    // const allMoviesObj: { [key: string]: Object } = {};
+    const userRef = db.collection("pairs");
+    const snapshot = await userRef.get();
+
+    snapshot.forEach(async (doc) => {
+      await doc.ref.update({
+        genreCount: {
+          Anime: 0,
+          LGBTQ: 0,
+          "Horror/Thriller": 0,
+          "Japanese Movies": 0,
+          "Korean Movies": 0,
+          "Sci-fi":0,
+          "Superhero":0,
+          "Martial Arts":0,
+          "Music Inspired":0,
+        },
+      });
+    });
+    response.json("success");
+  });
+
+export const sorry = functions
+  .region("asia-northeast1")
+  .https.onRequest(async (_, response) => {
+    // const allMoviesObj: { [key: string]: Object } = {};
+    const userRef = db.collection("users");
+    const snapshot = await userRef.get();
+
+    snapshot.forEach(async (doc) => {
+      await doc.ref.update({
+        swipeCount: admin.firestore.FieldValue.delete(),
+      });
+    });
+    response.json("success");
+  });
+

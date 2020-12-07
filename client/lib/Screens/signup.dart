@@ -1,9 +1,9 @@
-import './swiper.dart';
-
 import 'auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
+import 'package:url_launcher/url_launcher.dart';
+import './addPairPage.dart';
 
 class SignUpPage extends StatelessWidget {
   final TextEditingController nameController = TextEditingController();
@@ -45,10 +45,20 @@ class SignUpPage extends StatelessWidget {
 
               _postUser(
                   emailController.text.trim(), nameController.text.trim());
-              return Swiper();
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => AddPairPage(),
+                      maintainState: true));
             },
             child: Text("Sign Up"),
-          )
+          ),
+          RaisedButton(
+            onPressed: () {
+              launch('https://movie-night.flycricket.io/privacy.html');
+            },
+            child: Text("Privacy Policy"),
+          ),
         ],
       ),
     );
@@ -57,11 +67,14 @@ class SignUpPage extends StatelessWidget {
 
 void _postUser(String email, String name) async {
   //convert username here eviljose@gmail.com => eviljose
+  var userName = email.substring(0, email.indexOf("@"));
   Map<String, String> queryParams = {
-    'userName': email.substring(0, email.indexOf("@")),
+    'userName': userName,
     'name': name,
     'email': email,
   };
+
+  print(queryParams);
   var uri = Uri.https("asia-northeast1-movie-night-cc.cloudfunctions.net",
       "/createUser", queryParams);
 

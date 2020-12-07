@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
-// import 'package:flutter_tindercard/flutter_tindercard.dart';
 import 'package:dio/dio.dart';
+import 'package:movie_night/app-theme.dart';
 import './tinderCard.dart';
 import './matches.dart';
 import './profile.dart';
 import './movieInfo.dart';
+import './movieArray.dart';
+import './rushMode.dart';
 import 'dart:math';
 import 'dart:async';
-import 'dart:convert';
 import 'package:http/http.dart' as http;
+import './filterPopup.dart';
+import '../main.dart';
+import './movieMatchesInfo.dart';
 
 class Swiper extends StatefulWidget {
   static String routeName = "/swiper";
@@ -21,22 +25,24 @@ class _AppState extends State<Swiper> {
   @override
   void initState() {
     super.initState();
-    // futureMovie = fetchMovie();
+    print("fetchArr $fetchArr");
+    if (fetchArr.length > 1 && cutInHalfCalled == false) {
+      cutInHalf();
+    }
   }
 
   Widget build(BuildContext context) {
     return MaterialApp(
       title: "Movie Night",
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-          primaryColor: Colors.white,
-          scaffoldBackgroundColor: Colors.grey[100]),
+      theme: movieNightTheme,
       home: Tinderswiper(),
     );
   }
 }
 
-List shuffle(List listA, List listB, List listC, List listD, List listE) {
+List shuffle(List listA, List listB, List listC, List listD, List listE,
+    List listF, List listG) {
   var random = new Random();
 
   // Go through all elements.
@@ -49,18 +55,36 @@ List shuffle(List listA, List listB, List listC, List listD, List listE) {
     var temp3 = listC[i];
     var temp4 = listD[i];
     var temp5 = listE[i];
+    var temp6 = listF[i];
+    var temp7 = listG[i];
+    // var temp8 = listH[i];
+    // var temp9 = listI[i];
+    // var temp10 = listJ[i];
+    // var temp11 = listK[i];
 
     listA[i] = listA[n];
     listB[i] = listB[n];
     listC[i] = listC[n];
     listD[i] = listD[n];
     listE[i] = listE[n];
+    listF[i] = listF[n];
+    listG[i] = listG[n];
+    // listH[i] = listH[n];
+    // listI[i] = listI[n];
+    // listJ[i] = listJ[n];
+    // listK[i] = listK[n];
 
     listA[n] = temp;
     listB[n] = temp2;
     listC[n] = temp3;
     listD[n] = temp4;
     listE[n] = temp5;
+    listF[n] = temp6;
+    listG[n] = temp7;
+    // listH[n] = temp8;
+    // listI[n] = temp9;
+    // listJ[n] = temp10;
+    // listK[n] = temp11;
   }
   return listA;
 }
@@ -70,19 +94,87 @@ List<int> movieDataTest = [];
 List<String> movieImagesTest = [];
 List<String> movieTitles = [];
 List<String> moviesSynopsis = [];
+List<String> movieGenre = [];
 List<int> movieYear = [];
+List<int> movieRuntime = [];
 var counter = 0;
 
-void _updateUser(arrOfNfid) async {
-  // var queryParams = new Map();
-  // queryParams['userName'] = 'evilVic';
-  // queryParams['movieArr'] = '[$arrOfNfid]';
-  var response = await http.get(
-      "https://asia-northeast1-movie-night-cc.cloudfunctions.net/updateUserLikes?userName=Male_a&movieArr=[$arrOfNfid]");
+void cutInHalf() {
+  cutInHalfCalled = true;
+  print('cutinhalf is called');
+  print('matchorilength is $matchOriLength');
+  int halfLength = matchesTitles.length ~/ 2;
+  matchesTitles = matchesTitles.sublist(0, halfLength);
+  matchesImage = matchesImage.sublist(0, halfLength);
+  matchesYear = matchesYear.sublist(0, halfLength);
+  matchesGenre = matchesGenre.sublist(0, halfLength);
+  matchesRuntime = matchesRuntime.sublist(0, halfLength);
+  matchesSynopsis = matchesSynopsis.sublist(0, halfLength);
+  matchesNfid = matchesNfid.sublist(0, halfLength);
 
-  // var userData = response.body;
-// http.get('https://jsonplaceholder.typicode.com/albums/1');
-// https://asia-northeast1-movie-night-cc.cloudfunctions.net/updateUserLikes?userName=kenny&movieArr=[1,2,3]
+  matchesTitles = matchesTitles.reversed.toList();
+  matchesImage = matchesImage.reversed.toList();
+  matchesYear = matchesYear.reversed.toList();
+  matchesGenre = matchesGenre.reversed.toList();
+  matchesRuntime = matchesRuntime.reversed.toList();
+  matchesSynopsis = matchesSynopsis.reversed.toList();
+  matchesNfid = matchesNfid.reversed.toList();
+}
+
+void makeHour() {
+  hourListMatches[0] = (hourListMatches[0] / 3600).toInt();
+  if (matchesRuntime[0] < 7200 && matchesRuntime[0] > 3600) {
+    matchesRuntime[0] = matchesRuntime[0] - 3600;
+    matchesRuntime[0] = matchesRuntime[0] ~/ 60;
+
+    minutesListMatches.add(matchesRuntime[0]);
+  } else if (matchesRuntime[0] < 3600) {
+    matchesRuntime[0] = matchesRuntime[0] ~/ 60;
+    minutesListMatches.add(matchesRuntime[0]);
+  } else {
+    matchesRuntime[0] = matchesRuntime[0] - 7200;
+    matchesRuntime[0] = matchesRuntime[0] ~/ 60;
+    minutesListMatches.add(matchesRuntime[0]);
+  }
+}
+
+void updateUser(
+    arrOfNfid, context, image, title, year, synopsis, genre, runtime) async {
+  print(userName);
+  var response = await http.get(
+      "https://asia-northeast1-movie-night-cc.cloudfunctions.net/updateUserLikes?userName=$userName&movieArr=[$arrOfNfid]");
+  print(response.body);
+  if (response.body == "match!") {
+    //push to matches array
+    print("old list $matchesTitles");
+    matchesTitles.insert(0, title);
+    matchesSynopsis.insert(0, synopsis);
+    matchesImage.insert(0, image);
+    matchesYear.insert(0, year);
+    matchesRuntime.insert(0, runtime);
+    hourListMatches.insert(0, runtime);
+    matchesNfid.insert(0, arrOfNfid);
+    matchesGenre.insert(0, genre);
+    print("new match nfid $matchesNfid");
+    print("new list $matchesTitles");
+
+    print("new list $matchesTitles");
+    showDialog(
+        context: context,
+        builder: (_) => new AlertDialog(
+              title: new Text("Alert"),
+              content: new Text("You got a Match!"),
+              actions: <Widget>[
+                FlatButton(
+                  child: Text('Close me!'),
+                  onPressed: () {
+                    Navigator.of(context, rootNavigator: true).pop();
+                  },
+                )
+              ],
+            ));
+    makeHour();
+  }
 }
 
 class Tinderswiper extends StatefulWidget {
@@ -98,110 +190,150 @@ class _TinderswiperState extends State<Tinderswiper>
   Widget build(BuildContext context) {
     CardController controller;
     return Scaffold(
-      // appBar: AppBar(
-      //   title: const Text('Movie Night'),
-      //   backgroundColor: Colors.purple[200],
-      //   elevation: 0,
-      //   centerTitle: true,
-      // ),
-      body: Stack(alignment: Alignment.center, children: [
-        CustomPaint(
-          child: Container(
-            width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height,
-          ),
-          painter: HeaderCurvedContainer(),
-        ),
-        Center(
-          child: InkWell(
+        body: Stack(alignment: Alignment.center, children: [
+          CustomPaint(
             child: Container(
-              height: MediaQuery.of(context).size.height * 1.0,
-              child: TinderSwapCard(
-                orientation: AmassOrientation.TOP,
-                totalNum: 100,
-                stackNum: 2,
-                swipeEdge: 5.0,
-                maxWidth: MediaQuery.of(context).size.width * 0.9,
-                maxHeight: MediaQuery.of(context).size.width * 1.6,
-                minWidth: MediaQuery.of(context).size.width * 0.899,
-                minHeight: MediaQuery.of(context).size.width * 1.599,
-                cardBuilder: (context, index) {
-                  print('index is $index');
-                  // index = count;
-                  return Card(
-                    child: Container(
-                        // padding: EdgeInsets.all(20.0),
-                        child: Image.network(
-                      movieImagesTest[index],
-                      fit: BoxFit.fill,
-                    )),
-                    elevation: 0,
-                  );
-                },
-                cardController: controller = CardController(),
-                swipeCompleteCallback:
-                    (CardSwipeOrientation orientation, int index) {
-                  if (orientation == CardSwipeOrientation.RIGHT) {
-                    //when liked
-                    print('you liked: ${movieDataTest[count]}');
-                    print('you liked: $movieDataTest');
-                    print('you liked: $moviesList');
-
-                    //request to firebase server to update likes
-                    _updateUser(movieDataTest[count]);
-                    count++;
-                    // print(movieDataTest[index].runtimeType);
-
-                    //  (?userName=<userName>&movieArr=<An Array of netflix IDs>)
-                    // response = await dio.post("/test", data: {"id": 12, "name": "wendu"});
-
-                  } else if (orientation == CardSwipeOrientation.LEFT) {
-                    //when hated
-                    print('you hate: ${movieDataTest[count]}');
-                    count++;
-                  }
-                },
-              ),
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height,
             ),
-            onTap: () {
-              Navigator.push(
-                  context, new MaterialPageRoute(builder: (context) => Info()));
-            },
+            painter: HeaderCurvedContainer(),
           ),
-        ),
-      ]),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _currentIndex,
-        type: BottomNavigationBarType.fixed,
-        backgroundColor: Colors.purple[200],
-        items: [
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.local_movies_outlined), label: 'Swipe'),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.local_fire_department), label: 'Matches'),
-        ],
-        onTap: (index) {
-          setState(() {
-            _currentIndex = index;
-          });
-          if (_currentIndex == 2) {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => Matches(), maintainState: true));
-          }
-          if (_currentIndex == 0) {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => Profile(),
-                  maintainState: true,
-                ));
-          }
-        },
-      ),
-    );
+          Padding(
+            padding: EdgeInsets.fromLTRB(0, 50, 0, 0),
+            child: Column(
+              children: [
+                Center(
+                  child: InkWell(
+                    child: Container(
+                      height: MediaQuery.of(context).size.height * 0.7,
+                      child: TinderSwapCard(
+                        orientation: AmassOrientation.TOP,
+                        totalNum: 100,
+                        stackNum: 2,
+                        swipeEdge: 5.0,
+                        maxWidth: MediaQuery.of(context).size.width * 0.9,
+                        maxHeight: MediaQuery.of(context).size.width * 1.6,
+                        minWidth: MediaQuery.of(context).size.width * 0.899,
+                        minHeight: MediaQuery.of(context).size.width * 1.599,
+                        cardBuilder: (context, index) {
+                          return Card(
+                            child: Container(
+                                // padding: EdgeInsets.all(20.0),
+                                child: Image.network(
+                              movieImagesTest[index],
+                              fit: BoxFit.fill,
+                            )),
+                            elevation: 0,
+                          );
+                        },
+                        cardController: controller = CardController(),
+                        swipeCompleteCallback:
+                            (CardSwipeOrientation orientation, int index) {
+                          if (orientation == CardSwipeOrientation.RIGHT) {
+                            //when liked
+                            print('you liked: ${movieDataTest[count]}');
+
+                            //request to firebase server to update likes
+                            updateUser(
+                                movieDataTest[count],
+                                context,
+                                movieImagesTest[count],
+                                movieTitles[count],
+                                movieYear[count],
+                                moviesSynopsis[count],
+                                movieGenre[count],
+                                movieRuntime[count]);
+                            count++;
+                            // print(movieDataTest[index].runtimeType);
+
+                            //  (?userName=<userName>&movieArr=<An Array of netflix IDs>)
+                            // response = await dio.post("/test", data: {"id": 12, "name": "wendu"});
+
+                          } else if (orientation == CardSwipeOrientation.LEFT) {
+                            //when hated
+                            print('you hate: ${movieDataTest[count]}');
+                            count++;
+                          }
+                        },
+                      ),
+                    ),
+                    onTap: () {
+                      Navigator.push(context,
+                          new MaterialPageRoute(builder: (context) => Info()));
+                    },
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Positioned(
+            left: 80,
+            bottom: 20,
+            child: FloatingActionButton(
+              heroTag: null,
+              onPressed: () {
+                print('pressed');
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => RushMode(),
+                      maintainState: true,
+                    ));
+              },
+              tooltip: 'Increment',
+              child: Icon(Icons.flash_on_sharp),
+              elevation: 2.0,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10)),
+              backgroundColor: Colors.red[400],
+            ),
+          ),
+          Positioned(
+            right: 80,
+            bottom: 20,
+            child: FloatingActionButton(
+              heroTag: null,
+              onPressed: () => filterPop(context),
+              tooltip: 'Increment',
+              child: Icon(Icons.swap_calls, size: 40),
+              elevation: 2.0,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10)),
+              backgroundColor: Colors.blue[200],
+            ),
+          ),
+        ]),
+        bottomNavigationBar: BottomNavigationBar(
+          currentIndex: _currentIndex,
+          type: BottomNavigationBarType.fixed,
+          backgroundColor: Colors.purple[200],
+          items: [
+            BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.local_movies_outlined), label: 'Swipe'),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.local_fire_department), label: 'Matches'),
+          ],
+          onTap: (index) {
+            setState(() {
+              _currentIndex = index;
+            });
+            if (_currentIndex == 2) {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => Matches(), maintainState: true));
+            }
+            if (_currentIndex == 0) {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => Profile(),
+                    maintainState: true,
+                  ));
+            }
+          },
+        ));
   }
 }
 
@@ -220,15 +352,3 @@ class HeaderCurvedContainer extends CustomPainter {
   @override
   bool shouldRepaint(CustomPainter oldDelegate) => false;
 }
-
-//   Widget build(BuildContext context) {
-//     return MaterialApp(
-//       title: "Movie Night",
-//       debugShowCheckedModeBanner: false,
-//       theme: ThemeData(
-//           primaryColor: Colors.white,
-//           scaffoldBackgroundColor: Colors.grey[100]),
-//       home: Tinderswiper(),
-//     );
-//   }
-// }
