@@ -1,0 +1,14 @@
+{
+    "compilerOptions": {
+      "moduleResolution": "node",
+      "noImplicitAny": true,
+      "removeComments": true,
+      "preserveConstEnums": true,
+      "sourceMap": true,
+      "forceConsistentCasingInFileNames": true,
+      "declaration": true
+    },
+    "exclude": [
+      "node_modules"
+    ]
+  }
