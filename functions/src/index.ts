@@ -88,7 +88,8 @@ export const startGame = functions
  
     gameRef.set({
      started: false,
-    },{merge  : true});
+    },{merge  : true}).then(_=>console.log("success")).catch(_=>console.error("did not set"))
+
     const data = result.data();
     if (data) response.json(`reset the game:${data}`);
     else response.json("failed to reset the game.");
@@ -105,7 +106,7 @@ export const resetGame = functions
     gameRef.update({
      started: true,
 
-    });
+    }).then(_=>console.log("success")).catch(_=>console.error("did not set"))
     const data = result.data();
     if (data) response.json(`started the time:${data}`);
     else response.json("no game found.");
