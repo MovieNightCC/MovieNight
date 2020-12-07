@@ -1,19 +1,10 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import './swiper.dart';
-import 'package:url_launcher/url_launcher.dart';
-import 'package:dio/dio.dart';
-import 'package:flutterPractice/main.dart';
 import './tinderCard.dart';
-import './matches.dart';
-import './profile.dart';
 import './movieInfo.dart';
-import 'dart:math';
 import 'dart:async';
-import 'package:http/http.dart' as http;
 import './filterPopup.dart';
-import '../main.dart';
 
 //https://www.netflix.com/title/80191740?preventIntent=true
 //https://www.netflix.com/jp-en/title/70080038?preventIntent=true

@@ -2,21 +2,24 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:movie_night/screens/movieInfo.dart';
+import 'package:movie_night/screens/movieMatchesInfo.dart';
+import 'package:movie_night/screens/onboard.dart';
 import 'package:provider/provider.dart';
 import 'routes.dart';
 import 'dart:async';
-import 'dart:convert';
 import 'package:dio/dio.dart';
+
+import "package:flutter_phoenix/flutter_phoenix.dart";
+import './utitilities/colors.dart';
+//import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 /// screens
 import 'screens/swiper.dart';
-import 'screens/matches.dart';
-import 'screens/auth.dart';
-import 'screens/sign_in.dart';
+import 'package:movie_night/screens/auth.dart';
+//import 'screens/sign_in.dart';
 import 'screens/rushMode.dart';
 import 'screens/movieArray.dart';
-import './screens/movieInfo.dart';
-import './screens/movieMatchesInfo.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -26,11 +29,59 @@ Future<void> main() async {
   );
 }
 
+final ThemeData _kShrineTheme = _buildShrineTheme();
+ThemeData _buildShrineTheme() {
+  final ThemeData base = ThemeData.dark();
+  return base.copyWith(
+      brightness: Brightness.light,
+      primaryColor: Color(0xffe91e63),
+      primaryColorBrightness: Brightness.dark,
+      primaryColorLight: Color(0xfff8bbd0),
+      primaryColorDark: Color(0xffc2185b),
+      accentColor: Color(0xffe91e63),
+      accentColorBrightness: Brightness.dark,
+      canvasColor: Color(0xfffafafa),
+      scaffoldBackgroundColor: Colors.black,
+      bottomAppBarColor: Color(0xffffffff),
+      cardColor: Color(0xffffffff),
+      dividerColor: Color(0x1f000000),
+      highlightColor: Color(0x66bcbcbc),
+      splashColor: Color(0x66c8c8c8),
+      selectedRowColor: Color(0xfff5f5f5),
+      unselectedWidgetColor: Color(0x8a000000),
+      disabledColor: Color(0x61000000),
+      buttonColor: Colors.orange,
+      toggleableActiveColor: Color(0xffd81b60),
+      secondaryHeaderColor: Color(0xfffce4ec),
+      textSelectionColor: Color(0xfff48fb1),
+      cursorColor: Color(0xff4285f4),
+      textSelectionHandleColor: Color(0xfff06292),
+      backgroundColor: Color(0xfff48fb1),
+      dialogBackgroundColor: Color(0xffffffff),
+      indicatorColor: Color(0xffe91e63),
+      hintColor: Colors.pinkAccent,
+      errorColor: Colors.purple[900],
+      buttonTheme: ButtonThemeData(
+          textTheme: ButtonTextTheme.normal,
+          minWidth: 88,
+          height: 36,
+          padding: EdgeInsets.only(top: 0, bottom: 0, left: 16, right: 16),
+          shape: RoundedRectangleBorder(
+            side: BorderSide(
+              color: Colors.pink,
+              width: 1,
+              style: BorderStyle.none,
+            ),
+            borderRadius: BorderRadius.all(Radius.circular(2.0)),
+          )));
+}
+
 // global user name variable accessible from every page
 var userName = "";
 var userIcon = "";
 var userPair = "";
 var userEmail = "";
+var displayName = "";
 var matchOriLength = 0;
 var cutInHalfCalled = false;
 var pairFetchCounter = 0;
@@ -67,9 +118,7 @@ class _AppState extends State<App> {
       child: MaterialApp(
         title: "Movie Night",
         debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-            primaryColor: Colors.grey[900],
-            scaffoldBackgroundColor: Colors.grey[900]),
+        theme: _kShrineTheme,
         home: AuthenticationWrapper(),
         routes: routes,
       ),
@@ -79,6 +128,7 @@ class _AppState extends State<App> {
 
 void getUserInfo() async {
   print("getUserInfo is Called");
+
   try {
     var url =
         'https://asia-northeast1-movie-night-cc.cloudfunctions.net/getUserByUserName?userName=$userName';
@@ -86,14 +136,16 @@ void getUserInfo() async {
     var userdata = response.data;
     userEmail = userdata["email"];
     userPair = userdata["pairName"];
+    displayName = userdata["name"];
+    print('got user info ${userdata["email"]} in ${userdata["pairName"]}');
     userIcon = userdata["userIcon"];
     print('got user info ${userdata["userIcon"]} in ${userdata["pairName"]}');
 
     if (matchesTitles.length == 0) {
       var url =
-          'https://asia-northeast1-movie-night-cc.cloudfunctions.net/getPairMatches?pairName=$userPair';
+          'https://asia-northeast1-movie-night-cc.cloudfunctions.net/getPairByPairName?pairName=$userPair';
       final response = await Dio().get(url);
-      var data = response.data;
+      var data = response.data['matchMovieData'];
       if (response.statusCode == 200) {
         for (var i = 0; i < data.length; i++) {
           matches.add(data[i]);
@@ -113,7 +165,7 @@ void getUserInfo() async {
     }
   } catch (e) {
     if (e is DioError) {
-      print('error!');
+      print('user info error or match movie fetching error!');
     }
   }
 }
@@ -143,7 +195,7 @@ Future<Response> fetchMovie() async {
     }
   } catch (e) {
     if (e is DioError) {
-      print('error!');
+      print('fetch all movie error!');
     }
   }
 }
@@ -170,7 +222,7 @@ Future<Response> fetchGay() async {
     }
   } catch (e) {
     if (e is DioError) {
-      print('error!');
+      print('_fetch gay error');
     }
   }
 }
@@ -212,7 +264,7 @@ Future<Response> fetchAnime() async {
     }
   } catch (e) {
     if (e is DioError) {
-      print('error!');
+      print('fetch anime error!');
     }
   }
 }
@@ -243,7 +295,7 @@ Future<Response> fetchHorror() async {
     }
   } catch (e) {
     if (e is DioError) {
-      print('error!');
+      print('fetch horror error!');
     }
   }
 }
@@ -274,7 +326,7 @@ Future<Response> fetchJapan() async {
     }
   } catch (e) {
     if (e is DioError) {
-      print('error!');
+      print('fetch japanese error!');
     }
   }
 }
@@ -305,39 +357,12 @@ Future<Response> fetchKorea() async {
     }
   } catch (e) {
     if (e is DioError) {
-      print('error!');
+      print('fetch korea error!');
     }
   }
 }
 
-// Future<Response> fetchMatches() async {
-//   print("fetchMatches is Called");
-//   try {
-//     if (movieDataTest.length == 0) {
-//       var url =
-//           'https://asia-northeast1-movie-night-cc.cloudfunctions.net/getPairByPairName?pairName=testPairA';
-//       final response = await Dio().get(url);
-//       var data = response.data['matchMovieData'];
-//       if (response.statusCode == 200) {
-//         for (var i = 0; i < data.length; i++) {
-//           matches.add(data[i]);
-//           //    movieDataTest.add(movies[i]["nfid"]);
-//           matchesSynopsis.add(data[i]["synopsis"].replaceAll('&#39;', "'"));
-//           matchesYear.add(data[i]["year"]);
-//           matchesTitles.add(data[i]['title'].replaceAll('&#39;', "'"));
-//           matchesImage.add(data[i]["img"]);
-//           matchesNfid.add(data[i]["nfid"]);
-//         }
-//         return response;
-//       }
-//     }
-//   } on Exception catch (_) {
-//     print('error!');
-//   }
-// }
-
 Future<Response> futureMovie;
-// Future<Response> futurePair;
 Future<Response> futureGay;
 Future<Response> futureAnime;
 Future<Response> futureHorror;
@@ -354,6 +379,7 @@ class AuthenticationWrapper extends StatelessWidget {
           firebaseUser.email.substring(0, firebaseUser.email.indexOf("@"));
       //put the function here
       getUserInfo();
+      print('$userEmail');
       return MaterialApp(
         title: "Movie Night",
         debugShowCheckedModeBanner: false,
@@ -361,13 +387,8 @@ class AuthenticationWrapper extends StatelessWidget {
             primaryColor: Colors.white,
             scaffoldBackgroundColor: Colors.grey[100]),
         home: FutureBuilder(
-          // futureAnime = fetchAnime();
-          // futureHorror = fetchHorror();
-          // futureJapan = fetchJapan();
-          // futureKorea = fetchKorea();
           future: Future.wait([
             futureMovie,
-            // futurePair,
             futureGay,
             futureAnime,
             futureHorror,
@@ -392,7 +413,7 @@ class AuthenticationWrapper extends StatelessWidget {
         routes: routes,
       );
     } else {
-      return SignInPage();
+      return OnBoardScreen();
     }
   }
 }

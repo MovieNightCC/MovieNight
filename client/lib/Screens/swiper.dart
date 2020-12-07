@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
+import 'package:movie_night/app-theme.dart';
 import './tinderCard.dart';
 import './matches.dart';
 import './profile.dart';
@@ -34,9 +35,7 @@ class _AppState extends State<Swiper> {
     return MaterialApp(
       title: "Movie Night",
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-          primaryColor: Colors.grey[900],
-          scaffoldBackgroundColor: Colors.grey[900]),
+      theme: movieNightTheme,
       home: Tinderswiper(),
     );
   }

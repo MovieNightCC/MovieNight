@@ -1,12 +1,13 @@
-import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_image/firebase_image.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:path/path.dart';
 
 import 'package:flutter/material.dart';
+
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
+import 'package:movie_night/screens/addPairPage.dart';
+
 import 'auth.dart';
 import './swiper.dart';
 import './matches.dart';
@@ -15,6 +16,7 @@ import '../main.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class Profile extends StatefulWidget {
+  static String routeName = "/splash";
   @override
   _ProfileState createState() => _ProfileState();
 }
@@ -113,38 +115,27 @@ class _ProfileState extends State<Profile> {
                     image:
                         DecorationImage(fit: BoxFit.cover, image: profileimg)),
               ),
-              Container(
-                child: Text(userName,
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 30.0,
-                        height: 3.0,
-                        fontWeight: FontWeight.bold)),
-              ),
-              Container(
-                child: Text(userPair,
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 30.0,
-                        height: 2.0,
-                        fontWeight: FontWeight.bold)),
-              ),
-              Container(
-                child: Text(userEmail,
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 30.0,
-                        height: 2.0,
-                        fontWeight: FontWeight.bold)),
-              ),
+              userInfoElement(displayName),
+              userInfoElement(userName),
+              userInfoElement(userPair),
+              userInfoElement(userEmail),
               RaisedButton(
                 onPressed: () {
-                  context.read<AuthenticationService>().signOut();
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => AddPairPage()));
                 },
-                child: Text("Sign Out"),
+                child: Text("Add a partner"),
               ),
               RaisedButton(
+                  child: Text("Sign Out"),
+                  onPressed: () {
+                    context.read<AuthenticationService>().signOut();
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => App()));
+                  }),
+              RaisedButton(
                 onPressed: () {
+                  print('$userEmail tried to retrieve email');
                   launch('https://movie-night.flycricket.io/privacy.html');
                 },
                 child: Text("Privacy Policy"),
@@ -195,6 +186,17 @@ class _ProfileState extends State<Profile> {
       ),
     );
   }
+}
+
+Widget userInfoElement(String input) {
+  return Container(
+    child: Text(input,
+        style: TextStyle(
+            color: Colors.white,
+            fontSize: 14.0,
+            height: 2.0,
+            fontWeight: FontWeight.bold)),
+  );
 }
 
 class HeaderCurvedContainer extends CustomPainter {
