@@ -9,15 +9,13 @@ import 'package:provider/provider.dart';
 import 'routes.dart';
 import 'dart:async';
 import 'package:dio/dio.dart';
-
-import "package:flutter_phoenix/flutter_phoenix.dart";
-import './utitilities/colors.dart';
-//import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+// import './utils/colors.dart';
 
 /// screens
+import './utils/helpers.dart';
+
 import 'screens/swiper.dart';
 import 'package:movie_night/screens/auth.dart';
-//import 'screens/sign_in.dart';
 import 'screens/rushMode.dart';
 import 'screens/movieArray.dart';
 
@@ -79,9 +77,27 @@ ThemeData _buildShrineTheme() {
 // global user name variable accessible from every page
 var userName = "";
 var userIcon = "";
+var partnerIcon = "";
 var userPair = "";
 var userEmail = "";
 var displayName = "";
+var howManyGay = 0;
+var howManyAnime = 0;
+var howManyHorror = 0;
+var howManyJapan = 0;
+var howManyKorea = 0;
+var howManyRomance = 0;
+var howManyMartialArts = 0;
+var howManyMusic = 0;
+var howManyScifi = 0;
+var howManySuperHero = 0;
+
+// futureGay = fetchGay();
+// futureAnime = fetchAnime();
+// futureHorror = fetchHorror();
+// futureJapan = fetchJapan();
+// futureKorea = fetchKorea();
+
 var matchOriLength = 0;
 var cutInHalfCalled = false;
 var pairFetchCounter = 0;
@@ -95,12 +111,17 @@ class _AppState extends State<App> {
   @override
   void initState() {
     super.initState();
-    futureMovie = fetchMovie();
+    // futureMovie = fetchMovie();
     futureGay = fetchGay();
     futureAnime = fetchAnime();
     futureHorror = fetchHorror();
     futureJapan = fetchJapan();
     futureKorea = fetchKorea();
+    futureRomance = fetchRomance();
+    futureScifi = fetchScifi();
+    futureMartialArts = fetchMartialArts();
+    futureSuperHero = fetchSuperHero();
+    futureMusic = fetchMusic();
   }
 
   @override
@@ -128,8 +149,8 @@ class _AppState extends State<App> {
 
 void getUserInfo() async {
   print("getUserInfo is Called");
-
   try {
+//getting userInfo
     var url =
         'https://asia-northeast1-movie-night-cc.cloudfunctions.net/getUserByUserName?userName=$userName';
     final response = await Dio().get(url);
@@ -137,27 +158,38 @@ void getUserInfo() async {
     userEmail = userdata["email"];
     userPair = userdata["pairName"];
     displayName = userdata["name"];
+
+    howManyGay = userdata["recommendations"]["LGBTQ"];
+    howManyAnime = userdata["recommendations"]["Anime"];
+    howManyHorror = userdata["recommendations"]["Horror/Thriller"];
+    howManyJapan = userdata["recommendations"]["Japanese Movies"];
+    howManyKorea = userdata["recommendations"]["Korean Movies"];
+    howManyRomance = userdata["recommendations"]["Romance"];
+    howManyMartialArts = userdata["recommendations"]["Martial Arts"];
+    howManyMusic = userdata["recommendations"]["Music Inspired"];
+    howManyScifi = userdata["recommendations"]["Sci-fi"];
+    howManySuperHero = userdata["recommendations"]["Superhero"];
+
     print('got user info ${userdata["email"]} in ${userdata["pairName"]}');
     userIcon = userdata["userIcon"];
     print('got user info ${userdata["userIcon"]} in ${userdata["pairName"]}');
 
+//getting matches Info
     if (matchesTitles.length == 0) {
       var url =
           'https://asia-northeast1-movie-night-cc.cloudfunctions.net/getPairByPairName?pairName=$userPair';
       final response = await Dio().get(url);
-      var data = response.data['matchMovieData'];
+      var matches = response.data['matchMovieData'];
       if (response.statusCode == 200) {
-        for (var i = 0; i < data.length; i++) {
-          matches.add(data[i]);
+        for (var i = 0; i < matches.length; i++) {
           //    movieDataTest.add(movies[i]["nfid"]);
-          matchesSynopsis.add(data[i]["synopsis"].replaceAll('&#39;', "'"));
-          matchesYear.add(data[i]["year"]);
-          matchesRuntime.add(data[i]["runtime"]);
-          matchesTitles.add(data[i]['title'].replaceAll('&#39;', "'"));
-          matchesImage.add(data[i]["img"]);
-          matchesGenre.add(data[i]["genre"]);
-          print(matchesGenre[matchesGenre.length - 1]);
-          matchesNfid.add(data[i]["nfid"]);
+          matchesSynopsis.add(matches[i]["synopsis"].replaceAll('&#39;', "'"));
+          matchesYear.add(matches[i]["year"]);
+          matchesRuntime.add(matches[i]["runtime"]);
+          matchesTitles.add(matches[i]['title'].replaceAll('&#39;', "'"));
+          matchesImage.add(matches[i]["img"]);
+          matchesGenre.add(matches[i]["genre"]);
+          matchesNfid.add(matches[i]["nfid"]);
           matchOriLength += 1;
         }
       }
@@ -170,52 +202,43 @@ void getUserInfo() async {
   }
 }
 
-Future<Response> fetchMovie() async {
-  try {
-    if (movieDataTest.length == 0) {
-      final response = await Dio().get(
-          "https://asia-northeast1-movie-night-cc.cloudfunctions.net/getAllNewMovies");
-      if (response.statusCode == 200) {
-        var movies = response.data;
-        for (var i = 0; i < movies.length; i++) {
-          // htmlParser.DocumentFragment.html("&#8211;").text
-          // json.decode(utf8.decode(movies[i]["synopsis"]));
-          moviesList.add(movies[i]);
-          movieDataTest.add(movies[i]["nfid"]);
-          // moviesSynopsis.add(json.decode(utf8.decode(movies[i]["synopsis"])
-          moviesSynopsis.add(movies[i]["synopsis"].replaceAll('&#39;', "'"));
-          movieYear.add(movies[i]["year"]);
-          movieRuntime.add(movies[i]["runtime"]);
-          movieTitles.add(movies[i]['title'].replaceAll('&#39;', "'"));
-          movieImagesTest.add(movies[i]["img"]);
-          movieGenre.add(movies[i]["genre"]);
-        }
-        return response;
-      }
-    }
-  } catch (e) {
-    if (e is DioError) {
-      print('fetch all movie error!');
-    }
-  }
-}
+// Future<Response> fetchMovie() async {
+//   try {
+//     if (movieDataTest.length == 0) {
+//       final response = await Dio().get(
+//           "https://asia-northeast1-movie-night-cc.cloudfunctions.net/getAllNewMovies");
+//       if (response.statusCode == 200) {
+//         var movies = response.data;
+//         for (var i = 0; i < 50; i++) {
+//           moviesList.add(movies[i]);
+//           movieDataTest.add(movies[i]["nfid"]);
+//           moviesSynopsis.add(movies[i]["synopsis"].replaceAll('&#39;', "'"));
+//           movieYear.add(movies[i]["year"]);
+//           movieRuntime.add(movies[i]["runtime"]);
+//           movieTitles.add(movies[i]['title'].replaceAll('&#39;', "'"));
+//           movieImagesTest.add(movies[i]["img"]);
+//           movieGenre.add(movies[i]["genre"]);
+//         }
+//         return response;
+//       }
+//     }
+//   } catch (e) {
+//     if (e is DioError) {
+//       print('fetch all movie error!');
+//     }
+//   }
+// }
+
+//LGBTQ,anime,horror,japan,korea
 
 Future<Response> fetchGay() async {
   try {
-    if (rushModeList.length == 0) {
+    if (gayNfid.length == 0) {
       final response = await Dio().get(
           "https://asia-northeast1-movie-night-cc.cloudfunctions.net/getGayMovies");
       if (response.statusCode == 200) {
         var movies = response.data;
-        for (var i = 0; i < 31; i++) {
-          rushModeList.add(movies[i]);
-          rushModeNfid.add(movies[i]["nfid"]);
-          rushModeSynopsis.add(movies[i]["synopsis"].replaceAll('&#39;', "'"));
-          rushModeYear.add(movies[i]["year"]);
-          rushModeRuntime.add(movies[i]["runtime"]);
-          rushModeGenre.add(movies[i]["genre"]);
-          rushModeTitles.add(movies[i]['title'].replaceAll('&#39;', "'"));
-          rushModeImages.add(movies[i]["img"]);
+        for (var i = 0; i < 50; i++) {
           gayList.add(movies[i]);
           gayNfid.add(movies[i]["nfid"]);
           gayGenre.add(movies[i]["genre"]);
@@ -235,17 +258,21 @@ Future<Response> fetchGay() async {
   }
 }
 
-//anime,horror,japan,korea
-
 Future<Response> fetchAnime() async {
   try {
-    if (animeList.length == 0) {
+    if (animeNfid.length == 0) {
       final response = await Dio().get(
           "https://asia-northeast1-movie-night-cc.cloudfunctions.net/getAnimeMovies");
       if (response.statusCode == 200) {
         var movies = response.data;
-        for (var i = 0; i < movies.length; i++) {
-          animeList.add(movies[i]);
+        for (var i = 0; i < 50; i++) {
+          rushModeNfid.add(movies[i]["nfid"]);
+          rushModeSynopsis.add(movies[i]["synopsis"].replaceAll('&#39;', "'"));
+          rushModeYear.add(movies[i]["year"]);
+          rushModeRuntime.add(movies[i]["runtime"]);
+          rushModeGenre.add(movies[i]["genre"]);
+          rushModeTitles.add(movies[i]['title'].replaceAll('&#39;', "'"));
+          rushModeImages.add(movies[i]["img"]);
           animeNfid.add(movies[i]["nfid"]);
           animeImages.add(movies[i]["img"]);
           animeGenre.add(movies[i]["genre"]);
@@ -270,12 +297,12 @@ Future<Response> fetchAnime() async {
 
 Future<Response> fetchHorror() async {
   try {
-    if (horrorList.length == 0) {
+    if (horrorNfid.length == 0) {
       final response = await Dio().get(
           "https://asia-northeast1-movie-night-cc.cloudfunctions.net/getHorrorMovies");
       if (response.statusCode == 200) {
         var movies = response.data;
-        for (var i = 0; i < movies.length; i++) {
+        for (var i = 0; i < 50; i++) {
           horrorList.add(movies[i]);
           horrorNfid.add(movies[i]["nfid"]);
           horrorImages.add(movies[i]["img"]);
@@ -299,15 +326,166 @@ Future<Response> fetchHorror() async {
   }
 }
 
+Future<Response> fetchRomance() async {
+  try {
+    if (romanceNfid.length == 0) {
+      final response = await Dio().get(
+          "https://asia-northeast1-movie-night-cc.cloudfunctions.net/getRomanceMovies");
+      if (response.statusCode == 200) {
+        var movies = response.data;
+        for (var i = 0; i < 50; i++) {
+          romanceList.add(movies[i]);
+          romanceNfid.add(movies[i]["nfid"]);
+          romanceGenre.add(movies[i]["genre"]);
+          romanceImages.add(movies[i]["img"]);
+          romanceTitles.add(movies[i]['title'].replaceAll('&#39;', "'"));
+          romanceSynopsis.add(movies[i]["synopsis"].replaceAll('&#39;', "'"));
+          romanceYear.add(movies[i]["year"]);
+          romanceRuntime.add(movies[i]["runtime"]);
+        }
+        return response;
+      } else {
+        // If the server did not return a 200 OK response,
+        // then throw an exception.
+        throw Exception('Failed to load album');
+      }
+    }
+  } catch (e) {
+    if (e is DioError) {
+      print('fetch romance error!');
+    }
+  }
+}
+
+Future<Response> fetchMartialArts() async {
+  try {
+    if (martialArtsNfid.length == 0) {
+      final response = await Dio().get(
+          "https://asia-northeast1-movie-night-cc.cloudfunctions.net/getMartialArtsMovies");
+      if (response.statusCode == 200) {
+        var movies = response.data;
+        for (var i = 0; i < 50; i++) {
+          martialArtsNfid.add(movies[i]["nfid"]);
+          martialArtsGenre.add(movies[i]["genre"]);
+          martialArtsImages.add(movies[i]["img"]);
+          martialArtsTitles.add(movies[i]['title'].replaceAll('&#39;', "'"));
+          martialArtsSynopsis
+              .add(movies[i]["synopsis"].replaceAll('&#39;', "'"));
+          martialArtsYear.add(movies[i]["year"]);
+          martialArtsRuntime.add(movies[i]["runtime"]);
+        }
+        return response;
+      } else {
+        // If the server did not return a 200 OK response,
+        // then throw an exception.
+        throw Exception('Failed to load album');
+      }
+    }
+  } catch (e) {
+    if (e is DioError) {
+      print('fetch martialArts error!');
+    }
+  }
+}
+
+Future<Response> fetchSuperHero() async {
+  try {
+    if (superHeroNfid.length == 0) {
+      final response = await Dio().get(
+          "https://asia-northeast1-movie-night-cc.cloudfunctions.net/getSuperHeroMovies");
+      if (response.statusCode == 200) {
+        var movies = response.data;
+        for (var i = 0; i < 50; i++) {
+          superHeroNfid.add(movies[i]["nfid"]);
+          superHeroGenre.add(movies[i]["genre"]);
+          superHeroImages.add(movies[i]["img"]);
+          superHeroTitles.add(movies[i]['title'].replaceAll('&#39;', "'"));
+          superHeroSynopsis.add(movies[i]["synopsis"].replaceAll('&#39;', "'"));
+          superHeroYear.add(movies[i]["year"]);
+          superHeroRuntime.add(movies[i]["runtime"]);
+        }
+        return response;
+      } else {
+        // If the server did not return a 200 OK response,
+        // then throw an exception.
+        throw Exception('Failed to load album');
+      }
+    }
+  } catch (e) {
+    if (e is DioError) {
+      print('fetch super hero error!');
+    }
+  }
+}
+
+Future<Response> fetchScifi() async {
+  try {
+    if (scifiNfid.length == 0) {
+      final response = await Dio().get(
+          "https://asia-northeast1-movie-night-cc.cloudfunctions.net/getScifiMovies");
+      if (response.statusCode == 200) {
+        var movies = response.data;
+        for (var i = 0; i < 50; i++) {
+          scifiNfid.add(movies[i]["nfid"]);
+          scifiGenre.add(movies[i]["genre"]);
+          scifiImages.add(movies[i]["img"]);
+          scifiTitles.add(movies[i]['title'].replaceAll('&#39;', "'"));
+          scifiSynopsis.add(movies[i]["synopsis"].replaceAll('&#39;', "'"));
+          scifiYear.add(movies[i]["year"]);
+          scifiRuntime.add(movies[i]["runtime"]);
+        }
+        return response;
+      } else {
+        // If the server did not return a 200 OK response,
+        // then throw an exception.
+        throw Exception('Failed to load album');
+      }
+    }
+  } catch (e) {
+    if (e is DioError) {
+      print('fetch super hero error!');
+    }
+  }
+}
+
+Future<Response> fetchMusic() async {
+  try {
+    if (musicNfid.length == 0) {
+      final response = await Dio().get(
+          "https://asia-northeast1-movie-night-cc.cloudfunctions.net/getMusicMovies");
+      if (response.statusCode == 200) {
+        var movies = response.data;
+        for (var i = 0; i < 50; i++) {
+          musicNfid.add(movies[i]["nfid"]);
+          musicGenre.add(movies[i]["genre"]);
+          musicImages.add(movies[i]["img"]);
+          musicTitles.add(movies[i]['title'].replaceAll('&#39;', "'"));
+          musicSynopsis.add(movies[i]["synopsis"].replaceAll('&#39;', "'"));
+          musicYear.add(movies[i]["year"]);
+          musicRuntime.add(movies[i]["runtime"]);
+        }
+        return response;
+      } else {
+        // If the server did not return a 200 OK response,
+        // then throw an exception.
+        throw Exception('Failed to load album');
+      }
+    }
+  } catch (e) {
+    if (e is DioError) {
+      print('fetch super hero error!');
+    }
+  }
+}
+
 Future<Response> fetchJapan() async {
   try {
-    if (japanList.length == 0) {
+    if (japanNfid.length == 0) {
       final response = await Dio().get(
           "https://asia-northeast1-movie-night-cc.cloudfunctions.net/getJapanMovies");
       if (response.statusCode == 200) {
         var movies = response.data;
-        for (var i = 0; i < movies.length; i++) {
-          japanList.add(movies[i]);
+        for (var i = 0; i < 50; i++) {
           japanNfid.add(movies[i]["nfid"]);
           japanGenre.add(movies[i]["genre"]);
           japanImages.add(movies[i]["img"]);
@@ -332,13 +510,12 @@ Future<Response> fetchJapan() async {
 
 Future<Response> fetchKorea() async {
   try {
-    if (koreaList.length == 0) {
+    if (koreaNfid.length == 0) {
       final response = await Dio().get(
           "https://asia-northeast1-movie-night-cc.cloudfunctions.net/getKoreaMovies");
       if (response.statusCode == 200) {
         var movies = response.data;
-        for (var i = 0; i < movies.length; i++) {
-          koreaList.add(movies[i]);
+        for (var i = 0; i < 50; i++) {
           koreaNfid.add(movies[i]["nfid"]);
           koreaGenre.add(movies[i]["genre"]);
           koreaImages.add(movies[i]["img"]);
@@ -361,12 +538,17 @@ Future<Response> fetchKorea() async {
   }
 }
 
-Future<Response> futureMovie;
+// Future<Response> futureMovie;
 Future<Response> futureGay;
 Future<Response> futureAnime;
 Future<Response> futureHorror;
 Future<Response> futureJapan;
 Future<Response> futureKorea;
+Future<Response> futureRomance;
+Future<Response> futureMusic;
+Future<Response> futureSuperHero;
+Future<Response> futureScifi;
+Future<Response> futureMartialArts;
 
 class AuthenticationWrapper extends StatelessWidget {
   @override
@@ -387,16 +569,160 @@ class AuthenticationWrapper extends StatelessWidget {
             scaffoldBackgroundColor: Colors.grey[100]),
         home: FutureBuilder(
           future: Future.wait([
-            futureMovie,
+            // futureMovie,
             futureGay,
             futureAnime,
             futureHorror,
             futureJapan,
-            futureKorea
+            futureKorea,
+            futureRomance,
+            futureScifi,
+            futureMartialArts,
+            futureSuperHero,
+            futureMusic,
           ]),
           builder: (context, snapshot) {
             // print('${movieDataTest.length} how many movies I have');
             if (snapshot.hasData) {
+              print("user Anime recommend $howManyAnime");
+              print("user gay recommend $howManyGay");
+              //push  $howManyAnime anime movies into movie array
+              //push the
+              print("anime movies ${animeNfid.length}");
+              shuffle(animeNfid, animeImages, animeTitles, animeSynopsis,
+                  animeYear, animeGenre, animeRuntime);
+              shuffle(gayNfid, gayImages, gayTitles, gaySynopsis, gayYear,
+                  gayGenre, gayRuntime);
+              shuffle(romanceNfid, romanceImages, romanceTitles,
+                  romanceSynopsis, romanceYear, romanceGenre, romanceRuntime);
+              shuffle(musicNfid, musicImages, musicTitles, musicSynopsis,
+                  musicYear, musicGenre, musicRuntime);
+              shuffle(
+                  martialArtsNfid,
+                  martialArtsImages,
+                  martialArtsTitles,
+                  martialArtsSynopsis,
+                  martialArtsYear,
+                  martialArtsGenre,
+                  martialArtsRuntime);
+              shuffle(japanNfid, japanImages, japanTitles, japanSynopsis,
+                  japanYear, japanGenre, japanRuntime);
+              shuffle(koreaNfid, koreaImages, koreaTitles, koreaSynopsis,
+                  koreaYear, koreaGenre, koreaRuntime);
+              shuffle(horrorNfid, horrorImages, horrorTitles, horrorSynopsis,
+                  horrorYear, horrorGenre, horrorRuntime);
+              shuffle(scifiNfid, scifiImages, scifiTitles, scifiSynopsis,
+                  scifiYear, scifiGenre, scifiRuntime);
+              shuffle(
+                  superHeroNfid,
+                  superHeroImages,
+                  superHeroTitles,
+                  superHeroSynopsis,
+                  superHeroYear,
+                  superHeroGenre,
+                  superHeroRuntime);
+
+              for (var i = 0; i < howManyAnime; i++) {
+                movieDataTest.add(animeNfid[i]);
+                moviesSynopsis.add(animeSynopsis[i]);
+                movieYear.add(animeYear[i]);
+                movieRuntime.add(animeRuntime[i]);
+                movieTitles.add(animeTitles[i]);
+                movieImagesTest.add(animeImages[i]);
+                movieGenre.add(animeGenre[i]);
+              }
+              for (var i = 0; i < howManyGay; i++) {
+                movieDataTest.add(gayNfid[i]);
+                moviesSynopsis.add(gaySynopsis[i]);
+                movieYear.add(gayYear[i]);
+                movieRuntime.add(gayRuntime[i]);
+                movieTitles.add(gayTitles[i]);
+                movieImagesTest.add(gayImages[i]);
+                movieGenre.add(gayGenre[i]);
+              }
+              for (var i = 0; i < howManyHorror; i++) {
+                movieDataTest.add(horrorNfid[i]);
+                moviesSynopsis.add(horrorSynopsis[i]);
+                movieYear.add(horrorYear[i]);
+                movieRuntime.add(horrorRuntime[i]);
+                movieTitles.add(horrorTitles[i]);
+                movieImagesTest.add(horrorImages[i]);
+                movieGenre.add(horrorGenre[i]);
+              }
+              for (var i = 0; i < howManyJapan; i++) {
+                movieDataTest.add(japanNfid[i]);
+                moviesSynopsis.add(japanSynopsis[i]);
+                movieYear.add(japanYear[i]);
+                movieRuntime.add(japanRuntime[i]);
+                movieTitles.add(japanTitles[i]);
+                movieImagesTest.add(japanImages[i]);
+                movieGenre.add(japanGenre[i]);
+              }
+              // print("korea movie recommend ${howManyKorea}");
+              // print("korea movie number ${koreaNfid.length}");
+              // print("movie length ${movieDataTest.length}");
+
+              for (var i = 0; i < howManyKorea; i++) {
+                movieDataTest.add(koreaNfid[i]);
+                moviesSynopsis.add(koreaSynopsis[i]);
+                movieYear.add(koreaYear[i]);
+                movieRuntime.add(koreaRuntime[i]);
+                movieTitles.add(koreaTitles[i]);
+                movieImagesTest.add(koreaImages[i]);
+                movieGenre.add(koreaGenre[i]);
+              }
+
+              for (var i = 0; i < howManyRomance; i++) {
+                movieDataTest.add(romanceNfid[i]);
+                moviesSynopsis.add(romanceSynopsis[i]);
+                movieYear.add(romanceYear[i]);
+                movieRuntime.add(romanceRuntime[i]);
+                movieTitles.add(romanceTitles[i]);
+                movieImagesTest.add(romanceImages[i]);
+                movieGenre.add(romanceGenre[i]);
+              }
+              print("romance crashes ${movieDataTest.length}");
+              print("this should run");
+
+              for (var i = 0; i < howManyMartialArts; i++) {
+                movieDataTest.add(martialArtsNfid[i]);
+                moviesSynopsis.add(martialArtsSynopsis[i]);
+                movieYear.add(martialArtsYear[i]);
+                movieRuntime.add(martialArtsRuntime[i]);
+                movieTitles.add(martialArtsTitles[i]);
+                movieImagesTest.add(martialArtsImages[i]);
+                movieGenre.add(martialArtsGenre[i]);
+              }
+
+              print("martial crashes ");
+
+              for (var i = 0; i < howManyMusic; i++) {
+                movieDataTest.add(musicNfid[i]);
+                moviesSynopsis.add(musicSynopsis[i]);
+                movieYear.add(musicYear[i]);
+                movieRuntime.add(musicRuntime[i]);
+                movieTitles.add(musicTitles[i]);
+                movieImagesTest.add(musicImages[i]);
+                movieGenre.add(musicGenre[i]);
+              }
+              for (var i = 0; i < howManyScifi; i++) {
+                movieDataTest.add(scifiNfid[i]);
+                moviesSynopsis.add(scifiSynopsis[i]);
+                movieYear.add(scifiYear[i]);
+                movieRuntime.add(scifiRuntime[i]);
+                movieTitles.add(scifiTitles[i]);
+                movieImagesTest.add(scifiImages[i]);
+                movieGenre.add(scifiGenre[i]);
+              }
+              for (var i = 0; i < howManySuperHero; i++) {
+                movieDataTest.add(superHeroNfid[i]);
+                moviesSynopsis.add(superHeroSynopsis[i]);
+                movieYear.add(superHeroYear[i]);
+                movieRuntime.add(superHeroRuntime[i]);
+                movieTitles.add(superHeroTitles[i]);
+                movieImagesTest.add(superHeroImages[i]);
+                movieGenre.add(superHeroGenre[i]);
+              }
               shuffle(movieDataTest, movieImagesTest, movieTitles,
                   moviesSynopsis, movieYear, movieGenre, movieRuntime);
               changeToHours();
