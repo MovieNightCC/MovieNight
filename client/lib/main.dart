@@ -208,14 +208,6 @@ Future<Response> fetchGay() async {
       if (response.statusCode == 200) {
         var movies = response.data;
         for (var i = 0; i < 31; i++) {
-          rushModeList.add(movies[i]);
-          rushModeNfid.add(movies[i]["nfid"]);
-          rushModeSynopsis.add(movies[i]["synopsis"].replaceAll('&#39;', "'"));
-          rushModeYear.add(movies[i]["year"]);
-          rushModeRuntime.add(movies[i]["runtime"]);
-          rushModeGenre.add(movies[i]["genre"]);
-          rushModeTitles.add(movies[i]['title'].replaceAll('&#39;', "'"));
-          rushModeImages.add(movies[i]["img"]);
           gayList.add(movies[i]);
           gayNfid.add(movies[i]["nfid"]);
           gayGenre.add(movies[i]["genre"]);
@@ -253,6 +245,15 @@ Future<Response> fetchAnime() async {
           animeSynopsis.add(movies[i]["synopsis"].replaceAll('&#39;', "'"));
           animeYear.add(movies[i]["year"]);
           animeRuntime.add(movies[i]["runtime"]);
+
+          rushModeList.add(movies[i]);
+          rushModeNfid.add(movies[i]["nfid"]);
+          rushModeSynopsis.add(movies[i]["synopsis"].replaceAll('&#39;', "'"));
+          rushModeYear.add(movies[i]["year"]);
+          rushModeRuntime.add(movies[i]["runtime"]);
+          rushModeGenre.add(movies[i]["genre"]);
+          rushModeTitles.add(movies[i]['title'].replaceAll('&#39;', "'"));
+          rushModeImages.add(movies[i]["img"]);
         }
         return response;
       } else {
