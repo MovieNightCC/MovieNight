@@ -36,15 +36,15 @@ ThemeData _buildShrineTheme() {
       brightness: Brightness.light,
       primaryColor: Color(0xffe91e63),
       primaryColorBrightness: Brightness.dark,
-      primaryColorLight: Color(0xfff8bbd0),
-      primaryColorDark: Color(0xffc2185b),
+      primaryColorLight: Colors.white,
+      primaryColorDark: Colors.pink,
       accentColor: Color(0xffe91e63),
       accentColorBrightness: Brightness.dark,
       canvasColor: Color(0xfffafafa),
       scaffoldBackgroundColor: Colors.black,
-      bottomAppBarColor: Color(0xffffffff),
-      cardColor: Color(0xffffffff),
-      dividerColor: Color(0x1f000000),
+      bottomAppBarColor: Colors.pink,
+      cardColor: Colors.purple,
+      dividerColor: Colors.grey,
       highlightColor: Color(0x66bcbcbc),
       splashColor: Color(0x66c8c8c8),
       selectedRowColor: Color(0xfff5f5f5),
@@ -54,10 +54,10 @@ ThemeData _buildShrineTheme() {
       toggleableActiveColor: Color(0xffd81b60),
       secondaryHeaderColor: Color(0xfffce4ec),
       textSelectionColor: Color(0xfff48fb1),
-      cursorColor: Color(0xff4285f4),
+      cursorColor: Colors.pink,
       textSelectionHandleColor: Color(0xfff06292),
       backgroundColor: Color(0xfff48fb1),
-      dialogBackgroundColor: Color(0xffffffff),
+      dialogBackgroundColor: Colors.pink,
       indicatorColor: Color(0xffe91e63),
       hintColor: Colors.pinkAccent,
       errorColor: Colors.purple[900],
@@ -208,14 +208,6 @@ Future<Response> fetchGay() async {
       if (response.statusCode == 200) {
         var movies = response.data;
         for (var i = 0; i < 31; i++) {
-          rushModeList.add(movies[i]);
-          rushModeNfid.add(movies[i]["nfid"]);
-          rushModeSynopsis.add(movies[i]["synopsis"].replaceAll('&#39;', "'"));
-          rushModeYear.add(movies[i]["year"]);
-          rushModeRuntime.add(movies[i]["runtime"]);
-          rushModeGenre.add(movies[i]["genre"]);
-          rushModeTitles.add(movies[i]['title'].replaceAll('&#39;', "'"));
-          rushModeImages.add(movies[i]["img"]);
           gayList.add(movies[i]);
           gayNfid.add(movies[i]["nfid"]);
           gayGenre.add(movies[i]["genre"]);
@@ -253,6 +245,15 @@ Future<Response> fetchAnime() async {
           animeSynopsis.add(movies[i]["synopsis"].replaceAll('&#39;', "'"));
           animeYear.add(movies[i]["year"]);
           animeRuntime.add(movies[i]["runtime"]);
+
+          rushModeList.add(movies[i]);
+          rushModeNfid.add(movies[i]["nfid"]);
+          rushModeSynopsis.add(movies[i]["synopsis"].replaceAll('&#39;', "'"));
+          rushModeYear.add(movies[i]["year"]);
+          rushModeRuntime.add(movies[i]["runtime"]);
+          rushModeGenre.add(movies[i]["genre"]);
+          rushModeTitles.add(movies[i]['title'].replaceAll('&#39;', "'"));
+          rushModeImages.add(movies[i]["img"]);
         }
         return response;
       } else {
@@ -382,9 +383,7 @@ class AuthenticationWrapper extends StatelessWidget {
       return MaterialApp(
         title: "Movie Night",
         debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-            primaryColor: Colors.white,
-            scaffoldBackgroundColor: Colors.grey[100]),
+        theme: _kShrineTheme,
         home: FutureBuilder(
           future: Future.wait([
             futureMovie,

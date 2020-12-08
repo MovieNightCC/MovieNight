@@ -98,10 +98,7 @@ class _ProfileState extends State<Profile> {
                 child: Text(
                   "Profile",
                   style: TextStyle(
-                      fontSize: 35,
-                      letterSpacing: 1.5,
-                      color: Colors.white,
-                      fontWeight: FontWeight.w600),
+                      height: 1.5, fontWeight: FontWeight.bold, fontSize: 30),
                 ),
               ),
               Container(
@@ -116,30 +113,51 @@ class _ProfileState extends State<Profile> {
                         DecorationImage(fit: BoxFit.cover, image: profileimg)),
               ),
               userInfoElement(displayName),
-              userInfoElement(userName),
-              userInfoElement(userPair),
               userInfoElement(userEmail),
-              RaisedButton(
-                onPressed: () {
-                  Navigator.push(context,
+              userInfoElement(userPair),
+             Spacer(),
+              
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children:[
+              FlatButton(
+            shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.all(Radius.circular(50.0)),
+    ),
+            child: Text("Link with your partner", 
+            style: TextStyle(color: Colors.white),),
+            color: Colors.pink,
+            onPressed: () {
+              Navigator.push(context,
                       MaterialPageRoute(builder: (context) => AddPairPage()));
-                },
-                child: Text("Add a partner"),
+            },
+
               ),
-              RaisedButton(
-                  child: Text("Sign Out"),
-                  onPressed: () {
-                    context.read<AuthenticationService>().signOut();
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => App()));
-                  }),
-              RaisedButton(
+              
+                ]
+              ), 
+              // GestureDetector(
+              //   onTap: () {
+              //     print('$userEmail tried to retrieve email');
+              //     launch('https://movie-night.flycricket.io/privacy.html');
+              //   },
+              //   child: Text("Read our Privacy Policy",
+              //   style: TextStyle(),),
+              // ),
+              Spacer(),
+              Positioned(
+                bottom: 30,
+                left: 10,
+              child: FlatButton(
                 onPressed: () {
-                  print('$userEmail tried to retrieve email');
-                  launch('https://movie-night.flycricket.io/privacy.html');
+                  context.read<AuthenticationService>().signOut();
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => App()));;
                 },
-                child: Text("Privacy Policy"),
+                child: Text("SIGN OUT",
+                style: TextStyle(),),
               ),
+              )
             ],
           ),
           Padding(
@@ -162,7 +180,7 @@ class _ProfileState extends State<Profile> {
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
         type: BottomNavigationBarType.fixed,
-        backgroundColor: Colors.blue[200],
+        backgroundColor: Colors.purple,
         items: [
           BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
           BottomNavigationBarItem(
@@ -202,7 +220,7 @@ Widget userInfoElement(String input) {
 class HeaderCurvedContainer extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
-    Paint paint = Paint()..color = Colors.blue[200];
+    Paint paint = Paint()..color = Colors.purple;
     Path path = Path()
       ..relativeLineTo(0, 150)
       ..quadraticBezierTo(size.width / 2, 225, size.width, 150)

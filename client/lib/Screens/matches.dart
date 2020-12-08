@@ -26,7 +26,7 @@ class _MatchesState extends State<Matches> {
                 height: 1.5, fontWeight: FontWeight.bold, fontSize: 30)),
         automaticallyImplyLeading: false,
         centerTitle: true,
-        backgroundColor: Colors.pink[200],
+        backgroundColor: Colors.pink,
         elevation: 0,
       ),
       body: Stack(
@@ -41,7 +41,7 @@ class _MatchesState extends State<Matches> {
           ),
           Center(
             child: GridView.count(
-              childAspectRatio: 0.83,
+              childAspectRatio: 0.70,
               // Create a grid with 2 columns. If you change the scrollDirection to
               // horizontal, this produces 2 rows.
               crossAxisCount: 2,
@@ -69,7 +69,7 @@ class _MatchesState extends State<Matches> {
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
         type: BottomNavigationBarType.fixed,
-        backgroundColor: Colors.pink[200],
+        backgroundColor: Colors.pink,
         items: [
           BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
           BottomNavigationBarItem(
@@ -102,11 +102,11 @@ class _MatchesState extends State<Matches> {
 class HeaderCurvedContainer extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
-    Paint paint = Paint()..color = Colors.pink[200];
+    Paint paint = Paint()..color = Colors.pink;
     Path path = Path()
-      ..relativeLineTo(0, 150)
-      ..quadraticBezierTo(size.width / 2, 225, size.width, 150)
-      ..relativeLineTo(0, -150)
+      ..relativeLineTo(0, 70)
+      ..quadraticBezierTo(size.width / 2, 150, size.width, 70)
+      ..relativeLineTo(0, -100)
       ..close();
     canvas.drawPath(path, paint);
   }

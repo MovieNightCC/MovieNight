@@ -478,3 +478,381 @@ export const sorry = functions
     response.json("success");
   });
 
+
+
+  export const seedGenres = functions
+  .region("asia-northeast1")
+  .https.onRequest(async (req: any, response) => {
+    // const moviesCollection = db.collection("movies").doc("alovelace");
+
+    var APIreq = unirest("GET", "https://unogsng.p.rapidapi.com/genres");
+
+    APIreq.headers({
+      "x-rapidapi-key": "a9d2dfbe76msh26e338e4a5751f8p1e69bajsn164d1666776a",
+      "x-rapidapi-host": "unogsng.p.rapidapi.com",
+      "useQueryString": true,
+    });
+    
+    APIreq.end(function (APIres: any) {
+      if (APIres.error) throw new Error(APIres.error);
+      const result = APIres.body.results;
+      result.map((obj: any) => {
+        console.log(String(obj.netflixid));
+        const docRef = db.collection("genres").doc(String(obj.netflixid));
+        docRef.set(obj).catch((err) => console.log(err));
+      });
+      response.send(APIres.body);
+    });
+  });
+
+
+  export const seedIndie = functions
+  .region("asia-northeast1")
+  .https.onRequest(async (req: any, response) => {
+    // const moviesCollection = db.collection("movies").doc("alovelace");
+
+    const APIreq = unirest("GET", "https://unogsng.p.rapidapi.com/search");
+    APIreq.query({
+      genrelist: "7077",
+      type: "movie",
+      start_year: "1972",
+      orderby: "rating",
+      audiosubtitle_andor: "and",
+      limit: "100",
+      subtitle: "english",
+      country_andorunique: "unique",
+      offset: "0",
+    });
+    APIreq.headers({
+      "x-rapidapi-key": "a9d2dfbe76msh26e338e4a5751f8p1e69bajsn164d1666776a",
+      "x-rapidapi-host": "unogsng.p.rapidapi.com",
+      useQueryString: true,
+    });
+    APIreq.end(function (APIres: any) {
+      if (APIres.error) throw new Error(APIres.error);
+      const result = APIres.body.results;
+      result.map((obj: any) => {
+        console.log(String(obj.nfid));
+        const docRef = db.collection("indieMovies").doc(String(obj.nfid));
+        docRef.set(obj).catch((err) => console.log(err));
+        const allMoviesRef = db.collection("allMovies").doc(String(obj.nfid));
+        allMoviesRef.set(obj).catch((err) => console.log(err));
+
+      });
+      response.send(APIres.body);
+    });
+  });
+
+  export const seedSuperHero = functions
+  .region("asia-northeast1")
+  .https.onRequest(async (req: any, response) => {
+    // const moviesCollection = db.collection("movies").doc("alovelace");
+
+    const APIreq = unirest("GET", "https://unogsng.p.rapidapi.com/search");
+    APIreq.query({
+      genrelist: "10118",
+      type: "movie",
+      start_year: "1972",
+      orderby: "rating",
+      limit: "100",
+      subtitle: "english",
+      offset: "0",
+    });
+    APIreq.headers({
+      "x-rapidapi-key": "a9d2dfbe76msh26e338e4a5751f8p1e69bajsn164d1666776a",
+      "x-rapidapi-host": "unogsng.p.rapidapi.com",
+      useQueryString: true,
+    });
+    APIreq.end(function (APIres: any) {
+      if (APIres.error) throw new Error(APIres.error);
+      const result = APIres.body.results;
+      result.map((obj: any) => {
+        console.log(String(obj.nfid));
+        const docRef = db.collection("superHeroMovies").doc(String(obj.nfid));
+        docRef.set(obj).catch((err) => console.log(err));
+        const allMoviesRef = db.collection("allMovies").doc(String(obj.nfid));
+        allMoviesRef.set(obj).catch((err) => console.log(err));
+      });
+      response.send(APIres.body);
+    });
+  });
+
+
+  export const seedJapanese = functions
+  .region("asia-northeast1")
+  .https.onRequest(async (req: any, response) => {
+    // const moviesCollection = db.collection("movies").doc("alovelace");
+
+    const APIreq = unirest("GET", "https://unogsng.p.rapidapi.com/search");
+    APIreq.query({
+      genrelist: "10398",
+      type: "movie",
+      start_year: "1972",
+      orderby: "rating",
+      limit: "100",
+      subtitle: "english",
+      offset: "0",
+    });
+    APIreq.headers({
+      "x-rapidapi-key": "a9d2dfbe76msh26e338e4a5751f8p1e69bajsn164d1666776a",
+      "x-rapidapi-host": "unogsng.p.rapidapi.com",
+      useQueryString: true,
+    });
+    APIreq.end(function (APIres: any) {
+      if (APIres.error) throw new Error(APIres.error);
+      const result = APIres.body.results;
+      result.map((obj: any) => {
+        console.log(String(obj.nfid));
+        const docRef = db.collection("japaneseMovies").doc(String(obj.nfid));
+        docRef.set(obj).catch((err) => console.log(err));
+        const allMoviesRef = db.collection("allMovies").doc(String(obj.nfid));
+        allMoviesRef.set(obj).catch((err) => console.log(err));
+      });
+      response.send(APIres.body);
+    });
+  });
+
+
+  export const seedScifi = functions
+  .region("asia-northeast1")
+  .https.onRequest(async (req: any, response) => {
+    // const moviesCollection = db.collection("movies").doc("alovelace");
+
+    const APIreq = unirest("GET", "https://unogsng.p.rapidapi.com/search");
+    APIreq.query({
+      genrelist: "1492",
+      type: "movie",
+      start_year: "1972",
+      orderby: "rating",
+      limit: "100",
+      subtitle: "english",
+      offset: "0",
+    });
+    APIreq.headers({
+      "x-rapidapi-key": "a9d2dfbe76msh26e338e4a5751f8p1e69bajsn164d1666776a",
+      "x-rapidapi-host": "unogsng.p.rapidapi.com",
+      useQueryString: true,
+    });
+    APIreq.end(function (APIres: any) {
+      if (APIres.error) throw new Error(APIres.error);
+      const result = APIres.body.results;
+      result.map((obj: any) => {
+        console.log(String(obj.nfid));
+        const docRef = db.collection("scifiMovies").doc(String(obj.nfid));
+        docRef.set(obj).catch((err) => console.log(err));
+        const allMoviesRef = db.collection("allMovies").doc(String(obj.nfid));
+        allMoviesRef.set(obj).catch((err) => console.log(err));
+      });
+      response.send(APIres.body);
+    });
+  });
+
+  export const seedMusic = functions
+  .region("asia-northeast1")
+  .https.onRequest(async (req: any, response) => {
+    // const moviesCollection = db.collection("movies").doc("alovelace");
+
+    const APIreq = unirest("GET", "https://unogsng.p.rapidapi.com/search");
+    APIreq.query({
+      genrelist: "1701",
+      type: "movie",
+      start_year: "1972",
+      orderby: "rating",
+      limit: "100",
+      subtitle: "english",
+      offset: "0",
+    });
+    APIreq.headers({
+      "x-rapidapi-key": "a9d2dfbe76msh26e338e4a5751f8p1e69bajsn164d1666776a",
+      "x-rapidapi-host": "unogsng.p.rapidapi.com",
+      useQueryString: true,
+    });
+    APIreq.end(function (APIres: any) {
+      if (APIres.error) throw new Error(APIres.error);
+      const result = APIres.body.results;
+      result.map((obj: any) => {
+        console.log(String(obj.nfid));
+        const docRef = db.collection("musicMovies").doc(String(obj.nfid));
+        docRef.set(obj).catch((err) => console.log(err));
+        const allMoviesRef = db.collection("allMovies").doc(String(obj.nfid));
+        allMoviesRef.set(obj).catch((err) => console.log(err));
+      });
+      response.send(APIres.body);
+    });
+  });
+
+  export const seedKorean = functions
+  .region("asia-northeast1")
+  .https.onRequest(async (req: any, response) => {
+    // const moviesCollection = db.collection("movies").doc("alovelace");
+
+    const APIreq = unirest("GET", "https://unogsng.p.rapidapi.com/search");
+    APIreq.query({
+      genrelist: "1989",
+      type: "movie",
+      start_year: "1972",
+      orderby: "rating",
+      limit: "100",
+      subtitle: "english",
+      offset: "0",
+    });
+    APIreq.headers({
+      "x-rapidapi-key": "a9d2dfbe76msh26e338e4a5751f8p1e69bajsn164d1666776a",
+      "x-rapidapi-host": "unogsng.p.rapidapi.com",
+      useQueryString: true,
+    });
+    APIreq.end(function (APIres: any) {
+      if (APIres.error) throw new Error(APIres.error);
+      const result = APIres.body.results;
+      result.map((obj: any) => {
+        console.log(String(obj.nfid));
+        const docRef = db.collection("koreanMovies").doc(String(obj.nfid));
+        docRef.set(obj).catch((err) => console.log(err));
+        const allMoviesRef = db.collection("allMovies").doc(String(obj.nfid));
+        allMoviesRef.set(obj).catch((err) => console.log(err));
+      });
+      response.send(APIres.body);
+    });
+  });
+
+
+  export const seedAnime = functions
+  .region("asia-northeast1")
+  .https.onRequest(async (req: any, response) => {
+    // const moviesCollection = db.collection("movies").doc("alovelace");
+
+    const APIreq = unirest("GET", "https://unogsng.p.rapidapi.com/search");
+    APIreq.query({
+      genrelist: "7424",
+      type: "movie",
+      start_year: "1972",
+      orderby: "rating",
+      limit: "100",
+      subtitle: "english",
+      offset: "0",
+    });
+    APIreq.headers({
+      "x-rapidapi-key": "a9d2dfbe76msh26e338e4a5751f8p1e69bajsn164d1666776a",
+      "x-rapidapi-host": "unogsng.p.rapidapi.com",
+      useQueryString: true,
+    });
+    APIreq.end(function (APIres: any) {
+      if (APIres.error) throw new Error(APIres.error);
+      const result = APIres.body.results;
+      result.map((obj: any) => {
+        console.log(String(obj.nfid));
+        const docRef = db.collection("animeMovies").doc(String(obj.nfid));
+        docRef.set(obj).catch((err) => console.log(err));
+        const allMoviesRef = db.collection("allMovies").doc(String(obj.nfid));
+        allMoviesRef.set(obj).catch((err) => console.log(err));
+      });
+      response.send(APIres.body);
+    });
+  });
+
+
+  export const seedHorror = functions
+  .region("asia-northeast1")
+  .https.onRequest(async (req: any, response) => {
+    // const moviesCollection = db.collection("movies").doc("alovelace");
+
+    const APIreq = unirest("GET", "https://unogsng.p.rapidapi.com/search");
+    APIreq.query({
+      genrelist: "8711",
+      type: "movie",
+      start_year: "1972",
+      orderby: "rating",
+      limit: "100",
+      subtitle: "english",
+      offset: "0",
+    });
+    APIreq.headers({
+      "x-rapidapi-key": "a9d2dfbe76msh26e338e4a5751f8p1e69bajsn164d1666776a",
+      "x-rapidapi-host": "unogsng.p.rapidapi.com",
+      useQueryString: true,
+    });
+    APIreq.end(function (APIres: any) {
+      if (APIres.error) throw new Error(APIres.error);
+      const result = APIres.body.results;
+      result.map((obj: any) => {
+        console.log(String(obj.nfid));
+        const docRef = db.collection("horrorMovies").doc(String(obj.nfid));
+        docRef.set(obj).catch((err) => console.log(err));
+        const allMoviesRef = db.collection("allMovies").doc(String(obj.nfid));
+        allMoviesRef.set(obj).catch((err) => console.log(err));
+      });
+      response.send(APIres.body);
+    });
+  });
+
+
+
+  export const seedMartial = functions
+  .region("asia-northeast1")
+  .https.onRequest(async (req: any, response) => {
+    // const moviesCollection = db.collection("movies").doc("alovelace");
+
+    const APIreq = unirest("GET", "https://unogsng.p.rapidapi.com/search");
+    APIreq.query({
+      genrelist: "8985",
+      type: "movie",
+      start_year: "1972",
+      orderby: "rating",
+      limit: "100",
+      subtitle: "english",
+      offset: "0",
+    });
+    APIreq.headers({
+      "x-rapidapi-key": "a9d2dfbe76msh26e338e4a5751f8p1e69bajsn164d1666776a",
+      "x-rapidapi-host": "unogsng.p.rapidapi.com",
+      useQueryString: true,
+    });
+    APIreq.end(function (APIres: any) {
+      if (APIres.error) throw new Error(APIres.error);
+      const result = APIres.body.results;
+      result.map((obj: any) => {
+        console.log(String(obj.nfid));
+        const docRef = db.collection("martialArtMovies").doc(String(obj.nfid));
+        docRef.set(obj).catch((err) => console.log(err));
+        const allMoviesRef = db.collection("allMovies").doc(String(obj.nfid));
+        allMoviesRef.set(obj).catch((err) => console.log(err));
+      });
+      response.send(APIres.body);
+    });
+  });
+
+
+
+  export const seedGay = functions
+  .region("asia-northeast1")
+  .https.onRequest(async (req: any, response) => {
+    // const moviesCollection = db.collection("movies").doc("alovelace");
+
+    const APIreq = unirest("GET", "https://unogsng.p.rapidapi.com/search");
+    APIreq.query({
+      genrelist: "5977",
+      type: "movie",
+      start_year: "1972",
+      orderby: "rating",
+      limit: "100",
+      subtitle: "english",
+      offset: "0",
+    });
+    APIreq.headers({
+      "x-rapidapi-key": "a9d2dfbe76msh26e338e4a5751f8p1e69bajsn164d1666776a",
+      "x-rapidapi-host": "unogsng.p.rapidapi.com",
+      useQueryString: true,
+    });
+    APIreq.end(function (APIres: any) {
+      if (APIres.error) throw new Error(APIres.error);
+      const result = APIres.body.results;
+      result.map((obj: any) => {
+        console.log(String(obj.nfid));
+        const docRef = db.collection("gayLesbianMovies").doc(String(obj.nfid));
+        docRef.set(obj).catch((err) => console.log(err));
+        const allMoviesRef = db.collection("allMovies").doc(String(obj.nfid));
+        allMoviesRef.set(obj).catch((err) => console.log(err));
+      });
+      response.send(APIres.body);
+    });
+  });
