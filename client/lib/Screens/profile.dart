@@ -114,10 +114,44 @@ class _ProfileState extends State<Profile> {
                     image:
                         DecorationImage(fit: BoxFit.cover, image: profileimg)),
               ),
-              userInfoElement(displayName),
-              userInfoElement(userName),
-              userInfoElement(userPair),
-              userInfoElement(userEmail),
+              Column(children: [
+                Text(
+                  displayName,
+                  style: TextStyle(
+                      fontSize: 35,
+                      height: 1.5,
+                      letterSpacing: 1.5,
+                      color: Colors.white,
+                      fontWeight: FontWeight.w600),
+                ),
+                Text(
+                  userName,
+                  style: TextStyle(
+                      fontSize: 35,
+                      height: 1.5,
+                      letterSpacing: 1.5,
+                      color: Colors.white,
+                      fontWeight: FontWeight.w600),
+                ),
+                Text(
+                  userPair,
+                  style: TextStyle(
+                      fontSize: 35,
+                      height: 1.5,
+                      letterSpacing: 1.5,
+                      color: Colors.white,
+                      fontWeight: FontWeight.w600),
+                ),
+                Text(
+                  userEmail,
+                  style: TextStyle(
+                      fontSize: 35,
+                      height: 1.5,
+                      letterSpacing: 1.5,
+                      color: Colors.white,
+                      fontWeight: FontWeight.w600),
+                ),
+              ]),
               RaisedButton(
                 onPressed: () {
                   Navigator.push(context,

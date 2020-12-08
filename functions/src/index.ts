@@ -34,22 +34,22 @@ export const helloWorld = functions
     response.send("Hello from Firebase!");
   });
 
-export const createGame = functions
-  .region("asia-northeast1")
-  .https.onRequest(async (request: any, response) => {
-    const gameRef = db.collection("pairs").doc();
-    await gameRef.set({
-      name: "peter",
-      age: "19",
-      arr: [1, 2, 3, 4],
-      obj: {
-        pp: "hard",
-      },
-    });
-    const snapShot = await gameRef.get();
-    const data = snapShot.data();
-    response.send(data);
-  });
+// export const createGame = functions
+//   .region("asia-northeast1")
+//   .https.onRequest(async (request: any, response) => {
+//     const gameRef = db.collection("pairs").doc();
+//     await gameRef.set({
+//       name: "peter",
+//       age: "19",
+//       arr: [1, 2, 3, 4],
+//       obj: {
+//         pp: "hard",
+//       },
+//     });
+//     const snapShot = await gameRef.get();
+//     const data = snapShot.data();
+//     response.send(data);
+//   });
 
 export const userRecommendAlgo = functions.firestore
   .document("users/{docId}")
@@ -518,7 +518,7 @@ export const startGame = functions
     const result = await gameRef.get();
  
     gameRef.set({
-     started: false,
+     started: true,
     },{merge  : true}).then(_=>console.log("success")).catch(_=>console.error("did not set"))
 
     const data = result.data();
@@ -535,7 +535,7 @@ export const resetGame = functions
     const result = await gameRef.get();
  
     gameRef.update({
-     started: true,
+     started: false,
 
     }).then(_=>console.log("success")).catch(_=>console.error("did not set"))
     const data = result.data();

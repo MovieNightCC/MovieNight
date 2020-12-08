@@ -2,7 +2,8 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:overlay_support/overlay_support.dart';
 import 'package:provider/provider.dart';
 import 'routes.dart';
 import 'dart:async';
@@ -102,12 +103,74 @@ var matchOriLength = 0;
 var cutInHalfCalled = false;
 var pairFetchCounter = 0;
 List fetchArr = [];
+var notification;
 
 class App extends StatefulWidget {
   _AppState createState() => _AppState();
 }
 
+class PushNotificationService {
+  final FirebaseMessaging _fcm;
+
+  PushNotificationService(this._fcm);
+
+  Future initialise(context) async {
+    // If you want to test the push notification locally,
+    // you need to get the token and input to the Firebase console
+    // https://console.firebase.google.com/project/YOUR_PROJECT_ID/notification/compose
+    String token = await _fcm.getToken();
+    print("FirebaseMessaging token: $token");
+
+    _fcm.configure(
+      onMessage: (Map<String, dynamic> message) async {
+        print("onMessage: $message");
+        showDialog(
+            context: context,
+            builder: (_) => new AlertDialog(
+                  title:
+                      new Text("Alert", style: TextStyle(color: Colors.black)),
+                  content: new Text("$message",
+                      style: TextStyle(color: Colors.black)),
+                  actions: <Widget>[
+                    FlatButton(
+                      child: Text('Close me!'),
+                      onPressed: () {
+                        Navigator.of(context, rootNavigator: true).pop();
+                      },
+                    )
+                  ],
+                ));
+        notification = PushNotificationMessage(
+          title: message['notification']['title'],
+          body: message['notification']['body'],
+        );
+        showSimpleNotification(
+          Container(child: Text(notification.body)),
+          position: NotificationPosition.top,
+        );
+      },
+      onLaunch: (Map<String, dynamic> message) async {
+        print("onLaunch: $message");
+      },
+      onResume: (Map<String, dynamic> message) async {
+        print("onResume: $message");
+      },
+    );
+  }
+}
+
+class PushNotificationMessage {
+  final String title;
+  final String body;
+  PushNotificationMessage({
+    @required this.title,
+    @required this.body,
+  });
+}
+
 class _AppState extends State<App> {
+  FirebaseMessaging _firebaseMessaging = new FirebaseMessaging();
+
   @override
   void initState() {
     super.initState();
@@ -122,10 +185,30 @@ class _AppState extends State<App> {
     futureMartialArts = fetchMartialArts();
     futureSuperHero = fetchSuperHero();
     futureMusic = fetchMusic();
+
+    // _firebaseMessaging.configure(
+    //   onMessage: (Map<String, dynamic> message) {
+    //     print('on message: $message');
+    //     return;
+    //   },
+    //   onResume: (Map<String, dynamic> message) {
+    //     print(message);
+    //     return;
+    //   },
+    //   onLaunch: (Map<String, dynamic> message) {
+    //     print(message);
+    //     return;
+    //   },
+    // );
+    // _firebaseMessaging.getToken().then((token) {
+    //   print(token);
+    // });
   }
 
   @override
   Widget build(BuildContext context) {
+    final pushNotificationService = PushNotificationService(_firebaseMessaging);
+    pushNotificationService.initialise(context);
     return MultiProvider(
       providers: [
         Provider<AuthenticationService>(
@@ -168,6 +251,7 @@ void getUserInfo() async {
   howManyMartialArts = userdata["recommendations"]["MartialArts"].round();
   howManyMusic = userdata["recommendations"]["MusicInspired"].round();
   howManyScifi = userdata["recommendations"]["Scifi"].round();
+  print('round called');
   howManySuperHero = userdata["recommendations"]["Superhero"].round();
 
   print('got user info ${userdata["email"]} in ${userdata["pairName"]}');
@@ -268,13 +352,13 @@ Future<Response> fetchAnime() async {
       if (response.statusCode == 200) {
         var movies = response.data;
         for (var i = 0; i < 50; i++) {
-          rushModeNfid.add(movies[i]["nfid"]);
-          rushModeSynopsis.add(movies[i]["synopsis"].replaceAll('&#39;', "'"));
-          rushModeYear.add(movies[i]["year"]);
-          rushModeRuntime.add(movies[i]["runtime"]);
-          rushModeGenre.add(movies[i]["genre"]);
-          rushModeTitles.add(movies[i]['title'].replaceAll('&#39;', "'"));
-          rushModeImages.add(movies[i]["img"]);
+          // rushModeNfid.add(movies[i]["nfid"]);
+          // rushModeSynopsis.add(movies[i]["synopsis"].replaceAll('&#39;', "'"));
+          // rushModeYear.add(movies[i]["year"]);
+          // rushModeRuntime.add(movies[i]["runtime"]);
+          // rushModeGenre.add(movies[i]["genre"]);
+          // rushModeTitles.add(movies[i]['title'].replaceAll('&#39;', "'"));
+          // rushModeImages.add(movies[i]["img"]);
           animeNfid.add(movies[i]["nfid"]);
           animeImages.add(movies[i]["img"]);
           animeGenre.add("Anime");
@@ -282,15 +366,6 @@ Future<Response> fetchAnime() async {
           animeSynopsis.add(movies[i]["synopsis"].replaceAll('&#39;', "'"));
           animeYear.add(movies[i]["year"]);
           animeRuntime.add(movies[i]["runtime"]);
-
-          rushModeList.add(movies[i]);
-          rushModeNfid.add(movies[i]["nfid"]);
-          rushModeSynopsis.add(movies[i]["synopsis"].replaceAll('&#39;', "'"));
-          rushModeYear.add(movies[i]["year"]);
-          rushModeRuntime.add(movies[i]["runtime"]);
-          rushModeGenre.add(movies[i]["genre"]);
-          rushModeTitles.add(movies[i]['title'].replaceAll('&#39;', "'"));
-          rushModeImages.add(movies[i]["img"]);
         }
         return response;
       } else {
@@ -322,6 +397,15 @@ Future<Response> fetchHorror() async {
           horrorSynopsis.add(movies[i]["synopsis"].replaceAll('&#39;', "'"));
           horrorYear.add(movies[i]["year"]);
           horrorRuntime.add(movies[i]["runtime"]);
+
+          rushModeList.add(movies[i]);
+          rushModeNfid.add(movies[i]["nfid"]);
+          rushModeSynopsis.add(movies[i]["synopsis"].replaceAll('&#39;', "'"));
+          rushModeYear.add(movies[i]["year"]);
+          rushModeRuntime.add(movies[i]["runtime"]);
+          rushModeGenre.add("Horror");
+          rushModeTitles.add(movies[i]['title'].replaceAll('&#39;', "'"));
+          rushModeImages.add(movies[i]["img"]);
         }
         return response;
       } else {
