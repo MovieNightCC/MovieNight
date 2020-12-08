@@ -78,14 +78,6 @@ void cutInHalf() {
   matchesRuntime = matchesRuntime.sublist(0, halfLength);
   matchesSynopsis = matchesSynopsis.sublist(0, halfLength);
   matchesNfid = matchesNfid.sublist(0, halfLength);
-
-  // matchesTitles = matchesTitles.reversed.toList();
-  // matchesImage = matchesImage.reversed.toList();
-  // matchesYear = matchesYear.reversed.toList();
-  // matchesGenre = matchesGenre.reversed.toList();
-  // matchesRuntime = matchesRuntime.reversed.toList();
-  // matchesSynopsis = matchesSynopsis.reversed.toList();
-  // matchesNfid = matchesNfid.reversed.toList();
 }
 
 void makeHour() {
