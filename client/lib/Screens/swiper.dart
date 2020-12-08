@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 import 'package:movie_night/app-theme.dart';
+import 'package:movie_night/screens/rush_two.dart';
 import './tinderCard.dart';
 import './matches.dart';
 import './profile.dart';
 import './movieInfo.dart';
 import './movieArray.dart';
-import './rushMode.dart';
+//import './rushMode.dart';
 import 'dart:math';
 import 'dart:async';
 import 'package:http/http.dart' as http;
@@ -276,7 +277,9 @@ class _TinderswiperState extends State<Tinderswiper>
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => RushMode(),
+                      // TESTING RIGHT NOW
+                      // create game instance here
+                      builder: (context) => RushTwo(),
                       maintainState: true,
                     ));
               },
