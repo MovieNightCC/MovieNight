@@ -15,7 +15,7 @@ import './movieArray.dart';
 import './rushMode.dart';
 import './filterPopup.dart';
 import './movieMatchesInfo.dart';
-import 'rush_two.dart';
+import './rush_two.dart';
 
 class Swiper extends StatefulWidget {
   static String routeName = "/swiper";
