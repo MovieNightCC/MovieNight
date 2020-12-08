@@ -53,6 +53,19 @@ List<int> movieYear = [];
 List<int> movieRuntime = [];
 var counter = 0;
 
+void reverseList() {
+  matchesTitles = matchesTitles.reversed.toList();
+  matchesImage = matchesImage.reversed.toList();
+  matchesYear = matchesYear.reversed.toList();
+  matchesGenre = matchesGenre.reversed.toList();
+  matchesRuntime = matchesRuntime.reversed.toList();
+  matchesSynopsis = matchesSynopsis.reversed.toList();
+  matchesNfid = matchesNfid.reversed.toList();
+  hourListMatches = hourListMatches.reversed.toList();
+  minutesListMatches = minutesListMatches.reversed.toList();
+  reversedCalled = true;
+}
+
 void cutInHalf() {
   cutInHalfCalled = true;
   print('cutinhalf is called');
@@ -66,13 +79,13 @@ void cutInHalf() {
   matchesSynopsis = matchesSynopsis.sublist(0, halfLength);
   matchesNfid = matchesNfid.sublist(0, halfLength);
 
-  matchesTitles = matchesTitles.reversed.toList();
-  matchesImage = matchesImage.reversed.toList();
-  matchesYear = matchesYear.reversed.toList();
-  matchesGenre = matchesGenre.reversed.toList();
-  matchesRuntime = matchesRuntime.reversed.toList();
-  matchesSynopsis = matchesSynopsis.reversed.toList();
-  matchesNfid = matchesNfid.reversed.toList();
+  // matchesTitles = matchesTitles.reversed.toList();
+  // matchesImage = matchesImage.reversed.toList();
+  // matchesYear = matchesYear.reversed.toList();
+  // matchesGenre = matchesGenre.reversed.toList();
+  // matchesRuntime = matchesRuntime.reversed.toList();
+  // matchesSynopsis = matchesSynopsis.reversed.toList();
+  // matchesNfid = matchesNfid.reversed.toList();
 }
 
 void makeHour() {
@@ -143,6 +156,9 @@ class _TinderswiperState extends State<Tinderswiper>
 
   @override
   Widget build(BuildContext context) {
+    if (reversedCalled == false) {
+      reverseList();
+    }
     CardController controller;
     return Scaffold(
         body: Stack(alignment: Alignment.center, children: [

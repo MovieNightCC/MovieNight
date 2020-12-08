@@ -92,6 +92,7 @@ var howManyMartialArts = 0;
 var howManyMusic = 0;
 var howManyScifi = 0;
 var howManySuperHero = 0;
+bool reversedCalled = false;
 
 // futureGay = fetchGay();
 // futureAnime = fetchAnime();
