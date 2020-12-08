@@ -111,15 +111,6 @@ var cutInHalfCalled = false;
 var pairFetchCounter = 0;
 List fetchArr = [];
 
-class PushNotificationMessage {
-  final String title;
-  final String body;
-  PushNotificationMessage({
-    @required this.title,
-    @required this.body,
-  });
-}
-
 class App extends StatefulWidget {
   _AppState createState() => _AppState();
 }
