@@ -55,7 +55,7 @@ export const sendMatchNotification = functions.firestore
           },
         };
         if (data1 && data2) {
-          try{
+          try {
             if (data1.pushToken) {
               await admin.messaging().sendToDevice(data1.pushToken, payload);
               console.log("pushed to user1");
@@ -65,7 +65,7 @@ export const sendMatchNotification = functions.firestore
               console.log("pushed to user2");
             }
           } catch {
-            console.log("error!")
+            console.log("error!");
           }
         }
       }
@@ -76,68 +76,117 @@ export const sendMatchNotification = functions.firestore
     return null;
   });
 
-// exports.sendFollowerNotification = functions.database.ref('/followers/{followedUid}/{followerUid}')
-// .onWrite(async (change, context) => {
-//   const followerUid = context.params.followerUid;
-//   const followedUid = context.params.followedUid;
-//   // If un-follow we exit the function.
-//   if (!change.after.val()) {
-//     return console.log('User ', followerUid, 'un-followed user', followedUid);
-//   }
-//   console.log('We have a new follower UID:', followerUid, 'for user:', followedUid);
+export const rushStatusTracker = functions.firestore
+  .document("rushplus/{pairName}")
+  .onUpdate(async (change, context) => {
+    const inviteMessage = {
+      notification: {
+        title: "Your partner invited you to RUSH!!",
+        body: `click here to join!`,
+      },
+    };
+    const startMessage = {
+      notification: {
+        title: "Start!",
+        body: `Time to RUSH!!`,
+      },
+    };
+    console.log("----------------start function--------------------");
+    const newPairData = change.after.data();
+    const pairRef = await db
+      .collection("pairs")
+      .doc(newPairData.pairName)
+      .get();
+    const pairData = pairRef.data();
+    if (pairData) {
+      const userTwoName = pairData.members[1];
+      const userOneName = pairData.members[0];
+      const userTwoRef = await db.collection("user").doc(userTwoName).get();
+      const userOneRef = await db.collection("user").doc(userOneName).get();
+      const userTwoData = userTwoRef.data();
+      const userOneData = userOneRef.data();
+      if (userTwoData && userOneData) {
+        if (
+          newPairData.playerOneJoined === true &&
+          newPairData.playerTwoJoined === false
+        ) {
+          if (userTwoData.pushToken) {
+            await admin
+              .messaging()
+              .sendToDevice(userTwoData.pushToken, inviteMessage);
+          }
+        }
 
-//   // Get the list of device notification tokens.
-//   const getDeviceTokensPromise = admin.database()
-//       .ref(`/users/${followedUid}/notificationTokens`).once('value');
+        if (
+          newPairData.playerOneJoined === false &&
+          newPairData.playerTwoJoined === true
+        ) {
+          if (userOneData.pushToken) {
+            await admin
+              .messaging()
+              .sendToDevice(userOneData.pushToken, inviteMessage);
+            return "invited";
+          }
 
-//   // Get the follower profile.
-//   const getFollowerProfilePromise = admin.auth().getUser(followerUid);
+          if (userTwoData) {
+            if (userTwoData.pushToken) {
+              await admin
+                .messaging()
+                .sendToDevice(userTwoData.pushToken, inviteMessage);
+              return "invited";
+            }
+          }
+        }
+        if (
+          newPairData.playerOneJoined === true &&
+          newPairData.playerTwoJoined === true
+        ) {
+          if (userOneData.pushToken) {
+            await admin
+              .messaging()
+              .sendToDevice(userOneData.pushToken, startMessage);
+          }
+          if (userTwoData.pushToken) {
+            await admin
+              .messaging()
+              .sendToDevice(userTwoData.pushToken, startMessage);
+          }
+          return "start!";
+        }
+      }
+    }
 
-//   // The snapshot to the user's tokens.
-//   let tokensSnapshot;
+    return null;
+  });
 
-//   // The array containing all the user's tokens.
-//   let tokens;
-
-//   const results = await Promise.all([getDeviceTokensPromise, getFollowerProfilePromise]);
-//   tokensSnapshot = results[0];
-//   const follower = results[1];
-
-//   // Check if there are any device tokens.
-//   if (!tokensSnapshot.hasChildren()) {
-//     return console.log('There are no notification tokens to send to.');
-//   }
-//   console.log('There are', tokensSnapshot.numChildren(), 'tokens to send notifications to.');
-//   console.log('Fetched follower profile', follower);
-
-//   // Notification details.
-//   const payload = {
-//     notification: {
-//       title: 'You have a new follower!',
-//       body: `${follower.displayName} is now following you.`,
-//       icon: follower.photoURL
-//     }
-//   };
-
-//   // Listing all tokens as an array.
-//   tokens = Object.keys(tokensSnapshot.val());
-//   // Send notifications to all tokens.
-//   const response = await admin.messaging().sendToDevice(tokens, payload);
-//   // For each message check if there was an error.
-//   const tokensToRemove = [];
-//   response.results.forEach((result, index) => {
-    // const error = result.error;
-    // if (error) {
-    //   console.error('Failure sending notification to', tokens[index], error);
-    //   // Cleanup the tokens who are not registered anymore.
-    //   if (error.code === 'messaging/invalid-registration-token' ||
-    //       error.code === 'messaging/registration-token-not-registered') {
-    //     tokensToRemove.push(tokensSnapshot.ref.child(tokens[index]).remove());
-    //   }
-    // }
-//   });
-//   return Promise.all(tokensToRemove);
-// });
+export const joinRush = functions
+  .region("asia-northeast1")
+  .https.onRequest(async (request: any, response) => {
+    const userSnap = await db
+      .collection("users")
+      .doc(request.query.userName)
+      .get();
+    const pairSnap = await db
+      .collection("pairs")
+      .doc(request.query.pairName)
+      .get();
+    const userData = userSnap.data();
+    const pairData = pairSnap.data();
+    if (userData && pairData) {
+      // const user1Token = userData.pushToken;
+      if (userData.userName === pairData.members[0]) {
+        await db.collection("rushPlus").doc(pairData.pairName).update({
+          playerOneJoined: true,
+        });
+      }
+      if (userData.userName === pairData.members[1]) {
+        await db.collection("rushPlus").doc(pairData.pairName).update({
+          playerTwoJoined: true,
+        });
+      }
+    }
+    response.send("joined!");
+  });
 
 export const helloWorld = functions
   .region("asia-northeast1")
@@ -146,17 +195,32 @@ export const helloWorld = functions
     response.send("Hello from Firebase!");
   });
 
-export const createGame = functions
+export const createOrEndGame = functions
   .region("asia-northeast1")
   .https.onRequest(async (request: any, response) => {
-    const gameRef = db.collection("pairs").doc();
-    await gameRef.set({
-      name: "peter",
-      age: "19",
-      arr: [1, 2, 3, 4],
-      obj: {
-        pp: "hard",
+    const pairName = request.query.pairName;
+    const rushRef = db.collection("rushPlus").doc(pairName);
+    await rushRef.set(
+      {
+        pairName: pairName,
+        playerOneJoined: false,
+        playerTwoJoined: false,
       },
+      { merge: true }
+    );
+    const snapShot = await rushRef.get();
+    const data = snapShot.data();
+    response.send(data);
+  });
+
+export const endGame = functions
+  .region("asia-northeast1")
+  .https.onRequest(async (request: any, response) => {
+    const pairName = request.query.pairName;
+    const gameRef = db.collection("rushPlus").doc(pairName);
+    await gameRef.update({
+      playerOneJoined: false,
+      playerTwoJoined: false,
     });
     const snapShot = await gameRef.get();
     const data = snapShot.data();
@@ -1498,4 +1562,65 @@ export const giveGenreToRomance = functions
         genre: "Romance",
       });
     });
+  });
+
+export const setUpRushGame = functions
+  .region("asia-northeast1")
+  .https.onRequest(async (req: any, response) => {
+    const snapshot = await db.collection("pair").get();
+    snapshot.forEach(async function (doc) {
+      const pairName = doc.data().pairName;
+      await db.collection("rushPlus").doc(pairName).set(
+        {
+          pairName: pairName,
+          playerOneJoined: false,
+          playerTwoJoined: false,
+        },
+        { merge: true }
+      );
+    });
+  });
+
+//   export const cloudFuncExample = functions.firestore
+// .document("pairs/{pairName}")
+// .onUpdate(async (change, context) => {
+//   console.log("----------------start function--------------------");
+//   const oldPairData = change.before.data();
+//   const newPairData = change.after.data();
+//   const user1Name = oldPairData["members"][0];
+//   const user2Name = oldPairData["members"][1];
+
+// });
+
+export const createRushGameForPair = functions.firestore
+  .document("pairs/{pairName}")
+  .onCreate(async (snap, context) => {
+    console.log("----------------start function--------------------");
+    const pairData = snap.data();
+    const pairName = pairData.pairName;
+    await db.collection("rushPlus").doc(pairName).set(
+      {
+        pairName: pairName,
+        playerOneJoined: false,
+        playerTwoJoined: false,
+      },
+      { merge: true }
+    );
+  });
+
+export const deleteUser = functions
+  .region("asia-northeast1")
+  .https.onRequest(async (request: any, response) => {
+    try {
+      //Adding to user
+      const userRef = db.collection("users").doc(request.query.userName);
+
+      if (userRef) {
+        await userRef.delete();
+
+        response.send("deleted!");
+      }
+    } catch {
+      response.send("delete matcherror!");
+    }
   });

@@ -6,7 +6,7 @@ import 'dart:async';
 import 'package:http/http.dart' as http;
 
 import '../main.dart';
-
+import './rush_two.dart';
 import './tinderCard.dart';
 import './matches.dart';
 import './profile.dart';
@@ -233,7 +233,7 @@ class _TinderswiperState extends State<Tinderswiper>
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => RushMode(),
+                      builder: (context) => RushTwo(),
                       maintainState: true,
                     ));
               },
