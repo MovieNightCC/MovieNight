@@ -1,16 +1,15 @@
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:path/path.dart';
-
 import 'package:flutter/material.dart';
-
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
-import 'package:movie_night/screens/addPairPage.dart';
 
-import 'auth.dart';
+import './addPairPage.dart';
 import './swiper.dart';
+import './auth.dart';
 import './matches.dart';
+
 import 'package:provider/provider.dart';
 import '../main.dart';
 import 'package:url_launcher/url_launcher.dart';
