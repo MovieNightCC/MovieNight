@@ -1,12 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
-import 'package:movie_night/app-theme.dart';
-
-import 'dart:async';
-import 'package:http/http.dart' as http;
-
 import '../main.dart';
-
 import './tinderCard.dart';
 import './matches.dart';
 import './profile.dart';
@@ -15,6 +9,8 @@ import './movieArray.dart';
 import './rushMode.dart';
 import './filterPopup.dart';
 import './movieMatchesInfo.dart';
+import './rush_two.dart';
+import 'package:http/http.dart' as http;
 
 class Swiper extends StatefulWidget {
   static String routeName = "/swiper";
@@ -37,7 +33,7 @@ class _AppState extends State<Swiper> {
     return MaterialApp(
       title: "Movie Night",
       debugShowCheckedModeBanner: false,
-      theme: movieNightTheme,
+      theme: _kShrineTheme,
       home: Tinderswiper(),
     );
   }
@@ -234,45 +230,47 @@ class _TinderswiperState extends State<Tinderswiper>
           ),
           Positioned(
             left: 80,
-            bottom: 20,
+            bottom: 12,
             child: FloatingActionButton(
+              backgroundColor: Colors.red,
               heroTag: null,
               onPressed: () {
                 print('pressed');
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => RushMode(),
+                      // TESTING RIGHT NOW
+                      // create game instance here
+                      builder: (context) => RushTwo(),
                       maintainState: true,
                     ));
               },
               tooltip: 'Increment',
-              child: Icon(Icons.flash_on_sharp),
+              child: Icon(Icons.local_fire_department, size: 40),
               elevation: 2.0,
               shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10)),
-              backgroundColor: Colors.red[400],
+                  borderRadius: BorderRadius.circular(100)),
             ),
           ),
           Positioned(
             right: 80,
-            bottom: 20,
+            bottom: 12,
             child: FloatingActionButton(
+              backgroundColor: Colors.yellow,
               heroTag: null,
               onPressed: () => filterPop(context),
               tooltip: 'Increment',
-              child: Icon(Icons.swap_calls, size: 40),
+              child: Icon(Icons.local_activity, size: 40),
               elevation: 2.0,
               shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10)),
-              backgroundColor: Colors.blue[200],
+                  borderRadius: BorderRadius.circular(100)),
             ),
           ),
         ]),
         bottomNavigationBar: BottomNavigationBar(
           currentIndex: _currentIndex,
           type: BottomNavigationBarType.fixed,
-          backgroundColor: Colors.purple[200],
+          backgroundColor: Colors.pink,
           items: [
             BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
             BottomNavigationBarItem(
@@ -306,7 +304,7 @@ class _TinderswiperState extends State<Tinderswiper>
 class HeaderCurvedContainer extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
-    Paint paint = Paint()..color = Colors.purple[200];
+    Paint paint = Paint()..color = Colors.pink;
     Path path = Path()
       ..relativeLineTo(0, 150)
       ..quadraticBezierTo(size.width / 2, 225, size.width, 150)
@@ -317,4 +315,51 @@ class HeaderCurvedContainer extends CustomPainter {
 
   @override
   bool shouldRepaint(CustomPainter oldDelegate) => false;
+}
+
+final ThemeData _kShrineTheme = _buildShrineTheme();
+ThemeData _buildShrineTheme() {
+  final ThemeData base = ThemeData.dark();
+  return base.copyWith(
+      brightness: Brightness.dark,
+      primaryColor: Colors.white,
+      primaryColorBrightness: Brightness.dark,
+      primaryColorLight: Colors.white,
+      primaryColorDark: Colors.pink,
+      accentColor: Colors.white,
+      accentColorBrightness: Brightness.dark,
+      canvasColor: Color(0xfffafafa),
+      scaffoldBackgroundColor: Colors.black,
+      bottomAppBarColor: Colors.white,
+      cardColor: Colors.black,
+      dividerColor: Colors.grey,
+      highlightColor: Color(0x66bcbcbc),
+      splashColor: Color(0x66c8c8c8),
+      selectedRowColor: Color(0xfff5f5f5),
+      unselectedWidgetColor: Color(0x8a000000),
+      disabledColor: Color(0x61000000),
+      buttonColor: Colors.orange,
+      toggleableActiveColor: Color(0xffd81b60),
+      secondaryHeaderColor: Color(0xfffce4ec),
+      textSelectionColor: Color(0xfff48fb1),
+      cursorColor: Colors.pink,
+      textSelectionHandleColor: Color(0xfff06292),
+      backgroundColor: Color(0xfff48fb1),
+      dialogBackgroundColor: Colors.pink,
+      indicatorColor: Color(0xffe91e63),
+      hintColor: Colors.pinkAccent,
+      errorColor: Colors.purple[900],
+      buttonTheme: ButtonThemeData(
+          textTheme: ButtonTextTheme.normal,
+          minWidth: 88,
+          height: 36,
+          padding: EdgeInsets.only(top: 0, bottom: 0, left: 16, right: 16),
+          shape: RoundedRectangleBorder(
+            side: BorderSide(
+              color: Colors.pink,
+              width: 1,
+              style: BorderStyle.none,
+            ),
+            borderRadius: BorderRadius.all(Radius.circular(2.0)),
+          )));
 }

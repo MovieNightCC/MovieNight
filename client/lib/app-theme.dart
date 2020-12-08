@@ -41,7 +41,7 @@
     )
  ,
       alignedDropdown: false ,
-      buttonColor: Colors.green,
+      buttonColor: Colors.purple,
       disabledColor: Colors.purple[100],
       highlightColor: Colors.pink,
       splashColor: Color( 0x1f000000 ),
@@ -71,7 +71,7 @@
       fontStyle: FontStyle.normal,
     ),
       button: TextStyle(
-      color: Colors.blue,
+      color: Colors.yellow,
       fontSize: null,
       fontWeight: FontWeight.w400,
       fontStyle: FontStyle.normal,
@@ -85,13 +85,13 @@
     ),
     primaryTextTheme: TextTheme(
       caption: TextStyle(
-      color: Colors.blue,
+      color: Colors.yellow,
       fontSize: null,
       fontWeight: FontWeight.w400,
       fontStyle: FontStyle.normal,
     ),
       button: TextStyle(
-      color: Colors.green,
+      color: Colors.yellow,
       fontSize: null,
       fontWeight: FontWeight.w400,
       fontStyle: FontStyle.normal,

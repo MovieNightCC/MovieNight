@@ -15,29 +15,33 @@ class AddPairPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Add pair page")),
+      appBar: AppBar(title: Text("Link with your partner"),
+      backgroundColor: Colors.pink),
       body: Column(
         children: [
-          Text(
-            "Please enter you partner's username",
-          ),
+         
           TextField(
             controller: pairNameController,
             decoration: InputDecoration(
-              labelText: "username",
+              labelText: "Your partner's name",
             ),
           ),
-          Text("Please enter the name for your couple",
+          Text("Link your partner's account here",
               style: TextStyle(
-                  color: Colors.lightBlueAccent,
+                  color: Colors.pink,
                   height: 2.5,
                   fontWeight: FontWeight.bold,
                   fontSize: 20)),
           TextField(
             controller: coupleNameController,
-            decoration: InputDecoration(labelText: "couple name"),
+            decoration: InputDecoration(labelText: "Define your Team's name"),
           ),
+          Spacer(),
           RaisedButton(
+            color: Colors.pink,
+            shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.all(Radius.circular(50.0)),
+    ),
             onPressed: () {
               // ignore: todo
               // check if user has a pair
@@ -60,18 +64,23 @@ class AddPairPage extends StatelessWidget {
             },
             child: Text("Add Partner"),
           ),
-          RaisedButton(
+          Spacer(),
+          
+          FlatButton(
             onPressed: () {
-              Navigator.push(
+           Navigator.push(
                   context,
                   MaterialPageRoute(
                       builder: (context) => Profile(), maintainState: true));
             },
-            child: Text("Skip do not add a partner for now"),
-          )
+            child: Text("I will link my partner later"),
+          ),
+              Spacer()
         ],
       ),
+
     );
+
   }
 
   void _checkForUser() async {

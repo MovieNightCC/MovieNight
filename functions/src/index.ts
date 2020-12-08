@@ -34,22 +34,6 @@ export const helloWorld = functions
     response.send("Hello from Firebase!");
   });
 
-// export const createGame = functions
-//   .region("asia-northeast1")
-//   .https.onRequest(async (request: any, response) => {
-//     const gameRef = db.collection("pairs").doc();
-//     await gameRef.set({
-//       name: "peter",
-//       age: "19",
-//       arr: [1, 2, 3, 4],
-//       obj: {
-//         pp: "hard",
-//       },
-//     });
-//     const snapShot = await gameRef.get();
-//     const data = snapShot.data();
-//     response.send(data);
-//   });
 
 export const userRecommendAlgo = functions.firestore
   .document("users/{docId}")
@@ -175,7 +159,7 @@ export const userRecommendAlgo = functions.firestore
               MusicInspired: oldUserData["recommendations"]["MusicInspired"] + 1,
               Romance: oldUserData["recommendations"]["Romance"] - 0.1,
               Scifi: oldUserData["recommendations"]["Scifi"] - 0.1,
-              Superhero: oldUserData["recommendations"]["Superhero"] - 0.1
+              Superhero: oldUserData["recommendations"]["Superhero"] - 0.1,
             },
           },
           { merge: true }
@@ -476,7 +460,7 @@ export const pairRecommendAlgo = functions.firestore
 
 
 
-//// RUSH 2.0 game code 
+//// RUSH 2.0 game code ///////////
 
 // create game
 export const createGame = functions
@@ -505,10 +489,6 @@ export const getGame = functions
     if (data) response.json(data);
     else response.json("no game found.");
   });
-
-  
-
-
 
 // start timer
 export const startGame = functions
@@ -542,6 +522,7 @@ export const resetGame = functions
     if (data) response.json(`started the time:${data}`);
     else response.json("no game found.");
   });
+//// RUSH 2.0 game code ///////////
 
 //Deleting Stuffs
 //params: pairName, nfid
