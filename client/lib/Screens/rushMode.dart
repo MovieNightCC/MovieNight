@@ -27,20 +27,16 @@ class _RushModeState extends State<RushMode> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.purple,
         title: const Text('Rush Mode!',
             style: TextStyle(
                 height: 1.5, fontWeight: FontWeight.bold, fontSize: 30)),
         automaticallyImplyLeading: false,
         centerTitle: true,
-        backgroundColor: Colors.red[400],
+        
         elevation: 0,
       ),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.arrow_back),
-        onPressed: () {
-          Navigator.pop(context);
-        },
-      ),
+      
       body: Stack(
         alignment: Alignment.center,
         children: [
@@ -59,7 +55,7 @@ class _RushModeState extends State<RushMode> {
                   Center(
                     child: InkWell(
                       child: Container(
-                        height: MediaQuery.of(context).size.height * 0.6,
+                        height: MediaQuery.of(context).size.height * 0.5,
                         child: TinderSwapCard(
                           orientation: AmassOrientation.TOP,
                           totalNum: 100,
@@ -129,10 +125,10 @@ class _RushModeState extends State<RushMode> {
 class HeaderCurvedContainer extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
-    Paint paint = Paint()..color = Colors.red[400];
+    Paint paint = Paint()..color = Colors.purple;
     Path path = Path()
-      ..relativeLineTo(0, 150)
-      ..quadraticBezierTo(size.width / 2, 225, size.width, 150)
+      ..relativeLineTo(0, 100)
+      ..quadraticBezierTo(size.width / 2, 200, size.width, 100)
       ..relativeLineTo(0, -150)
       ..close();
     canvas.drawPath(path, paint);
@@ -205,12 +201,22 @@ class _TimerWidgetState extends State<TimerWidget> {
         Text("$_start",
             style: TextStyle(
                 height: 1.5, fontWeight: FontWeight.bold, fontSize: 100)),
-        RaisedButton(
-          onPressed: () {
-            startTimer();
-          },
-          child: Text("start"),
-        ),
+        Positioned(
+          right:40,
+          top: 50,
+          child:
+        FlatButton(
+            shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.all(Radius.circular(50.0)),
+    ),
+            child: Text("Start", 
+            style: TextStyle(color: Colors.white),),
+            color: Colors.pink,
+            onPressed: () {
+              startTimer();
+            },
+          ),
+        )
       ],
     );
   }
