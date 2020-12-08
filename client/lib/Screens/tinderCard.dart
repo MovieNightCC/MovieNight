@@ -1,8 +1,8 @@
 library flutter_tindercard;
 
 import 'dart:math';
-
 import 'package:flutter/material.dart';
+
 import './movieInfo.dart';
 
 enum TriggerDirection { none, RIGHT, LEFT, UP, DOWN }

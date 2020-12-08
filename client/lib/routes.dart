@@ -1,7 +1,7 @@
 import 'package:flutter/widgets.dart';
-import 'package:movie_night/screens/signinscaffold.dart';
-import 'package:movie_night/screens/onboardsplash.dart';
-import 'screens/swiper.dart';
+import './screens/signinscaffold.dart';
+import './screens/onboardsplash.dart';
+import './screens/swiper.dart';
 
 // We use name route
 // All our routes will be available here

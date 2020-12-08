@@ -1,8 +1,8 @@
-import 'auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import './signup.dart';
 import 'package:url_launcher/url_launcher.dart';
+import './auth.dart';
+import './signup.dart';
 
 class SignInPage extends StatelessWidget {
   final TextEditingController emailController = TextEditingController();

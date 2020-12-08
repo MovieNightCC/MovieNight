@@ -1,8 +1,9 @@
-import 'auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
 import 'package:url_launcher/url_launcher.dart';
+
+import './auth.dart';
 import './addPairPage.dart';
 
 class SignUpPage extends StatelessWidget {
