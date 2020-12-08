@@ -68,7 +68,10 @@ class _MatchInfoState extends State<MatchInfo> {
           ListView(
             padding: const EdgeInsets.all(20),
             children: [
-              Image.network(matchesImage[current]),
+              Image.network(
+                matchesImage[current],
+                scale: 0.55,
+              ),
               Text('Title: ${matchesTitles[current]}',
                   style: TextStyle(
                       color: Colors.white,
