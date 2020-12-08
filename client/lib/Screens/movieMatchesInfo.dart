@@ -65,6 +65,7 @@ class _MatchInfoState extends State<MatchInfo> {
             painter: HeaderCurvedContainer(),
           ),
           ListView(
+            padding: const EdgeInsets.all(20),
             children: [
               Image.network(matchesImage[current]),
               Text('Title: ${matchesTitles[current]}',

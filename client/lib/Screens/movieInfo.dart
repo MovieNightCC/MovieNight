@@ -53,6 +53,7 @@ class _InfoState extends State<Info> {
             painter: HeaderCurvedContainer(),
           ),
           ListView(
+            padding: const EdgeInsets.all(20),
             children: [
               Image.network(movieImagesTest[count]),
               Text('Title: ${movieTitles[count]}',

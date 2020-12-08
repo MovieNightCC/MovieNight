@@ -474,6 +474,75 @@ export const pairRecommendAlgo = functions.firestore
     return null;
   });
 
+
+
+//// RUSH 2.0 game code 
+
+// create game
+export const createGame = functions
+  .region("asia-northeast1")
+  .https.onRequest(async (request: any, response) => {
+    const gameRef = db.collection("rushplus").doc();
+    await gameRef.set({
+      pairName: request.query.pairName,
+      started: false,
+      joined: true,
+      movies: [1, 2, 3, 4],
+    });
+    const snapShot = await gameRef.get();
+    const data = snapShot.data();
+    response.send(`${data} current game state`);
+  });
+
+
+// get Game
+export const getGame = functions
+  .region("asia-northeast1")
+  .https.onRequest(async (request: any, response) => {
+    const gameRef = db.collection("rushplus").doc(request.query.pairName);
+    const result = await gameRef.get();
+    const data = result.data();
+    if (data) response.json(data);
+    else response.json("no game found.");
+  });
+
+  
+
+
+
+// start timer
+export const startGame = functions
+  .region("asia-northeast1")
+  .https.onRequest(async (request: any, response) => {
+    const gameRef = db.collection("rushplus").doc(request.query.pairName);
+    const result = await gameRef.get();
+ 
+    gameRef.set({
+     started: false,
+    },{merge  : true}).then(_=>console.log("success")).catch(_=>console.error("did not set"))
+
+    const data = result.data();
+    if (data) response.json(`reset the game:${data}`);
+    else response.json("failed to reset the game.");
+  });
+
+
+// reset game values (joined and started) or maybe just delete the game????
+export const resetGame = functions
+  .region("asia-northeast1")
+  .https.onRequest(async (request: any, response) => {
+    const gameRef = db.collection("rushplus").doc(request.query.pairName);
+    const result = await gameRef.get();
+ 
+    gameRef.update({
+     started: true,
+
+    }).then(_=>console.log("success")).catch(_=>console.error("did not set"))
+    const data = result.data();
+    if (data) response.json(`started the time:${data}`);
+    else response.json("no game found.");
+  });
+
 //Deleting Stuffs
 //params: pairName, nfid
 export const deleteMatch = functions

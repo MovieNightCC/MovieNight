@@ -1,10 +1,11 @@
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../sizeconfig.dart';
 import '../constants.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:http/http.dart' as http;
-
+import './addPairPage.dart';
 import './swiper.dart';
 import './auth.dart';
 
@@ -69,7 +70,8 @@ class _SignFormState extends State<SignForm> {
                     );
 
                 _postUser(email, name);
-                Navigator.pushNamed(context, Swiper.routeName);
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => AddPairPage()));
               }
             },
           ),
