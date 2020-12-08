@@ -92,6 +92,7 @@ var howManyMartialArts = 0;
 var howManyMusic = 0;
 var howManyScifi = 0;
 var howManySuperHero = 0;
+bool reversedCalled = false;
 
 // futureGay = fetchGay();
 // futureAnime = fetchAnime();
@@ -185,24 +186,6 @@ class _AppState extends State<App> {
     futureMartialArts = fetchMartialArts();
     futureSuperHero = fetchSuperHero();
     futureMusic = fetchMusic();
-
-    // _firebaseMessaging.configure(
-    //   onMessage: (Map<String, dynamic> message) {
-    //     print('on message: $message');
-    //     return;
-    //   },
-    //   onResume: (Map<String, dynamic> message) {
-    //     print(message);
-    //     return;
-    //   },
-    //   onLaunch: (Map<String, dynamic> message) {
-    //     print(message);
-    //     return;
-    //   },
-    // );
-    // _firebaseMessaging.getToken().then((token) {
-    //   print(token);
-    // });
   }
 
   @override

@@ -35,8 +35,13 @@ void changeToHoursMatches() {
       matchesRuntime[i] = matchesRuntime[i] ~/ 60;
 
       minutesListMatches.add(matchesRuntime[i]);
-    } else {
+    } else if (matchesRuntime[i] < 10800 && matchesRuntime[i] > 7200) {
       matchesRuntime[i] = matchesRuntime[i] - 7200;
+      matchesRuntime[i] = matchesRuntime[i] ~/ 60;
+
+      minutesListMatches.add(matchesRuntime[i]);
+    } else {
+      matchesRuntime[i] = matchesRuntime[i] - 10800;
       matchesRuntime[i] = matchesRuntime[i] ~/ 60;
 
       minutesListMatches.add(matchesRuntime[i]);
