@@ -35,7 +35,6 @@ export const helloWorld = functions
   });
 
 
-
 export const userRecommendAlgo = functions.firestore
   .document("users/{docId}")
   .onUpdate((change, context) => {
@@ -499,7 +498,7 @@ export const startGame = functions
     const result = await gameRef.get();
  
     gameRef.set({
-     started:true,
+     started: true,
     },{merge  : true}).then(_=>console.log("success")).catch(_=>console.error("did not set"))
 
     const data = result.data();

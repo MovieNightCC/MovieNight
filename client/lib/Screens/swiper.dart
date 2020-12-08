@@ -117,8 +117,9 @@ void updateUser(
     showDialog(
         context: context,
         builder: (_) => new AlertDialog(
-              title: new Text("Alert"),
-              content: new Text("You got a Match!"),
+              title: new Text("Alert", style: TextStyle(color: Colors.black)),
+              content: new Text("You got a Match!",
+                  style: TextStyle(color: Colors.black)),
               actions: <Widget>[
                 FlatButton(
                   child: Text('Close me!'),

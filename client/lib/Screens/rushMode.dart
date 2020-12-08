@@ -164,8 +164,10 @@ class _TimerWidgetState extends State<TimerWidget> {
               showDialog(
                   context: context,
                   builder: (_) => new AlertDialog(
-                        title: new Text("Alert"),
-                        content: new Text("Time's Up!"),
+                        title: new Text("Alert",
+                            style: TextStyle(color: Colors.black)),
+                        content: new Text("Time's Up!",
+                            style: TextStyle(color: Colors.black)),
                         actions: <Widget>[
                           FlatButton(
                             child: Text('Go Back to Swiper!'),
