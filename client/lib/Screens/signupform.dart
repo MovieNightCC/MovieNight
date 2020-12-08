@@ -1,3 +1,5 @@
+import 'package:movie_night/screens/addPairPage.dart';
+
 import './swiper.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -68,7 +70,8 @@ class _SignFormState extends State<SignForm> {
                     );
 
                 _postUser(email, name);
-                Navigator.pushNamed(context, Swiper.routeName);
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => AddPairPage()));
               }
             },
           ),
