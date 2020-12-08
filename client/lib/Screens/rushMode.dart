@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import './swiper.dart';
 import './tinderCard.dart';
 import './movieInfo.dart';
-import 'dart:async';
 import './filterPopup.dart';
 
 //https://www.netflix.com/title/80191740?preventIntent=true

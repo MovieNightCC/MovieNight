@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import './swiper.dart';
+import '../utils/helpers.dart';
 import './movieArray.dart';
-// import './rushMode.dart';
 import './movieInfo.dart';
+import './swiper.dart';
 
 Map<String, bool> values = {
   'foo': true,
@@ -21,6 +21,7 @@ bool clickedMartial = false;
 bool clickedMusic = false;
 bool clickedScifi = false;
 bool clickedSuperhero = false;
+bool clickedRomance = false;
 
 List<String> chosenGenre = [];
 
@@ -95,6 +96,22 @@ void filterPop(context) {
                     });
                   },
                 ),
+                CheckboxListTile(
+                  title: Text("Romance"),
+                  value: clickedRomance,
+                  onChanged: (val) {
+                    setState(() {
+                      clickedRomance = val;
+                      if (clickedRomance) {
+                        chosenGenre.add('Romance');
+                      }
+                      if (!clickedRomance) {
+                        chosenGenre.remove('Romance');
+                      }
+                      print('$chosenGenre IAM GENRE ARRAY');
+                    });
+                  },
+                ),
                 // CheckboxListTile(
                 //   title: Text("Independent Films"),
                 //   value: clickedIndie,
@@ -145,70 +162,70 @@ void filterPop(context) {
                     });
                   },
                 ),
-                // CheckboxListTile(
-                //   title: Text("Martial Arts Movies"),
-                //   value: clickedMartial,
-                //   onChanged: (val) {
-                //     setState(() {
-                //       clickedMartial = val;
-                //       if (clickedMartial) {
-                //         chosenGenre.add('Martial Arts Movies');
-                //       }
-                //       if (!clickedMartial) {
-                //         chosenGenre.remove('Martial Arts Movies');
-                //       }
-                //       print('$chosenGenre IAM GENRE ARRAY');
-                //     });
-                //   },
-                // ),
-                // CheckboxListTile(
-                //   title: Text("Music-related Movies"),
-                //   value: clickedMusic,
-                //   onChanged: (val) {
-                //     setState(() {
-                //       clickedMusic = val;
-                //       if (clickedMusic) {
-                //         chosenGenre.add('Music-related Movies');
-                //       }
-                //       if (!clickedMusic) {
-                //         chosenGenre.remove('Music-related Movies');
-                //       }
-                //       print('$chosenGenre IAM GENRE ARRAY');
-                //     });
-                //   },
-                // ),
-                // CheckboxListTile(
-                //   title: Text("Sci-fi Movies"),
-                //   value: clickedScifi,
-                //   onChanged: (val) {
-                //     setState(() {
-                //       clickedScifi = val;
-                //       if (clickedScifi) {
-                //         chosenGenre.add('Sci-fi Movies');
-                //       }
-                //       if (!clickedScifi) {
-                //         chosenGenre.remove('Sci-fi Movies');
-                //       }
-                //       print('$chosenGenre IAM GENRE ARRAY');
-                //     });
-                //   },
-                // ),
-                // CheckboxListTile(
-                //   title: Text("Superheroes Movies"),
-                //   value: clickedSuperhero,
-                //   onChanged: (val) {
-                //     setState(() {
-                //       clickedSuperhero = val;
-                //       if (clickedSuperhero) {
-                //         chosenGenre.add('Superheroes Movies');
-                //       }
-                //       if (!clickedSuperhero) {
-                //         chosenGenre.remove('Superheroes Movies');
-                //       }
-                //       print('$chosenGenre IAM GENRE ARRAY');
-                //     });
-                //   },
-                // )
+                CheckboxListTile(
+                  title: Text("Martial Arts Movies"),
+                  value: clickedMartial,
+                  onChanged: (val) {
+                    setState(() {
+                      clickedMartial = val;
+                      if (clickedMartial) {
+                        chosenGenre.add('Martial Arts Movies');
+                      }
+                      if (!clickedMartial) {
+                        chosenGenre.remove('Martial Arts Movies');
+                      }
+                      print('$chosenGenre IAM GENRE ARRAY');
+                    });
+                  },
+                ),
+                CheckboxListTile(
+                  title: Text("Music-related Movies"),
+                  value: clickedMusic,
+                  onChanged: (val) {
+                    setState(() {
+                      clickedMusic = val;
+                      if (clickedMusic) {
+                        chosenGenre.add('Music-related Movies');
+                      }
+                      if (!clickedMusic) {
+                        chosenGenre.remove('Music-related Movies');
+                      }
+                      print('$chosenGenre IAM GENRE ARRAY');
+                    });
+                  },
+                ),
+                CheckboxListTile(
+                  title: Text("Sci-fi Movies"),
+                  value: clickedScifi,
+                  onChanged: (val) {
+                    setState(() {
+                      clickedScifi = val;
+                      if (clickedScifi) {
+                        chosenGenre.add('Sci-fi Movies');
+                      }
+                      if (!clickedScifi) {
+                        chosenGenre.remove('Sci-fi Movies');
+                      }
+                      print('$chosenGenre IAM GENRE ARRAY');
+                    });
+                  },
+                ),
+                CheckboxListTile(
+                  title: Text("Superheroes Movies"),
+                  value: clickedSuperhero,
+                  onChanged: (val) {
+                    setState(() {
+                      clickedSuperhero = val;
+                      if (clickedSuperhero) {
+                        chosenGenre.add('Superheroes Movies');
+                      }
+                      if (!clickedSuperhero) {
+                        chosenGenre.remove('Superheroes Movies');
+                      }
+                      print('$chosenGenre IAM GENRE ARRAY');
+                    });
+                  },
+                )
               ]),
             ),
             actions: <Widget>[
@@ -313,6 +330,107 @@ void filterPop(context) {
                             movieRuntime);
                         changeToHours();
                       }
+                      if (chosenGenre.contains("Romance")) {
+                        for (var i = 0; i < romanceNfid.length; i++) {
+                          movieDataTest.add(romanceNfid[i]);
+                          movieImagesTest.add(romanceImages[i]);
+                          movieTitles.add(romanceTitles[i]);
+                          movieGenre.add(romanceGenre[i]);
+                          moviesSynopsis.add(romanceSynopsis[i]);
+                          movieYear.add(romanceYear[i]);
+                          movieRuntime.add(romanceRuntime[i]);
+                        }
+                        shuffle(
+                            movieDataTest,
+                            movieImagesTest,
+                            movieTitles,
+                            moviesSynopsis,
+                            movieYear,
+                            movieGenre,
+                            movieRuntime);
+                        changeToHours();
+                      }
+                      if (chosenGenre.contains("Martial Arts Movies")) {
+                        for (var i = 0; i < martialArtsNfid.length; i++) {
+                          movieDataTest.add(martialArtsNfid[i]);
+                          movieImagesTest.add(martialArtsImages[i]);
+                          movieTitles.add(martialArtsTitles[i]);
+                          movieGenre.add(martialArtsGenre[i]);
+                          moviesSynopsis.add(martialArtsSynopsis[i]);
+                          movieYear.add(martialArtsYear[i]);
+                          movieRuntime.add(martialArtsRuntime[i]);
+                        }
+                        shuffle(
+                            movieDataTest,
+                            movieImagesTest,
+                            movieTitles,
+                            moviesSynopsis,
+                            movieYear,
+                            movieGenre,
+                            movieRuntime);
+                        changeToHours();
+                      }
+                      if (chosenGenre.contains("Music-related Movies")) {
+                        for (var i = 0; i < musicNfid.length; i++) {
+                          movieDataTest.add(musicNfid[i]);
+                          movieImagesTest.add(musicImages[i]);
+                          movieTitles.add(musicTitles[i]);
+                          movieGenre.add(musicGenre[i]);
+                          moviesSynopsis.add(musicSynopsis[i]);
+                          movieYear.add(musicYear[i]);
+                          movieRuntime.add(musicRuntime[i]);
+                        }
+                        shuffle(
+                            movieDataTest,
+                            movieImagesTest,
+                            movieTitles,
+                            moviesSynopsis,
+                            movieYear,
+                            movieGenre,
+                            movieRuntime);
+                        changeToHours();
+                      }
+                      if (chosenGenre.contains("Sci-fi Movies")) {
+                        for (var i = 0; i < scifiNfid.length; i++) {
+                          movieDataTest.add(scifiNfid[i]);
+                          movieImagesTest.add(scifiImages[i]);
+                          movieTitles.add(scifiTitles[i]);
+                          movieGenre.add(scifiGenre[i]);
+                          moviesSynopsis.add(scifiSynopsis[i]);
+                          movieYear.add(scifiYear[i]);
+                          movieRuntime.add(scifiRuntime[i]);
+                        }
+                        shuffle(
+                            movieDataTest,
+                            movieImagesTest,
+                            movieTitles,
+                            moviesSynopsis,
+                            movieYear,
+                            movieGenre,
+                            movieRuntime);
+                        changeToHours();
+                      }
+                      if (chosenGenre.contains("Superheroes Movies")) {
+                        for (var i = 0; i < superHeroNfid.length; i++) {
+                          movieDataTest.add(superHeroNfid[i]);
+                          movieImagesTest.add(superHeroImages[i]);
+                          movieTitles.add(superHeroTitles[i]);
+                          movieGenre.add(superHeroGenre[i]);
+                          moviesSynopsis.add(superHeroSynopsis[i]);
+                          movieYear.add(superHeroYear[i]);
+                          movieRuntime.add(superHeroRuntime[i]);
+                        }
+                        shuffle(
+                            movieDataTest,
+                            movieImagesTest,
+                            movieTitles,
+                            moviesSynopsis,
+                            movieYear,
+                            movieGenre,
+                            movieRuntime);
+                        changeToHours();
+                      }
+
                       if (chosenGenre.contains("LGBTQ")) {
                         for (var i = 0; i < gayNfid.length; i++) {
                           movieDataTest.add(gayNfid[i]);
