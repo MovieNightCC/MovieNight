@@ -114,7 +114,7 @@ class PushNotificationService {
 
   PushNotificationService(this._fcm);
 
-  Future initialise() async {
+  Future initialise(context) async {
     // If you want to test the push notification locally,
     // you need to get the token and input to the Firebase console
     // https://console.firebase.google.com/project/YOUR_PROJECT_ID/notification/compose
@@ -124,14 +124,30 @@ class PushNotificationService {
     _fcm.configure(
       onMessage: (Map<String, dynamic> message) async {
         print("onMessage: $message");
+        showDialog(
+            context: context,
+            builder: (_) => new AlertDialog(
+                  title:
+                      new Text("Alert", style: TextStyle(color: Colors.black)),
+                  content: new Text("$message",
+                      style: TextStyle(color: Colors.black)),
+                  actions: <Widget>[
+                    FlatButton(
+                      child: Text('Close me!'),
+                      onPressed: () {
+                        Navigator.of(context, rootNavigator: true).pop();
+                      },
+                    )
+                  ],
+                ));
         notification = PushNotificationMessage(
           title: message['notification']['title'],
           body: message['notification']['body'],
         );
         showSimpleNotification(
-    Container(child: Text(notification.body)),
-    position: NotificationPosition.top,
-  );
+          Container(child: Text(notification.body)),
+          position: NotificationPosition.top,
+        );
       },
       onLaunch: (Map<String, dynamic> message) async {
         print("onLaunch: $message");
@@ -192,7 +208,7 @@ class _AppState extends State<App> {
   @override
   Widget build(BuildContext context) {
     final pushNotificationService = PushNotificationService(_firebaseMessaging);
-    pushNotificationService.initialise();
+    pushNotificationService.initialise(context);
     return MultiProvider(
       providers: [
         Provider<AuthenticationService>(
