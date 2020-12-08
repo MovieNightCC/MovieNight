@@ -1,10 +1,9 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import './profile.dart';
 import '../main.dart';
 import 'package:http/http.dart' as http;
 
-import 'profile.dart';
+import './profile.dart';
 
 bool userexists = false;
 String userNameOfPair = "";

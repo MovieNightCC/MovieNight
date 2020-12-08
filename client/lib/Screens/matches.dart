@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-
+import './movieArray.dart';
+import './movieMatchesInfo.dart';
 import './swiper.dart';
 import './profile.dart';
-import './movieMatchesInfo.dart';
-import './movieArray.dart';
 
 class Matches extends StatefulWidget {
   @override

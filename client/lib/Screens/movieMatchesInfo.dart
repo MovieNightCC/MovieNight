@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import '../main.dart';
-import './matches.dart';
 import './movieArray.dart';
+import './matches.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:http/http.dart' as http;
-import '../main.dart';
 
 class MatchInfo extends StatefulWidget {
   @override
@@ -68,7 +67,10 @@ class _MatchInfoState extends State<MatchInfo> {
           ListView(
             padding: const EdgeInsets.all(20),
             children: [
-              Image.network(matchesImage[current]),
+              Image.network(
+                matchesImage[current],
+                scale: 0.55,
+              ),
               Text('Title: ${matchesTitles[current]}',
                   style: TextStyle(
                       color: Colors.white,
@@ -78,27 +80,27 @@ class _MatchInfoState extends State<MatchInfo> {
               Text('Genre: ${matchesGenre[current]}',
                   style: TextStyle(
                       color: Colors.white,
-                      //height: 5.0,
+                      height: 2.0,
                       fontWeight: FontWeight.bold,
                       fontSize: 20)),
               Text(
                   'Runtime: ${hourListMatches[current]}h ${minutesListMatches[current]}m',
                   style: TextStyle(
                       color: Colors.white,
-                      // height: 5.0,
+                      height: 2.0,
                       fontWeight: FontWeight.bold,
                       fontSize: 20)),
               Text('Synopsis: ${matchesSynopsis[current]}',
                   style: TextStyle(
                       color: Colors.white,
-                      // height: 1.5,
+                      height: 1.5,
                       fontWeight: FontWeight.bold,
                       fontSize: 20)),
               Text(
                 'Release Year: ${matchesYear[current]}',
                 style: TextStyle(
                     color: Colors.white,
-                    //height: 4.0,
+                    height: 2.0,
                     fontWeight: FontWeight.bold,
                     fontSize: 20),
               ), //matchesNfid,

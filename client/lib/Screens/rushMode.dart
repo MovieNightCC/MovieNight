@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import './swiper.dart';
 import './tinderCard.dart';
 import './movieInfo.dart';
-import 'dart:async';
 import './filterPopup.dart';
 
 //https://www.netflix.com/title/80191740?preventIntent=true
@@ -173,8 +172,10 @@ class _TimerWidgetState extends State<TimerWidget> {
               showDialog(
                   context: context,
                   builder: (_) => new AlertDialog(
-                        title: new Text("Alert"),
-                        content: new Text("Time's Up!"),
+                        title: new Text("Alert",
+                            style: TextStyle(color: Colors.black)),
+                        content: new Text("Time's Up!",
+                            style: TextStyle(color: Colors.black)),
                         actions: <Widget>[
                           FlatButton(
                             child: Text('Go Back to Swiper!'),

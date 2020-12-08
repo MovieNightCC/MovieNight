@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import '../sizeconfig.dart';
-import 'signinform.dart';
-
+import './signinform.dart';
 
 class SignInScreen extends StatelessWidget {
   static String routeName = "/signin";
@@ -15,6 +14,5 @@ class SignInScreen extends StatelessWidget {
       ),
       body: SignInBody(),
     );
-    
   }
 }

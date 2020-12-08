@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import './swiper.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'dart:math';
 
 class Info extends StatefulWidget {
   @override
@@ -56,11 +55,14 @@ class _InfoState extends State<Info> {
           ListView(
             padding: const EdgeInsets.all(20),
             children: [
-              Image.network(movieImagesTest[count]),
+              Image.network(
+                movieImagesTest[count],
+                scale: 0.55,
+              ),
               Text('Title: ${movieTitles[count]}',
                   style: TextStyle(
                       color: Colors.white,
-                      height: 3.0,
+                      //height: 3.0,
                       fontWeight: FontWeight.bold,
                       fontSize: 20)),
               Text('Genre: ${movieGenre[count]}',

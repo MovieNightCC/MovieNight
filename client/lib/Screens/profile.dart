@@ -1,16 +1,15 @@
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:path/path.dart';
-
 import 'package:flutter/material.dart';
-
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
-import 'package:movie_night/screens/addPairPage.dart';
 
-import 'auth.dart';
+import './addPairPage.dart';
 import './swiper.dart';
+import './auth.dart';
 import './matches.dart';
+
 import 'package:provider/provider.dart';
 import '../main.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -152,7 +151,8 @@ class _ProfileState extends State<Profile> {
                 onPressed: () {
                   context.read<AuthenticationService>().signOut();
                     Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => App()));;
+                        MaterialPageRoute(builder: (context) => App()));
+                        exit(0);
                 },
                 child: Text("SIGN OUT",
                 style: TextStyle(),),

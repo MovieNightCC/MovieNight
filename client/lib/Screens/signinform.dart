@@ -1,4 +1,3 @@
-import './swiper.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../sizeconfig.dart';
@@ -6,15 +5,15 @@ import '../constants.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:movie_night/screens/auth.dart';
 import 'package:url_launcher/url_launcher.dart';
+import './swiper.dart';
+
 
 class SignForm extends StatefulWidget {
-    
   @override
   _SignFormState createState() => _SignFormState();
 }
 
 class _SignFormState extends State<SignForm> {
-
   final _formKey = GlobalKey<FormState>();
   String email;
   String password;
@@ -47,15 +46,14 @@ class _SignFormState extends State<SignForm> {
           SizedBox(height: getProportionateScreenHeight(30)),
           Row(
             children: [
-              
               GestureDetector(
                 onTap: () => Navigator.pushNamed(
                     context, ForgotPasswordScreen.routeName),
                 child: Text(
                   "Forgot your Password ?",
                   style: TextStyle(
-                    color: Colors.purple, 
-                    decoration: TextDecoration.underline),
+                      color: Colors.purple,
+                      decoration: TextDecoration.underline),
                 ),
               )
             ],
@@ -64,10 +62,12 @@ class _SignFormState extends State<SignForm> {
           SizedBox(height: getProportionateScreenHeight(20)),
           FlatButton(
             shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.all(Radius.circular(50.0)),
-    ),
-            child: Text("Continue", 
-            style: TextStyle(color: Colors.white),),
+              borderRadius: BorderRadius.all(Radius.circular(50.0)),
+            ),
+            child: Text(
+              "Continue",
+              style: TextStyle(color: Colors.white),
+            ),
             color: Colors.pink,
             onPressed: () {
               if (_formKey.currentState.validate()) {
