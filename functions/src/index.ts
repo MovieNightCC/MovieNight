@@ -27,10 +27,117 @@ interface oneMovie {
   vtype: String;
 }
 
-//message 
+//message
 
+export const sendMatchNotification = functions.firestore
+  .document("pairs/{pairName}")
+  .onUpdate(async (change, context) => {
+    console.log("----------------start function--------------------");
+    const oldPairData = change.before.data();
+    const newPairData = change.after.data();
+    const user1Name = oldPairData["members"][0];
+    const user2Name = oldPairData["members"][1];
+    if (oldPairData && newPairData) {
+      if (
+        newPairData["matchMovieData"].length >
+        oldPairData["matchMovieData"].length
+      ) {
+        const user1Ref = db.collection("users").doc(user1Name);
+        const user2Ref = db.collection("users").doc(user2Name);
+        const snap1 = await user1Ref.get();
+        const snap2 = await user2Ref.get();
+        const data1 = snap1.data();
+        const data2 = snap2.data();
+        const payload = {
+          notification: {
+            title: "You have a new match!",
+            body: `click here to see what matches you have!`,
+          },
+        };
+        if (data1 && data2) {
+          try{
+            if (data1.pushToken) {
+              await admin.messaging().sendToDevice(data1.pushToken, payload);
+              console.log("pushed to user1");
+            }
+            if (data2.pushToken) {
+              await admin.messaging().sendToDevice(data2.pushToken, payload);
+              console.log("pushed to user2");
+            }
+          } catch {
+            console.log("error!")
+          }
+        }
+      }
+    }
+    // const response = await admin.messaging().sendToDevice(tokens, payload);
+    // const doc = snap.data()
+    // console.log(doc)
+    return null;
+  });
 
+// exports.sendFollowerNotification = functions.database.ref('/followers/{followedUid}/{followerUid}')
+// .onWrite(async (change, context) => {
+//   const followerUid = context.params.followerUid;
+//   const followedUid = context.params.followedUid;
+//   // If un-follow we exit the function.
+//   if (!change.after.val()) {
+//     return console.log('User ', followerUid, 'un-followed user', followedUid);
+//   }
+//   console.log('We have a new follower UID:', followerUid, 'for user:', followedUid);
 
+//   // Get the list of device notification tokens.
+//   const getDeviceTokensPromise = admin.database()
+//       .ref(`/users/${followedUid}/notificationTokens`).once('value');
+
+//   // Get the follower profile.
+//   const getFollowerProfilePromise = admin.auth().getUser(followerUid);
+
+//   // The snapshot to the user's tokens.
+//   let tokensSnapshot;
+
+//   // The array containing all the user's tokens.
+//   let tokens;
+
+//   const results = await Promise.all([getDeviceTokensPromise, getFollowerProfilePromise]);
+//   tokensSnapshot = results[0];
+//   const follower = results[1];
+
+//   // Check if there are any device tokens.
+//   if (!tokensSnapshot.hasChildren()) {
+//     return console.log('There are no notification tokens to send to.');
+//   }
+//   console.log('There are', tokensSnapshot.numChildren(), 'tokens to send notifications to.');
+//   console.log('Fetched follower profile', follower);
+
+//   // Notification details.
+//   const payload = {
+//     notification: {
+//       title: 'You have a new follower!',
+//       body: `${follower.displayName} is now following you.`,
+//       icon: follower.photoURL
+//     }
+//   };
+
+//   // Listing all tokens as an array.
+//   tokens = Object.keys(tokensSnapshot.val());
+//   // Send notifications to all tokens.
+//   const response = await admin.messaging().sendToDevice(tokens, payload);
+//   // For each message check if there was an error.
+//   const tokensToRemove = [];
+//   response.results.forEach((result, index) => {
+    // const error = result.error;
+    // if (error) {
+    //   console.error('Failure sending notification to', tokens[index], error);
+    //   // Cleanup the tokens who are not registered anymore.
+    //   if (error.code === 'messaging/invalid-registration-token' ||
+    //       error.code === 'messaging/registration-token-not-registered') {
+    //     tokensToRemove.push(tokensSnapshot.ref.child(tokens[index]).remove());
+    //   }
+    // }
+//   });
+//   return Promise.all(tokensToRemove);
+// });
 
 export const helloWorld = functions
   .region("asia-northeast1")
@@ -66,197 +173,176 @@ export const userRecommendAlgo = functions.firestore
       const newGenreCount = newUserData.genreCount;
       //  const newUserRec = newUserData["recommendations"];
       if (newGenreCount["Anime"] > oldGenreCount["Anime"]) {
-        return change.after.ref.update(
-          {
-            recommendations: {
-              Anime: oldUserData["recommendations"]["Anime"] + 1,
-              Horror: oldUserData["recommendations"]["Horror"] - 0.1,
-              Japanese: oldUserData["recommendations"]["Japanese"] - 0.1,
-              Korean: oldUserData["recommendations"]["Korean"] - 0.1,
-              LGBTQ: oldUserData["recommendations"]["LGBTQ"] - 0.1,
-              MartialArts: oldUserData["recommendations"]["MartialArts"] - 0.1,
-              MusicInspired:
-                oldUserData["recommendations"]["MusicInspired"] - 0.1,
-              Romance: oldUserData["recommendations"]["Romance"] - 0.1,
-              Scifi:  admin.firestore.FieldValue.increment(-0.1),
-              Superhero: oldUserData["recommendations"]["Superhero"] - 0.1,
-            },
+        return change.after.ref.update({
+          recommendations: {
+            Anime: oldUserData["recommendations"]["Anime"] + 1,
+            Horror: oldUserData["recommendations"]["Horror"] - 0.1,
+            Japanese: oldUserData["recommendations"]["Japanese"] - 0.1,
+            Korean: oldUserData["recommendations"]["Korean"] - 0.1,
+            LGBTQ: oldUserData["recommendations"]["LGBTQ"] - 0.1,
+            MartialArts: oldUserData["recommendations"]["MartialArts"] - 0.1,
+            MusicInspired:
+              oldUserData["recommendations"]["MusicInspired"] - 0.1,
+            Romance: oldUserData["recommendations"]["Romance"] - 0.1,
+            Scifi: admin.firestore.FieldValue.increment(-0.1),
+            Superhero: oldUserData["recommendations"]["Superhero"] - 0.1,
           },
-          
-        );
+        });
       }
 
       if (newGenreCount["Horror"] > oldGenreCount["Horror"]) {
-        return change.after.ref.update(
-          {
-            recommendations: {
-              Anime: oldUserData["recommendations"]["Anime"] - 0.1,
-              Horror: oldUserData["recommendations"]["Horror"] + 1,
-              Japanese: oldUserData["recommendations"]["Japanese"] - 0.1,
-              Korean: oldUserData["recommendations"]["Korean"] - 0.1,
-              LGBTQ: oldUserData["recommendations"]["LGBTQ"] - 0.1,
-              MartialArts: oldUserData["recommendations"]["MartialArts"] - 0.1,
-              MusicInspired:
-                oldUserData["recommendations"]["MusicInspired"] - 0.1,
-              Romance: oldUserData["recommendations"]["Romance"] - 0.1,
-              Scifi:  admin.firestore.FieldValue.increment(-0.1),
-              Superhero: oldUserData["recommendations"]["Superhero"] - 0.1,
-            },
+        return change.after.ref.update({
+          recommendations: {
+            Anime: oldUserData["recommendations"]["Anime"] - 0.1,
+            Horror: oldUserData["recommendations"]["Horror"] + 1,
+            Japanese: oldUserData["recommendations"]["Japanese"] - 0.1,
+            Korean: oldUserData["recommendations"]["Korean"] - 0.1,
+            LGBTQ: oldUserData["recommendations"]["LGBTQ"] - 0.1,
+            MartialArts: oldUserData["recommendations"]["MartialArts"] - 0.1,
+            MusicInspired:
+              oldUserData["recommendations"]["MusicInspired"] - 0.1,
+            Romance: oldUserData["recommendations"]["Romance"] - 0.1,
+            Scifi: admin.firestore.FieldValue.increment(-0.1),
+            Superhero: oldUserData["recommendations"]["Superhero"] - 0.1,
           },
-        );
+        });
       }
       if (newGenreCount["Japanese"] > oldGenreCount["Japanese"]) {
-        return change.after.ref.update(
-          {
-            recommendations: {
-              Anime: oldUserData["recommendations"]["Anime"] - 0.1,
-              Horror: oldUserData["recommendations"]["Horror"] - 0.1,
-              Japanese: oldUserData["recommendations"]["Japanese"] + 1,
-              Korean: oldUserData["recommendations"]["Korean"] - 0.1,
-              LGBTQ: oldUserData["recommendations"]["LGBTQ"] - 0.1,
-              MartialArts: oldUserData["recommendations"]["MartialArts"] - 0.1,
-              MusicInspired:
-                oldUserData["recommendations"]["MusicInspired"] - 0.1,
-              Romance: oldUserData["recommendations"]["Romance"] - 0.1,
-              Scifi:  admin.firestore.FieldValue.increment(-0.1),
-              Superhero: oldUserData["recommendations"]["Superhero"] - 0.1,
-            },
+        return change.after.ref.update({
+          recommendations: {
+            Anime: oldUserData["recommendations"]["Anime"] - 0.1,
+            Horror: oldUserData["recommendations"]["Horror"] - 0.1,
+            Japanese: oldUserData["recommendations"]["Japanese"] + 1,
+            Korean: oldUserData["recommendations"]["Korean"] - 0.1,
+            LGBTQ: oldUserData["recommendations"]["LGBTQ"] - 0.1,
+            MartialArts: oldUserData["recommendations"]["MartialArts"] - 0.1,
+            MusicInspired:
+              oldUserData["recommendations"]["MusicInspired"] - 0.1,
+            Romance: oldUserData["recommendations"]["Romance"] - 0.1,
+            Scifi: admin.firestore.FieldValue.increment(-0.1),
+            Superhero: oldUserData["recommendations"]["Superhero"] - 0.1,
           },
-        );
+        });
       }
       if (newGenreCount["Korean"] > oldGenreCount["Korean"]) {
-        return change.after.ref.update(
-          {
-            recommendations: {
-              Anime: oldUserData["recommendations"]["Anime"] - 0.1,
-              Horror: oldUserData["recommendations"]["Horror"] - 0.1,
-              Japanese: oldUserData["recommendations"]["Japanese"] - 0.1,
-              Korean: oldUserData["recommendations"]["Korean"] + 1,
-              LGBTQ: oldUserData["recommendations"]["LGBTQ"] - 0.1,
-              MartialArts: oldUserData["recommendations"]["MartialArts"] - 0.1,
-              MusicInspired:
-                oldUserData["recommendations"]["MusicInspired"] - 0.1,
-              Romance: oldUserData["recommendations"]["Romance"] - 0.1,
-              Scifi:  admin.firestore.FieldValue.increment(-0.1),
-              Superhero: oldUserData["recommendations"]["Superhero"] - 0.1,
-            },
+        return change.after.ref.update({
+          recommendations: {
+            Anime: oldUserData["recommendations"]["Anime"] - 0.1,
+            Horror: oldUserData["recommendations"]["Horror"] - 0.1,
+            Japanese: oldUserData["recommendations"]["Japanese"] - 0.1,
+            Korean: oldUserData["recommendations"]["Korean"] + 1,
+            LGBTQ: oldUserData["recommendations"]["LGBTQ"] - 0.1,
+            MartialArts: oldUserData["recommendations"]["MartialArts"] - 0.1,
+            MusicInspired:
+              oldUserData["recommendations"]["MusicInspired"] - 0.1,
+            Romance: oldUserData["recommendations"]["Romance"] - 0.1,
+            Scifi: admin.firestore.FieldValue.increment(-0.1),
+            Superhero: oldUserData["recommendations"]["Superhero"] - 0.1,
           },
-        );
+        });
       }
 
       if (newGenreCount["MartialArts"] > oldGenreCount["MartialArts"]) {
-        return change.after.ref.update(
-          {
-            recommendations: {
-              Anime: oldUserData["recommendations"]["Anime"] - 0.1,
-              Horror: oldUserData["recommendations"]["Horror"] - 0.1,
-              Japanese: oldUserData["recommendations"]["Japanese"] - 0.1,
-              Korean: oldUserData["recommendations"]["Korean"] - 0.1,
-              LGBTQ: oldUserData["recommendations"]["LGBTQ"] - 0.1,
-              MartialArts: oldUserData["recommendations"]["MartialArts"] + 1,
-              MusicInspired:
-                oldUserData["recommendations"]["MusicInspired"] - 0.1,
-              Romance: oldUserData["recommendations"]["Romance"] - 0.1,
-              Scifi:  admin.firestore.FieldValue.increment(-0.1),
-              Superhero: oldUserData["recommendations"]["Superhero"] - 0.1,
-            },
+        return change.after.ref.update({
+          recommendations: {
+            Anime: oldUserData["recommendations"]["Anime"] - 0.1,
+            Horror: oldUserData["recommendations"]["Horror"] - 0.1,
+            Japanese: oldUserData["recommendations"]["Japanese"] - 0.1,
+            Korean: oldUserData["recommendations"]["Korean"] - 0.1,
+            LGBTQ: oldUserData["recommendations"]["LGBTQ"] - 0.1,
+            MartialArts: oldUserData["recommendations"]["MartialArts"] + 1,
+            MusicInspired:
+              oldUserData["recommendations"]["MusicInspired"] - 0.1,
+            Romance: oldUserData["recommendations"]["Romance"] - 0.1,
+            Scifi: admin.firestore.FieldValue.increment(-0.1),
+            Superhero: oldUserData["recommendations"]["Superhero"] - 0.1,
           },
-        );
+        });
       }
       if (newGenreCount["MusicInspired"] > oldGenreCount["MusicInspired"]) {
-        return change.after.ref.update(
-          {
-            recommendations: {
-              Anime: oldUserData["recommendations"]["Anime"] - 0.1,
-              Horror: oldUserData["recommendations"]["Horror"] - 0.1,
-              Japanese: oldUserData["recommendations"]["Japanese"] - 0.1,
-              Korean: oldUserData["recommendations"]["Korean"] - 0.1,
-              LGBTQ: oldUserData["recommendations"]["LGBTQ"] - 0.1,
-              MartialArts: oldUserData["recommendations"]["MartialArts"] - 0.1,
-              MusicInspired: oldUserData["recommendations"]["MusicInspired"] + 1,
-              Romance: oldUserData["recommendations"]["Romance"] - 0.1,
-              Scifi:  admin.firestore.FieldValue.increment(-0.1),
-              Superhero: oldUserData["recommendations"]["Superhero"] - 0.1,
-            },
+        return change.after.ref.update({
+          recommendations: {
+            Anime: oldUserData["recommendations"]["Anime"] - 0.1,
+            Horror: oldUserData["recommendations"]["Horror"] - 0.1,
+            Japanese: oldUserData["recommendations"]["Japanese"] - 0.1,
+            Korean: oldUserData["recommendations"]["Korean"] - 0.1,
+            LGBTQ: oldUserData["recommendations"]["LGBTQ"] - 0.1,
+            MartialArts: oldUserData["recommendations"]["MartialArts"] - 0.1,
+            MusicInspired: oldUserData["recommendations"]["MusicInspired"] + 1,
+            Romance: oldUserData["recommendations"]["Romance"] - 0.1,
+            Scifi: admin.firestore.FieldValue.increment(-0.1),
+            Superhero: oldUserData["recommendations"]["Superhero"] - 0.1,
           },
-        );
+        });
       }
       if (newGenreCount["Romance"] > oldGenreCount["Romance"]) {
-        return change.after.ref.update(
-          {
-            recommendations: {
-              Anime: oldUserData["recommendations"]["Anime"] - 0.1,
-              Horror: oldUserData["recommendations"]["Horror"] - 0.1,
-              Japanese: oldUserData["recommendations"]["Japanese"] - 0.1,
-              Korean: oldUserData["recommendations"]["Korean"] - 0.1,
-              LGBTQ: oldUserData["recommendations"]["LGBTQ"] - 0.1,
-              MartialArts: oldUserData["recommendations"]["MartialArts"] - 0.1,
-              MusicInspired:
-                oldUserData["recommendations"]["MusicInspired"] - 0.1,
-              Romance: oldUserData["recommendations"]["Romance"] + 1,
-              Scifi:  admin.firestore.FieldValue.increment(-0.1),
-              Superhero: oldUserData["recommendations"]["Superhero"] - 0.1,
-            },
+        return change.after.ref.update({
+          recommendations: {
+            Anime: oldUserData["recommendations"]["Anime"] - 0.1,
+            Horror: oldUserData["recommendations"]["Horror"] - 0.1,
+            Japanese: oldUserData["recommendations"]["Japanese"] - 0.1,
+            Korean: oldUserData["recommendations"]["Korean"] - 0.1,
+            LGBTQ: oldUserData["recommendations"]["LGBTQ"] - 0.1,
+            MartialArts: oldUserData["recommendations"]["MartialArts"] - 0.1,
+            MusicInspired:
+              oldUserData["recommendations"]["MusicInspired"] - 0.1,
+            Romance: oldUserData["recommendations"]["Romance"] + 1,
+            Scifi: admin.firestore.FieldValue.increment(-0.1),
+            Superhero: oldUserData["recommendations"]["Superhero"] - 0.1,
           },
-        );
+        });
       }
       if (newGenreCount["Scifi"] > oldGenreCount["Scifi"]) {
-        return change.after.ref.update(
-          {
-            recommendations: {
-              Anime: oldUserData["recommendations"]["Anime"] - 0.1,
-              Horror: oldUserData["recommendations"]["Horror"] - 0.1,
-              Japanese: oldUserData["recommendations"]["Japanese"] - 0.1,
-              Korean: oldUserData["recommendations"]["Korean"] - 0.1,
-              LGBTQ: oldUserData["recommendations"]["LGBTQ"] - 0.1,
-              MartialArts: oldUserData["recommendations"]["MartialArts"] - 0.1,
-              MusicInspired:
-                oldUserData["recommendations"]["MusicInspired"] - 0.1,
-              Romance: oldUserData["recommendations"]["Romance"] - 0.1,
-              Scifi:  admin.firestore.FieldValue.increment(1),
-              Superhero: oldUserData["recommendations"]["Superhero"] - 0.1,
-            },
+        return change.after.ref.update({
+          recommendations: {
+            Anime: oldUserData["recommendations"]["Anime"] - 0.1,
+            Horror: oldUserData["recommendations"]["Horror"] - 0.1,
+            Japanese: oldUserData["recommendations"]["Japanese"] - 0.1,
+            Korean: oldUserData["recommendations"]["Korean"] - 0.1,
+            LGBTQ: oldUserData["recommendations"]["LGBTQ"] - 0.1,
+            MartialArts: oldUserData["recommendations"]["MartialArts"] - 0.1,
+            MusicInspired:
+              oldUserData["recommendations"]["MusicInspired"] - 0.1,
+            Romance: oldUserData["recommendations"]["Romance"] - 0.1,
+            Scifi: admin.firestore.FieldValue.increment(1),
+            Superhero: oldUserData["recommendations"]["Superhero"] - 0.1,
           },
-        );
+        });
       }
       if (newGenreCount["Superhero"] > oldGenreCount["Superhero"]) {
-        return change.after.ref.update(
-          {
-            recommendations: {
-              Anime: oldUserData["recommendations"]["Anime"] - 0.1,
-              Horror: oldUserData["recommendations"]["Horror"] - 0.1,
-              Japanese: oldUserData["recommendations"]["Japanese"] - 0.1,
-              Korean: oldUserData["recommendations"]["Korean"] - 0.1,
-              LGBTQ: oldUserData["recommendations"]["LGBTQ"] - 0.1,
-              MartialArts: oldUserData["recommendations"]["MartialArts"] - 0.1,
-              MusicInspired:
-                oldUserData["recommendations"]["MusicInspired"] - 0.1,
-              Romance: oldUserData["recommendations"]["Romance"] - 0.1,
-              Scifi:  admin.firestore.FieldValue.increment(-0.1),
-              Superhero: oldUserData["recommendations"]["Superhero"] + 1,
-            },
+        return change.after.ref.update({
+          recommendations: {
+            Anime: oldUserData["recommendations"]["Anime"] - 0.1,
+            Horror: oldUserData["recommendations"]["Horror"] - 0.1,
+            Japanese: oldUserData["recommendations"]["Japanese"] - 0.1,
+            Korean: oldUserData["recommendations"]["Korean"] - 0.1,
+            LGBTQ: oldUserData["recommendations"]["LGBTQ"] - 0.1,
+            MartialArts: oldUserData["recommendations"]["MartialArts"] - 0.1,
+            MusicInspired:
+              oldUserData["recommendations"]["MusicInspired"] - 0.1,
+            Romance: oldUserData["recommendations"]["Romance"] - 0.1,
+            Scifi: admin.firestore.FieldValue.increment(-0.1),
+            Superhero: oldUserData["recommendations"]["Superhero"] + 1,
           },
-        );
+        });
       }
 
       if (newGenreCount["LGBTQ"] > oldGenreCount["LGBTQ"]) {
-        return change.after.ref.update(
-          {
-            recommendations: {
-              Anime: oldUserData["recommendations"]["Anime"] - 0.1,
-              Horror: oldUserData["recommendations"]["Horror"] - 0.1,
-              Japanese: oldUserData["recommendations"]["Japanese"] - 0.1,
-              Korean: oldUserData["recommendations"]["Korean"] - 0.1,
-              LGBTQ: oldUserData["recommendations"]["LGBTQ"] + 1,
-              MartialArts: oldUserData["recommendations"]["MartialArts"] - 0.1,
-              MusicInspired:
-                oldUserData["recommendations"]["MusicInspired"] - 0.1,
-              Romance: oldUserData["recommendations"]["Romance"] - 0.1,
-              Scifi:  admin.firestore.FieldValue.increment(-0.1),
-              Superhero: oldUserData["recommendations"]["Superhero"] - 0.1,
-            },
+        return change.after.ref.update({
+          recommendations: {
+            Anime: oldUserData["recommendations"]["Anime"] - 0.1,
+            Horror: oldUserData["recommendations"]["Horror"] - 0.1,
+            Japanese: oldUserData["recommendations"]["Japanese"] - 0.1,
+            Korean: oldUserData["recommendations"]["Korean"] - 0.1,
+            LGBTQ: oldUserData["recommendations"]["LGBTQ"] + 1,
+            MartialArts: oldUserData["recommendations"]["MartialArts"] - 0.1,
+            MusicInspired:
+              oldUserData["recommendations"]["MusicInspired"] - 0.1,
+            Romance: oldUserData["recommendations"]["Romance"] - 0.1,
+            Scifi: admin.firestore.FieldValue.increment(-0.1),
+            Superhero: oldUserData["recommendations"]["Superhero"] - 0.1,
           },
-        );
+        });
       }
     }
     return null;
@@ -272,202 +358,180 @@ export const pairRecommendAlgo = functions.firestore
       const newGenreCount = newUserData.genreCount;
       //  const newUserRec = newUserData["recommendations"];
       if (newGenreCount["Anime"] > oldGenreCount["Anime"]) {
-        return change.after.ref.update(
-          {
-            recommendations: {
-              Anime: oldUserData["recommendations"]["Anime"] + 1,
-              Horror: oldUserData["recommendations"]["Horror"] - 0.1,
-              Japanese: oldUserData["recommendations"]["Japanese"] - 0.1,
-              Korean: oldUserData["recommendations"]["Korean"] - 0.1,
-              LGBTQ: oldUserData["recommendations"]["LGBTQ"] - 0.1,
-              MartialArts: oldUserData["recommendations"]["MartialArts"] - 0.1,
-              MusicInspired:
-                oldUserData["recommendations"]["MusicInspired"] - 0.1,
-              Romance: oldUserData["recommendations"]["Romance"] - 0.1,
-              Scifi: admin.firestore.FieldValue.increment(-0.1),
-              Superhero: oldUserData["recommendations"]["Superhero"] - 0.1,
-            },
+        return change.after.ref.update({
+          recommendations: {
+            Anime: oldUserData["recommendations"]["Anime"] + 1,
+            Horror: oldUserData["recommendations"]["Horror"] - 0.1,
+            Japanese: oldUserData["recommendations"]["Japanese"] - 0.1,
+            Korean: oldUserData["recommendations"]["Korean"] - 0.1,
+            LGBTQ: oldUserData["recommendations"]["LGBTQ"] - 0.1,
+            MartialArts: oldUserData["recommendations"]["MartialArts"] - 0.1,
+            MusicInspired:
+              oldUserData["recommendations"]["MusicInspired"] - 0.1,
+            Romance: oldUserData["recommendations"]["Romance"] - 0.1,
+            Scifi: admin.firestore.FieldValue.increment(-0.1),
+            Superhero: oldUserData["recommendations"]["Superhero"] - 0.1,
           },
-          
-        );
+        });
       }
 
       if (newGenreCount["Horror"] > oldGenreCount["Horror"]) {
-        return change.after.ref.update(
-          {
-            recommendations: {
-              Anime: oldUserData["recommendations"]["Anime"] - 0.1,
-              Horror: oldUserData["recommendations"]["Horror"] + 1,
-              Japanese: oldUserData["recommendations"]["Japanese"] - 0.1,
-              Korean: oldUserData["recommendations"]["Korean"] - 0.1,
-              LGBTQ: oldUserData["recommendations"]["LGBTQ"] - 0.1,
-              MartialArts: oldUserData["recommendations"]["MartialArts"] - 0.1,
-              MusicInspired:
-                oldUserData["recommendations"]["MusicInspired"] - 0.1,
-              Romance: oldUserData["recommendations"]["Romance"] - 0.1,
-              Scifi: admin.firestore.FieldValue.increment(-0.1),
-              Superhero: oldUserData["recommendations"]["Superhero"] - 0.1,
-            },
+        return change.after.ref.update({
+          recommendations: {
+            Anime: oldUserData["recommendations"]["Anime"] - 0.1,
+            Horror: oldUserData["recommendations"]["Horror"] + 1,
+            Japanese: oldUserData["recommendations"]["Japanese"] - 0.1,
+            Korean: oldUserData["recommendations"]["Korean"] - 0.1,
+            LGBTQ: oldUserData["recommendations"]["LGBTQ"] - 0.1,
+            MartialArts: oldUserData["recommendations"]["MartialArts"] - 0.1,
+            MusicInspired:
+              oldUserData["recommendations"]["MusicInspired"] - 0.1,
+            Romance: oldUserData["recommendations"]["Romance"] - 0.1,
+            Scifi: admin.firestore.FieldValue.increment(-0.1),
+            Superhero: oldUserData["recommendations"]["Superhero"] - 0.1,
           },
-        );
+        });
       }
       if (newGenreCount["Japanese"] > oldGenreCount["Japanese"]) {
-        return change.after.ref.update(
-          {
-            recommendations: {
-              Anime: oldUserData["recommendations"]["Anime"] - 0.1,
-              Horror: oldUserData["recommendations"]["Horror"] - 0.1,
-              Japanese: oldUserData["recommendations"]["Japanese"] + 1,
-              Korean: oldUserData["recommendations"]["Korean"] - 0.1,
-              LGBTQ: oldUserData["recommendations"]["LGBTQ"] - 0.1,
-              MartialArts: oldUserData["recommendations"]["MartialArts"] - 0.1,
-              MusicInspired:
-                oldUserData["recommendations"]["MusicInspired"] - 0.1,
-              Romance: oldUserData["recommendations"]["Romance"] - 0.1,
-              Scifi: admin.firestore.FieldValue.increment(-0.1),
-              Superhero: oldUserData["recommendations"]["Superhero"] - 0.1,
-            },
+        return change.after.ref.update({
+          recommendations: {
+            Anime: oldUserData["recommendations"]["Anime"] - 0.1,
+            Horror: oldUserData["recommendations"]["Horror"] - 0.1,
+            Japanese: oldUserData["recommendations"]["Japanese"] + 1,
+            Korean: oldUserData["recommendations"]["Korean"] - 0.1,
+            LGBTQ: oldUserData["recommendations"]["LGBTQ"] - 0.1,
+            MartialArts: oldUserData["recommendations"]["MartialArts"] - 0.1,
+            MusicInspired:
+              oldUserData["recommendations"]["MusicInspired"] - 0.1,
+            Romance: oldUserData["recommendations"]["Romance"] - 0.1,
+            Scifi: admin.firestore.FieldValue.increment(-0.1),
+            Superhero: oldUserData["recommendations"]["Superhero"] - 0.1,
           },
-        );
+        });
       }
       if (newGenreCount["Korean"] > oldGenreCount["Korean"]) {
-        return change.after.ref.update(
-          {
-            recommendations: {
-              Anime: oldUserData["recommendations"]["Anime"] - 0.1,
-              Horror: oldUserData["recommendations"]["Horror"] - 0.1,
-              Japanese: oldUserData["recommendations"]["Japanese"] - 0.1,
-              Korean: oldUserData["recommendations"]["Korean"] + 1,
-              LGBTQ: oldUserData["recommendations"]["LGBTQ"] - 0.1,
-              MartialArts: oldUserData["recommendations"]["MartialArts"] - 0.1,
-              MusicInspired:
-                oldUserData["recommendations"]["MusicInspired"] - 0.1,
-              Romance: oldUserData["recommendations"]["Romance"] - 0.1,
-              Scifi: admin.firestore.FieldValue.increment(-0.1),
-              Superhero: oldUserData["recommendations"]["Superhero"] - 0.1,
-            },
+        return change.after.ref.update({
+          recommendations: {
+            Anime: oldUserData["recommendations"]["Anime"] - 0.1,
+            Horror: oldUserData["recommendations"]["Horror"] - 0.1,
+            Japanese: oldUserData["recommendations"]["Japanese"] - 0.1,
+            Korean: oldUserData["recommendations"]["Korean"] + 1,
+            LGBTQ: oldUserData["recommendations"]["LGBTQ"] - 0.1,
+            MartialArts: oldUserData["recommendations"]["MartialArts"] - 0.1,
+            MusicInspired:
+              oldUserData["recommendations"]["MusicInspired"] - 0.1,
+            Romance: oldUserData["recommendations"]["Romance"] - 0.1,
+            Scifi: admin.firestore.FieldValue.increment(-0.1),
+            Superhero: oldUserData["recommendations"]["Superhero"] - 0.1,
           },
-        );
+        });
       }
 
       if (newGenreCount["MartialArts"] > oldGenreCount["MartialArts"]) {
-        return change.after.ref.update(
-          {
-            recommendations: {
-              Anime: oldUserData["recommendations"]["Anime"] - 0.1,
-              Horror: oldUserData["recommendations"]["Horror"] - 0.1,
-              Japanese: oldUserData["recommendations"]["Japanese"] - 0.1,
-              Korean: oldUserData["recommendations"]["Korean"] - 0.1,
-              LGBTQ: oldUserData["recommendations"]["LGBTQ"] - 0.1,
-              MartialArts: oldUserData["recommendations"]["MartialArts"] + 1,
-              MusicInspired:
-                oldUserData["recommendations"]["MusicInspired"] - 0.1,
-              Romance: oldUserData["recommendations"]["Romance"] - 0.1,
-              Scifi: admin.firestore.FieldValue.increment(-0.1),
-              Superhero: oldUserData["recommendations"]["Superhero"] - 0.1,
-            },
+        return change.after.ref.update({
+          recommendations: {
+            Anime: oldUserData["recommendations"]["Anime"] - 0.1,
+            Horror: oldUserData["recommendations"]["Horror"] - 0.1,
+            Japanese: oldUserData["recommendations"]["Japanese"] - 0.1,
+            Korean: oldUserData["recommendations"]["Korean"] - 0.1,
+            LGBTQ: oldUserData["recommendations"]["LGBTQ"] - 0.1,
+            MartialArts: oldUserData["recommendations"]["MartialArts"] + 1,
+            MusicInspired:
+              oldUserData["recommendations"]["MusicInspired"] - 0.1,
+            Romance: oldUserData["recommendations"]["Romance"] - 0.1,
+            Scifi: admin.firestore.FieldValue.increment(-0.1),
+            Superhero: oldUserData["recommendations"]["Superhero"] - 0.1,
           },
-        );
+        });
       }
       if (newGenreCount["MusicInspired"] > oldGenreCount["MusicInspired"]) {
-        return change.after.ref.update(
-          {
-            recommendations: {
-              Anime: oldUserData["recommendations"]["Anime"] - 0.1,
-              Horror: oldUserData["recommendations"]["Horror"] - 0.1,
-              Japanese: oldUserData["recommendations"]["Japanese"] - 0.1,
-              Korean: oldUserData["recommendations"]["Korean"] - 0.1,
-              LGBTQ: oldUserData["recommendations"]["LGBTQ"] - 0.1,
-              MartialArts: oldUserData["recommendations"]["MartialArts"] - 0.1,
-              MusicInspired: oldUserData["recommendations"]["MusicInspired"] + 1,
-              Romance: oldUserData["recommendations"]["Romance"] - 0.1,
-              Scifi: admin.firestore.FieldValue.increment(-0.1),
-              Superhero: oldUserData["recommendations"]["Superhero"] - 0.1,
-            },
+        return change.after.ref.update({
+          recommendations: {
+            Anime: oldUserData["recommendations"]["Anime"] - 0.1,
+            Horror: oldUserData["recommendations"]["Horror"] - 0.1,
+            Japanese: oldUserData["recommendations"]["Japanese"] - 0.1,
+            Korean: oldUserData["recommendations"]["Korean"] - 0.1,
+            LGBTQ: oldUserData["recommendations"]["LGBTQ"] - 0.1,
+            MartialArts: oldUserData["recommendations"]["MartialArts"] - 0.1,
+            MusicInspired: oldUserData["recommendations"]["MusicInspired"] + 1,
+            Romance: oldUserData["recommendations"]["Romance"] - 0.1,
+            Scifi: admin.firestore.FieldValue.increment(-0.1),
+            Superhero: oldUserData["recommendations"]["Superhero"] - 0.1,
           },
-        );
+        });
       }
       if (newGenreCount["Romance"] > oldGenreCount["Romance"]) {
-        return change.after.ref.update(
-          {
-            recommendations: {
-              Anime: oldUserData["recommendations"]["Anime"] - 0.1,
-              Horror: oldUserData["recommendations"]["Horror"] - 0.1,
-              Japanese: oldUserData["recommendations"]["Japanese"] - 0.1,
-              Korean: oldUserData["recommendations"]["Korean"] - 0.1,
-              LGBTQ: oldUserData["recommendations"]["LGBTQ"] - 0.1,
-              MartialArts: oldUserData["recommendations"]["MartialArts"] - 0.1,
-              MusicInspired:
-                oldUserData["recommendations"]["MusicInspired"] - 0.1,
-              Romance: oldUserData["recommendations"]["Romance"] + 1,
-              Scifi: admin.firestore.FieldValue.increment(-0.1),
-              Superhero: oldUserData["recommendations"]["Superhero"] - 0.1,
-            },
+        return change.after.ref.update({
+          recommendations: {
+            Anime: oldUserData["recommendations"]["Anime"] - 0.1,
+            Horror: oldUserData["recommendations"]["Horror"] - 0.1,
+            Japanese: oldUserData["recommendations"]["Japanese"] - 0.1,
+            Korean: oldUserData["recommendations"]["Korean"] - 0.1,
+            LGBTQ: oldUserData["recommendations"]["LGBTQ"] - 0.1,
+            MartialArts: oldUserData["recommendations"]["MartialArts"] - 0.1,
+            MusicInspired:
+              oldUserData["recommendations"]["MusicInspired"] - 0.1,
+            Romance: oldUserData["recommendations"]["Romance"] + 1,
+            Scifi: admin.firestore.FieldValue.increment(-0.1),
+            Superhero: oldUserData["recommendations"]["Superhero"] - 0.1,
           },
-        );
+        });
       }
       if (newGenreCount["Scifi"] > oldGenreCount["Scifi"]) {
-        return change.after.ref.update(
-          {
-            recommendations: {
-              Anime: oldUserData["recommendations"]["Anime"] - 0.1,
-              Horror: oldUserData["recommendations"]["Horror"] - 0.1,
-              Japanese: oldUserData["recommendations"]["Japanese"] - 0.1,
-              Korean: oldUserData["recommendations"]["Korean"] - 0.1,
-              LGBTQ: oldUserData["recommendations"]["LGBTQ"] - 0.1,
-              MartialArts: oldUserData["recommendations"]["MartialArts"] - 0.1,
-              MusicInspired:
-                oldUserData["recommendations"]["MusicInspired"] - 0.1,
-              Romance: oldUserData["recommendations"]["Romance"] - 0.1,
-              Scifi: admin.firestore.FieldValue.increment(1),
-              Superhero: oldUserData["recommendations"]["Superhero"] - 0.1,
-            },
+        return change.after.ref.update({
+          recommendations: {
+            Anime: oldUserData["recommendations"]["Anime"] - 0.1,
+            Horror: oldUserData["recommendations"]["Horror"] - 0.1,
+            Japanese: oldUserData["recommendations"]["Japanese"] - 0.1,
+            Korean: oldUserData["recommendations"]["Korean"] - 0.1,
+            LGBTQ: oldUserData["recommendations"]["LGBTQ"] - 0.1,
+            MartialArts: oldUserData["recommendations"]["MartialArts"] - 0.1,
+            MusicInspired:
+              oldUserData["recommendations"]["MusicInspired"] - 0.1,
+            Romance: oldUserData["recommendations"]["Romance"] - 0.1,
+            Scifi: admin.firestore.FieldValue.increment(1),
+            Superhero: oldUserData["recommendations"]["Superhero"] - 0.1,
           },
-        );
+        });
       }
       if (newGenreCount["Superhero"] > oldGenreCount["Superhero"]) {
-        return change.after.ref.update(
-          {
-            recommendations: {
-              Anime: oldUserData["recommendations"]["Anime"] - 0.1,
-              Horror: oldUserData["recommendations"]["Horror"] - 0.1,
-              Japanese: oldUserData["recommendations"]["Japanese"] - 0.1,
-              Korean: oldUserData["recommendations"]["Korean"] - 0.1,
-              LGBTQ: oldUserData["recommendations"]["LGBTQ"] - 0.1,
-              MartialArts: oldUserData["recommendations"]["MartialArts"] - 0.1,
-              MusicInspired:
-                oldUserData["recommendations"]["MusicInspired"] - 0.1,
-              Romance: oldUserData["recommendations"]["Romance"] - 0.1,
-              Scifi: admin.firestore.FieldValue.increment(-0.1),
-              Superhero: oldUserData["recommendations"]["Superhero"] + 1,
-            },
+        return change.after.ref.update({
+          recommendations: {
+            Anime: oldUserData["recommendations"]["Anime"] - 0.1,
+            Horror: oldUserData["recommendations"]["Horror"] - 0.1,
+            Japanese: oldUserData["recommendations"]["Japanese"] - 0.1,
+            Korean: oldUserData["recommendations"]["Korean"] - 0.1,
+            LGBTQ: oldUserData["recommendations"]["LGBTQ"] - 0.1,
+            MartialArts: oldUserData["recommendations"]["MartialArts"] - 0.1,
+            MusicInspired:
+              oldUserData["recommendations"]["MusicInspired"] - 0.1,
+            Romance: oldUserData["recommendations"]["Romance"] - 0.1,
+            Scifi: admin.firestore.FieldValue.increment(-0.1),
+            Superhero: oldUserData["recommendations"]["Superhero"] + 1,
           },
-        );
+        });
       }
 
       if (newGenreCount["LGBTQ"] > oldGenreCount["LGBTQ"]) {
-        return change.after.ref.update(
-          {
-            recommendations: {
-              Anime: oldUserData["recommendations"]["Anime"] - 0.1,
-              Horror: oldUserData["recommendations"]["Horror"] - 0.1,
-              Japanese: oldUserData["recommendations"]["Japanese"] - 0.1,
-              Korean: oldUserData["recommendations"]["Korean"] - 0.1,
-              LGBTQ: oldUserData["recommendations"]["LGBTQ"] + 1,
-              MartialArts: oldUserData["recommendations"]["MartialArts"] - 0.1,
-              MusicInspired:
-                oldUserData["recommendations"]["MusicInspired"] - 0.1,
-              Romance: oldUserData["recommendations"]["Romance"] - 0.1,
-              Scifi: admin.firestore.FieldValue.increment(-0.1),
-              Superhero: oldUserData["recommendations"]["Superhero"] - 0.1,
-            },
+        return change.after.ref.update({
+          recommendations: {
+            Anime: oldUserData["recommendations"]["Anime"] - 0.1,
+            Horror: oldUserData["recommendations"]["Horror"] - 0.1,
+            Japanese: oldUserData["recommendations"]["Japanese"] - 0.1,
+            Korean: oldUserData["recommendations"]["Korean"] - 0.1,
+            LGBTQ: oldUserData["recommendations"]["LGBTQ"] + 1,
+            MartialArts: oldUserData["recommendations"]["MartialArts"] - 0.1,
+            MusicInspired:
+              oldUserData["recommendations"]["MusicInspired"] - 0.1,
+            Romance: oldUserData["recommendations"]["Romance"] - 0.1,
+            Scifi: admin.firestore.FieldValue.increment(-0.1),
+            Superhero: oldUserData["recommendations"]["Superhero"] - 0.1,
           },
-        );
+        });
       }
     }
     return null;
   });
-
 
 //Deleting Stuffs
 //params: pairName, nfid
@@ -747,12 +811,10 @@ export const updateUserLikes = functions
     if (userData && movieData) {
       //dummy check
       arr.map(async (netflixId: Number) => {
-        await userRef.update(
-          {
-            likes: admin.firestore.FieldValue.arrayUnion(netflixId),
-            [genreKey]: admin.firestore.FieldValue.increment(1),
-          },
-        );
+        await userRef.update({
+          likes: admin.firestore.FieldValue.arrayUnion(netflixId),
+          [genreKey]: admin.firestore.FieldValue.increment(1),
+        });
       });
       //Check if user is in a pair. If true, push to pair array or add to matches
       if (userData.pairName !== "" && userData.pairName !== undefined) {
