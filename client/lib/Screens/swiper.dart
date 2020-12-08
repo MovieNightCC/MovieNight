@@ -233,7 +233,7 @@ class _TinderswiperState extends State<Tinderswiper>
                     MaterialPageRoute(
                       // TESTING RIGHT NOW
                       // create game instance here
-                      builder: (context) => RushTwo(),
+                      builder: (context) => RushMode(),
                       maintainState: true,
                     ));
               },
