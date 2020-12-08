@@ -97,7 +97,7 @@ void filterPop(context) {
                   },
                 ),
                 CheckboxListTile(
-                  title: Text("Romance"),
+                  title: Text("Romance", style: TextStyle(color: Colors.black)),
                   value: clickedRomance,
                   onChanged: (val) {
                     setState(() {
@@ -163,7 +163,8 @@ void filterPop(context) {
                   },
                 ),
                 CheckboxListTile(
-                  title: Text("Martial Arts Movies"),
+                  title: Text("Martial Arts Movies",
+                      style: TextStyle(color: Colors.black)),
                   value: clickedMartial,
                   onChanged: (val) {
                     setState(() {
@@ -179,7 +180,8 @@ void filterPop(context) {
                   },
                 ),
                 CheckboxListTile(
-                  title: Text("Music-related Movies"),
+                  title: Text("Music-related Movies",
+                      style: TextStyle(color: Colors.black)),
                   value: clickedMusic,
                   onChanged: (val) {
                     setState(() {
@@ -195,7 +197,8 @@ void filterPop(context) {
                   },
                 ),
                 CheckboxListTile(
-                  title: Text("Sci-fi Movies"),
+                  title: Text("Sci-fi Movies",
+                      style: TextStyle(color: Colors.black)),
                   value: clickedScifi,
                   onChanged: (val) {
                     setState(() {
@@ -211,7 +214,8 @@ void filterPop(context) {
                   },
                 ),
                 CheckboxListTile(
-                  title: Text("Superheroes Movies"),
+                  title: Text("Superheroes Movies",
+                      style: TextStyle(color: Colors.black)),
                   value: clickedSuperhero,
                   onChanged: (val) {
                     setState(() {
