@@ -147,7 +147,7 @@ class _MatchInfoState extends State<MatchInfo> {
 class HeaderCurvedContainer extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
-    Paint paint = Paint()..color = Colors.pink[200];
+    Paint paint = Paint()..color = Colors.pink;
     Path path = Path()
       ..relativeLineTo(0, 150)
       ..quadraticBezierTo(size.width / 2, 225, size.width, 150)

@@ -1,12 +1,19 @@
 //helper and config
+import 'dart:convert';
+import 'dart:async';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:overlay_support/overlay_support.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+
 import 'package:provider/provider.dart';
 import 'routes.dart';
-import 'dart:async';
 import 'package:dio/dio.dart';
 // import './utils/colors.dart';
 
@@ -92,7 +99,9 @@ var howManyMartialArts = 0;
 var howManyMusic = 0;
 var howManyScifi = 0;
 var howManySuperHero = 0;
+
 bool reversedCalled = false;
+var notification;
 
 // futureGay = fetchGay();
 // futureAnime = fetchAnime();
@@ -104,7 +113,6 @@ var matchOriLength = 0;
 var cutInHalfCalled = false;
 var pairFetchCounter = 0;
 List fetchArr = [];
-var notification;
 
 class App extends StatefulWidget {
   _AppState createState() => _AppState();
@@ -170,7 +178,9 @@ class PushNotificationMessage {
 }
 
 class _AppState extends State<App> {
-  FirebaseMessaging _firebaseMessaging = new FirebaseMessaging();
+  final FirebaseMessaging firebaseMessaging = FirebaseMessaging();
+  final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+      FlutterLocalNotificationsPlugin();
 
   @override
   void initState() {
@@ -186,11 +196,81 @@ class _AppState extends State<App> {
     futureMartialArts = fetchMartialArts();
     futureSuperHero = fetchSuperHero();
     futureMusic = fetchMusic();
+    registerNotification();
+    configLocalNotification();
+  }
+
+  void registerNotification() {
+    firebaseMessaging.requestNotificationPermissions();
+
+    firebaseMessaging.configure(onMessage: (Map<String, dynamic> message) {
+      print('onMessage: $message');
+      print('this is from firebase messageing');
+      Platform.isAndroid
+          ? showNotification(message['notification'])
+          : showNotification(message['aps']['alert']);
+      return;
+    }, onResume: (Map<String, dynamic> message) {
+      print('onResume: $message');
+      return;
+    }, onLaunch: (Map<String, dynamic> message) {
+      print('onLaunch: $message');
+      return;
+    });
+
+    firebaseMessaging.getToken().then((token) {
+      print('token: $token');
+      FirebaseFirestore.instance
+          .collection('users')
+          .doc(userName)
+          .update({'pushToken': token});
+    }).catchError((err) {
+      Fluttertoast.showToast(msg: err.message.toString());
+    });
+  }
+
+  void configLocalNotification() {
+    var initializationSettingsAndroid =
+        AndroidInitializationSettings('app_icon');
+    var initializationSettingsIOS = IOSInitializationSettings();
+    var initializationSettings = InitializationSettings(
+        android: initializationSettingsAndroid, iOS: initializationSettingsIOS);
+    flutterLocalNotificationsPlugin.initialize(initializationSettings);
+  }
+
+  void showNotification(message) async {
+    var androidPlatformChannelSpecifics = AndroidNotificationDetails(
+      Platform.isAndroid
+          ? 'com.dfa.flutterchatdemo'
+          : 'com.duytq.flutterchatdemo',
+      'Flutter chat demo',
+      'your channel description',
+      playSound: true,
+      enableVibration: true,
+      importance: Importance.max,
+      priority: Priority.high,
+    );
+    var iOSPlatformChannelSpecifics = IOSNotificationDetails();
+    var platformChannelSpecifics = NotificationDetails(
+        android: androidPlatformChannelSpecifics,
+        iOS: iOSPlatformChannelSpecifics);
+
+    print(message);
+//    print(message['body'].toString());
+//    print(json.encode(message));
+
+    await flutterLocalNotificationsPlugin.show(0, message['title'].toString(),
+        message['body'].toString(), platformChannelSpecifics,
+        payload: json.encode(message));
+
+//    await flutterLocalNotificationsPlugin.show(
+//        0, 'plain title', 'plain body', platformChannelSpecifics,
+//        payload: 'item x');
   }
 
   @override
   Widget build(BuildContext context) {
-    final pushNotificationService = PushNotificationService(_firebaseMessaging);
+    final pushNotificationService = PushNotificationService(firebaseMessaging);
     pushNotificationService.initialise(context);
     return MultiProvider(
       providers: [
@@ -243,6 +323,7 @@ void getUserInfo() async {
 
 //getting matches Info
   if (matchesTitles.length == 0) {
+    print("got length");
     var url =
         'https://asia-northeast1-movie-night-cc.cloudfunctions.net/getPairByPairName?pairName=$userPair';
     final response = await Dio().get(url);
@@ -258,6 +339,7 @@ void getUserInfo() async {
         matchesGenre.add(matches[i]["genre"]);
         matchesNfid.add(matches[i]["nfid"]);
         matchOriLength += 1;
+
         print("$matchesTitles");
       }
     }
@@ -270,33 +352,6 @@ void getUserInfo() async {
   //   }
   // }
 }
-
-// Future<Response> fetchMovie() async {
-//   try {
-//     if (movieDataTest.length == 0) {
-//       final response = await Dio().get(
-//           "https://asia-northeast1-movie-night-cc.cloudfunctions.net/getAllNewMovies");
-//       if (response.statusCode == 200) {
-//         var movies = response.data;
-//         for (var i = 0; i < 50; i++) {
-//           moviesList.add(movies[i]);
-//           movieDataTest.add(movies[i]["nfid"]);
-//           moviesSynopsis.add(movies[i]["synopsis"].replaceAll('&#39;', "'"));
-//           movieYear.add(movies[i]["year"]);
-//           movieRuntime.add(movies[i]["runtime"]);
-//           movieTitles.add(movies[i]['title'].replaceAll('&#39;', "'"));
-//           movieImagesTest.add(movies[i]["img"]);
-//           movieGenre.add(movies[i]["genre"]);
-//         }
-//         return response;
-//       }
-//     }
-//   } catch (e) {
-//     if (e is DioError) {
-//       print('fetch all movie error!');
-//     }
-//   }
-// }
 
 //LGBTQ,anime,horror,japan,korea
 
@@ -317,6 +372,7 @@ Future<Response> fetchGay() async {
           gayTitles.add(movies[i]['title'].replaceAll('&#39;', "'"));
           gayImages.add(movies[i]["img"]);
         }
+
         return response;
       }
     }
@@ -638,6 +694,7 @@ class AuthenticationWrapper extends StatelessWidget {
           firebaseUser.email.substring(0, firebaseUser.email.indexOf("@"));
       //put the function here
       getUserInfo();
+      print("wasdfadsfrgasdfasdf");
       print('$userEmail');
       return MaterialApp(
         title: "Movie Night",
@@ -664,7 +721,7 @@ class AuthenticationWrapper extends StatelessWidget {
               print("user gay recommend $howManyGay");
               //push  $howManyAnime anime movies into movie array
               //push the
-              print("anime movies ${animeNfid.length}");
+
               // shuffle(animeNfid, animeImages, animeTitles, animeSynopsis,
               //     animeYear, animeGenre, animeRuntime);
               // shuffle(gayNfid, gayImages, gayTitles, gaySynopsis, gayYear,
