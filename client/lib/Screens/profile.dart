@@ -152,7 +152,7 @@ class _ProfileState extends State<Profile> {
                   context.read<AuthenticationService>().signOut();
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) => App()));
-                        exit(0);
+                       // exit(0);
                 },
                 child: Text("SIGN OUT",
                 style: TextStyle(),),
