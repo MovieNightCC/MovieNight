@@ -175,12 +175,12 @@ export const joinRush = functions
     if (userData && pairData) {
       // const user1Token = userData.pushToken;
       if (userData.userName === pairData.members[0]) {
-        await db.collection("rushPlus").doc(pairData.pairName).update({
+        await db.collection("rushPlus").doc(request.query.pairName).update({
           playerOneJoined: true,
         });
       }
       if (userData.userName === pairData.members[1]) {
-        await db.collection("rushPlus").doc(pairData.pairName).update({
+        await db.collection("rushPlus").doc(request.query.pairName).update({
           playerTwoJoined: true,
         });
       }
@@ -194,7 +194,6 @@ export const helloWorld = functions
     functions.logger.info("Hello logs!", { structuredData: true });
     response.send("Hello from Firebase!");
   });
-
 
 export const createOrEndGame = functions
   .region("asia-northeast1")
@@ -250,7 +249,7 @@ export const userRecommendAlgo = functions.firestore
             MusicInspired:
               oldUserData["recommendations"]["MusicInspired"] - 0.1,
             Romance: oldUserData["recommendations"]["Romance"] - 0.1,
-            Scifi: admin.firestore.FieldValue.increment(-0.1),
+            Scifi: oldUserData["recommendations"]["Scifi"] - 0.1,
             Superhero: oldUserData["recommendations"]["Superhero"] - 0.1,
           },
         });
@@ -268,7 +267,7 @@ export const userRecommendAlgo = functions.firestore
             MusicInspired:
               oldUserData["recommendations"]["MusicInspired"] - 0.1,
             Romance: oldUserData["recommendations"]["Romance"] - 0.1,
-            Scifi: admin.firestore.FieldValue.increment(-0.1),
+            Scifi: oldUserData["recommendations"]["Scifi"] - 0.1,
             Superhero: oldUserData["recommendations"]["Superhero"] - 0.1,
           },
         });
@@ -285,7 +284,7 @@ export const userRecommendAlgo = functions.firestore
             MusicInspired:
               oldUserData["recommendations"]["MusicInspired"] - 0.1,
             Romance: oldUserData["recommendations"]["Romance"] - 0.1,
-            Scifi: admin.firestore.FieldValue.increment(-0.1),
+            Scifi: oldUserData["recommendations"]["Scifi"] - 0.1,
             Superhero: oldUserData["recommendations"]["Superhero"] - 0.1,
           },
         });
@@ -302,7 +301,7 @@ export const userRecommendAlgo = functions.firestore
             MusicInspired:
               oldUserData["recommendations"]["MusicInspired"] - 0.1,
             Romance: oldUserData["recommendations"]["Romance"] - 0.1,
-            Scifi: admin.firestore.FieldValue.increment(-0.1),
+            Scifi: oldUserData["recommendations"]["Scifi"] - 0.1,
             Superhero: oldUserData["recommendations"]["Superhero"] - 0.1,
           },
         });
@@ -320,7 +319,7 @@ export const userRecommendAlgo = functions.firestore
             MusicInspired:
               oldUserData["recommendations"]["MusicInspired"] - 0.1,
             Romance: oldUserData["recommendations"]["Romance"] - 0.1,
-            Scifi: admin.firestore.FieldValue.increment(-0.1),
+            Scifi: oldUserData["recommendations"]["Scifi"] - 0.1,
             Superhero: oldUserData["recommendations"]["Superhero"] - 0.1,
           },
         });
@@ -336,7 +335,7 @@ export const userRecommendAlgo = functions.firestore
             MartialArts: oldUserData["recommendations"]["MartialArts"] - 0.1,
             MusicInspired: oldUserData["recommendations"]["MusicInspired"] + 1,
             Romance: oldUserData["recommendations"]["Romance"] - 0.1,
-            Scifi: admin.firestore.FieldValue.increment(-0.1),
+            Scifi: oldUserData["recommendations"]["Scifi"] - 0.1,
             Superhero: oldUserData["recommendations"]["Superhero"] - 0.1,
           },
         });
@@ -353,7 +352,7 @@ export const userRecommendAlgo = functions.firestore
             MusicInspired:
               oldUserData["recommendations"]["MusicInspired"] - 0.1,
             Romance: oldUserData["recommendations"]["Romance"] + 1,
-            Scifi: admin.firestore.FieldValue.increment(-0.1),
+            Scifi: oldUserData["recommendations"]["Scifi"] - 0.1,
             Superhero: oldUserData["recommendations"]["Superhero"] - 0.1,
           },
         });
@@ -370,7 +369,7 @@ export const userRecommendAlgo = functions.firestore
             MusicInspired:
               oldUserData["recommendations"]["MusicInspired"] - 0.1,
             Romance: oldUserData["recommendations"]["Romance"] - 0.1,
-            Scifi: admin.firestore.FieldValue.increment(1),
+            Scifi: oldUserData["recommendations"]["Scifi"] + 1,
             Superhero: oldUserData["recommendations"]["Superhero"] - 0.1,
           },
         });
@@ -387,7 +386,7 @@ export const userRecommendAlgo = functions.firestore
             MusicInspired:
               oldUserData["recommendations"]["MusicInspired"] - 0.1,
             Romance: oldUserData["recommendations"]["Romance"] - 0.1,
-            Scifi: admin.firestore.FieldValue.increment(-0.1),
+            Scifi: oldUserData["recommendations"]["Scifi"] - 0.1,
             Superhero: oldUserData["recommendations"]["Superhero"] + 1,
           },
         });
@@ -405,7 +404,7 @@ export const userRecommendAlgo = functions.firestore
             MusicInspired:
               oldUserData["recommendations"]["MusicInspired"] - 0.1,
             Romance: oldUserData["recommendations"]["Romance"] - 0.1,
-            Scifi: admin.firestore.FieldValue.increment(-0.1),
+            Scifi: oldUserData["recommendations"]["Scifi"] - 0.1,
             Superhero: oldUserData["recommendations"]["Superhero"] - 0.1,
           },
         });
@@ -435,7 +434,7 @@ export const pairRecommendAlgo = functions.firestore
             MusicInspired:
               oldUserData["recommendations"]["MusicInspired"] - 0.1,
             Romance: oldUserData["recommendations"]["Romance"] - 0.1,
-            Scifi: admin.firestore.FieldValue.increment(-0.1),
+            Scifi: oldUserData["recommendations"]["Scifi"] - 0.1,
             Superhero: oldUserData["recommendations"]["Superhero"] - 0.1,
           },
         });
@@ -453,7 +452,7 @@ export const pairRecommendAlgo = functions.firestore
             MusicInspired:
               oldUserData["recommendations"]["MusicInspired"] - 0.1,
             Romance: oldUserData["recommendations"]["Romance"] - 0.1,
-            Scifi: admin.firestore.FieldValue.increment(-0.1),
+            Scifi: oldUserData["recommendations"]["Scifi"] - 0.1,
             Superhero: oldUserData["recommendations"]["Superhero"] - 0.1,
           },
         });
@@ -470,7 +469,7 @@ export const pairRecommendAlgo = functions.firestore
             MusicInspired:
               oldUserData["recommendations"]["MusicInspired"] - 0.1,
             Romance: oldUserData["recommendations"]["Romance"] - 0.1,
-            Scifi: admin.firestore.FieldValue.increment(-0.1),
+            Scifi: oldUserData["recommendations"]["Scifi"] - 0.1,
             Superhero: oldUserData["recommendations"]["Superhero"] - 0.1,
           },
         });
@@ -487,7 +486,7 @@ export const pairRecommendAlgo = functions.firestore
             MusicInspired:
               oldUserData["recommendations"]["MusicInspired"] - 0.1,
             Romance: oldUserData["recommendations"]["Romance"] - 0.1,
-            Scifi: admin.firestore.FieldValue.increment(-0.1),
+            Scifi: oldUserData["recommendations"]["Scifi"] - 0.1,
             Superhero: oldUserData["recommendations"]["Superhero"] - 0.1,
           },
         });
@@ -505,7 +504,7 @@ export const pairRecommendAlgo = functions.firestore
             MusicInspired:
               oldUserData["recommendations"]["MusicInspired"] - 0.1,
             Romance: oldUserData["recommendations"]["Romance"] - 0.1,
-            Scifi: admin.firestore.FieldValue.increment(-0.1),
+            Scifi: oldUserData["recommendations"]["Scifi"] - 0.1,
             Superhero: oldUserData["recommendations"]["Superhero"] - 0.1,
           },
         });
@@ -521,7 +520,7 @@ export const pairRecommendAlgo = functions.firestore
             MartialArts: oldUserData["recommendations"]["MartialArts"] - 0.1,
             MusicInspired: oldUserData["recommendations"]["MusicInspired"] + 1,
             Romance: oldUserData["recommendations"]["Romance"] - 0.1,
-            Scifi: admin.firestore.FieldValue.increment(-0.1),
+            Scifi: oldUserData["recommendations"]["Scifi"] - 0.1,
             Superhero: oldUserData["recommendations"]["Superhero"] - 0.1,
           },
         });
@@ -538,7 +537,7 @@ export const pairRecommendAlgo = functions.firestore
             MusicInspired:
               oldUserData["recommendations"]["MusicInspired"] - 0.1,
             Romance: oldUserData["recommendations"]["Romance"] + 1,
-            Scifi: admin.firestore.FieldValue.increment(-0.1),
+            Scifi: oldUserData["recommendations"]["Scifi"] - 0.1,
             Superhero: oldUserData["recommendations"]["Superhero"] - 0.1,
           },
         });
@@ -572,7 +571,7 @@ export const pairRecommendAlgo = functions.firestore
             MusicInspired:
               oldUserData["recommendations"]["MusicInspired"] - 0.1,
             Romance: oldUserData["recommendations"]["Romance"] - 0.1,
-            Scifi: admin.firestore.FieldValue.increment(-0.1),
+            Scifi: oldUserData["recommendations"]["Scifi"] - 0.1,
             Superhero: oldUserData["recommendations"]["Superhero"] + 1,
           },
         });
@@ -590,7 +589,7 @@ export const pairRecommendAlgo = functions.firestore
             MusicInspired:
               oldUserData["recommendations"]["MusicInspired"] - 0.1,
             Romance: oldUserData["recommendations"]["Romance"] - 0.1,
-            Scifi: admin.firestore.FieldValue.increment(-0.1),
+            Scifi: oldUserData["recommendations"]["Scifi"] - 0.1,
             Superhero: oldUserData["recommendations"]["Superhero"] - 0.1,
           },
         });
@@ -880,6 +879,7 @@ export const createPair = functions
       pairName: req.query.pairName,
       members: [req.query.user1, req.query.user2],
       matches: [],
+      matchMovieData: [],
       likes: [],
       genreCount: {
         Anime: 0,
@@ -1101,7 +1101,7 @@ export const addMovies = functions
     });
   });
 
-export const setUpImageAndAlgo = functions
+export const setUpAlgo = functions
   .region("asia-northeast1")
   .https.onRequest(async (_, response) => {
     // const allMoviesObj: { [key: string]: Object } = {};
@@ -1167,7 +1167,7 @@ export const pairSetup = functions
           Horror: 20,
           Japanese: 20,
           Korean: 20,
-          "Sci-fi": 20,
+          Scifi: 20,
           Superhero: 20,
           MartialArts: 20,
           MusicInspired: 20,
@@ -1671,6 +1671,8 @@ export const createRushGameForPair = functions.firestore
         pairName: pairName,
         playerOneJoined: false,
         playerTwoJoined: false,
+        playerOne: pairData["members"][0],
+        playerTwo: pairData["members"][1],
       },
       { merge: true }
     );

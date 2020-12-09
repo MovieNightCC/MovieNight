@@ -246,7 +246,6 @@ void getUserInfo() async {
   userEmail = userdata["email"];
   userPair = userdata["pairName"];
   displayName = userdata["name"];
-
   howManyGay = userdata["recommendations"]["LGBTQ"].round();
   howManyAnime = userdata["recommendations"]["Anime"].round();
   howManyHorror = userdata["recommendations"]["Horror"].round();
