@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../sizeconfig.dart';
@@ -77,15 +76,15 @@ class _SignFormState extends State<SignForm> {
             },
           ),
           GestureDetector(
-                onTap: () => launch('https://movie-night.flycricket.io/privacy.html'),
-                child: Text(
-                  "Read our privacy policy",
-                  style: TextStyle(
-                    color: Colors.purple, 
-                    decoration: TextDecoration.underline),
-                    textAlign: TextAlign.center,
-                ),
-              )
+            onTap: () =>
+                launch('https://movie-night.flycricket.io/privacy.html'),
+            child: Text(
+              "Read our privacy policy",
+              style: TextStyle(
+                  color: Colors.purple, decoration: TextDecoration.underline),
+              textAlign: TextAlign.center,
+            ),
+          )
         ],
       ),
     );

@@ -24,8 +24,12 @@ void changeToHours() {
     } else if (movieRuntime[i] < 3600) {
       movieRuntime[i] = (movieRuntime[i] / 60).toInt();
       minutesList.add(movieRuntime[i]);
-    } else {
+    } else if (movieRuntime[i] < 10800 && movieRuntime[i] > 7200) {
       movieRuntime[i] = movieRuntime[i] - 7200;
+      movieRuntime[i] = (movieRuntime[i] / 60).toInt();
+      minutesList.add(movieRuntime[i]);
+    } else {
+      movieRuntime[i] = movieRuntime[i] - 10800;
       movieRuntime[i] = (movieRuntime[i] / 60).toInt();
       minutesList.add(movieRuntime[i]);
     }
@@ -53,52 +57,14 @@ class _InfoState extends State<Info> {
             painter: _HeaderCurvedContainer(),
           ),
           ListView(
-            padding: const EdgeInsets.all(20),
+            padding: const EdgeInsets.all(50),
             children: [
               Image.network(
                 movieImagesTest[count],
                 scale: 0.55,
               ),
-              Text('Title: ${movieTitles[count]}',
-                  style: TextStyle(
-                      color: Colors.white,
-                      //height: 3.0,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20)),
-              Text('Genre: ${movieGenre[count]}',
-                  style: TextStyle(
-                      color: Colors.white,
-                      height: 3.0,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20)),
-              Text('Runtime: ${hourList[count]}h ${minutesList[count]}m',
-                  style: TextStyle(
-                      color: Colors.white,
-                      height: 3.0,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20)),
-              Text('Synopsis: ${moviesSynopsis[count]}',
-                  style: TextStyle(
-                      color: Colors.white,
-                      height: 1.5,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20)),
-              Text(
-                'Release Year: ${movieYear[count]}',
-                style: TextStyle(
-                    color: Colors.white,
-                    height: 2.5,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 20),
-              ),
-              RaisedButton(
-                onPressed: () => launch(
-                    'https://www.netflix.com/title/${movieDataTest[count]}'),
-                child:
-                    const Text('Go to Netflix', style: TextStyle(fontSize: 20)),
-              ),
               Padding(
-                padding: EdgeInsets.fromLTRB(0, 30, 0, 0),
+                padding: EdgeInsets.fromLTRB(0, 20, 0, 30),
                 child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
@@ -161,6 +127,108 @@ class _InfoState extends State<Info> {
                       ),
                     ]),
               ),
+              Text('Title: ${movieTitles[count]}',
+                  style: TextStyle(
+                      color: Colors.white,
+                      //height: 3.0,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20)),
+              Text('Genre: ${movieGenre[count]}',
+                  style: TextStyle(
+                      color: Colors.white,
+                      height: 3.0,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20)),
+              Text('Runtime: ${hourList[count]}h ${minutesList[count]}m',
+                  style: TextStyle(
+                      color: Colors.white,
+                      height: 3.0,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20)),
+              Text('Synopsis: ${moviesSynopsis[count]}',
+                  style: TextStyle(
+                      color: Colors.white,
+                      height: 1.5,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20)),
+              Text(
+                'Release Year: ${movieYear[count]}',
+                style: TextStyle(
+                    color: Colors.white,
+                    height: 2.5,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20),
+              ),
+              RaisedButton(
+                onPressed: () => launch(
+                    'https://www.netflix.com/title/${movieDataTest[count]}'),
+                child:
+                    const Text('Go to Netflix', style: TextStyle(fontSize: 20)),
+              ),
+              // Padding(
+              //   padding: EdgeInsets.fromLTRB(0, 30, 0, 0),
+              //   child: Row(
+              //       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              //       children: [
+              //         Positioned(
+              //           left: 40,
+              //           bottom: 20,
+              //           child: FloatingActionButton(
+              //             heroTag: null,
+              //             onPressed: () {
+              //               print('you hate: ${movieDataTest[count]}');
+              //               count++;
+              //               Navigator.push(
+              //                   context,
+              //                   MaterialPageRoute(
+              //                     builder: (context) => Swiper(),
+              //                     maintainState: true,
+              //                   ));
+              //             },
+              //             tooltip: 'Increment',
+              //             child: Icon(Icons.sentiment_very_dissatisfied),
+              //             elevation: 2.0,
+              //             shape: RoundedRectangleBorder(
+              //                 borderRadius: BorderRadius.circular(10)),
+              //             backgroundColor: Colors.red[900],
+              //           ),
+              //         ),
+              //         Positioned(
+              //           right: 80,
+              //           bottom: 20,
+              //           child: FloatingActionButton(
+              //             heroTag: null,
+              //             onPressed: () {
+              //               print('you liked: ${movieDataTest[count]}');
+
+              //               //request to firebase server to update likes
+              //               updateUser(
+              //                   movieDataTest[count],
+              //                   context,
+              //                   movieImagesTest[count],
+              //                   movieTitles[count],
+              //                   movieYear[count],
+              //                   moviesSynopsis[count],
+              //                   movieGenre[count],
+              //                   movieRuntime[count]);
+              //               count++;
+              //               Navigator.push(
+              //                   context,
+              //                   MaterialPageRoute(
+              //                     builder: (context) => Swiper(),
+              //                     maintainState: true,
+              //                   ));
+              //             },
+              //             tooltip: 'Increment',
+              //             child: Icon(Icons.sentiment_very_satisfied),
+              //             elevation: 2.0,
+              //             shape: RoundedRectangleBorder(
+              //                 borderRadius: BorderRadius.circular(10)),
+              //             backgroundColor: Colors.blue,
+              //           ),
+              //         ),
+              //       ]),
+              // ),
             ],
           ),
         ],
@@ -172,7 +240,7 @@ class _InfoState extends State<Info> {
 class _HeaderCurvedContainer extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
-    Paint paint = Paint()..color = Colors.purple[200];
+    Paint paint = Paint()..color = Colors.pink;
     Path path = Path()
       ..relativeLineTo(0, 150)
       ..quadraticBezierTo(size.width / 2, 225, size.width, 150)

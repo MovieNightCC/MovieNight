@@ -28,8 +28,14 @@ class _RushModeState extends State<RushMode> {
   CardController controller;
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.arrow_back),
+        onPressed: () {
+          Navigator.pop(context);
+        },
+      ),
       appBar: AppBar(
-        backgroundColor: Colors.purple,
+        backgroundColor: Colors.pink,
         title: const Text('Rush Mode!',
             style: TextStyle(
                 height: 1.5, fontWeight: FontWeight.bold, fontSize: 30)),
@@ -110,22 +116,10 @@ class _RushModeState extends State<RushMode> {
                           },
                         ),
                       ),
-                      // onTap: () {
-                      //   Navigator.push(
-                      //       context,
-                      //       new MaterialPageRoute(
-                      //           builder: (context) => Info()));
-                      // },
                     ),
                   ),
                 ],
               ),
-              // RaisedButton(
-              //   onPressed: () => launch(
-              //       'https://www.netflix.com/title/${movieDataTest[count]}'),
-              //   child:
-              //       const Text('Go to Netflix', style: TextStyle(fontSize: 20)),
-              // ),
             ],
           ),
         ],
@@ -137,7 +131,7 @@ class _RushModeState extends State<RushMode> {
 class _HeaderCurvedContainer extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
-    Paint paint = Paint()..color = Colors.purple;
+    Paint paint = Paint()..color = Colors.pink;
     Path path = Path()
       ..relativeLineTo(0, 100)
       ..quadraticBezierTo(size.width / 2, 200, size.width, 100)
