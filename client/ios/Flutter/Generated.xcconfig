@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 // This is a generated file; do not edit or check into version control.
 FLUTTER_ROOT=/Users/3301hakuba/flutter
 FLUTTER_APPLICATION_PATH=/Users/3301hakuba/Dropbox/CC15/MovieNight/client
@@ -12,3 +13,6 @@ DART_OBFUSCATION=false
 TRACK_WIDGET_CREATION=false
 TREE_SHAKE_ICONS=false
 PACKAGE_CONFIG=.packages
+=======
+
+>>>>>>> staging

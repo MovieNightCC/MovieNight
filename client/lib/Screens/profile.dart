@@ -114,27 +114,24 @@ class _ProfileState extends State<Profile> {
               userInfoElement(displayName),
               userInfoElement(userEmail),
               userInfoElement(userPair),
-             Spacer(),
-              
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children:[
-              FlatButton(
-            shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.all(Radius.circular(50.0)),
-    ),
-            child: Text("Link with your partner", 
-            style: TextStyle(color: Colors.white),),
-            color: Colors.pink,
-            onPressed: () {
-              Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => AddPairPage()));
-            },
+              Spacer(),
 
-              ),
-              
-                ]
-              ), 
+              Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                FlatButton(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(50.0)),
+                  ),
+                  child: Text(
+                    "Link with your partner",
+                    style: TextStyle(color: Colors.white),
+                  ),
+                  color: Colors.pink,
+                  onPressed: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => AddPairPage()));
+                  },
+                ),
+              ]),
               // GestureDetector(
               //   onTap: () {
               //     print('$userEmail tried to retrieve email');
@@ -147,16 +144,18 @@ class _ProfileState extends State<Profile> {
               Positioned(
                 bottom: 30,
                 left: 10,
-              child: FlatButton(
-                onPressed: () {
-                  context.read<AuthenticationService>().signOut();
+                child: FlatButton(
+                  onPressed: () {
+                    context.read<AuthenticationService>().signOut();
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) => App()));
-                       // exit(0);
-                },
-                child: Text("SIGN OUT",
-                style: TextStyle(),),
-              ),
+                    ;
+                  },
+                  child: Text(
+                    "SIGN OUT",
+                    style: TextStyle(),
+                  ),
+                ),
               )
             ],
           ),

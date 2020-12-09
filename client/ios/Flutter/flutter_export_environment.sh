@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 #!/bin/sh
 # This is a generated file; do not edit or check into version control.
 export "FLUTTER_ROOT=/Users/3301hakuba/flutter"
@@ -13,3 +14,5 @@ export "DART_OBFUSCATION=false"
 export "TRACK_WIDGET_CREATION=false"
 export "TREE_SHAKE_ICONS=false"
 export "PACKAGE_CONFIG=.packages"
+=======
+>>>>>>> staging

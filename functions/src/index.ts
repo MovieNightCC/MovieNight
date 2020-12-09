@@ -195,7 +195,6 @@ export const helloWorld = functions
     response.send("Hello from Firebase!");
   });
 
-<<<<<<< HEAD
 // export const createGame = functions
 //   .region("asia-northeast1")
 //   .https.onRequest(async (request: any, response) => {
@@ -212,7 +211,6 @@ export const helloWorld = functions
 //     const data = snapShot.data();
 //     response.send(data);
 //   });
-=======
 export const createOrEndGame = functions
   .region("asia-northeast1")
   .https.onRequest(async (request: any, response) => {
@@ -244,7 +242,7 @@ export const endGame = functions
     const data = snapShot.data();
     response.send(data);
   });
->>>>>>> cc73c99603bb658e464b006ed2458a2d409cd93c
+
 
 export const userRecommendAlgo = functions.firestore
   .document("users/{docId}")
@@ -618,7 +616,7 @@ export const pairRecommendAlgo = functions.firestore
 
 
 
-//// RUSH 2.0 game code 
+//// RUSH 2.0 game code ///////////
 
 // create game
 export const createGame = functions
@@ -647,10 +645,6 @@ export const getGame = functions
     if (data) response.json(data);
     else response.json("no game found.");
   });
-
-  
-
-
 
 // start timer
 export const startGame = functions
@@ -684,6 +678,7 @@ export const resetGame = functions
     if (data) response.json(`started the time:${data}`);
     else response.json("no game found.");
   });
+//// RUSH 2.0 game code ///////////
 
 //Deleting Stuffs
 //params: pairName, nfid

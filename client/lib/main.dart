@@ -100,6 +100,7 @@ var howManyMusic = 0;
 var howManyScifi = 0;
 var howManySuperHero = 0;
 var notification;
+bool reversedCalled = false;
 
 // futureGay = fetchGay();
 // futureAnime = fetchAnime();

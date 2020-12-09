@@ -110,22 +110,10 @@ class _RushModeState extends State<RushMode> {
                           },
                         ),
                       ),
-                      // onTap: () {
-                      //   Navigator.push(
-                      //       context,
-                      //       new MaterialPageRoute(
-                      //           builder: (context) => Info()));
-                      // },
                     ),
                   ),
                 ],
               ),
-              // RaisedButton(
-              //   onPressed: () => launch(
-              //       'https://www.netflix.com/title/${movieDataTest[count]}'),
-              //   child:
-              //       const Text('Go to Netflix', style: TextStyle(fontSize: 20)),
-              // ),
             ],
           ),
         ],
