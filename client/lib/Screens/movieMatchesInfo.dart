@@ -70,7 +70,7 @@ class _MatchInfoState extends State<MatchInfo> {
             painter: HeaderCurvedContainer(),
           ),
           ListView(
-            padding: const EdgeInsets.all(20),
+            padding: const EdgeInsets.all(50),
             children: [
               Image.network(
                 matchesImage[current],
@@ -79,7 +79,7 @@ class _MatchInfoState extends State<MatchInfo> {
               Text('Title: ${matchesTitles[current]}',
                   style: TextStyle(
                       color: Colors.white,
-                      //height: 5.0,
+                      height: 3.0,
                       fontWeight: FontWeight.bold,
                       fontSize: 20)),
               Text('Genre: ${matchesGenre[current]}',

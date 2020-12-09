@@ -57,14 +57,14 @@ class _InfoState extends State<Info> {
             painter: HeaderCurvedContainer(),
           ),
           ListView(
-            padding: const EdgeInsets.all(20),
+            padding: const EdgeInsets.all(50),
             children: [
               Image.network(
                 movieImagesTest[count],
                 scale: 0.55,
               ),
               Padding(
-                padding: EdgeInsets.fromLTRB(0, 0, 0, 30),
+                padding: EdgeInsets.fromLTRB(0, 20, 0, 30),
                 child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
@@ -240,7 +240,7 @@ class _InfoState extends State<Info> {
 class HeaderCurvedContainer extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
-    Paint paint = Paint()..color = Colors.purple[200];
+    Paint paint = Paint()..color = Colors.pink;
     Path path = Path()
       ..relativeLineTo(0, 150)
       ..quadraticBezierTo(size.width / 2, 225, size.width, 150)

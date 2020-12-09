@@ -304,7 +304,7 @@ void getUserInfo() async {
   userEmail = userdata["email"];
   userPair = userdata["pairName"];
   displayName = userdata["name"];
-  print("pairName is $userPair");
+
   howManyGay = userdata["recommendations"]["LGBTQ"].round();
   howManyAnime = userdata["recommendations"]["Anime"].round();
   howManyHorror = userdata["recommendations"]["Horror"].round();
@@ -314,16 +314,13 @@ void getUserInfo() async {
   howManyMartialArts = userdata["recommendations"]["MartialArts"].round();
   howManyMusic = userdata["recommendations"]["MusicInspired"].round();
   howManyScifi = userdata["recommendations"]["Scifi"].round();
-  print('round called');
+
   howManySuperHero = userdata["recommendations"]["Superhero"].round();
 
-  print('got user info ${userdata["email"]} in ${userdata["pairName"]}');
   userIcon = userdata["userIcon"];
-  print('got user info ${userdata["userIcon"]} in ${userdata["pairName"]}');
 
 //getting matches Info
   if (matchesTitles.length == 0) {
-    print("got length");
     var url =
         'https://asia-northeast1-movie-night-cc.cloudfunctions.net/getPairByPairName?pairName=$userPair';
     final response = await Dio().get(url);
@@ -339,18 +336,11 @@ void getUserInfo() async {
         matchesGenre.add(matches[i]["genre"]);
         matchesNfid.add(matches[i]["nfid"]);
         matchOriLength += 1;
-
-        print("$matchesTitles");
       }
     }
-    print("match $matchesTitles");
+
     fetchArr.add(matchOriLength);
   }
-  // } catch (e) {
-  //   if (e is DioError) {
-  //     print('user info error or match movie fetching error!');
-  //   }
-  // }
 }
 
 //LGBTQ,anime,horror,japan,korea
@@ -694,8 +684,7 @@ class AuthenticationWrapper extends StatelessWidget {
           firebaseUser.email.substring(0, firebaseUser.email.indexOf("@"));
       //put the function here
       getUserInfo();
-      print("wasdfadsfrgasdfasdf");
-      print('$userEmail');
+
       return MaterialApp(
         title: "Movie Night",
         debugShowCheckedModeBanner: false,
@@ -715,10 +704,7 @@ class AuthenticationWrapper extends StatelessWidget {
             futureMusic,
           ]),
           builder: (context, snapshot) {
-            // print('${movieDataTest.length} how many movies I have');
             if (snapshot.hasData) {
-              print("user Anime recommend $howManyAnime");
-              print("user gay recommend $howManyGay");
               //push  $howManyAnime anime movies into movie array
               //push the
 
