@@ -111,9 +111,27 @@ class _ProfileState extends State<Profile> {
                     image:
                         DecorationImage(fit: BoxFit.cover, image: profileimg)),
               ),
-              userInfoElement(displayName),
-              userInfoElement(userEmail),
-              userInfoElement(userPair),
+
+              Column(
+                children: [
+                  Text('Username: $displayName',
+                      style: TextStyle(
+                          height: 3.0,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 30)),
+                  Text('Email: $userEmail',
+                      style: TextStyle(
+                          height: 1.5,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 30)),
+                  Text('Pairname: $userPair',
+                      style: TextStyle(
+                          height: 1.5,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 30)),
+                ],
+              ),
+
               Spacer(),
 
               Row(mainAxisAlignment: MainAxisAlignment.center, children: [
@@ -132,6 +150,45 @@ class _ProfileState extends State<Profile> {
                   },
                 ),
               ]),
+
+              Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                FlatButton(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(50.0)),
+                  ),
+                  child: Text(
+                    "Delete Account",
+                    style: TextStyle(color: Colors.white),
+                  ),
+                  color: Colors.pink,
+                  onPressed: () {
+                    showDialog(
+                        context: context,
+                        builder: (_) => new AlertDialog(
+                              title: new Text("Alert",
+                                  style: TextStyle(color: Colors.black)),
+                              content: new Text("Are you sure?",
+                                  style: TextStyle(color: Colors.black)),
+                              actions: <Widget>[
+                                FlatButton(
+                                  child: Text('No, go back'),
+                                  onPressed: () {
+                                    Navigator.of(context, rootNavigator: true)
+                                        .pop();
+                                  },
+                                ),
+                                FlatButton(
+                                  child: Text('Yes, delete my account'),
+                                  onPressed: () {
+                                    //placeholder for delete user function
+                                  },
+                                )
+                              ],
+                            ));
+                  },
+                ),
+              ]),
+
               // GestureDetector(
               //   onTap: () {
               //     print('$userEmail tried to retrieve email');
@@ -149,7 +206,7 @@ class _ProfileState extends State<Profile> {
                     context.read<AuthenticationService>().signOut();
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) => App()));
-                    ;
+
                   },
                   child: Text(
                     "SIGN OUT",

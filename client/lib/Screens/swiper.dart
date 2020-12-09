@@ -174,7 +174,7 @@ class _TinderswiperState extends State<Tinderswiper>
                       child: TinderSwapCard(
                         orientation: AmassOrientation.TOP,
                         totalNum: 100,
-                        stackNum: 2,
+                        stackNum: 10,
                         swipeEdge: 5.0,
                         maxWidth: MediaQuery.of(context).size.width * 0.9,
                         maxHeight: MediaQuery.of(context).size.width * 1.6,
@@ -184,6 +184,7 @@ class _TinderswiperState extends State<Tinderswiper>
                           return Card(
                             child: Container(
                                 // padding: EdgeInsets.all(20.0),
+
                                 child: Image.network(
                               movieImagesTest[index],
                               fit: BoxFit.fill,
@@ -212,11 +213,6 @@ class _TinderswiperState extends State<Tinderswiper>
                             }
 
                             count++;
-                            // print(movieDataTest[index].runtimeType);
-
-                            //  (?userName=<userName>&movieArr=<An Array of netflix IDs>)
-                            // response = await dio.post("/test", data: {"id": 12, "name": "wendu"});
-
                           } else if (orientation == CardSwipeOrientation.LEFT) {
                             //when hated
                             print('you hate: ${movieDataTest[count]}');
@@ -247,12 +243,16 @@ class _TinderswiperState extends State<Tinderswiper>
                     MaterialPageRoute(
                       // TESTING RIGHT NOW
                       // create game instance here
-                      builder: (context) => RushTwo(),
+
+                      builder: (context) => RushMode(),
+
                       maintainState: true,
                     ));
               },
               tooltip: 'Increment',
-              child: Icon(Icons.local_fire_department, size: 40),
+
+              child: Icon(Icons.fast_forward, size: 40),
+
               elevation: 2.0,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(100)),
@@ -266,7 +266,7 @@ class _TinderswiperState extends State<Tinderswiper>
               heroTag: null,
               onPressed: () => filterPop(context),
               tooltip: 'Increment',
-              child: Icon(Icons.local_activity, size: 40),
+              child: Icon(Icons.settings, size: 40),
               elevation: 2.0,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(100)),

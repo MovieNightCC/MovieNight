@@ -356,10 +356,10 @@ class SignInBody extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    SocalCard(
-                      icon: "assets/icons/google-icon.svg",
-                      press: () {},
-                    ),
+                    // SocalCard(
+                    //   icon: "assets/icons/google-icon.svg",
+                    //   press: () {},
+                    // ),
                   ],
                 ),
                 SizedBox(height: getProportionateScreenHeight(20)),

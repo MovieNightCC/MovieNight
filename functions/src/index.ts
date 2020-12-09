@@ -195,22 +195,7 @@ export const helloWorld = functions
     response.send("Hello from Firebase!");
   });
 
-// export const createGame = functions
-//   .region("asia-northeast1")
-//   .https.onRequest(async (request: any, response) => {
-//     const gameRef = db.collection("pairs").doc();
-//     await gameRef.set({
-//       name: "peter",
-//       age: "19",
-//       arr: [1, 2, 3, 4],
-//       obj: {
-//         pp: "hard",
-//       },
-//     });
-//     const snapShot = await gameRef.get();
-//     const data = snapShot.data();
-//     response.send(data);
-//   });
+
 export const createOrEndGame = functions
   .region("asia-northeast1")
   .https.onRequest(async (request: any, response) => {
