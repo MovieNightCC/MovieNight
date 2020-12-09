@@ -232,26 +232,26 @@ class _TinderswiperState extends State<Tinderswiper>
               heroTag: null,
               onPressed: () {
                 print('pressed');
+                joinRush();
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => RushMode(),
+                      builder: (context) => RushTwo(),
                       maintainState: true,
                     ));
               },
               tooltip: 'Increment',
-              child: Icon(Icons.local_fire_department,  size: 40),
+              child: Icon(Icons.local_fire_department, size: 40),
               elevation: 2.0,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(100)),
-              
             ),
           ),
           Positioned(
             right: 80,
             bottom: 12,
             child: FloatingActionButton(
-              backgroundColor:Colors.yellow,
+              backgroundColor: Colors.yellow,
               heroTag: null,
               onPressed: () => filterPop(context),
               tooltip: 'Increment',
@@ -259,7 +259,6 @@ class _TinderswiperState extends State<Tinderswiper>
               elevation: 2.0,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(100)),
-              
             ),
           ),
         ]),
@@ -312,6 +311,7 @@ class HeaderCurvedContainer extends CustomPainter {
   @override
   bool shouldRepaint(CustomPainter oldDelegate) => false;
 }
+
 final ThemeData _kShrineTheme = _buildShrineTheme();
 ThemeData _buildShrineTheme() {
   final ThemeData base = ThemeData.dark();
@@ -357,4 +357,11 @@ ThemeData _buildShrineTheme() {
             ),
             borderRadius: BorderRadius.all(Radius.circular(2.0)),
           )));
+}
+
+void joinRush() async {
+  var response = await http.get(
+      "https://asia-northeast1-movie-night-cc.cloudfunctions.net/joinRush?pairName=$userPair");
+  print(response.body);
+  var result = response.body;
 }

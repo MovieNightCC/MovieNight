@@ -3,8 +3,11 @@ import 'package:flutter/material.dart';
 import './swiper.dart';
 import './tinderCard.dart';
 import './movieInfo.dart';
+import '../main.dart';
+import 'package:http/http.dart' as http;
 import 'dart:async';
 import './filterPopup.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 //TODO get the timer s
 
@@ -35,25 +38,35 @@ class _RushTwoState extends State<RushTwo> {
   @override
   // CardController controller;
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Row(
-        children: [
-          Text("name",
-              style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 30.0,
-                  height: 2.0,
-                  fontWeight: FontWeight.bold)),
-          Text("name2",
-              style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 30.0,
-                  height: 2.0,
-                  fontWeight: FontWeight.bold)),
-          TimerWidget(),
-        ],
-      ),
-    );
+    return SafeArea(
+        child: Scaffold(
+            body: StreamBuilder(
+                stream: FirebaseFirestore.instance
+                    .collection('rushPlus')
+                    .doc(userPair)
+                    .snapshots(),
+                builder: (BuildContext context,
+                    AsyncSnapshot<DocumentSnapshot> snapshot) {
+                  var playerOneJoined = snapshot.data["playerOneJoined"];
+                  var playerTwoJoined = snapshot.data["playerTwoJoined"];
+
+                  if (!snapshot.hasData) {
+                    return LinearProgressIndicator();
+                  } else {
+                    return Text(
+                        snapshot.data["pairName"] +
+                            "p1: " +
+                            playerOneJoined.toString() +
+                            "p2: " +
+                            playerTwoJoined.toString(),
+                        overflow: TextOverflow.visible,
+                        style: TextStyle(fontSize: 25));
+                  }
+                }
+                //  snapshot.map((data) => _buildListItem(context, data)).toList(),
+                // var playerOneJoined = userData["playerOneJoined"];
+                // var playerTwoJoined = userData["playerTwoJoined"];
+                )));
   }
 }
 
@@ -85,6 +98,8 @@ class _TimerWidgetState extends State<TimerWidget> {
                           FlatButton(
                             child: Text('Go Back to Swiper!'),
                             onPressed: () {
+                              // reset the rush state when they go back to swiper
+                              endRush();
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
@@ -132,3 +147,28 @@ class _TimerWidgetState extends State<TimerWidget> {
     );
   }
 }
+
+void endRush() async {
+  var response = await http.get(
+      "https://asia-northeast1-movie-night-cc.cloudfunctions.net/endGame?pairName=$userPair");
+  print(response.body);
+}
+
+//   body: Column(
+//     children: [
+//       Text("name",
+//           style: TextStyle(
+//               color: Colors.white,
+//               fontSize: 30.0,
+//               height: 2.0,
+//               fontWeight: FontWeight.bold)),
+//       Text("name2",
+//           style: TextStyle(
+//               color: Colors.white,
+//               fontSize: 30.0,
+//               height: 2.0,
+//               fontWeight: FontWeight.bold)),
+//       TimerWidget(),
+//     ],
+//   ),
+// );
