@@ -1687,6 +1687,8 @@ export const createRushGameForPair = functions.firestore
         pairName: pairName,
         playerOneJoined: false,
         playerTwoJoined: false,
+        playerOne: pairData["members"][0],
+        playerTwo: pairData["members"][1],
       },
       { merge: true }
     );

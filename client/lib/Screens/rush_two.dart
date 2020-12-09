@@ -8,6 +8,7 @@ import 'package:http/http.dart' as http;
 import 'dart:async';
 import './filterPopup.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import './rushMode.dart';
 
 //TODO get the timer s
 
@@ -28,6 +29,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 // List<String> rushModeGenre = [];
 // List<int> rushModeYear = [];
 // List<int> rushModeRuntime = [];
+String userPictureURL = "https://i.imgur.com/BoN9kdC.png";
 
 class RushTwo extends StatefulWidget {
   @override
@@ -38,8 +40,8 @@ class _RushTwoState extends State<RushTwo> {
   @override
   // CardController controller;
   Widget build(BuildContext context) {
-    return SafeArea(
-        child: Stack(children: [
+    return Scaffold(
+        body: Stack(children: [
       CustomPaint(
         child: Container(
           width: MediaQuery.of(context).size.width,
@@ -60,7 +62,7 @@ class TimerWidget extends StatefulWidget {
 
 class _TimerWidgetState extends State<TimerWidget> {
   Timer _timer;
-  int _start = 10;
+  int _start = 3;
 
   void startTimer() {
     if (_timer != null) {
@@ -73,29 +75,11 @@ class _TimerWidgetState extends State<TimerWidget> {
           () {
             if (_start < 1) {
               timer.cancel();
-              showDialog(
-                  context: context,
-                  builder: (_) => new AlertDialog(
-                        title: new Text("Alert"),
-                        content: new Text("Time's Up!"),
-                        actions: <Widget>[
-                          FlatButton(
-                            child: Text('Go Back to Swiper!'),
-                            onPressed: () {
-                              // reset the rush state when they go back to swiper
-                              endRush();
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => Swiper(),
-                                      maintainState: true));
-                              Navigator.of(context, rootNavigator: true).pop();
-                            },
-                          )
-                        ],
-                      ));
-
-              _start = 10;
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => RushMode(), maintainState: true));
+              _start = 3;
             } else {
               _start = _start - 1;
             }
@@ -120,13 +104,13 @@ class _TimerWidgetState extends State<TimerWidget> {
                 height: 1.5,
                 fontWeight: FontWeight.bold,
                 fontSize: 100)),
-        RaisedButton(
-          onPressed: () {
-            // send call to
-            startTimer();
-          },
-          child: Text("start"),
-        ),
+        // RaisedButton(
+        //   onPressed: () {
+        //     // send call to
+        //     startTimer();
+        //   },
+        //   child: Text("start"),
+        // ),
         StreamBuilder(
             stream: FirebaseFirestore.instance
                 .collection('rushPlus')
@@ -136,6 +120,8 @@ class _TimerWidgetState extends State<TimerWidget> {
                 AsyncSnapshot<DocumentSnapshot> snapshot) {
               var playerOneJoined = snapshot.data["playerOneJoined"];
               var playerTwoJoined = snapshot.data["playerTwoJoined"];
+              var playerOneIcon = snapshot.data["iconOne"];
+              var playerTwoIcon = snapshot.data["iconTwo"];
 
               if (!snapshot.hasData) {
                 return LinearProgressIndicator();
@@ -143,44 +129,61 @@ class _TimerWidgetState extends State<TimerWidget> {
                 startTimer();
                 return Text("both players joined");
               } else {
-                return Text(
-                    snapshot.data["pairName"] +
-                        "p1: " +
-                        playerOneJoined.toString() +
-                        "p2: " +
-                        playerTwoJoined.toString(),
-                    overflow: TextOverflow.visible,
-                    style: TextStyle(fontSize: 25));
+                return Column(children: [
+                  Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        PicAndStatusColumn(
+                          showText(playerOneJoined),
+                          playerOneIcon,
+                        ),
+                        PicAndStatusColumn(
+                          showText(playerTwoJoined),
+                          playerTwoIcon,
+                        ),
+                      ]),
+                ]);
               }
             }),
-        Text("Aiko"),
-        Text("Taka"),
       ],
     );
   }
 }
 
-void endRush() async {
-  var response = await http.get(
-      "https://asia-northeast1-movie-night-cc.cloudfunctions.net/endGame?pairName=$userPair");
-  print(response.body);
+String showText(input) {
+  if (input) {
+    return "Joined";
+  } else {
+    return "Waiting....";
+  }
 }
 
-//   body: Column(
-//     children: [
-//       Text("name",
-//           style: TextStyle(
-//               color: Colors.white,
-//               fontSize: 30.0,
-//               height: 2.0,
-//               fontWeight: FontWeight.bold)),
-//       Text("name2",
-//           style: TextStyle(
-//               color: Colors.white,
-//               fontSize: 30.0,
-//               height: 2.0,
-//               fontWeight: FontWeight.bold)),
-//       TimerWidget(),
-//     ],
-//   ),
-// );
+// "https://i.imgur.com/BoN9kdC.png"
+class PicAndStatusColumn extends StatelessWidget {
+  final String label;
+  final String imageIcon;
+  const PicAndStatusColumn(this.label, this.imageIcon);
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        new Container(
+            width: 100.0,
+            height: 100.0,
+            decoration: new BoxDecoration(
+                shape: BoxShape.circle,
+                image: new DecorationImage(
+                    fit: BoxFit.fill, image: new NetworkImage(imageIcon)))),
+        Container(
+          margin: const EdgeInsets.only(top: 8),
+          child: Text(
+            label,
+            style: TextStyle(fontSize: 12, fontWeight: FontWeight.w400),
+          ),
+        )
+      ],
+    );
+  }
+}

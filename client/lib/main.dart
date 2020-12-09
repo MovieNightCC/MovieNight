@@ -303,6 +303,7 @@ void getUserInfo() async {
   userPair = userdata["pairName"];
   displayName = userdata["name"];
   print("pairName is $userPair");
+  // if (userPair != "") {}
   howManyGay = userdata["recommendations"]["LGBTQ"].round();
   howManyAnime = userdata["recommendations"]["Anime"].round();
   howManyHorror = userdata["recommendations"]["Horror"].round();

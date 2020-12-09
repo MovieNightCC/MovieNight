@@ -1,5 +1,7 @@
 import 'dart:async';
+import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
+import '../main.dart';
 import './swiper.dart';
 import './tinderCard.dart';
 import './movieInfo.dart';
@@ -33,10 +35,8 @@ class _RushModeState extends State<RushMode> {
                 height: 1.5, fontWeight: FontWeight.bold, fontSize: 30)),
         automaticallyImplyLeading: false,
         centerTitle: true,
-        
         elevation: 0,
       ),
-      
       body: Stack(
         alignment: Alignment.center,
         children: [
@@ -45,7 +45,7 @@ class _RushModeState extends State<RushMode> {
               width: MediaQuery.of(context).size.width,
               height: MediaQuery.of(context).size.height,
             ),
-            painter: HeaderCurvedContainer(),
+            painter: _HeaderCurvedContainer(),
           ),
           Column(
             children: [
@@ -134,7 +134,7 @@ class _RushModeState extends State<RushMode> {
   }
 }
 
-class HeaderCurvedContainer extends CustomPainter {
+class _HeaderCurvedContainer extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     Paint paint = Paint()..color = Colors.purple;
@@ -214,15 +214,16 @@ class _TimerWidgetState extends State<TimerWidget> {
             style: TextStyle(
                 height: 1.5, fontWeight: FontWeight.bold, fontSize: 100)),
         Positioned(
-          right:40,
+          right: 40,
           top: 50,
-          child:
-        FlatButton(
+          child: FlatButton(
             shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.all(Radius.circular(50.0)),
-    ),
-            child: Text("Start", 
-            style: TextStyle(color: Colors.white),),
+              borderRadius: BorderRadius.all(Radius.circular(50.0)),
+            ),
+            child: Text(
+              "Start",
+              style: TextStyle(color: Colors.white),
+            ),
             color: Colors.pink,
             onPressed: () {
               startTimer();
@@ -232,4 +233,10 @@ class _TimerWidgetState extends State<TimerWidget> {
       ],
     );
   }
+}
+
+void endRush() async {
+  var response = await http.get(
+      "https://asia-northeast1-movie-night-cc.cloudfunctions.net/endGame?pairName=$userPair");
+  print(response.body);
 }
