@@ -8,7 +8,6 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:http/http.dart' as http;
 import './addPairPage.dart';
 import './swiper.dart';
-import './auth.dart';
 
 class SignForm extends StatefulWidget {
   @override

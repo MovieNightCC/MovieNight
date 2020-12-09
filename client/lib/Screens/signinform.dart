@@ -5,8 +5,7 @@ import '../constants.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:movie_night/screens/auth.dart';
 import 'package:url_launcher/url_launcher.dart';
-
-import 'swiper.dart';
+import './swiper.dart';
 
 class SignForm extends StatefulWidget {
   @override

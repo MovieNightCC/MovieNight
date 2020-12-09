@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
+import 'dart:async';
+import 'package:http/http.dart' as http;
 import '../main.dart';
 import './tinderCard.dart';
 import './matches.dart';
@@ -9,7 +11,7 @@ import './movieArray.dart';
 import './rushMode.dart';
 import './filterPopup.dart';
 import './movieMatchesInfo.dart';
-import './rush_two.dart';
+
 import 'package:http/http.dart' as http;
 
 class Swiper extends StatefulWidget {
