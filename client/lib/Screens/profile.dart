@@ -113,17 +113,17 @@ class _ProfileState extends State<Profile> {
               ),
               Column(
                 children: [
-                  Text(displayName,
+                  Text('Username: $displayName',
+                      style: TextStyle(
+                          height: 3.0,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 30)),
+                  Text('Email: $userEmail',
                       style: TextStyle(
                           height: 1.5,
                           fontWeight: FontWeight.bold,
                           fontSize: 30)),
-                  Text(userEmail,
-                      style: TextStyle(
-                          height: 1.5,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 30)),
-                  Text(userPair,
+                  Text('Pairname: $userPair',
                       style: TextStyle(
                           height: 1.5,
                           fontWeight: FontWeight.bold,
