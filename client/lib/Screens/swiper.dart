@@ -243,12 +243,16 @@ class _TinderswiperState extends State<Tinderswiper>
                     MaterialPageRoute(
                       // TESTING RIGHT NOW
                       // create game instance here
+
                       builder: (context) => RushMode(),
+
                       maintainState: true,
                     ));
               },
               tooltip: 'Increment',
+
               child: Icon(Icons.fast_forward, size: 40),
+
               elevation: 2.0,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(100)),

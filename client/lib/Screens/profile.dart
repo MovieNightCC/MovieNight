@@ -111,6 +111,7 @@ class _ProfileState extends State<Profile> {
                     image:
                         DecorationImage(fit: BoxFit.cover, image: profileimg)),
               ),
+
               Column(
                 children: [
                   Text('Username: $displayName',
@@ -130,9 +131,7 @@ class _ProfileState extends State<Profile> {
                           fontSize: 30)),
                 ],
               ),
-              // userInfoElement(displayName),
-              // userInfoElement(userEmail),
-              // userInfoElement(userPair),
+
               Spacer(),
 
               Row(mainAxisAlignment: MainAxisAlignment.center, children: [
@@ -151,6 +150,7 @@ class _ProfileState extends State<Profile> {
                   },
                 ),
               ]),
+
               Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                 FlatButton(
                   shape: RoundedRectangleBorder(
@@ -188,6 +188,7 @@ class _ProfileState extends State<Profile> {
                   },
                 ),
               ]),
+
               // GestureDetector(
               //   onTap: () {
               //     print('$userEmail tried to retrieve email');
@@ -205,7 +206,7 @@ class _ProfileState extends State<Profile> {
                     context.read<AuthenticationService>().signOut();
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) => App()));
-                    // exit(0);
+
                   },
                   child: Text(
                     "SIGN OUT",
