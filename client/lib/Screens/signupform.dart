@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import '../sizeconfig.dart';
 import '../constants.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:movie_night/screens/auth.dart';
+
 import 'package:url_launcher/url_launcher.dart';
 import 'package:http/http.dart' as http;
 import './addPairPage.dart';
