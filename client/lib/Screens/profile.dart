@@ -111,9 +111,28 @@ class _ProfileState extends State<Profile> {
                     image:
                         DecorationImage(fit: BoxFit.cover, image: profileimg)),
               ),
-              userInfoElement(displayName),
-              userInfoElement(userEmail),
-              userInfoElement(userPair),
+              Column(
+                children: [
+                  Text(displayName,
+                      style: TextStyle(
+                          height: 1.5,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 30)),
+                  Text(userEmail,
+                      style: TextStyle(
+                          height: 1.5,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 30)),
+                  Text(userPair,
+                      style: TextStyle(
+                          height: 1.5,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 30)),
+                ],
+              ),
+              // userInfoElement(displayName),
+              // userInfoElement(userEmail),
+              // userInfoElement(userPair),
               Spacer(),
 
               Row(mainAxisAlignment: MainAxisAlignment.center, children: [
@@ -129,6 +148,43 @@ class _ProfileState extends State<Profile> {
                   onPressed: () {
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) => AddPairPage()));
+                  },
+                ),
+              ]),
+              Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                FlatButton(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(50.0)),
+                  ),
+                  child: Text(
+                    "Delete Account",
+                    style: TextStyle(color: Colors.white),
+                  ),
+                  color: Colors.pink,
+                  onPressed: () {
+                    showDialog(
+                        context: context,
+                        builder: (_) => new AlertDialog(
+                              title: new Text("Alert",
+                                  style: TextStyle(color: Colors.black)),
+                              content: new Text("Are you sure?",
+                                  style: TextStyle(color: Colors.black)),
+                              actions: <Widget>[
+                                FlatButton(
+                                  child: Text('No, go back'),
+                                  onPressed: () {
+                                    Navigator.of(context, rootNavigator: true)
+                                        .pop();
+                                  },
+                                ),
+                                FlatButton(
+                                  child: Text('Yes, delete my account'),
+                                  onPressed: () {
+                                    //placeholder for delete user function
+                                  },
+                                )
+                              ],
+                            ));
                   },
                 ),
               ]),
