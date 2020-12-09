@@ -39,34 +39,18 @@ class _RushTwoState extends State<RushTwo> {
   // CardController controller;
   Widget build(BuildContext context) {
     return SafeArea(
-        child: Scaffold(
-            body: StreamBuilder(
-                stream: FirebaseFirestore.instance
-                    .collection('rushPlus')
-                    .doc(userPair)
-                    .snapshots(),
-                builder: (BuildContext context,
-                    AsyncSnapshot<DocumentSnapshot> snapshot) {
-                  var playerOneJoined = snapshot.data["playerOneJoined"];
-                  var playerTwoJoined = snapshot.data["playerTwoJoined"];
-
-                  if (!snapshot.hasData) {
-                    return LinearProgressIndicator();
-                  } else {
-                    return Text(
-                        snapshot.data["pairName"] +
-                            "p1: " +
-                            playerOneJoined.toString() +
-                            "p2: " +
-                            playerTwoJoined.toString(),
-                        overflow: TextOverflow.visible,
-                        style: TextStyle(fontSize: 25));
-                  }
-                }
-                //  snapshot.map((data) => _buildListItem(context, data)).toList(),
-                // var playerOneJoined = userData["playerOneJoined"];
-                // var playerTwoJoined = userData["playerTwoJoined"];
-                )));
+        child: Stack(children: [
+      CustomPaint(
+        child: Container(
+          width: MediaQuery.of(context).size.width,
+          height: MediaQuery.of(context).size.height,
+        ),
+        painter: HeaderCurvedContainer(),
+      ),
+      Column(children: [
+        TimerWidget(),
+      ])
+    ]));
   }
 }
 
@@ -143,6 +127,34 @@ class _TimerWidgetState extends State<TimerWidget> {
           },
           child: Text("start"),
         ),
+        StreamBuilder(
+            stream: FirebaseFirestore.instance
+                .collection('rushPlus')
+                .doc(userPair)
+                .snapshots(),
+            builder: (BuildContext context,
+                AsyncSnapshot<DocumentSnapshot> snapshot) {
+              var playerOneJoined = snapshot.data["playerOneJoined"];
+              var playerTwoJoined = snapshot.data["playerTwoJoined"];
+
+              if (!snapshot.hasData) {
+                return LinearProgressIndicator();
+              } else if (playerOneJoined && playerTwoJoined) {
+                startTimer();
+                return Text("both players joined");
+              } else {
+                return Text(
+                    snapshot.data["pairName"] +
+                        "p1: " +
+                        playerOneJoined.toString() +
+                        "p2: " +
+                        playerTwoJoined.toString(),
+                    overflow: TextOverflow.visible,
+                    style: TextStyle(fontSize: 25));
+              }
+            }),
+        Text("Aiko"),
+        Text("Taka"),
       ],
     );
   }

@@ -50,7 +50,7 @@ class _InfoState extends State<Info> {
               width: MediaQuery.of(context).size.width,
               height: MediaQuery.of(context).size.height,
             ),
-            painter: HeaderCurvedContainer(),
+            painter: _HeaderCurvedContainer(),
           ),
           ListView(
             padding: const EdgeInsets.all(20),
@@ -169,7 +169,7 @@ class _InfoState extends State<Info> {
   }
 }
 
-class HeaderCurvedContainer extends CustomPainter {
+class _HeaderCurvedContainer extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     Paint paint = Paint()..color = Colors.purple[200];
