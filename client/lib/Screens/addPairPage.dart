@@ -15,11 +15,10 @@ class AddPairPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Link with your partner"),
-      backgroundColor: Colors.pink),
+      appBar: AppBar(
+          title: Text("Link with your partner"), backgroundColor: Colors.pink),
       body: Column(
         children: [
-         
           TextField(
             controller: pairNameController,
             decoration: InputDecoration(
@@ -40,8 +39,8 @@ class AddPairPage extends StatelessWidget {
           RaisedButton(
             color: Colors.pink,
             shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.all(Radius.circular(50.0)),
-    ),
+              borderRadius: BorderRadius.all(Radius.circular(50.0)),
+            ),
             onPressed: () {
               // ignore: todo
               // check if user has a pair
@@ -51,6 +50,23 @@ class AddPairPage extends StatelessWidget {
                 print("called check for user");
                 if (userexists == false) {
                   print("does not exist");
+                  showDialog(
+                      context: context,
+                      builder: (_) => new AlertDialog(
+                            title: new Text("Alert",
+                                style: TextStyle(color: Colors.black)),
+                            content: new Text("User does not exist!",
+                                style: TextStyle(color: Colors.black)),
+                            actions: <Widget>[
+                              FlatButton(
+                                child: Text('Close me!'),
+                                onPressed: () {
+                                  Navigator.of(context, rootNavigator: true)
+                                      .pop();
+                                },
+                              )
+                            ],
+                          ));
                 } else {
                   print("user exists form the pair");
                   _postNewPair();
@@ -65,22 +81,19 @@ class AddPairPage extends StatelessWidget {
             child: Text("Add Partner"),
           ),
           Spacer(),
-          
           FlatButton(
             onPressed: () {
-           Navigator.push(
+              Navigator.push(
                   context,
                   MaterialPageRoute(
                       builder: (context) => Profile(), maintainState: true));
             },
             child: Text("I will link my partner later"),
           ),
-              Spacer()
+          Spacer()
         ],
       ),
-
     );
-
   }
 
   void _checkForUser() async {

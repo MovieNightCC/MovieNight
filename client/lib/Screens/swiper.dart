@@ -248,7 +248,7 @@ class _TinderswiperState extends State<Tinderswiper>
                     ));
               },
               tooltip: 'Increment',
-              child: Icon(Icons.local_fire_department, size: 40),
+              child: Icon(Icons.fast_forward, size: 40),
               elevation: 2.0,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(100)),
@@ -262,7 +262,7 @@ class _TinderswiperState extends State<Tinderswiper>
               heroTag: null,
               onPressed: () => filterPop(context),
               tooltip: 'Increment',
-              child: Icon(Icons.local_activity, size: 40),
+              child: Icon(Icons.settings, size: 40),
               elevation: 2.0,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(100)),
