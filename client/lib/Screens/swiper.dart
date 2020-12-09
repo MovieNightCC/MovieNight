@@ -15,6 +15,8 @@ import './movieArray.dart';
 import './rushMode.dart';
 import './filterPopup.dart';
 import './movieMatchesInfo.dart';
+import './rush_two.dart';
+import 'package:http/http.dart' as http;
 
 class Swiper extends StatefulWidget {
   static String routeName = "/swiper";
@@ -53,6 +55,19 @@ List<int> movieYear = [];
 List<int> movieRuntime = [];
 var counter = 0;
 
+void reverseList() {
+  matchesTitles = matchesTitles.reversed.toList();
+  matchesImage = matchesImage.reversed.toList();
+  matchesYear = matchesYear.reversed.toList();
+  matchesGenre = matchesGenre.reversed.toList();
+  matchesRuntime = matchesRuntime.reversed.toList();
+  matchesSynopsis = matchesSynopsis.reversed.toList();
+  matchesNfid = matchesNfid.reversed.toList();
+  hourListMatches = hourListMatches.reversed.toList();
+  minutesListMatches = minutesListMatches.reversed.toList();
+  reversedCalled = true;
+}
+
 void cutInHalf() {
   cutInHalfCalled = true;
   print('cutinhalf is called');
@@ -65,14 +80,6 @@ void cutInHalf() {
   matchesRuntime = matchesRuntime.sublist(0, halfLength);
   matchesSynopsis = matchesSynopsis.sublist(0, halfLength);
   matchesNfid = matchesNfid.sublist(0, halfLength);
-
-  matchesTitles = matchesTitles.reversed.toList();
-  matchesImage = matchesImage.reversed.toList();
-  matchesYear = matchesYear.reversed.toList();
-  matchesGenre = matchesGenre.reversed.toList();
-  matchesRuntime = matchesRuntime.reversed.toList();
-  matchesSynopsis = matchesSynopsis.reversed.toList();
-  matchesNfid = matchesNfid.reversed.toList();
 }
 
 void makeHour() {
@@ -143,6 +150,9 @@ class _TinderswiperState extends State<Tinderswiper>
 
   @override
   Widget build(BuildContext context) {
+    if (reversedCalled == false) {
+      reverseList();
+    }
     CardController controller;
     return Scaffold(
         body: Stack(alignment: Alignment.center, children: [
@@ -235,23 +245,24 @@ class _TinderswiperState extends State<Tinderswiper>
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => RushMode(),
+                      // TESTING RIGHT NOW
+                      // create game instance here
+                      builder: (context) => RushTwo(),
                       maintainState: true,
                     ));
               },
               tooltip: 'Increment',
-              child: Icon(Icons.local_fire_department,  size: 40),
+              child: Icon(Icons.local_fire_department, size: 40),
               elevation: 2.0,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(100)),
-              
             ),
           ),
           Positioned(
             right: 80,
             bottom: 12,
             child: FloatingActionButton(
-              backgroundColor:Colors.yellow,
+              backgroundColor: Colors.yellow,
               heroTag: null,
               onPressed: () => filterPop(context),
               tooltip: 'Increment',
@@ -259,7 +270,6 @@ class _TinderswiperState extends State<Tinderswiper>
               elevation: 2.0,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(100)),
-              
             ),
           ),
         ]),
@@ -312,6 +322,7 @@ class HeaderCurvedContainer extends CustomPainter {
   @override
   bool shouldRepaint(CustomPainter oldDelegate) => false;
 }
+
 final ThemeData _kShrineTheme = _buildShrineTheme();
 ThemeData _buildShrineTheme() {
   final ThemeData base = ThemeData.dark();

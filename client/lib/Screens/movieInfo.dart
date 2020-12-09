@@ -24,8 +24,12 @@ void changeToHours() {
     } else if (movieRuntime[i] < 3600) {
       movieRuntime[i] = (movieRuntime[i] / 60).toInt();
       minutesList.add(movieRuntime[i]);
-    } else {
+    } else if (movieRuntime[i] < 10800 && movieRuntime[i] > 7200) {
       movieRuntime[i] = movieRuntime[i] - 7200;
+      movieRuntime[i] = (movieRuntime[i] / 60).toInt();
+      minutesList.add(movieRuntime[i]);
+    } else {
+      movieRuntime[i] = movieRuntime[i] - 10800;
       movieRuntime[i] = (movieRuntime[i] / 60).toInt();
       minutesList.add(movieRuntime[i]);
     }
