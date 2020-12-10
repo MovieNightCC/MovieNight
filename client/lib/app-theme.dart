@@ -234,9 +234,6 @@ final ThemeData movieNightTheme = ThemeData(
     opacity: 1,
     size: 24,
   ),
-  floatingActionButtonTheme: FloatingActionButtonThemeData(
-    foregroundColor: Color(0xffffffff),
-  ),
   sliderTheme: SliderThemeData(
     activeTrackColor: null,
     inactiveTrackColor: null,

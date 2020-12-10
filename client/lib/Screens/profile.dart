@@ -13,7 +13,6 @@ import './matches.dart';
 
 import 'package:provider/provider.dart';
 import '../main.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class Profile extends StatefulWidget {
   static String routeName = "/splash";

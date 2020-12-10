@@ -1,10 +1,7 @@
 import * as functions from "firebase-functions";
 import * as admin from "firebase-admin";
 const unirest = require("unirest");
-// import { UserRecord } from "firebase-functions/lib/providers/auth";
 
-// const axios = require('axios')
-// const cors = require("cors")({ origin: true });
 
 admin.initializeApp();
 const db = admin.firestore();
@@ -227,7 +224,6 @@ export const endGame = functions
     const data = snapShot.data();
     response.send(data);
   });
-
 
 export const userRecommendAlgo = functions.firestore
   .document("users/{docId}")
@@ -1001,39 +997,6 @@ export const testAiko = functions
     }
   });
 
-// //query ?userName=<userName>&movieArr=[4243423,234234234,234423234]
-// export const simpleUpdateUserLike = functions
-//   .region("asia-northeast1")
-//   .https.onRequest(async (request: any, response) => {
-//     //Adding to user
-//     const userRef = db.collection("users").doc(request.query.userName);
-//     const userResult = await userRef.get();
-//     const userData = userResult.data();
-//     const arr = JSON.parse(request.query.movieArr);
-//     arr.map(async (netflixId: Number) => {
-//       await userRef.update({
-//         likes: admin.firestore.FieldValue.arrayUnion(netflixId),
-//       });
-//     });
-//     response.send(userData);
-//   });
-
-// //query ?pairName=<userName>&movieArr=[4243423,234234234,234423234]
-// export const simpleUpdatePairMatches = functions
-//   .region("asia-northeast1")
-//   .https.onRequest(async (request: any, response) => {
-//     //Adding to user
-//     const pairRef = db.collection("pairs").doc(request.query.pairName);
-//     const pairResult = await pairRef.get();
-//     const pairData = pairResult.data();
-//     const arr = JSON.parse(request.query.movieArr);
-//     arr.map(async (netflixId: Number) => {
-//       await pairRef.update({
-//         matches: admin.firestore.FieldValue.arrayUnion(netflixId),
-//       });
-//     });
-//     response.send(pairData);
-//   });
 
 //Get Pair Name of user (by UserName)
 export const checkIfUserHasPairs = functions
@@ -1650,16 +1613,7 @@ export const setUpRushGame = functions
     });
   });
 
-//   export const cloudFuncExample = functions.firestore
-// .document("pairs/{pairName}")
-// .onUpdate(async (change, context) => {
-//   console.log("----------------start function--------------------");
-//   const oldPairData = change.before.data();
-//   const newPairData = change.after.data();
-//   const user1Name = oldPairData["members"][0];
-//   const user2Name = oldPairData["members"][1];
 
-// });
 
 export const createRushGameForPair = functions.firestore
   .document("pairs/{pairName}")
