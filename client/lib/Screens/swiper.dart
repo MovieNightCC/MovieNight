@@ -122,12 +122,13 @@ void updateUser(
     showDialog(
         context: context,
         builder: (_) => new AlertDialog(
-              title: new Text("Alert", style: TextStyle(color: Colors.black)),
+              title: new Text("Alert", style: TextStyle(color: Colors.white)),
               content: new Text("You got a Match!",
-                  style: TextStyle(color: Colors.black)),
+                  style: TextStyle(color: Colors.white)),
               actions: <Widget>[
                 FlatButton(
-                  child: Text('Close me!'),
+                  child:
+                      Text('Close me!', style: TextStyle(color: Colors.pink)),
                   onPressed: () {
                     Navigator.of(context, rootNavigator: true).pop();
                   },
