@@ -55,6 +55,7 @@ class _MatchInfoState extends State<MatchInfo> {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.arrow_back),
+        backgroundColor: Colors.pink,
         onPressed: () {
           Navigator.pop(context);
         },

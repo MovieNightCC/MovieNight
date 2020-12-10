@@ -166,19 +166,21 @@ class _ProfileState extends State<Profile> {
                         context: context,
                         builder: (_) => new AlertDialog(
                               title: new Text("Alert",
-                                  style: TextStyle(color: Colors.black)),
+                                  style: TextStyle(color: Colors.white)),
                               content: new Text("Are you sure?",
-                                  style: TextStyle(color: Colors.black)),
+                                  style: TextStyle(color: Colors.white)),
                               actions: <Widget>[
                                 FlatButton(
-                                  child: Text('No, go back'),
+                                  child: Text('No, go back',
+                                      style: TextStyle(color: Colors.pink)),
                                   onPressed: () {
                                     Navigator.of(context, rootNavigator: true)
                                         .pop();
                                   },
                                 ),
                                 FlatButton(
-                                  child: Text('Yes, delete my account'),
+                                  child: Text('Yes, delete my account',
+                                      style: TextStyle(color: Colors.pink)),
                                   onPressed: () {
                                     //placeholder for delete user function
                                   },

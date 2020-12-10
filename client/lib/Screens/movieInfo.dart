@@ -42,6 +42,7 @@ class _InfoState extends State<Info> {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.arrow_back),
+        backgroundColor: Colors.pink,
         onPressed: () {
           Navigator.pop(context);
         },
@@ -83,7 +84,7 @@ class _InfoState extends State<Info> {
                                   maintainState: true,
                                 ));
                           },
-                          tooltip: 'Increment',
+                          tooltip: 'Do not want to watch',
                           child: Icon(Icons.cancel_outlined),
                           elevation: 2.0,
                           shape: RoundedRectangleBorder(
@@ -117,7 +118,7 @@ class _InfoState extends State<Info> {
                                   maintainState: true,
                                 ));
                           },
-                          tooltip: 'Increment',
+                          tooltip: 'Want to watch',
                           child: Icon(Icons.check),
                           elevation: 2.0,
                           shape: RoundedRectangleBorder(
