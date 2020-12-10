@@ -59,7 +59,7 @@ class _RushModeState extends State<RushMode> {
                   Center(
                     child: InkWell(
                       child: Container(
-                        height: MediaQuery.of(context).size.height * 0.5,
+                        height: MediaQuery.of(context).size.height * 0.7,
                         child: TinderSwapCard(
                           orientation: AmassOrientation.TOP,
                           totalNum: 100,
@@ -204,7 +204,7 @@ class _TimerWidgetState extends State<TimerWidget> {
       children: <Widget>[
         Text("$_start",
             style: TextStyle(
-                height: 1.5, fontWeight: FontWeight.bold, fontSize: 100)),
+                height: 1.5, fontWeight: FontWeight.bold, fontSize: 70)),
         Positioned(
           right: 40,
           top: 50,

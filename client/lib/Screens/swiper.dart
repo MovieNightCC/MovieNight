@@ -232,7 +232,7 @@ class _TinderswiperState extends State<Tinderswiper>
           ),
           Positioned(
             left: 80,
-            bottom: 12,
+            bottom: 40,
             child: FloatingActionButton(
               backgroundColor: Colors.red,
               heroTag: null,
@@ -256,7 +256,7 @@ class _TinderswiperState extends State<Tinderswiper>
           ),
           Positioned(
             right: 80,
-            bottom: 12,
+            bottom: 40,
             child: FloatingActionButton(
               backgroundColor: Colors.yellow,
               heroTag: null,
