@@ -205,14 +205,13 @@ class _ProfileState extends State<Profile> {
                 child: FlatButton(
                   onPressed: () {
                     context.read<AuthenticationService>().signOut();
-                    setState(() {
-                      userName = "";
-                      userEmail = "";
-                      userPair = "";
-                    });
+                    // setState(() {
+                    //   userName = "";
+                    //   userEmail = "";
+                    //   userPair = "";
+                    // });
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) => App()));
-
                   },
                   child: Text(
                     "SIGN OUT",

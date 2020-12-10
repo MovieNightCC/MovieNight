@@ -31,7 +31,10 @@ class _RushModeState extends State<RushMode> {
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.arrow_back),
         onPressed: () {
-          Navigator.pop(context);
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => Swiper(), maintainState: true));
         },
       ),
       appBar: AppBar(

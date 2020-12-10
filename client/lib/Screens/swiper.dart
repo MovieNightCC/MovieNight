@@ -242,8 +242,7 @@ class _TinderswiperState extends State<Tinderswiper>
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => RushTwo(),
-
+                      builder: (context) => RushMode(),
                       maintainState: true,
                     ));
               },
