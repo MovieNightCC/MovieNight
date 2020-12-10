@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
+import 'package:movie_night/app-theme.dart';
+
 import 'dart:async';
 import 'package:http/http.dart' as http;
 import '../main.dart';
+import './rush_two.dart';
 import './tinderCard.dart';
 import './matches.dart';
 import './profile.dart';
 import './movieInfo.dart';
 import './movieArray.dart';
-import './rushMode.dart';
+//import './rushMode.dart';
 import './filterPopup.dart';
 import './movieMatchesInfo.dart';
 
@@ -51,6 +54,19 @@ List<int> movieYear = [];
 List<int> movieRuntime = [];
 var counter = 0;
 
+void reverseList() {
+  matchesTitles = matchesTitles.reversed.toList();
+  matchesImage = matchesImage.reversed.toList();
+  matchesYear = matchesYear.reversed.toList();
+  matchesGenre = matchesGenre.reversed.toList();
+  matchesRuntime = matchesRuntime.reversed.toList();
+  matchesSynopsis = matchesSynopsis.reversed.toList();
+  matchesNfid = matchesNfid.reversed.toList();
+  hourListMatches = hourListMatches.reversed.toList();
+  minutesListMatches = minutesListMatches.reversed.toList();
+  reversedCalled = true;
+}
+
 void cutInHalf() {
   cutInHalfCalled = true;
   print('cutinhalf is called');
@@ -63,14 +79,6 @@ void cutInHalf() {
   matchesRuntime = matchesRuntime.sublist(0, halfLength);
   matchesSynopsis = matchesSynopsis.sublist(0, halfLength);
   matchesNfid = matchesNfid.sublist(0, halfLength);
-
-  matchesTitles = matchesTitles.reversed.toList();
-  matchesImage = matchesImage.reversed.toList();
-  matchesYear = matchesYear.reversed.toList();
-  matchesGenre = matchesGenre.reversed.toList();
-  matchesRuntime = matchesRuntime.reversed.toList();
-  matchesSynopsis = matchesSynopsis.reversed.toList();
-  matchesNfid = matchesNfid.reversed.toList();
 }
 
 void makeHour() {
@@ -141,6 +149,9 @@ class _TinderswiperState extends State<Tinderswiper>
 
   @override
   Widget build(BuildContext context) {
+    if (reversedCalled == false) {
+      reverseList();
+    }
     CardController controller;
     return Scaffold(
         body: Stack(alignment: Alignment.center, children: [
@@ -162,7 +173,7 @@ class _TinderswiperState extends State<Tinderswiper>
                       child: TinderSwapCard(
                         orientation: AmassOrientation.TOP,
                         totalNum: 100,
-                        stackNum: 2,
+                        stackNum: 10,
                         swipeEdge: 5.0,
                         maxWidth: MediaQuery.of(context).size.width * 0.9,
                         maxHeight: MediaQuery.of(context).size.width * 1.6,
@@ -172,6 +183,7 @@ class _TinderswiperState extends State<Tinderswiper>
                           return Card(
                             child: Container(
                                 // padding: EdgeInsets.all(20.0),
+
                                 child: Image.network(
                               movieImagesTest[index],
                               fit: BoxFit.fill,
@@ -200,11 +212,6 @@ class _TinderswiperState extends State<Tinderswiper>
                             }
 
                             count++;
-                            // print(movieDataTest[index].runtimeType);
-
-                            //  (?userName=<userName>&movieArr=<An Array of netflix IDs>)
-                            // response = await dio.post("/test", data: {"id": 12, "name": "wendu"});
-
                           } else if (orientation == CardSwipeOrientation.LEFT) {
                             //when hated
                             print('you hate: ${movieDataTest[count]}');
@@ -230,17 +237,16 @@ class _TinderswiperState extends State<Tinderswiper>
               heroTag: null,
               onPressed: () {
                 print('pressed');
+                joinRush();
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                      // TESTING RIGHT NOW
-                      // create game instance here
-                      builder: (context) => RushMode(),
+                      builder: (context) => RushTwo(),
                       maintainState: true,
                     ));
               },
               tooltip: 'Increment',
-              child: Icon(Icons.local_fire_department, size: 40),
+              child: Icon(Icons.fast_forward, size: 40),
               elevation: 2.0,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(100)),
@@ -254,7 +260,7 @@ class _TinderswiperState extends State<Tinderswiper>
               heroTag: null,
               onPressed: () => filterPop(context),
               tooltip: 'Increment',
-              child: Icon(Icons.local_activity, size: 40),
+              child: Icon(Icons.settings, size: 40),
               elevation: 2.0,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(100)),
@@ -356,4 +362,10 @@ ThemeData _buildShrineTheme() {
             ),
             borderRadius: BorderRadius.all(Radius.circular(2.0)),
           )));
+}
+
+void joinRush() async {
+  var response = await http.get(
+      "https://asia-northeast1-movie-night-cc.cloudfunctions.net/joinRush?pairName=$userPair");
+  print(response.body);
 }
