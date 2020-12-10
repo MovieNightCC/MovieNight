@@ -301,7 +301,7 @@ class _TinderswiperState extends State<Tinderswiper>
               )),
           Positioned(
             left: 80,
-            bottom: 12,
+            bottom: 40,
             child: FloatingActionButton(
               backgroundColor: Colors.red,
               heroTag: null,
@@ -315,7 +315,7 @@ class _TinderswiperState extends State<Tinderswiper>
                       maintainState: true,
                     ));
               },
-              tooltip: 'Increment',
+              tooltip: 'Go to Rush Mode',
               child: Icon(Icons.fast_forward, size: 40),
               elevation: 2.0,
               shape: RoundedRectangleBorder(
@@ -324,12 +324,12 @@ class _TinderswiperState extends State<Tinderswiper>
           ),
           Positioned(
             right: 80,
-            bottom: 12,
+            bottom: 40,
             child: FloatingActionButton(
               backgroundColor: Colors.yellow,
               heroTag: null,
               onPressed: () => filterPop(context),
-              tooltip: 'Increment',
+              tooltip: 'Filter Movies',
               child: Icon(Icons.settings, size: 40),
               elevation: 2.0,
               shape: RoundedRectangleBorder(
@@ -438,4 +438,5 @@ void joinRush() async {
   var response = await http.get(
       "https://asia-northeast1-movie-night-cc.cloudfunctions.net/joinRush?userName=$userName&pairName=$userPair");
   print(response.body);
+  var result = response.body;
 }

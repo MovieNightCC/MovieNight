@@ -4,6 +4,7 @@ import 'package:path/path.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
+import './restart.dart';
 
 import './addPairPage.dart';
 import './swiper.dart';
@@ -204,9 +205,13 @@ class _ProfileState extends State<Profile> {
                 child: FlatButton(
                   onPressed: () {
                     context.read<AuthenticationService>().signOut();
+                    // setState(() {
+                    //   userName = "";
+                    //   userEmail = "";
+                    //   userPair = "";
+                    // });
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) => App()));
-
                   },
                   child: Text(
                     "SIGN OUT",
@@ -227,6 +232,7 @@ class _ProfileState extends State<Profile> {
                 ),
                 onPressed: () {
                   getImage(true);
+                  RestartWidget.restartApp(context);
                 },
               ),
             ),
@@ -236,7 +242,7 @@ class _ProfileState extends State<Profile> {
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
         type: BottomNavigationBarType.fixed,
-        backgroundColor: Colors.purple,
+        backgroundColor: Colors.pink,
         items: [
           BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
           BottomNavigationBarItem(
@@ -276,7 +282,7 @@ Widget userInfoElement(String input) {
 class HeaderCurvedContainer extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
-    Paint paint = Paint()..color = Colors.purple;
+    Paint paint = Paint()..color = Colors.pink;
     Path path = Path()
       ..relativeLineTo(0, 150)
       ..quadraticBezierTo(size.width / 2, 225, size.width, 150)

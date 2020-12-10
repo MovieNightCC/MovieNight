@@ -84,10 +84,10 @@ class _InfoState extends State<Info> {
                                 ));
                           },
                           tooltip: 'Increment',
-                          child: Icon(Icons.sentiment_very_dissatisfied),
+                          child: Icon(Icons.cancel_outlined),
                           elevation: 2.0,
                           shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10)),
+                              borderRadius: BorderRadius.circular(100)),
                           backgroundColor: Colors.red[900],
                         ),
                       ),
@@ -118,11 +118,11 @@ class _InfoState extends State<Info> {
                                 ));
                           },
                           tooltip: 'Increment',
-                          child: Icon(Icons.sentiment_very_satisfied),
+                          child: Icon(Icons.check),
                           elevation: 2.0,
                           shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10)),
-                          backgroundColor: Colors.blue,
+                              borderRadius: BorderRadius.circular(100)),
+                          backgroundColor: Colors.green,
                         ),
                       ),
                     ]),
