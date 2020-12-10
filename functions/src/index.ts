@@ -156,6 +156,7 @@ export const rushStatusTracker = functions.firestore
     return null;
   });
 
+
 export const joinRush = functions
   .region("asia-northeast1")
   .https.onRequest(async (request: any, response) => {
@@ -1620,17 +1621,31 @@ export const createRushGameForPair = functions.firestore
     console.log("----------------start function--------------------");
     const pairData = snap.data();
     const pairName = pairData.pairName;
-    await db.collection("rushPlus").doc(pairName).set(
-      {
-        pairName: pairName,
-        playerOneJoined: false,
-        playerTwoJoined: false,
-        playerOne: pairData["members"][0],
-        playerTwo: pairData["members"][1],
-      },
-      { merge: true }
-    );
+    const user1Name = pairName["members"][0];
+    const user2Name = pairName["members"][1];
+    const snap1 = await db.collection("user").doc(user1Name).get();
+    const snap2 = await db.collection("user").doc(user2Name).get();
+    const data1 = snap1.data();
+    const data2 = snap2.data();
+
+    if (data1 &&data2) {
+
+        await db.collection("rushPlus").doc(pairName).set(
+            {
+              pairName: pairName,
+              playerOneJoined: false,
+              playerTwoJoined: false,
+              playerOne: pairData["members"][0],
+              playerTwo: pairData["members"][1],
+              iconOne: data1["userIcon"],
+              iconTwo: data2["userIcon"],
+            },
+            { merge: true }
+          );
+    }
   });
+
+
 
 export const deleteUser = functions
   .region("asia-northeast1")

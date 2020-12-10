@@ -32,7 +32,10 @@ class _RushModeState extends State<RushMode> {
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.arrow_back),
         onPressed: () {
-          Navigator.pop(context);
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => Swiper(), maintainState: true));
         },
       ),
       appBar: AppBar(
@@ -62,7 +65,7 @@ class _RushModeState extends State<RushMode> {
                   Center(
                     child: InkWell(
                       child: Container(
-                        height: MediaQuery.of(context).size.height * 0.5,
+                        height: MediaQuery.of(context).size.height * 0.7,
                         child: TinderSwapCard(
                           orientation: AmassOrientation.TOP,
                           totalNum: 100,
@@ -212,23 +215,6 @@ class _TimerWidgetState extends State<TimerWidget> {
                 );
               }
             }),
-        // Positioned(
-        //   right: 40,
-        //   top: 50,
-        //   // child: FlatButton(
-        //   //   shape: RoundedRectangleBorder(
-        //   //     borderRadius: BorderRadius.all(Radius.circular(50.0)),
-        //   //   ),
-        //   //   child: Text(
-        //   //     "Start",
-        //   //     style: TextStyle(color: Colors.white),
-        //   //   ),
-        //   //   color: Colors.pink,
-        //   //   onPressed: () {
-        //   //     startTimer();
-        //   //   },
-        //   // ),
-        // )
       ],
     );
   }

@@ -98,9 +98,8 @@ var howManyMartialArts = 0;
 var howManyMusic = 0;
 var howManyScifi = 0;
 var howManySuperHero = 0;
-
-bool reversedCalled = false;
 var notification;
+var reversedCalled = false;
 
 // futureGay = fetchGay();
 // futureAnime = fetchAnime();
@@ -115,6 +114,61 @@ List fetchArr = [];
 
 class App extends StatefulWidget {
   _AppState createState() => _AppState();
+}
+
+class PushNotificationService {
+  final FirebaseMessaging _fcm;
+
+  PushNotificationService(this._fcm);
+
+  Future initialise(context) async {
+    // If you want to test the push notification locally,
+    // you need to get the token and input to the Firebase console
+    // https://console.firebase.google.com/project/YOUR_PROJECT_ID/notification/compose
+    String token = await _fcm.getToken();
+    print("FirebaseMessaging token: $token");
+
+    _fcm.configure(
+      onMessage: (Map<String, dynamic> message) async {
+        print("onMessage: $message");
+        showDialog(
+            context: context,
+            builder: (_) => new AlertDialog(
+                  title:
+                      new Text("Alert", style: TextStyle(color: Colors.black)),
+                  content: new Text("$message",
+                      style: TextStyle(color: Colors.black)),
+                  actions: <Widget>[
+                    FlatButton(
+                      child: Text('Close me!'),
+                      onPressed: () {
+                        Navigator.of(context, rootNavigator: true).pop();
+                      },
+                    )
+                  ],
+                ));
+        notification = PushNotificationMessage(
+          title: message['notification']['title'],
+          body: message['notification']['body'],
+        );
+      },
+      onLaunch: (Map<String, dynamic> message) async {
+        print("onLaunch: $message");
+      },
+      onResume: (Map<String, dynamic> message) async {
+        print("onResume: $message");
+      },
+    );
+  }
+}
+
+class PushNotificationMessage {
+  final String title;
+  final String body;
+  PushNotificationMessage({
+    @required this.title,
+    @required this.body,
+  });
 }
 
 class _AppState extends State<App> {
@@ -176,11 +230,9 @@ class _AppState extends State<App> {
     var initializationSettings = InitializationSettings(
         android: initializationSettingsAndroid, iOS: initializationSettingsIOS);
     flutterLocalNotificationsPlugin.initialize(initializationSettings);
-    print("notification setup done");
   }
 
   void showNotification(message) async {
-    print("showNotification setup done");
     var androidPlatformChannelSpecifics = AndroidNotificationDetails(
       Platform.isAndroid
           ? 'com.dfa.flutterchatdemo'
@@ -212,6 +264,8 @@ class _AppState extends State<App> {
 
   @override
   Widget build(BuildContext context) {
+    final pushNotificationService = PushNotificationService(firebaseMessaging);
+    pushNotificationService.initialise(context);
     return MultiProvider(
       providers: [
         Provider<AuthenticationService>(
@@ -244,6 +298,8 @@ void getUserInfo() async {
   userEmail = userdata["email"];
   userPair = userdata["pairName"];
   displayName = userdata["name"];
+  print("pairName is $userPair");
+  // if (userPair != "") {}
   howManyGay = userdata["recommendations"]["LGBTQ"].round();
   howManyAnime = userdata["recommendations"]["Anime"].round();
   howManyHorror = userdata["recommendations"]["Horror"].round();
@@ -253,10 +309,12 @@ void getUserInfo() async {
   howManyMartialArts = userdata["recommendations"]["MartialArts"].round();
   howManyMusic = userdata["recommendations"]["MusicInspired"].round();
   howManyScifi = userdata["recommendations"]["Scifi"].round();
-
+  print('round called');
   howManySuperHero = userdata["recommendations"]["Superhero"].round();
 
+  print('got user info ${userdata["email"]} in ${userdata["pairName"]}');
   userIcon = userdata["userIcon"];
+  print('got user info ${userdata["userIcon"]} in ${userdata["pairName"]}');
 
 //getting matches Info
   if (matchesTitles.length == 0) {
@@ -275,11 +333,17 @@ void getUserInfo() async {
         matchesGenre.add(matches[i]["genre"]);
         matchesNfid.add(matches[i]["nfid"]);
         matchOriLength += 1;
+        print("$matchesTitles");
       }
     }
-
+    print("match $matchesTitles");
     fetchArr.add(matchOriLength);
   }
+  // } catch (e) {
+  //   if (e is DioError) {
+  //     print('user info error or match movie fetching error!');
+  //   }
+  // }
 }
 
 //LGBTQ,anime,horror,japan,korea
@@ -301,7 +365,6 @@ Future<Response> fetchGay() async {
           gayTitles.add(movies[i]['title'].replaceAll('&#39;', "'"));
           gayImages.add(movies[i]["img"]);
         }
-
         return response;
       }
     }
@@ -623,7 +686,7 @@ class AuthenticationWrapper extends StatelessWidget {
           firebaseUser.email.substring(0, firebaseUser.email.indexOf("@"));
       //put the function here
       getUserInfo();
-
+      print('$userEmail');
       return MaterialApp(
         title: "Movie Night",
         debugShowCheckedModeBanner: false,
@@ -643,10 +706,13 @@ class AuthenticationWrapper extends StatelessWidget {
             futureMusic,
           ]),
           builder: (context, snapshot) {
+            // print('${movieDataTest.length} how many movies I have');
             if (snapshot.hasData) {
+              print("user Anime recommend $howManyAnime");
+              print("user gay recommend $howManyGay");
               //push  $howManyAnime anime movies into movie array
               //push the
-
+              print("anime movies ${animeNfid.length}");
               // shuffle(animeNfid, animeImages, animeTitles, animeSynopsis,
               //     animeYear, animeGenre, animeRuntime);
               // shuffle(gayNfid, gayImages, gayTitles, gaySynopsis, gayYear,
