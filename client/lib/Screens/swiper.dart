@@ -264,17 +264,17 @@ class _TinderswiperState extends State<Tinderswiper>
           Positioned(
               //swipe cue dislike
               left: 40,
-              bottom: 250,
+              bottom: 350,
               child: Opacity(
                 opacity: swipeLeftOpacity,
                 child: FloatingActionButton(
-                  backgroundColor: Colors.red,
+                  backgroundColor: Colors.red[900],
                   heroTag: null,
                   onPressed: () {
                     print("pressed");
                   },
                   tooltip: 'Increment',
-                  child: Icon(Icons.thumb_down, size: 50),
+                  child: Icon(Icons.cancel_outlined, size: 50),
                   elevation: 2.0,
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(100)),
@@ -283,17 +283,17 @@ class _TinderswiperState extends State<Tinderswiper>
           Positioned(
               //swipe cue dislike
               right: 40,
-              bottom: 250,
+              bottom: 350,
               child: Opacity(
                 opacity: swipeRightOpacity,
                 child: FloatingActionButton(
-                  backgroundColor: Colors.red,
+                  backgroundColor: Colors.green,
                   heroTag: null,
                   onPressed: () {
                     print("pressed");
                   },
                   tooltip: 'Increment',
-                  child: Icon(Icons.thumb_up, size: 50),
+                  child: Icon(Icons.check, size: 50),
                   elevation: 2.0,
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(100)),
