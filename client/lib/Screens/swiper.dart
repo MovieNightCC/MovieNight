@@ -238,12 +238,12 @@ class _TinderswiperState extends State<Tinderswiper>
               heroTag: null,
               onPressed: () {
                 print('pressed');
+                joinRush();
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                      // TESTING RIGHT NOW
-                      // create game instance here
-                      builder: (context) => RushMode(),
+                      builder: (context) => RushTwo(),
+
                       maintainState: true,
                     ));
               },
@@ -364,4 +364,11 @@ ThemeData _buildShrineTheme() {
             ),
             borderRadius: BorderRadius.all(Radius.circular(2.0)),
           )));
+}
+
+void joinRush() async {
+  var response = await http.get(
+      "https://asia-northeast1-movie-night-cc.cloudfunctions.net/joinRush?pairName=$userPair");
+  print(response.body);
+  var result = response.body;
 }

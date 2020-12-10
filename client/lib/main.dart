@@ -102,6 +102,7 @@ var howManySuperHero = 0;
 
 bool reversedCalled = false;
 var notification;
+bool reversedCalled = false;
 
 // futureGay = fetchGay();
 // futureAnime = fetchAnime();
@@ -116,65 +117,6 @@ List fetchArr = [];
 
 class App extends StatefulWidget {
   _AppState createState() => _AppState();
-}
-
-class PushNotificationService {
-  final FirebaseMessaging _fcm;
-
-  PushNotificationService(this._fcm);
-
-  Future initialise(context) async {
-    // If you want to test the push notification locally,
-    // you need to get the token and input to the Firebase console
-    // https://console.firebase.google.com/project/YOUR_PROJECT_ID/notification/compose
-    String token = await _fcm.getToken();
-    print("FirebaseMessaging token: $token");
-
-    _fcm.configure(
-      onMessage: (Map<String, dynamic> message) async {
-        print("onMessage: $message");
-        showDialog(
-            context: context,
-            builder: (_) => new AlertDialog(
-                  title:
-                      new Text("Alert", style: TextStyle(color: Colors.black)),
-                  content: new Text("$message",
-                      style: TextStyle(color: Colors.black)),
-                  actions: <Widget>[
-                    FlatButton(
-                      child: Text('Close me!'),
-                      onPressed: () {
-                        Navigator.of(context, rootNavigator: true).pop();
-                      },
-                    )
-                  ],
-                ));
-        notification = PushNotificationMessage(
-          title: message['notification']['title'],
-          body: message['notification']['body'],
-        );
-        showSimpleNotification(
-          Container(child: Text(notification.body)),
-          position: NotificationPosition.top,
-        );
-      },
-      onLaunch: (Map<String, dynamic> message) async {
-        print("onLaunch: $message");
-      },
-      onResume: (Map<String, dynamic> message) async {
-        print("onResume: $message");
-      },
-    );
-  }
-}
-
-class PushNotificationMessage {
-  final String title;
-  final String body;
-  PushNotificationMessage({
-    @required this.title,
-    @required this.body,
-  });
 }
 
 class _AppState extends State<App> {
@@ -236,9 +178,11 @@ class _AppState extends State<App> {
     var initializationSettings = InitializationSettings(
         android: initializationSettingsAndroid, iOS: initializationSettingsIOS);
     flutterLocalNotificationsPlugin.initialize(initializationSettings);
+    print("notification setup done");
   }
 
   void showNotification(message) async {
+    print("showNotification setup done");
     var androidPlatformChannelSpecifics = AndroidNotificationDetails(
       Platform.isAndroid
           ? 'com.dfa.flutterchatdemo'
@@ -270,8 +214,6 @@ class _AppState extends State<App> {
 
   @override
   Widget build(BuildContext context) {
-    final pushNotificationService = PushNotificationService(firebaseMessaging);
-    pushNotificationService.initialise(context);
     return MultiProvider(
       providers: [
         Provider<AuthenticationService>(
@@ -304,7 +246,6 @@ void getUserInfo() async {
   userEmail = userdata["email"];
   userPair = userdata["pairName"];
   displayName = userdata["name"];
-
   howManyGay = userdata["recommendations"]["LGBTQ"].round();
   howManyAnime = userdata["recommendations"]["Anime"].round();
   howManyHorror = userdata["recommendations"]["Horror"].round();
