@@ -193,6 +193,20 @@ class _TinderswiperState extends State<Tinderswiper>
                           );
                         },
                         cardController: controller = CardController(),
+                        swipeUpdateCallback:
+                            (DragUpdateDetails details, Alignment align) {
+                          /// Get swiping card's alignment
+                          if (align.x < 0) {
+                            //Card is LEFT swiping
+                            print('holding left');
+                          } else if (align.x > 0) {
+                            //Card is RIGHT swiping
+                            print('holding right');
+                            Tooltip(
+                              message: 'Swipe right to dislike a movie',
+                            );
+                          }
+                        },
                         swipeCompleteCallback:
                             (CardSwipeOrientation orientation, int index) {
                           if (orientation == CardSwipeOrientation.RIGHT) {
@@ -246,7 +260,7 @@ class _TinderswiperState extends State<Tinderswiper>
                       maintainState: true,
                     ));
               },
-              tooltip: 'Increment',
+              tooltip: 'Go to Rush Mode',
               child: Icon(Icons.fast_forward, size: 40),
               elevation: 2.0,
               shape: RoundedRectangleBorder(
@@ -260,7 +274,7 @@ class _TinderswiperState extends State<Tinderswiper>
               backgroundColor: Colors.yellow,
               heroTag: null,
               onPressed: () => filterPop(context),
-              tooltip: 'Increment',
+              tooltip: 'Filter Movies',
               child: Icon(Icons.settings, size: 40),
               elevation: 2.0,
               shape: RoundedRectangleBorder(

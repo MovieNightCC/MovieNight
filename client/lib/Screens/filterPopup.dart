@@ -32,13 +32,13 @@ void filterPop(context) {
         return StatefulBuilder(builder: (context, setState) {
           return new AlertDialog(
             title: new Text("What you want to watch:",
-                style: TextStyle(color: Colors.black)),
+                style: TextStyle(color: Colors.white)),
             content: Container(
               width: double.maxFinite,
               child: ListView(children: <Widget>[
                 CheckboxListTile(
                   title:
-                      Text("All Movies", style: TextStyle(color: Colors.black)),
+                      Text("All Movies", style: TextStyle(color: Colors.white)),
                   value: clickedAll,
                   onChanged: (val) {
                     setState(() {
@@ -142,7 +142,7 @@ void filterPop(context) {
                   },
                 ),
                 CheckboxListTile(
-                  title: Text("Anime", style: TextStyle(color: Colors.black)),
+                  title: Text("Anime", style: TextStyle(color: Colors.white)),
                   value: clickedAnime,
                   onChanged: (val) {
                     setState(() {
@@ -159,7 +159,7 @@ void filterPop(context) {
                 ),
                 CheckboxListTile(
                   title: Text("LGBTQ Movies",
-                      style: TextStyle(color: Colors.black)),
+                      style: TextStyle(color: Colors.white)),
                   value: clickedLGBT,
                   onChanged: (val) {
                     setState(() {
@@ -176,7 +176,7 @@ void filterPop(context) {
                 ),
                 CheckboxListTile(
                   title: Text("Horror/Thrillers",
-                      style: TextStyle(color: Colors.black)),
+                      style: TextStyle(color: Colors.white)),
                   value: clickedHorror,
                   onChanged: (val) {
                     setState(() {
@@ -193,7 +193,7 @@ void filterPop(context) {
                   },
                 ),
                 CheckboxListTile(
-                  title: Text("Romance", style: TextStyle(color: Colors.black)),
+                  title: Text("Romance", style: TextStyle(color: Colors.white)),
                   value: clickedRomance,
                   onChanged: (val) {
                     setState(() {
@@ -210,7 +210,7 @@ void filterPop(context) {
                 ),
                 CheckboxListTile(
                   title: Text("Japanese Movies",
-                      style: TextStyle(color: Colors.black)),
+                      style: TextStyle(color: Colors.white)),
                   value: clickedJapan,
                   onChanged: (val) {
                     setState(() {
@@ -228,7 +228,7 @@ void filterPop(context) {
                 ),
                 CheckboxListTile(
                   title: Text("Korean Movies",
-                      style: TextStyle(color: Colors.black)),
+                      style: TextStyle(color: Colors.white)),
                   value: clickedKorea,
                   onChanged: (val) {
                     setState(() {
@@ -246,7 +246,7 @@ void filterPop(context) {
                 ),
                 CheckboxListTile(
                   title: Text("Martial Arts Movies",
-                      style: TextStyle(color: Colors.black)),
+                      style: TextStyle(color: Colors.white)),
                   value: clickedMartial,
                   onChanged: (val) {
                     setState(() {
@@ -264,7 +264,7 @@ void filterPop(context) {
                 ),
                 CheckboxListTile(
                   title: Text("Music-related Movies",
-                      style: TextStyle(color: Colors.black)),
+                      style: TextStyle(color: Colors.white)),
                   value: clickedMusic,
                   onChanged: (val) {
                     setState(() {
@@ -282,7 +282,7 @@ void filterPop(context) {
                 ),
                 CheckboxListTile(
                   title: Text("Sci-fi Movies",
-                      style: TextStyle(color: Colors.black)),
+                      style: TextStyle(color: Colors.white)),
                   value: clickedScifi,
                   onChanged: (val) {
                     setState(() {
@@ -300,7 +300,7 @@ void filterPop(context) {
                 ),
                 CheckboxListTile(
                   title: Text("Superheroes Movies",
-                      style: TextStyle(color: Colors.black)),
+                      style: TextStyle(color: Colors.white)),
                   value: clickedSuperhero,
                   onChanged: (val) {
                     setState(() {
