@@ -4,7 +4,6 @@ import 'package:movie_night/app-theme.dart';
 
 import 'dart:async';
 import 'package:http/http.dart' as http;
-
 import '../main.dart';
 import './rush_two.dart';
 import './tinderCard.dart';
@@ -12,10 +11,10 @@ import './matches.dart';
 import './profile.dart';
 import './movieInfo.dart';
 import './movieArray.dart';
-import './rushMode.dart';
+//import './rushMode.dart';
 import './filterPopup.dart';
 import './movieMatchesInfo.dart';
-import './rush_two.dart';
+
 import 'package:http/http.dart' as http;
 
 class Swiper extends StatefulWidget {
@@ -147,6 +146,16 @@ class Tinderswiper extends StatefulWidget {
 class _TinderswiperState extends State<Tinderswiper>
     with TickerProviderStateMixin {
   int _currentIndex = 1;
+  var swipeLeftOpacity = 0.0;
+  var swipeRightOpacity = 0.0;
+
+  void setLeftCue(input) {
+    setState(() => swipeLeftOpacity = input);
+  }
+
+  void setRightCue(input) {
+    setState(() => swipeRightOpacity = input);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -196,15 +205,20 @@ class _TinderswiperState extends State<Tinderswiper>
                         swipeUpdateCallback:
                             (DragUpdateDetails details, Alignment align) {
                           /// Get swiping card's alignment
-                          if (align.x < 0) {
-                            //Card is LEFT swiping
-                            print('holding left');
-                          } else if (align.x > 0) {
-                            //Card is RIGHT swiping
-                            print('holding right');
-                            Tooltip(
-                              message: 'Swipe right to dislike a movie',
-                            );
+                          print(align.x);
+                          if (align.x > -2.0 && align.x < 2.0) {
+                            setLeftCue(0.0);
+                            setRightCue(0.0);
+                            print("should not show");
+                          } else if (align.x <= -5) {
+                            setLeftCue(1.0);
+                          } else if (align.x <= -2) {
+                            setLeftCue(0.5);
+                          } else if (align.x >= 5) {
+                            setRightCue(1.0);
+                          } else if (align.x >= 2) {
+                            setRightCue(0.5);
+                            print("should show FULL THING");
                           }
                         },
                         swipeCompleteCallback:
@@ -212,7 +226,8 @@ class _TinderswiperState extends State<Tinderswiper>
                           if (orientation == CardSwipeOrientation.RIGHT) {
                             //when liked
                             print('you liked: ${movieDataTest[count]}');
-
+                            setLeftCue(0.0);
+                            setRightCue(0.0);
                             //request to firebase server to update likes
                             if (userPair != "") {
                               updateUser(
@@ -228,6 +243,8 @@ class _TinderswiperState extends State<Tinderswiper>
 
                             count++;
                           } else if (orientation == CardSwipeOrientation.LEFT) {
+                            setLeftCue(0.0);
+                            setRightCue(0.0);
                             //when hated
                             print('you hate: ${movieDataTest[count]}');
                             count++;
@@ -245,6 +262,44 @@ class _TinderswiperState extends State<Tinderswiper>
             ),
           ),
           Positioned(
+              //swipe cue dislike
+              left: 40,
+              bottom: 250,
+              child: Opacity(
+                opacity: swipeLeftOpacity,
+                child: FloatingActionButton(
+                  backgroundColor: Colors.red,
+                  heroTag: null,
+                  onPressed: () {
+                    print("pressed");
+                  },
+                  tooltip: 'Increment',
+                  child: Icon(Icons.thumb_down, size: 50),
+                  elevation: 2.0,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(100)),
+                ),
+              )),
+          Positioned(
+              //swipe cue dislike
+              right: 40,
+              bottom: 250,
+              child: Opacity(
+                opacity: swipeRightOpacity,
+                child: FloatingActionButton(
+                  backgroundColor: Colors.red,
+                  heroTag: null,
+                  onPressed: () {
+                    print("pressed");
+                  },
+                  tooltip: 'Increment',
+                  child: Icon(Icons.thumb_up, size: 50),
+                  elevation: 2.0,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(100)),
+                ),
+              )),
+          Positioned(
             left: 80,
             bottom: 40,
             child: FloatingActionButton(
@@ -256,7 +311,7 @@ class _TinderswiperState extends State<Tinderswiper>
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => RushMode(),
+                      builder: (context) => RushTwo(),
                       maintainState: true,
                     ));
               },
@@ -381,7 +436,7 @@ ThemeData _buildShrineTheme() {
 
 void joinRush() async {
   var response = await http.get(
-      "https://asia-northeast1-movie-night-cc.cloudfunctions.net/joinRush?pairName=$userPair");
+      "https://asia-northeast1-movie-night-cc.cloudfunctions.net/joinRush?userName=$userName&pairName=$userPair");
   print(response.body);
   var result = response.body;
 }
