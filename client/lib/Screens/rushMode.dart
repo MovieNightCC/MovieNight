@@ -1,5 +1,7 @@
 import 'dart:async';
+import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
+import '../main.dart';
 import './swiper.dart';
 import './tinderCard.dart';
 import './movieInfo.dart';
@@ -26,17 +28,24 @@ class _RushModeState extends State<RushMode> {
   CardController controller;
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.arrow_back),
+        onPressed: () {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => Swiper(), maintainState: true));
+        },
+      ),
       appBar: AppBar(
-        backgroundColor: Colors.purple,
+        backgroundColor: Colors.pink,
         title: const Text('Rush Mode!',
             style: TextStyle(
                 height: 1.5, fontWeight: FontWeight.bold, fontSize: 30)),
         automaticallyImplyLeading: false,
         centerTitle: true,
-        
         elevation: 0,
       ),
-      
       body: Stack(
         alignment: Alignment.center,
         children: [
@@ -45,7 +54,7 @@ class _RushModeState extends State<RushMode> {
               width: MediaQuery.of(context).size.width,
               height: MediaQuery.of(context).size.height,
             ),
-            painter: HeaderCurvedContainer(),
+            painter: _HeaderCurvedContainer(),
           ),
           Column(
             children: [
@@ -55,7 +64,7 @@ class _RushModeState extends State<RushMode> {
                   Center(
                     child: InkWell(
                       child: Container(
-                        height: MediaQuery.of(context).size.height * 0.5,
+                        height: MediaQuery.of(context).size.height * 0.7,
                         child: TinderSwapCard(
                           orientation: AmassOrientation.TOP,
                           totalNum: 100,
@@ -110,22 +119,10 @@ class _RushModeState extends State<RushMode> {
                           },
                         ),
                       ),
-                      // onTap: () {
-                      //   Navigator.push(
-                      //       context,
-                      //       new MaterialPageRoute(
-                      //           builder: (context) => Info()));
-                      // },
                     ),
                   ),
                 ],
               ),
-              // RaisedButton(
-              //   onPressed: () => launch(
-              //       'https://www.netflix.com/title/${movieDataTest[count]}'),
-              //   child:
-              //       const Text('Go to Netflix', style: TextStyle(fontSize: 20)),
-              // ),
             ],
           ),
         ],
@@ -134,10 +131,10 @@ class _RushModeState extends State<RushMode> {
   }
 }
 
-class HeaderCurvedContainer extends CustomPainter {
+class _HeaderCurvedContainer extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
-    Paint paint = Paint()..color = Colors.purple;
+    Paint paint = Paint()..color = Colors.pink;
     Path path = Path()
       ..relativeLineTo(0, 100)
       ..quadraticBezierTo(size.width / 2, 200, size.width, 100)
@@ -212,17 +209,18 @@ class _TimerWidgetState extends State<TimerWidget> {
       children: <Widget>[
         Text("$_start",
             style: TextStyle(
-                height: 1.5, fontWeight: FontWeight.bold, fontSize: 100)),
+                height: 1.5, fontWeight: FontWeight.bold, fontSize: 70)),
         Positioned(
-          right:40,
+          right: 40,
           top: 50,
-          child:
-        FlatButton(
+          child: FlatButton(
             shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.all(Radius.circular(50.0)),
-    ),
-            child: Text("Start", 
-            style: TextStyle(color: Colors.white),),
+              borderRadius: BorderRadius.all(Radius.circular(50.0)),
+            ),
+            child: Text(
+              "Start",
+              style: TextStyle(color: Colors.white),
+            ),
             color: Colors.pink,
             onPressed: () {
               startTimer();
@@ -232,4 +230,10 @@ class _TimerWidgetState extends State<TimerWidget> {
       ],
     );
   }
+}
+
+void endRush() async {
+  var response = await http.get(
+      "https://asia-northeast1-movie-night-cc.cloudfunctions.net/endGame?pairName=$userPair");
+  print(response.body);
 }

@@ -100,6 +100,7 @@ var howManyMusic = 0;
 var howManyScifi = 0;
 var howManySuperHero = 0;
 var notification;
+var reversedCalled = false;
 
 // futureGay = fetchGay();
 // futureAnime = fetchAnime();
@@ -303,6 +304,7 @@ void getUserInfo() async {
   userPair = userdata["pairName"];
   displayName = userdata["name"];
   print("pairName is $userPair");
+  // if (userPair != "") {}
   howManyGay = userdata["recommendations"]["LGBTQ"].round();
   howManyAnime = userdata["recommendations"]["Anime"].round();
   howManyHorror = userdata["recommendations"]["Horror"].round();
