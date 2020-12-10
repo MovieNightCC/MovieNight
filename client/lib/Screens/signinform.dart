@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:movie_night/Screens/onboard.dart';
 import 'package:provider/provider.dart';
 import '../sizeconfig.dart';
 import '../constants.dart';
@@ -6,6 +7,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:movie_night/screens/auth.dart';
 import 'package:url_launcher/url_launcher.dart';
 import './swiper.dart';
+
+bool userOkay = true;
 
 class SignForm extends StatefulWidget {
   @override
@@ -68,14 +71,36 @@ class _SignFormState extends State<SignForm> {
               style: TextStyle(color: Colors.white),
             ),
             color: Colors.pink,
-            onPressed: () {
+            onPressed: () async {
               if (_formKey.currentState.validate()) {
+                var result;
                 _formKey.currentState.save();
-                context.read<AuthenticationService>().signIn(
+                result = await context.read<AuthenticationService>().signIn(
                       email: email,
                       password: password,
                     );
-                Navigator.pushNamed(context, Swiper.routeName);
+                if (result == true) {
+                  Navigator.pushNamed(context, Swiper.routeName);
+                } else {
+                  showDialog(
+                      context: context,
+                      builder: (_) => new AlertDialog(
+                            title: new Text("Alert",
+                                style: TextStyle(color: Colors.white)),
+                            content: new Text(result,
+                                style: TextStyle(color: Colors.white)),
+                            actions: <Widget>[
+                              FlatButton(
+                                child: Text('Close me!',
+                                    style: TextStyle(color: Colors.pink)),
+                                onPressed: () {
+                                  Navigator.of(context, rootNavigator: true)
+                                      .pop();
+                                },
+                              )
+                            ],
+                          ));
+                }
               }
             },
           ),
