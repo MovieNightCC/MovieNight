@@ -17,6 +17,9 @@ import './movieMatchesInfo.dart';
 
 import 'package:http/http.dart' as http;
 
+var swipeLeftOpacity = 0.0;
+var swipeRightOpacity = 0.0;
+
 class Swiper extends StatefulWidget {
   static String routeName = "/swiper";
   _AppState createState() => _AppState();
@@ -24,6 +27,14 @@ class Swiper extends StatefulWidget {
 
 class _AppState extends State<Swiper> {
   Future<Response> futureMovie;
+
+  void showLeftCue() {
+    setState(() => swipeLeftOpacity = 1);
+  }
+
+  void showRightCue() {
+    setState(() => swipeRightOpacity = 1);
+  }
 
   @override
   void initState() {
@@ -438,5 +449,4 @@ void joinRush() async {
   var response = await http.get(
       "https://asia-northeast1-movie-night-cc.cloudfunctions.net/joinRush?userName=$userName&pairName=$userPair");
   print(response.body);
-  var result = response.body;
 }

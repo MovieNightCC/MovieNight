@@ -151,10 +151,6 @@ class PushNotificationService {
           title: message['notification']['title'],
           body: message['notification']['body'],
         );
-        showSimpleNotification(
-          Container(child: Text(notification.body)),
-          position: NotificationPosition.top,
-        );
       },
       onLaunch: (Map<String, dynamic> message) async {
         print("onLaunch: $message");
