@@ -174,6 +174,7 @@ class _TimerWidgetState extends State<TimerWidget> {
                           FlatButton(
                             child: Text('Go Back to Swiper!'),
                             onPressed: () {
+                              endRush();
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(

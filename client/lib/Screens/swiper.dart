@@ -230,6 +230,40 @@ class _TinderswiperState extends State<Tinderswiper>
             ),
           ),
           Positioned(
+            //swipe cue dislike
+            left: 40,
+            bottom: 250,
+            child: FloatingActionButton(
+              backgroundColor: Colors.red,
+              heroTag: null,
+              onPressed: () {
+                print("pressed");
+              },
+              tooltip: 'Increment',
+              child: Icon(Icons.thumb_down, size: 40),
+              elevation: 2.0,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(100)),
+            ),
+          ),
+          Positioned(
+            //swipe cue dislike
+            right: 40,
+            bottom: 250,
+            child: FloatingActionButton(
+              backgroundColor: Colors.red,
+              heroTag: null,
+              onPressed: () {
+                print("presse");
+              },
+              tooltip: 'Increment',
+              child: Icon(Icons.thumb_up, size: 40),
+              elevation: 2.0,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(100)),
+            ),
+          ),
+          Positioned(
             left: 80,
             bottom: 12,
             child: FloatingActionButton(
@@ -366,6 +400,6 @@ ThemeData _buildShrineTheme() {
 
 void joinRush() async {
   var response = await http.get(
-      "https://asia-northeast1-movie-night-cc.cloudfunctions.net/joinRush?pairName=$userPair");
+      "https://asia-northeast1-movie-night-cc.cloudfunctions.net/joinRush?userName=$userName&pairName=$userPair");
   print(response.body);
 }

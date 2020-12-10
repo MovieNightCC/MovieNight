@@ -88,7 +88,8 @@ class AddPairPage extends StatelessWidget {
                   MaterialPageRoute(
                       builder: (context) => Profile(), maintainState: true));
             },
-            child: Text("I will link my partner later"),
+            child: Text("I will link my partner later",
+                style: TextStyle(color: Colors.white)),
           ),
           Spacer()
         ],

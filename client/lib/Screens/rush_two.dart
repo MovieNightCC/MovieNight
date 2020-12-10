@@ -51,11 +51,9 @@ class _TimerWidgetState extends State<TimerWidget> {
         (Timer timer) => setState(
           () {
             if (_start < 1) {
-              timer.cancel();
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => RushMode(), maintainState: true));
+              //timer.cancel();
+              // Navigator.push(
+              //     context, MaterialPageRoute(builder: (context) => RushMode()));
               _start = 3;
             } else {
               _start = _start - 1;
@@ -88,6 +86,7 @@ class _TimerWidgetState extends State<TimerWidget> {
                 .snapshots(),
             builder: (BuildContext context,
                 AsyncSnapshot<DocumentSnapshot> snapshot) {
+              //print("ICON ONE" + snapshot.data["iconOne"]);
               var playerOneJoined = snapshot.data["playerOneJoined"];
               var playerTwoJoined = snapshot.data["playerTwoJoined"];
               var playerOneIcon = snapshot.data["iconOne"];
@@ -115,6 +114,13 @@ class _TimerWidgetState extends State<TimerWidget> {
                 ]);
               }
             }),
+        FlatButton(
+          onPressed: () {
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => RushMode()));
+          },
+          child: Text("press"),
+        ),
       ],
     );
   }
