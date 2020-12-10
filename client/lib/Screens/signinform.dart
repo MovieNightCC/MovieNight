@@ -7,7 +7,6 @@ import 'package:movie_night/screens/auth.dart';
 import 'package:url_launcher/url_launcher.dart';
 import './swiper.dart';
 
-
 class SignForm extends StatefulWidget {
   @override
   _SignFormState createState() => _SignFormState();
@@ -70,27 +69,25 @@ class _SignFormState extends State<SignForm> {
             ),
             color: Colors.pink,
             onPressed: () {
-              if (_formKey.currentState.validate()) {
-                _formKey.currentState.save();
-                context.read<AuthenticationService>().signIn(
-                      email: email,
-                      password: password,
-                    );
-                Navigator.pushNamed(context, Swiper.routeName);
-              }
+              context.read<AuthenticationService>().signIn(
+                    email: email,
+                    password: password,
+                  );
+              print("Password enterd");
+              Navigator.pushNamed(context, Swiper.routeName);
             },
           ),
           Row(
             children: [
-              
               GestureDetector(
-                onTap: () => launch('https://movie-night.flycricket.io/privacy.html'),
+                onTap: () =>
+                    launch('https://movie-night.flycricket.io/privacy.html'),
                 child: Text(
                   "Read our privacy policy",
                   style: TextStyle(
-                    color: Colors.purple, 
-                    decoration: TextDecoration.underline),
-                    textAlign: TextAlign.center,
+                      color: Colors.purple,
+                      decoration: TextDecoration.underline),
+                  textAlign: TextAlign.center,
                 ),
               )
             ],
