@@ -46,27 +46,29 @@ class _TimerWidgetState extends State<TimerWidget> {
       _timer.cancel();
       _timer = null;
     } else {
-      _timer = new Timer.periodic(
-        const Duration(seconds: 1),
-        (Timer timer) => setState(
-          () {
+      _timer = new Timer.periodic(const Duration(seconds: 1), (Timer timer) {
+        if (mounted) {
+          setState(() {
             if (_start < 1) {
-              //timer.cancel();
-              // Navigator.push(
-              //     context, MaterialPageRoute(builder: (context) => RushMode()));
+              dispose();
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => RushMode(), maintainState: true));
               _start = 3;
             } else {
               _start = _start - 1;
             }
-          },
-        ),
-      );
+          });
+        }
+      });
     }
   }
 
   @override
   void dispose() {
     _timer.cancel();
+    _timer = null;
     super.dispose();
   }
 

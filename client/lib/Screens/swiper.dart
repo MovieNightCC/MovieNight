@@ -17,6 +17,9 @@ import './movieMatchesInfo.dart';
 
 import 'package:http/http.dart' as http;
 
+var swipeLeftOpacity = 0.0;
+var swipeRightOpacity = 0.0;
+
 class Swiper extends StatefulWidget {
   static String routeName = "/swiper";
   _AppState createState() => _AppState();
@@ -24,6 +27,14 @@ class Swiper extends StatefulWidget {
 
 class _AppState extends State<Swiper> {
   Future<Response> futureMovie;
+
+  void showLeftCue() {
+    setState(() => swipeLeftOpacity = 1);
+  }
+
+  void showRightCue() {
+    setState(() => swipeRightOpacity = 1);
+  }
 
   @override
   void initState() {
@@ -192,6 +203,26 @@ class _TinderswiperState extends State<Tinderswiper>
                           );
                         },
                         cardController: controller = CardController(),
+                        swipeUpdateCallback:
+                            (DragUpdateDetails details, Alignment align) {
+                          /// Get swiping card's alignment
+                          if (align.x < 0) {
+                            print(-align.x); //lowest -15
+                            if (-align.x - 13 >= 1) {
+                              swipeRightOpacity = 1;
+                            } else {
+                              swipeRightOpacity = (-align.x) - 13;
+                            }
+                            //Card is LEFT swiping
+                          } else if (align.x > 0) {
+                            //Card is RIGHT swiping
+                            if (align.x - 16 >= 1) {
+                              swipeRightOpacity = 1;
+                            } else {
+                              swipeRightOpacity = align.x - 16;
+                            }
+                          }
+                        },
                         swipeCompleteCallback:
                             (CardSwipeOrientation orientation, int index) {
                           if (orientation == CardSwipeOrientation.RIGHT) {
@@ -230,39 +261,43 @@ class _TinderswiperState extends State<Tinderswiper>
             ),
           ),
           Positioned(
-            //swipe cue dislike
-            left: 40,
-            bottom: 250,
-            child: FloatingActionButton(
-              backgroundColor: Colors.red,
-              heroTag: null,
-              onPressed: () {
-                print("pressed");
-              },
-              tooltip: 'Increment',
-              child: Icon(Icons.thumb_down, size: 40),
-              elevation: 2.0,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(100)),
-            ),
-          ),
+              //swipe cue dislike
+              left: 40,
+              bottom: 250,
+              child: Opacity(
+                opacity: 1, //swipeLeftOpacity
+                child: FloatingActionButton(
+                  backgroundColor: Colors.red,
+                  heroTag: null,
+                  onPressed: () {
+                    print("pressed");
+                  },
+                  tooltip: 'Increment',
+                  child: Icon(Icons.thumb_down, size: 50),
+                  elevation: 2.0,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(100)),
+                ),
+              )),
           Positioned(
-            //swipe cue dislike
-            right: 40,
-            bottom: 250,
-            child: FloatingActionButton(
-              backgroundColor: Colors.red,
-              heroTag: null,
-              onPressed: () {
-                print("presse");
-              },
-              tooltip: 'Increment',
-              child: Icon(Icons.thumb_up, size: 40),
-              elevation: 2.0,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(100)),
-            ),
-          ),
+              //swipe cue dislike
+              right: 40,
+              bottom: 250,
+              child: Opacity(
+                opacity: swipeRightOpacity,
+                child: FloatingActionButton(
+                  backgroundColor: Colors.red,
+                  heroTag: null,
+                  onPressed: () {
+                    print("pressed");
+                  },
+                  tooltip: 'Increment',
+                  child: Icon(Icons.thumb_up, size: 50),
+                  elevation: 2.0,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(100)),
+                ),
+              )),
           Positioned(
             left: 80,
             bottom: 12,

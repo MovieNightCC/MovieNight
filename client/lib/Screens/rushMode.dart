@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import '../main.dart';
@@ -157,48 +158,30 @@ class _TimerWidgetState extends State<TimerWidget> {
       _timer.cancel();
       _timer = null;
     } else {
-      _timer = new Timer.periodic(
-        const Duration(seconds: 1),
-        (Timer timer) => setState(
-          () {
+      _timer = new Timer.periodic(const Duration(seconds: 1), (Timer timer) {
+        if (mounted) {
+          setState(() {
             if (_start < 1) {
-              timer.cancel();
-              showDialog(
-                  context: context,
-                  builder: (_) => new AlertDialog(
-                        title: new Text("Alert",
-                            style: TextStyle(color: Colors.black)),
-                        content: new Text("Time's Up!",
-                            style: TextStyle(color: Colors.black)),
-                        actions: <Widget>[
-                          FlatButton(
-                            child: Text('Go Back to Swiper!'),
-                            onPressed: () {
-                              endRush();
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => Swiper(),
-                                      maintainState: true));
-                              Navigator.of(context, rootNavigator: true).pop();
-                            },
-                          )
-                        ],
-                      ));
-
-              _start = 10;
+              endRush();
+              dispose();
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => Swiper(), maintainState: true));
+              _start = 3;
             } else {
               _start = _start - 1;
             }
-          },
-        ),
-      );
+          });
+        }
+      });
     }
   }
 
   @override
   void dispose() {
     _timer.cancel();
+    _timer = null;
     super.dispose();
   }
 
@@ -208,23 +191,44 @@ class _TimerWidgetState extends State<TimerWidget> {
         Text("$_start",
             style: TextStyle(
                 height: 1.5, fontWeight: FontWeight.bold, fontSize: 100)),
-        Positioned(
-          right: 40,
-          top: 50,
-          child: FlatButton(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.circular(50.0)),
-            ),
-            child: Text(
-              "Start",
-              style: TextStyle(color: Colors.white),
-            ),
-            color: Colors.pink,
-            onPressed: () {
-              startTimer();
-            },
-          ),
-        )
+        StreamBuilder(
+            stream: FirebaseFirestore.instance
+                .collection('rushPlus')
+                .doc(userPair)
+                .snapshots(),
+            builder: (BuildContext context,
+                AsyncSnapshot<DocumentSnapshot> snapshot) {
+              //print("ICON ONE" + snapshot.data["iconOne"]);
+              var playerOneJoined = snapshot.data["playerOneJoined"];
+              var playerTwoJoined = snapshot.data["playerTwoJoined"];
+
+              if (!snapshot.hasData) {
+                return LinearProgressIndicator();
+              } else if (playerOneJoined && playerTwoJoined) {
+                startTimer();
+                return Container(
+                  width: 0,
+                  height: 0,
+                );
+              }
+            }),
+        // Positioned(
+        //   right: 40,
+        //   top: 50,
+        //   // child: FlatButton(
+        //   //   shape: RoundedRectangleBorder(
+        //   //     borderRadius: BorderRadius.all(Radius.circular(50.0)),
+        //   //   ),
+        //   //   child: Text(
+        //   //     "Start",
+        //   //     style: TextStyle(color: Colors.white),
+        //   //   ),
+        //   //   color: Colors.pink,
+        //   //   onPressed: () {
+        //   //     startTimer();
+        //   //   },
+        //   // ),
+        // )
       ],
     );
   }
