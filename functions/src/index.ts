@@ -1595,7 +1595,7 @@ export const seedKorean = functions
 
     const APIreq = unirest("GET", "https://unogsng.p.rapidapi.com/search");
     APIreq.query({
-      genrelist: "5685",
+      genrelist: "5685, 1989, 5685, 6626, 8248,11283",
       type: "movie",
       start_year: "1972",
       orderby: "rating",
@@ -1643,7 +1643,7 @@ export const seedAnime = functions
 
     const APIreq = unirest("GET", "https://unogsng.p.rapidapi.com/search");
     APIreq.query({
-      genrelist: "2653",
+      genrelist: "2653, 3063, 7424, 9302, 10695, 11146",
       type: "movie",
       start_year: "1972",
       orderby: "rating",
