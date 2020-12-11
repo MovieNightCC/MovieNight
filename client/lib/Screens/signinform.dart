@@ -6,6 +6,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:movie_night/screens/auth.dart';
 import 'package:url_launcher/url_launcher.dart';
 import './swiper.dart';
+import './onboard.dart';
 
 class SignForm extends StatefulWidget {
   @override
@@ -68,14 +69,21 @@ class _SignFormState extends State<SignForm> {
               style: TextStyle(color: Colors.white),
             ),
             color: Colors.pink,
-            onPressed: () {
+            onPressed: () async {
               if (_formKey.currentState.validate()) {
+                bool result;
                 _formKey.currentState.save();
-                context.read<AuthenticationService>().signIn(
+                result = await context.read<AuthenticationService>().signIn(
                       email: email,
                       password: password,
                     );
-                Navigator.pushNamed(context, Swiper.routeName);
+                if (result) {
+                  Navigator.pushNamed(context, Swiper.routeName);
+                } else {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => OnBoardScreen()));
+                }
+                // Navigator.pushNamed(context, Swiper.routeName);
               }
             },
           ),

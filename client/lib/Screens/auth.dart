@@ -14,13 +14,13 @@ class AuthenticationService {
   }
 
   // Sign in to with firebase authenticator
-  Future<String> signIn({String email, String password}) async {
+  Future<bool> signIn({String email, String password}) async {
     try {
       await _firebaseAuth.signInWithEmailAndPassword(
           email: email, password: password);
-      return "signed in";
+      return true;
     } on FirebaseAuthException catch (e) {
-      return e.message;
+      return false;
     }
   }
 
