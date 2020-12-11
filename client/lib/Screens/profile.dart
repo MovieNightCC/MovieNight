@@ -25,70 +25,72 @@ class _ProfileState extends State<Profile> {
   @override
   Widget build(BuildContext context) {
 // Image Picker
-    File _image; // Used only if you need a single picture
-    Object profileimg = NetworkImage(userIcon);
+    // File _image; // Used only if you need a single picture
+    // Object profileimg = NetworkImage(userIcon);
 
-    Future getImage(bool gallery) async {
-      ImagePicker picker = ImagePicker();
-      PickedFile pickedFile;
-      // Let user select photo from gallery
-      if (gallery) {
-        pickedFile = await picker.getImage(
-          source: ImageSource.gallery,
-        );
-      }
-      // Otherwise open camera to get new photo
-      else {
-        pickedFile = await picker.getImage(
-          source: ImageSource.camera,
-        );
-      }
+    // Future getImage(bool gallery) async {
+    //   ImagePicker picker = ImagePicker();
+    //   PickedFile pickedFile;
+    //   // Let user select photo from gallery
+    //   if (gallery) {
+    //     pickedFile = await picker.getImage(
+    //       source: ImageSource.gallery,
+    //     );
+    //   }
+    //   // Otherwise open camera to get new photo
+    //   else {
+    //     pickedFile = await picker.getImage(
+    //       source: ImageSource.camera,
+    //     );
+    //   }
 
-      Future<String> uploadFile(File _image) async {
-        var fireBaseRef =
-            FirebaseStorage.instance.ref('${basename(_image.path)}');
-        await fireBaseRef.putFile(_image);
-        print('File Uploaded');
-        final returnURL = await fireBaseRef.getDownloadURL();
-        print("returnURL $returnURL");
-        return returnURL;
-      }
+    //   Future<String> uploadFile(File _image) async {
+    //     var fireBaseRef =
+    //         FirebaseStorage.instance.ref('${basename(_image.path)}');
+    //     await fireBaseRef.putFile(_image);
+    //     print('File Uploaded');
+    //     final returnURL = await fireBaseRef.getDownloadURL();
+    //     print("returnURL $returnURL");
+    //     return returnURL;
+    //   }
 
-      DocumentReference userRef =
-          FirebaseFirestore.instance.collection('users').doc("$userName");
+    //   DocumentReference userRef =
+    //       FirebaseFirestore.instance.collection('users').doc("$userName");
 
-      Future<void> saveImages(File _image, DocumentReference ref) async {
-        String imageURL = await uploadFile(_image);
-        print('imageurl is: $imageURL');
-        await ref.update({
-          "userIcon": "$imageURL",
-        });
-      }
+    //   Future<void> saveImages(File _image, DocumentReference ref) async {
+    //     String imageURL = await uploadFile(_image);
 
-      setState(() {
-        if (pickedFile != null) {
-          _image = File(pickedFile.path);
-          print("image is $_image");
-          profileimg = Image.file(_image);
-          saveImages(_image, userRef);
-        } else {
-          print("image is $_image");
-          print('No image selected.');
-        }
-      });
-    }
+    //     print('imageurl is: $imageURL');
+    //     await ref.update({
+    //       "userIcon": "$imageURL",
+    //     });
+    //   }
+
+    //   setState(() {
+    //     if (pickedFile != null) {
+    //       _image = File(pickedFile.path);
+    //       print("image is $_image");
+    //       profileimg = Image.file(_image);
+    //       saveImages(_image, userRef);
+    //     } else {
+    //       print("image is $_image");
+    //       print('No image selected.');
+    //     }
+    //   });
+    // }
 
     return Scaffold(
       body: Stack(
         alignment: Alignment.center,
         children: [
-          CustomPaint(
-            child: Container(
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height,
-            ),
-            painter: HeaderCurvedContainer(),
-          ),
+          ProfilePicture(),
+          // CustomPaint(
+          //   child: Container(
+          //     width: MediaQuery.of(context).size.width,
+          //     height: MediaQuery.of(context).size.height,
+          //   ),
+          //   painter: HeaderCurvedContainer(),
+          // ),
           Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
@@ -100,18 +102,7 @@ class _ProfileState extends State<Profile> {
                       height: 1.5, fontWeight: FontWeight.bold, fontSize: 30),
                 ),
               ),
-              Container(
-                padding: EdgeInsets.all(10.0),
-                width: MediaQuery.of(context).size.width / 2,
-                height: MediaQuery.of(context).size.width / 2,
-                decoration: BoxDecoration(
-                    border: Border.all(color: Colors.white, width: 5),
-                    shape: BoxShape.circle,
-                    color: Colors.white,
-                    image:
-                        DecorationImage(fit: BoxFit.cover, image: profileimg)),
-              ),
-
+              // ProfilePicture(),
               Column(
                 children: [
                   Text('Username: $displayName',
@@ -131,9 +122,7 @@ class _ProfileState extends State<Profile> {
                           fontSize: 30)),
                 ],
               ),
-
               Spacer(),
-
               Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                 FlatButton(
                   shape: RoundedRectangleBorder(
@@ -150,7 +139,6 @@ class _ProfileState extends State<Profile> {
                   },
                 ),
               ]),
-
               Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                 FlatButton(
                   shape: RoundedRectangleBorder(
@@ -188,15 +176,6 @@ class _ProfileState extends State<Profile> {
                   },
                 ),
               ]),
-
-              // GestureDetector(
-              //   onTap: () {
-              //     print('$userEmail tried to retrieve email');
-              //     launch('https://movie-night.flycricket.io/privacy.html');
-              //   },
-              //   child: Text("Read our Privacy Policy",
-              //   style: TextStyle(),),
-              // ),
               Spacer(),
               Positioned(
                 bottom: 30,
@@ -204,11 +183,7 @@ class _ProfileState extends State<Profile> {
                 child: FlatButton(
                   onPressed: () {
                     context.read<AuthenticationService>().signOut();
-                    // setState(() {
-                    //   userName = "";
-                    //   userEmail = "";
-                    //   userPair = "";
-                    // });
+
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) => App()));
                   },
@@ -220,22 +195,22 @@ class _ProfileState extends State<Profile> {
               )
             ],
           ),
-          Padding(
-            padding: EdgeInsets.only(bottom: 270, left: 184),
-            child: CircleAvatar(
-              backgroundColor: Colors.black54,
-              child: IconButton(
-                icon: Icon(
-                  Icons.edit,
-                  color: Colors.white,
-                ),
-                onPressed: () {
-                  getImage(true);
-                  RestartWidget.restartApp(context);
-                },
-              ),
-            ),
-          )
+          // Padding(
+          //   padding: EdgeInsets.only(bottom: 270, left: 184),
+          //   child: CircleAvatar(
+          //     backgroundColor: Colors.black54,
+          //     child: IconButton(
+          //       icon: Icon(
+          //         Icons.edit,
+          //         color: Colors.white,
+          //       ),
+          //       onPressed: () {
+          //         getImage(true);
+          //         // RestartWidget.restartApp(context);
+          //       },
+          //     ),
+          //   ),
+          // )
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
@@ -292,4 +267,103 @@ class HeaderCurvedContainer extends CustomPainter {
 
   @override
   bool shouldRepaint(CustomPainter oldDelegate) => false;
+}
+
+class ProfilePicture extends StatefulWidget {
+  @override
+  _ProfilePictureState createState() => _ProfilePictureState();
+}
+
+class _ProfilePictureState extends State<ProfilePicture> {
+  File _image; // Used only if you need a single picture
+  Object profileimg = NetworkImage(userIcon);
+  @override
+  Widget build(BuildContext context) {
+// Image Picker
+    print("profile image $profileimg");
+    Future getImage(bool gallery) async {
+      ImagePicker picker = ImagePicker();
+      PickedFile pickedFile;
+      // Let user select photo from gallery
+      if (gallery) {
+        pickedFile = await picker.getImage(
+          source: ImageSource.gallery,
+        );
+      }
+      // Otherwise open camera to get new photo
+      else {
+        pickedFile = await picker.getImage(
+          source: ImageSource.camera,
+        );
+      }
+
+      Future<String> uploadFile(File _image) async {
+        var fireBaseRef =
+            FirebaseStorage.instance.ref('${basename(_image.path)}');
+        await fireBaseRef.putFile(_image);
+        print('File Uploaded');
+        final returnURL = await fireBaseRef.getDownloadURL();
+        print("returnURL $returnURL");
+        return returnURL;
+      }
+
+      DocumentReference userRef =
+          FirebaseFirestore.instance.collection('users').doc("$userName");
+
+      Future<void> saveImages(File _image, DocumentReference ref) async {
+        String imageURL = await uploadFile(_image);
+
+        setState(() {
+          profileimg = NetworkImage(imageURL);
+        });
+        print('imageurl is: $imageURL');
+        await ref.update({
+          "userIcon": "$imageURL",
+        });
+      }
+
+      setState(() {
+        if (pickedFile != null) {
+          _image = File(pickedFile.path);
+          print("image is $_image");
+          profileimg =
+              // profileimg = Image.file(_image);
+              saveImages(_image, userRef);
+        } else {
+          print("image is $_image");
+          print('No image selected.');
+        }
+      });
+    }
+
+    return Scaffold(
+        body: Stack(alignment: Alignment.center, children: [
+      Container(
+        padding: EdgeInsets.all(10.0),
+        width: MediaQuery.of(context).size.width / 2,
+        height: MediaQuery.of(context).size.width / 2,
+        decoration: BoxDecoration(
+            border: Border.all(color: Colors.white, width: 5),
+            shape: BoxShape.circle,
+            color: Colors.white,
+            image: DecorationImage(fit: BoxFit.cover, image: profileimg)),
+      ),
+      Padding(
+        padding: EdgeInsets.only(bottom: 270, left: 184),
+        child: CircleAvatar(
+          backgroundColor: Colors.black54,
+          child: IconButton(
+            icon: Icon(
+              Icons.edit,
+              color: Colors.white,
+            ),
+            onPressed: () {
+              getImage(true);
+              // RestartWidget.restartApp(context);
+            },
+          ),
+        ),
+      ),
+    ]));
+  }
 }
