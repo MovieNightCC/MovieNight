@@ -64,3 +64,9 @@ node_modules/
 
 # dotenv environment variables file
 .env
+
+client/ios/Flutter/Generated.xcconfig
+
+client/ios/Flutter/flutter_export_environment.sh
+
+client/pubspec.lock

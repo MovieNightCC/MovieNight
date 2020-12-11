@@ -1,7 +1,7 @@
 import * as functions from "firebase-functions";
 import * as admin from "firebase-admin";
+import { firebaseConfig } from "firebase-functions";
 const unirest = require("unirest");
-
 
 admin.initializeApp();
 const db = admin.firestore();
@@ -156,7 +156,6 @@ export const rushStatusTracker = functions.firestore
     return null;
   });
 
-
 export const joinRush = functions
   .region("asia-northeast1")
   .https.onRequest(async (request: any, response) => {
@@ -236,173 +235,275 @@ export const userRecommendAlgo = functions.firestore
       //  const newUserRec = newUserData["recommendations"];
       if (newGenreCount["Anime"] > oldGenreCount["Anime"]) {
         return change.after.ref.update({
-          recommendations: {
-            Anime: oldUserData["recommendations"]["Anime"] + 1,
-            Horror: oldUserData["recommendations"]["Horror"] - 0.1,
-            Japanese: oldUserData["recommendations"]["Japanese"] - 0.1,
-            Korean: oldUserData["recommendations"]["Korean"] - 0.1,
-            LGBTQ: oldUserData["recommendations"]["LGBTQ"] - 0.1,
-            MartialArts: oldUserData["recommendations"]["MartialArts"] - 0.1,
-            MusicInspired:
-              oldUserData["recommendations"]["MusicInspired"] - 0.1,
-            Romance: oldUserData["recommendations"]["Romance"] - 0.1,
-            Scifi: oldUserData["recommendations"]["Scifi"] - 0.1,
-            Superhero: oldUserData["recommendations"]["Superhero"] - 0.1,
-          },
+          "recommendations.Anime": admin.firestore.FieldValue.increment(1),
+          "recommendations.Horror": admin.firestore.FieldValue.increment(-0.1),
+          "recommendations.Japanese": admin.firestore.FieldValue.increment(
+            -0.1
+          ),
+          "recommendations.Korean": admin.firestore.FieldValue.increment(-0.1),
+          "recommendations.LGBTQ": admin.firestore.FieldValue.increment(-0.1),
+          "recommendations.MartialArts": admin.firestore.FieldValue.increment(
+            -0.1
+          ),
+          "recommendations.MusicInspired": admin.firestore.FieldValue.increment(
+            -0.1
+          ),
+          "recommendations.Romance": admin.firestore.FieldValue.increment(-0.1),
+          "recommendations.Scifi": admin.firestore.FieldValue.increment(-0.1),
+          "recommendations.Superhero": admin.firestore.FieldValue.increment(
+            -0.1
+          ),
         });
       }
 
       if (newGenreCount["Horror"] > oldGenreCount["Horror"]) {
         return change.after.ref.update({
-          recommendations: {
-            Anime: oldUserData["recommendations"]["Anime"] - 0.1,
-            Horror: oldUserData["recommendations"]["Horror"] + 1,
-            Japanese: oldUserData["recommendations"]["Japanese"] - 0.1,
-            Korean: oldUserData["recommendations"]["Korean"] - 0.1,
-            LGBTQ: oldUserData["recommendations"]["LGBTQ"] - 0.1,
-            MartialArts: oldUserData["recommendations"]["MartialArts"] - 0.1,
-            MusicInspired:
-              oldUserData["recommendations"]["MusicInspired"] - 0.1,
-            Romance: oldUserData["recommendations"]["Romance"] - 0.1,
-            Scifi: oldUserData["recommendations"]["Scifi"] - 0.1,
-            Superhero: oldUserData["recommendations"]["Superhero"] - 0.1,
-          },
+          "recommendations.Anime": admin.firestore.FieldValue.increment(-0.1),
+          "recommendations.Horror": admin.firestore.FieldValue.increment(1),
+          "recommendations.Japanese": admin.firestore.FieldValue.increment(
+            -0.1
+          ),
+          "recommendations.Korean": admin.firestore.FieldValue.increment(-0.1),
+          "recommendations.LGBTQ": admin.firestore.FieldValue.increment(-0.1),
+          "recommendations.MartialArts": admin.firestore.FieldValue.increment(
+            -0.1
+          ),
+          "recommendations.MusicInspired": admin.firestore.FieldValue.increment(
+            -0.1
+          ),
+
+          "recommendations.Romance": admin.firestore.FieldValue.increment(-0.1),
+          "recommendations.Scifi": admin.firestore.FieldValue.increment(-0.1),
+          "recommendations.Superhero": admin.firestore.FieldValue.increment(
+            -0.1
+          ),
         });
       }
       if (newGenreCount["Japanese"] > oldGenreCount["Japanese"]) {
         return change.after.ref.update({
-          recommendations: {
-            Anime: oldUserData["recommendations"]["Anime"] - 0.1,
-            Horror: oldUserData["recommendations"]["Horror"] - 0.1,
-            Japanese: oldUserData["recommendations"]["Japanese"] + 1,
-            Korean: oldUserData["recommendations"]["Korean"] - 0.1,
-            LGBTQ: oldUserData["recommendations"]["LGBTQ"] - 0.1,
-            MartialArts: oldUserData["recommendations"]["MartialArts"] - 0.1,
-            MusicInspired:
-              oldUserData["recommendations"]["MusicInspired"] - 0.1,
-            Romance: oldUserData["recommendations"]["Romance"] - 0.1,
-            Scifi: oldUserData["recommendations"]["Scifi"] - 0.1,
-            Superhero: oldUserData["recommendations"]["Superhero"] - 0.1,
-          },
+          "recommendations.Anime": admin.firestore.FieldValue.increment(-0.1),
+          "recommendations.Horror": admin.firestore.FieldValue.increment(-0.1),
+          "recommendations.Japanese": admin.firestore.FieldValue.increment(
+            -0.1
+          ),
+          "recommendations.Korean": admin.firestore.FieldValue.increment(-0.1),
+          "recommendations.LGBTQ": admin.firestore.FieldValue.increment(-0.1),
+          "recommendations.MartialArts": admin.firestore.FieldValue.increment(
+            -0.1
+          ),
+          "recommendations.MusicInspired": admin.firestore.FieldValue.increment(
+            -0.1
+          ),
+
+          "recommendations.Romance": admin.firestore.FieldValue.increment(-0.1),
+          "recommendations.Scifi": admin.firestore.FieldValue.increment(-0.1),
+          "recommendations.Superhero": admin.firestore.FieldValue.increment(
+            -0.1
+          ),
         });
       }
       if (newGenreCount["Korean"] > oldGenreCount["Korean"]) {
         return change.after.ref.update({
-          recommendations: {
-            Anime: oldUserData["recommendations"]["Anime"] - 0.1,
-            Horror: oldUserData["recommendations"]["Horror"] - 0.1,
-            Japanese: oldUserData["recommendations"]["Japanese"] - 0.1,
-            Korean: oldUserData["recommendations"]["Korean"] + 1,
-            LGBTQ: oldUserData["recommendations"]["LGBTQ"] - 0.1,
-            MartialArts: oldUserData["recommendations"]["MartialArts"] - 0.1,
-            MusicInspired:
-              oldUserData["recommendations"]["MusicInspired"] - 0.1,
-            Romance: oldUserData["recommendations"]["Romance"] - 0.1,
-            Scifi: oldUserData["recommendations"]["Scifi"] - 0.1,
-            Superhero: oldUserData["recommendations"]["Superhero"] - 0.1,
-          },
+            "recommendations.Anime": admin.firestore.FieldValue.increment(-0.1),
+            "recommendations.Horror": admin.firestore.FieldValue.increment(
+              -0.1
+            ),
+            "recommendations.Japanese": admin.firestore.FieldValue.increment(
+              -0.1
+            ),
+            "recommendations.Korean": admin.firestore.FieldValue.increment(1),
+            "recommendations.LGBTQ": admin.firestore.FieldValue.increment(-0.1),
+            "recommendations.MartialArts": admin.firestore.FieldValue.increment(
+              -0.1
+            ),
+            "recommendations.MusicInspired": admin.firestore.FieldValue.increment(
+              -0.1
+            ),
+
+            "recommendations.Romance": admin.firestore.FieldValue.increment(
+              -0.1
+            ),
+            "recommendations.Scifi": admin.firestore.FieldValue.increment(-0.1),
+            "recommendations.Superhero": admin.firestore.FieldValue.increment(
+              -0.1
+            ),
         });
       }
 
       if (newGenreCount["MartialArts"] > oldGenreCount["MartialArts"]) {
         return change.after.ref.update({
-          recommendations: {
-            Anime: oldUserData["recommendations"]["Anime"] - 0.1,
-            Horror: oldUserData["recommendations"]["Horror"] - 0.1,
-            Japanese: oldUserData["recommendations"]["Japanese"] - 0.1,
-            Korean: oldUserData["recommendations"]["Korean"] - 0.1,
-            LGBTQ: oldUserData["recommendations"]["LGBTQ"] - 0.1,
-            MartialArts: oldUserData["recommendations"]["MartialArts"] + 1,
-            MusicInspired:
-              oldUserData["recommendations"]["MusicInspired"] - 0.1,
-            Romance: oldUserData["recommendations"]["Romance"] - 0.1,
-            Scifi: oldUserData["recommendations"]["Scifi"] - 0.1,
-            Superhero: oldUserData["recommendations"]["Superhero"] - 0.1,
-          },
+            "recommendations.Anime": admin.firestore.FieldValue.increment(-0.1),
+            "recommendations.Horror": admin.firestore.FieldValue.increment(
+              -0.1
+            ),
+            "recommendations.Japanese": admin.firestore.FieldValue.increment(
+              -0.1
+            ),
+            "recommendations.Korean": admin.firestore.FieldValue.increment(
+              -0.1
+            ),
+            "recommendations.LGBTQ": admin.firestore.FieldValue.increment(-0.1),
+            "recommendations.MartialArts": admin.firestore.FieldValue.increment(
+              1
+            ),            
+            "recommendations.MusicInspired": admin.firestore.FieldValue.increment(
+              -0.1
+            ),
+
+            "recommendations.Romance": admin.firestore.FieldValue.increment(
+              -0.1
+            ),
+            "recommendations.Scifi": admin.firestore.FieldValue.increment(-0.1),
+            "recommendations.Superhero": admin.firestore.FieldValue.increment(
+              -0.1
+            ),
         });
       }
       if (newGenreCount["MusicInspired"] > oldGenreCount["MusicInspired"]) {
         return change.after.ref.update({
-          recommendations: {
-            Anime: oldUserData["recommendations"]["Anime"] - 0.1,
-            Horror: oldUserData["recommendations"]["Horror"] - 0.1,
-            Japanese: oldUserData["recommendations"]["Japanese"] - 0.1,
-            Korean: oldUserData["recommendations"]["Korean"] - 0.1,
-            LGBTQ: oldUserData["recommendations"]["LGBTQ"] - 0.1,
-            MartialArts: oldUserData["recommendations"]["MartialArts"] - 0.1,
-            MusicInspired: oldUserData["recommendations"]["MusicInspired"] + 1,
-            Romance: oldUserData["recommendations"]["Romance"] - 0.1,
-            Scifi: oldUserData["recommendations"]["Scifi"] - 0.1,
-            Superhero: oldUserData["recommendations"]["Superhero"] - 0.1,
-          },
+            "recommendations.Anime": admin.firestore.FieldValue.increment(-0.1),
+            "recommendations.Horror": admin.firestore.FieldValue.increment(
+              -0.1
+            ),
+            "recommendations.Japanese": admin.firestore.FieldValue.increment(
+              -0.1
+            ),
+            "recommendations.Korean": admin.firestore.FieldValue.increment(
+              -0.1
+            ),
+            "recommendations.LGBTQ": admin.firestore.FieldValue.increment(-0.1),
+            "recommendations.MartialArts": admin.firestore.FieldValue.increment(
+              -0.1
+            ),
+            "recommendations.MusicInspired": admin.firestore.FieldValue.increment(
+              1
+            ),            
+            "recommendations.Romance": admin.firestore.FieldValue.increment(
+              -0.1
+            ),
+            "recommendations.Scifi": admin.firestore.FieldValue.increment(-0.1),
+            "recommendations.Superhero": admin.firestore.FieldValue.increment(
+              -0.1
+            ),
         });
       }
       if (newGenreCount["Romance"] > oldGenreCount["Romance"]) {
         return change.after.ref.update({
-          recommendations: {
-            Anime: oldUserData["recommendations"]["Anime"] - 0.1,
-            Horror: oldUserData["recommendations"]["Horror"] - 0.1,
-            Japanese: oldUserData["recommendations"]["Japanese"] - 0.1,
-            Korean: oldUserData["recommendations"]["Korean"] - 0.1,
-            LGBTQ: oldUserData["recommendations"]["LGBTQ"] - 0.1,
-            MartialArts: oldUserData["recommendations"]["MartialArts"] - 0.1,
-            MusicInspired:
-              oldUserData["recommendations"]["MusicInspired"] - 0.1,
-            Romance: oldUserData["recommendations"]["Romance"] + 1,
-            Scifi: oldUserData["recommendations"]["Scifi"] - 0.1,
-            Superhero: oldUserData["recommendations"]["Superhero"] - 0.1,
-          },
+            "recommendations.Anime": admin.firestore.FieldValue.increment(-0.1),
+            "recommendations.Horror": admin.firestore.FieldValue.increment(
+              -0.1
+            ),
+            "recommendations.Japanese": admin.firestore.FieldValue.increment(
+              -0.1
+            ),
+            "recommendations.Korean": admin.firestore.FieldValue.increment(
+              -0.1
+            ),
+            "recommendations.LGBTQ": admin.firestore.FieldValue.increment(-0.1),
+            "recommendations.MartialArts": admin.firestore.FieldValue.increment(
+              -0.1
+            ),
+            "recommendations.MusicInspired": admin.firestore.FieldValue.increment(
+              -0.1
+            ),
+
+            "recommendations.Romance": admin.firestore.FieldValue.increment(
+              -0.1
+            ),            
+            "recommendations.Scifi": admin.firestore.FieldValue.increment(-0.1),
+            "recommendations.Superhero": admin.firestore.FieldValue.increment(
+              -0.1
+            ),
         });
       }
       if (newGenreCount["Scifi"] > oldGenreCount["Scifi"]) {
         return change.after.ref.update({
           recommendations: {
-            Anime: oldUserData["recommendations"]["Anime"] - 0.1,
-            Horror: oldUserData["recommendations"]["Horror"] - 0.1,
-            Japanese: oldUserData["recommendations"]["Japanese"] - 0.1,
-            Korean: oldUserData["recommendations"]["Korean"] - 0.1,
-            LGBTQ: oldUserData["recommendations"]["LGBTQ"] - 0.1,
-            MartialArts: oldUserData["recommendations"]["MartialArts"] - 0.1,
-            MusicInspired:
-              oldUserData["recommendations"]["MusicInspired"] - 0.1,
-            Romance: oldUserData["recommendations"]["Romance"] - 0.1,
-            Scifi: oldUserData["recommendations"]["Scifi"] + 1,
-            Superhero: oldUserData["recommendations"]["Superhero"] - 0.1,
+            "recommendations.Anime": admin.firestore.FieldValue.increment(-0.1),
+            "recommendations.Horror": admin.firestore.FieldValue.increment(
+              -0.1
+            ),
+            "recommendations.Japanese": admin.firestore.FieldValue.increment(
+              -0.1
+            ),
+            "recommendations.Korean": admin.firestore.FieldValue.increment(
+              -0.1
+            ),
+            "recommendations.LGBTQ": admin.firestore.FieldValue.increment(-0.1),
+            "recommendations.MartialArts": admin.firestore.FieldValue.increment(
+              -0.1
+            ),
+            "recommendations.MusicInspired": admin.firestore.FieldValue.increment(
+              -0.1
+            ),
+
+            "recommendations.Romance": admin.firestore.FieldValue.increment(
+              -0.1
+            ),
+            "recommendations.Scifi": admin.firestore.FieldValue.increment(1),
+            "recommendations.Superhero": admin.firestore.FieldValue.increment(
+              -0.1
+            ),
           },
         });
       }
       if (newGenreCount["Superhero"] > oldGenreCount["Superhero"]) {
         return change.after.ref.update({
-          recommendations: {
-            Anime: oldUserData["recommendations"]["Anime"] - 0.1,
-            Horror: oldUserData["recommendations"]["Horror"] - 0.1,
-            Japanese: oldUserData["recommendations"]["Japanese"] - 0.1,
-            Korean: oldUserData["recommendations"]["Korean"] - 0.1,
-            LGBTQ: oldUserData["recommendations"]["LGBTQ"] - 0.1,
-            MartialArts: oldUserData["recommendations"]["MartialArts"] - 0.1,
-            MusicInspired:
-              oldUserData["recommendations"]["MusicInspired"] - 0.1,
-            Romance: oldUserData["recommendations"]["Romance"] - 0.1,
-            Scifi: oldUserData["recommendations"]["Scifi"] - 0.1,
-            Superhero: oldUserData["recommendations"]["Superhero"] + 1,
-          },
-        });
+            "recommendations.Anime": admin.firestore.FieldValue.increment(-0.1),
+            "recommendations.Horror": admin.firestore.FieldValue.increment(
+              -0.1
+            ),
+            "recommendations.Japanese": admin.firestore.FieldValue.increment(
+              -0.1
+            ),
+            "recommendations.Korean": admin.firestore.FieldValue.increment(
+              -0.1
+            ),
+            "recommendations.LGBTQ": admin.firestore.FieldValue.increment(-0.1),
+            "recommendations.MartialArts": admin.firestore.FieldValue.increment(
+              -0.1
+            ),
+            "recommendations.MusicInspired": admin.firestore.FieldValue.increment(
+              -0.1
+            ),
+
+            "recommendations.Romance": admin.firestore.FieldValue.increment(
+              -0.1
+            ),
+            "recommendations.Scifi": admin.firestore.FieldValue.increment(-0.1),
+            "recommendations.Superhero": admin.firestore.FieldValue.increment(
+              -0.1
+            ),});
       }
 
       if (newGenreCount["LGBTQ"] > oldGenreCount["LGBTQ"]) {
         return change.after.ref.update({
           recommendations: {
-            Anime: oldUserData["recommendations"]["Anime"] - 0.1,
-            Horror: oldUserData["recommendations"]["Horror"] - 0.1,
-            Japanese: oldUserData["recommendations"]["Japanese"] - 0.1,
-            Korean: oldUserData["recommendations"]["Korean"] - 0.1,
+            "recommendations.Anime": admin.firestore.FieldValue.increment(-0.1),
+            "recommendations.Horror": admin.firestore.FieldValue.increment(
+              -0.1
+            ),
+            "recommendations.Japanese": admin.firestore.FieldValue.increment(
+              -0.1
+            ),
+            "recommendations.Korean": admin.firestore.FieldValue.increment(
+              -0.1
+            ),
             LGBTQ: oldUserData["recommendations"]["LGBTQ"] + 1,
-            MartialArts: oldUserData["recommendations"]["MartialArts"] - 0.1,
-            MusicInspired:
-              oldUserData["recommendations"]["MusicInspired"] - 0.1,
-            Romance: oldUserData["recommendations"]["Romance"] - 0.1,
-            Scifi: oldUserData["recommendations"]["Scifi"] - 0.1,
-            Superhero: oldUserData["recommendations"]["Superhero"] - 0.1,
+            "recommendations.MartialArts": admin.firestore.FieldValue.increment(
+              -0.1
+            ),
+            "recommendations.MusicInspired": admin.firestore.FieldValue.increment(
+              -0.1
+            ),
+
+            "recommendations.Romance": admin.firestore.FieldValue.increment(
+              -0.1
+            ),
+            "recommendations.Scifi": admin.firestore.FieldValue.increment(-0.1),
+            "recommendations.Superhero": admin.firestore.FieldValue.increment(
+              -0.1
+            ),
           },
         });
       }
@@ -422,17 +523,32 @@ export const pairRecommendAlgo = functions.firestore
       if (newGenreCount["Anime"] > oldGenreCount["Anime"]) {
         return change.after.ref.update({
           recommendations: {
-            Anime: oldUserData["recommendations"]["Anime"] + 1,
-            Horror: oldUserData["recommendations"]["Horror"] - 0.1,
-            Japanese: oldUserData["recommendations"]["Japanese"] - 0.1,
-            Korean: oldUserData["recommendations"]["Korean"] - 0.1,
-            LGBTQ: oldUserData["recommendations"]["LGBTQ"] - 0.1,
-            MartialArts: oldUserData["recommendations"]["MartialArts"] - 0.1,
-            MusicInspired:
-              oldUserData["recommendations"]["MusicInspired"] - 0.1,
-            Romance: oldUserData["recommendations"]["Romance"] - 0.1,
-            Scifi: oldUserData["recommendations"]["Scifi"] - 0.1,
-            Superhero: oldUserData["recommendations"]["Superhero"] - 0.1,
+            "recommendations.Anime":
+              admin.firestore.FieldValue.increment(1) + 1,
+            "recommendations.Horror": admin.firestore.FieldValue.increment(
+              -0.1
+            ),
+            "recommendations.Japanese": admin.firestore.FieldValue.increment(
+              -0.1
+            ),
+            "recommendations.Korean": admin.firestore.FieldValue.increment(
+              -0.1
+            ),
+            "recommendations.LGBTQ": admin.firestore.FieldValue.increment(-0.1),
+            "recommendations.MartialArts": admin.firestore.FieldValue.increment(
+              -0.1
+            ),
+            "recommendations.MusicInspired": admin.firestore.FieldValue.increment(
+              -0.1
+            ),
+
+            "recommendations.Romance": admin.firestore.FieldValue.increment(
+              -0.1
+            ),
+            "recommendations.Scifi": admin.firestore.FieldValue.increment(-0.1),
+            "recommendations.Superhero": admin.firestore.FieldValue.increment(
+              -0.1
+            ),
           },
         });
       }
@@ -440,51 +556,87 @@ export const pairRecommendAlgo = functions.firestore
       if (newGenreCount["Horror"] > oldGenreCount["Horror"]) {
         return change.after.ref.update({
           recommendations: {
-            Anime: oldUserData["recommendations"]["Anime"] - 0.1,
+            "recommendations.Anime": admin.firestore.FieldValue.increment(-0.1),
             Horror: oldUserData["recommendations"]["Horror"] + 1,
-            Japanese: oldUserData["recommendations"]["Japanese"] - 0.1,
-            Korean: oldUserData["recommendations"]["Korean"] - 0.1,
-            LGBTQ: oldUserData["recommendations"]["LGBTQ"] - 0.1,
-            MartialArts: oldUserData["recommendations"]["MartialArts"] - 0.1,
-            MusicInspired:
-              oldUserData["recommendations"]["MusicInspired"] - 0.1,
-            Romance: oldUserData["recommendations"]["Romance"] - 0.1,
-            Scifi: oldUserData["recommendations"]["Scifi"] - 0.1,
-            Superhero: oldUserData["recommendations"]["Superhero"] - 0.1,
+            "recommendations.Japanese": admin.firestore.FieldValue.increment(
+              -0.1
+            ),
+            "recommendations.Korean": admin.firestore.FieldValue.increment(
+              -0.1
+            ),
+            "recommendations.LGBTQ": admin.firestore.FieldValue.increment(-0.1),
+            "recommendations.MartialArts": admin.firestore.FieldValue.increment(
+              -0.1
+            ),
+            "recommendations.MusicInspired": admin.firestore.FieldValue.increment(
+              -0.1
+            ),
+
+            "recommendations.Romance": admin.firestore.FieldValue.increment(
+              -0.1
+            ),
+            "recommendations.Scifi": admin.firestore.FieldValue.increment(-0.1),
+            "recommendations.Superhero": admin.firestore.FieldValue.increment(
+              -0.1
+            ),
           },
         });
       }
       if (newGenreCount["Japanese"] > oldGenreCount["Japanese"]) {
         return change.after.ref.update({
           recommendations: {
-            Anime: oldUserData["recommendations"]["Anime"] - 0.1,
-            Horror: oldUserData["recommendations"]["Horror"] - 0.1,
+            "recommendations.Anime": admin.firestore.FieldValue.increment(-0.1),
+            "recommendations.Horror": admin.firestore.FieldValue.increment(
+              -0.1
+            ),
             Japanese: oldUserData["recommendations"]["Japanese"] + 1,
-            Korean: oldUserData["recommendations"]["Korean"] - 0.1,
-            LGBTQ: oldUserData["recommendations"]["LGBTQ"] - 0.1,
-            MartialArts: oldUserData["recommendations"]["MartialArts"] - 0.1,
-            MusicInspired:
-              oldUserData["recommendations"]["MusicInspired"] - 0.1,
-            Romance: oldUserData["recommendations"]["Romance"] - 0.1,
-            Scifi: oldUserData["recommendations"]["Scifi"] - 0.1,
-            Superhero: oldUserData["recommendations"]["Superhero"] - 0.1,
+            "recommendations.Korean": admin.firestore.FieldValue.increment(
+              -0.1
+            ),
+            "recommendations.LGBTQ": admin.firestore.FieldValue.increment(-0.1),
+            "recommendations.MartialArts": admin.firestore.FieldValue.increment(
+              -0.1
+            ),
+            "recommendations.MusicInspired": admin.firestore.FieldValue.increment(
+              -0.1
+            ),
+
+            "recommendations.Romance": admin.firestore.FieldValue.increment(
+              -0.1
+            ),
+            "recommendations.Scifi": admin.firestore.FieldValue.increment(-0.1),
+            "recommendations.Superhero": admin.firestore.FieldValue.increment(
+              -0.1
+            ),
           },
         });
       }
       if (newGenreCount["Korean"] > oldGenreCount["Korean"]) {
         return change.after.ref.update({
           recommendations: {
-            Anime: oldUserData["recommendations"]["Anime"] - 0.1,
-            Horror: oldUserData["recommendations"]["Horror"] - 0.1,
-            Japanese: oldUserData["recommendations"]["Japanese"] - 0.1,
+            "recommendations.Anime": admin.firestore.FieldValue.increment(-0.1),
+            "recommendations.Horror": admin.firestore.FieldValue.increment(
+              -0.1
+            ),
+            "recommendations.Japanese": admin.firestore.FieldValue.increment(
+              -0.1
+            ),
             Korean: oldUserData["recommendations"]["Korean"] + 1,
-            LGBTQ: oldUserData["recommendations"]["LGBTQ"] - 0.1,
-            MartialArts: oldUserData["recommendations"]["MartialArts"] - 0.1,
-            MusicInspired:
-              oldUserData["recommendations"]["MusicInspired"] - 0.1,
-            Romance: oldUserData["recommendations"]["Romance"] - 0.1,
-            Scifi: oldUserData["recommendations"]["Scifi"] - 0.1,
-            Superhero: oldUserData["recommendations"]["Superhero"] - 0.1,
+            "recommendations.LGBTQ": admin.firestore.FieldValue.increment(-0.1),
+            "recommendations.MartialArts": admin.firestore.FieldValue.increment(
+              -0.1
+            ),
+            "recommendations.MusicInspired": admin.firestore.FieldValue.increment(
+              -0.1
+            ),
+
+            "recommendations.Romance": admin.firestore.FieldValue.increment(
+              -0.1
+            ),
+            "recommendations.Scifi": admin.firestore.FieldValue.increment(-0.1),
+            "recommendations.Superhero": admin.firestore.FieldValue.increment(
+              -0.1
+            ),
           },
         });
       }
@@ -492,83 +644,145 @@ export const pairRecommendAlgo = functions.firestore
       if (newGenreCount["MartialArts"] > oldGenreCount["MartialArts"]) {
         return change.after.ref.update({
           recommendations: {
-            Anime: oldUserData["recommendations"]["Anime"] - 0.1,
-            Horror: oldUserData["recommendations"]["Horror"] - 0.1,
-            Japanese: oldUserData["recommendations"]["Japanese"] - 0.1,
-            Korean: oldUserData["recommendations"]["Korean"] - 0.1,
-            LGBTQ: oldUserData["recommendations"]["LGBTQ"] - 0.1,
+            "recommendations.Anime": admin.firestore.FieldValue.increment(-0.1),
+            "recommendations.Horror": admin.firestore.FieldValue.increment(
+              -0.1
+            ),
+            "recommendations.Japanese": admin.firestore.FieldValue.increment(
+              -0.1
+            ),
+            "recommendations.Korean": admin.firestore.FieldValue.increment(
+              -0.1
+            ),
+            "recommendations.LGBTQ": admin.firestore.FieldValue.increment(-0.1),
             MartialArts: oldUserData["recommendations"]["MartialArts"] + 1,
-            MusicInspired:
-              oldUserData["recommendations"]["MusicInspired"] - 0.1,
-            Romance: oldUserData["recommendations"]["Romance"] - 0.1,
-            Scifi: oldUserData["recommendations"]["Scifi"] - 0.1,
-            Superhero: oldUserData["recommendations"]["Superhero"] - 0.1,
+            "recommendations.MusicInspired": admin.firestore.FieldValue.increment(
+              -0.1
+            ),
+
+            "recommendations.Romance": admin.firestore.FieldValue.increment(
+              -0.1
+            ),
+            "recommendations.Scifi": admin.firestore.FieldValue.increment(-0.1),
+            "recommendations.Superhero": admin.firestore.FieldValue.increment(
+              -0.1
+            ),
           },
         });
       }
       if (newGenreCount["MusicInspired"] > oldGenreCount["MusicInspired"]) {
         return change.after.ref.update({
           recommendations: {
-            Anime: oldUserData["recommendations"]["Anime"] - 0.1,
-            Horror: oldUserData["recommendations"]["Horror"] - 0.1,
-            Japanese: oldUserData["recommendations"]["Japanese"] - 0.1,
-            Korean: oldUserData["recommendations"]["Korean"] - 0.1,
-            LGBTQ: oldUserData["recommendations"]["LGBTQ"] - 0.1,
-            MartialArts: oldUserData["recommendations"]["MartialArts"] - 0.1,
+            "recommendations.Anime": admin.firestore.FieldValue.increment(-0.1),
+            "recommendations.Horror": admin.firestore.FieldValue.increment(
+              -0.1
+            ),
+            "recommendations.Japanese": admin.firestore.FieldValue.increment(
+              -0.1
+            ),
+            "recommendations.Korean": admin.firestore.FieldValue.increment(
+              -0.1
+            ),
+            "recommendations.LGBTQ": admin.firestore.FieldValue.increment(-0.1),
+            "recommendations.MartialArts": admin.firestore.FieldValue.increment(
+              -0.1
+            ),
             MusicInspired: oldUserData["recommendations"]["MusicInspired"] + 1,
-            Romance: oldUserData["recommendations"]["Romance"] - 0.1,
-            Scifi: oldUserData["recommendations"]["Scifi"] - 0.1,
-            Superhero: oldUserData["recommendations"]["Superhero"] - 0.1,
+            "recommendations.Romance": admin.firestore.FieldValue.increment(
+              -0.1
+            ),
+            "recommendations.Scifi": admin.firestore.FieldValue.increment(-0.1),
+            "recommendations.Superhero": admin.firestore.FieldValue.increment(
+              -0.1
+            ),
           },
         });
       }
       if (newGenreCount["Romance"] > oldGenreCount["Romance"]) {
         return change.after.ref.update({
           recommendations: {
-            Anime: oldUserData["recommendations"]["Anime"] - 0.1,
-            Horror: oldUserData["recommendations"]["Horror"] - 0.1,
-            Japanese: oldUserData["recommendations"]["Japanese"] - 0.1,
-            Korean: oldUserData["recommendations"]["Korean"] - 0.1,
-            LGBTQ: oldUserData["recommendations"]["LGBTQ"] - 0.1,
-            MartialArts: oldUserData["recommendations"]["MartialArts"] - 0.1,
-            MusicInspired:
-              oldUserData["recommendations"]["MusicInspired"] - 0.1,
+            "recommendations.Anime": admin.firestore.FieldValue.increment(-0.1),
+            "recommendations.Horror": admin.firestore.FieldValue.increment(
+              -0.1
+            ),
+            "recommendations.Japanese": admin.firestore.FieldValue.increment(
+              -0.1
+            ),
+            "recommendations.Korean": admin.firestore.FieldValue.increment(
+              -0.1
+            ),
+            "recommendations.LGBTQ": admin.firestore.FieldValue.increment(-0.1),
+            "recommendations.MartialArts": admin.firestore.FieldValue.increment(
+              -0.1
+            ),
+            "recommendations.MusicInspired": admin.firestore.FieldValue.increment(
+              -0.1
+            ),
+
             Romance: oldUserData["recommendations"]["Romance"] + 1,
-            Scifi: oldUserData["recommendations"]["Scifi"] - 0.1,
-            Superhero: oldUserData["recommendations"]["Superhero"] - 0.1,
+            "recommendations.Scifi": admin.firestore.FieldValue.increment(-0.1),
+            "recommendations.Superhero": admin.firestore.FieldValue.increment(
+              -0.1
+            ),
           },
         });
       }
       if (newGenreCount["Scifi"] > oldGenreCount["Scifi"]) {
         return change.after.ref.update({
           recommendations: {
-            Anime: oldUserData["recommendations"]["Anime"] - 0.1,
-            Horror: oldUserData["recommendations"]["Horror"] - 0.1,
-            Japanese: oldUserData["recommendations"]["Japanese"] - 0.1,
-            Korean: oldUserData["recommendations"]["Korean"] - 0.1,
-            LGBTQ: oldUserData["recommendations"]["LGBTQ"] - 0.1,
-            MartialArts: oldUserData["recommendations"]["MartialArts"] - 0.1,
-            MusicInspired:
-              oldUserData["recommendations"]["MusicInspired"] - 0.1,
-            Romance: oldUserData["recommendations"]["Romance"] - 0.1,
+            "recommendations.Anime": admin.firestore.FieldValue.increment(-0.1),
+            "recommendations.Horror": admin.firestore.FieldValue.increment(
+              -0.1
+            ),
+            "recommendations.Japanese": admin.firestore.FieldValue.increment(
+              -0.1
+            ),
+            "recommendations.Korean": admin.firestore.FieldValue.increment(
+              -0.1
+            ),
+            "recommendations.LGBTQ": admin.firestore.FieldValue.increment(-0.1),
+            "recommendations.MartialArts": admin.firestore.FieldValue.increment(
+              -0.1
+            ),
+            "recommendations.MusicInspired": admin.firestore.FieldValue.increment(
+              -0.1
+            ),
+
+            "recommendations.Romance": admin.firestore.FieldValue.increment(
+              -0.1
+            ),
             Scifi: admin.firestore.FieldValue.increment(1),
-            Superhero: oldUserData["recommendations"]["Superhero"] - 0.1,
+            "recommendations.Superhero": admin.firestore.FieldValue.increment(
+              -0.1
+            ),
           },
         });
       }
       if (newGenreCount["Superhero"] > oldGenreCount["Superhero"]) {
         return change.after.ref.update({
           recommendations: {
-            Anime: oldUserData["recommendations"]["Anime"] - 0.1,
-            Horror: oldUserData["recommendations"]["Horror"] - 0.1,
-            Japanese: oldUserData["recommendations"]["Japanese"] - 0.1,
-            Korean: oldUserData["recommendations"]["Korean"] - 0.1,
-            LGBTQ: oldUserData["recommendations"]["LGBTQ"] - 0.1,
-            MartialArts: oldUserData["recommendations"]["MartialArts"] - 0.1,
-            MusicInspired:
-              oldUserData["recommendations"]["MusicInspired"] - 0.1,
-            Romance: oldUserData["recommendations"]["Romance"] - 0.1,
-            Scifi: oldUserData["recommendations"]["Scifi"] - 0.1,
+            "recommendations.Anime": admin.firestore.FieldValue.increment(-0.1),
+            "recommendations.Horror": admin.firestore.FieldValue.increment(
+              -0.1
+            ),
+            "recommendations.Japanese": admin.firestore.FieldValue.increment(
+              -0.1
+            ),
+            "recommendations.Korean": admin.firestore.FieldValue.increment(
+              -0.1
+            ),
+            "recommendations.LGBTQ": admin.firestore.FieldValue.increment(-0.1),
+            "recommendations.MartialArts": admin.firestore.FieldValue.increment(
+              -0.1
+            ),
+            "recommendations.MusicInspired": admin.firestore.FieldValue.increment(
+              -0.1
+            ),
+
+            "recommendations.Romance": admin.firestore.FieldValue.increment(
+              -0.1
+            ),
+            "recommendations.Scifi": admin.firestore.FieldValue.increment(-0.1),
             Superhero: oldUserData["recommendations"]["Superhero"] + 1,
           },
         });
@@ -577,25 +791,37 @@ export const pairRecommendAlgo = functions.firestore
       if (newGenreCount["LGBTQ"] > oldGenreCount["LGBTQ"]) {
         return change.after.ref.update({
           recommendations: {
-            Anime: oldUserData["recommendations"]["Anime"] - 0.1,
-            Horror: oldUserData["recommendations"]["Horror"] - 0.1,
-            Japanese: oldUserData["recommendations"]["Japanese"] - 0.1,
-            Korean: oldUserData["recommendations"]["Korean"] - 0.1,
+            "recommendations.Anime": admin.firestore.FieldValue.increment(-0.1),
+            "recommendations.Horror": admin.firestore.FieldValue.increment(
+              -0.1
+            ),
+            "recommendations.Japanese": admin.firestore.FieldValue.increment(
+              -0.1
+            ),
+            "recommendations.Korean": admin.firestore.FieldValue.increment(
+              -0.1
+            ),
             LGBTQ: oldUserData["recommendations"]["LGBTQ"] + 1,
-            MartialArts: oldUserData["recommendations"]["MartialArts"] - 0.1,
-            MusicInspired:
-              oldUserData["recommendations"]["MusicInspired"] - 0.1,
-            Romance: oldUserData["recommendations"]["Romance"] - 0.1,
-            Scifi: oldUserData["recommendations"]["Scifi"] - 0.1,
-            Superhero: oldUserData["recommendations"]["Superhero"] - 0.1,
+            "recommendations.MartialArts": admin.firestore.FieldValue.increment(
+              -0.1
+            ),
+            "recommendations.MusicInspired": admin.firestore.FieldValue.increment(
+              -0.1
+            ),
+
+            "recommendations.Romance": admin.firestore.FieldValue.increment(
+              -0.1
+            ),
+            "recommendations.Scifi": admin.firestore.FieldValue.increment(-0.1),
+            "recommendations.Superhero": admin.firestore.FieldValue.increment(
+              -0.1
+            ),
           },
         });
       }
     }
     return null;
   });
-
-
 
 //// RUSH 2.0 game code ///////////
 
@@ -615,7 +841,6 @@ export const createGame = functions
     response.send(`${data} current game state`);
   });
 
-
 // get Game
 export const getGame = functions
   .region("asia-northeast1")
@@ -633,16 +858,21 @@ export const startGame = functions
   .https.onRequest(async (request: any, response) => {
     const gameRef = db.collection("rushplus").doc(request.query.pairName);
     const result = await gameRef.get();
- 
-    gameRef.set({
-     started: true,
-    },{merge  : true}).then(_=>console.log("success")).catch(_=>console.error("did not set"))
+
+    gameRef
+      .set(
+        {
+          started: true,
+        },
+        { merge: true }
+      )
+      .then((_) => console.log("success"))
+      .catch((_) => console.error("did not set"));
 
     const data = result.data();
     if (data) response.json(`reset the game:${data}`);
     else response.json("failed to reset the game.");
   });
-
 
 // reset game values (joined and started) or maybe just delete the game????
 export const resetGame = functions
@@ -650,11 +880,13 @@ export const resetGame = functions
   .https.onRequest(async (request: any, response) => {
     const gameRef = db.collection("rushplus").doc(request.query.pairName);
     const result = await gameRef.get();
- 
-    gameRef.update({
-     started: false,
 
-    }).then(_=>console.log("success")).catch(_=>console.error("did not set"))
+    gameRef
+      .update({
+        started: false,
+      })
+      .then((_) => console.log("success"))
+      .catch((_) => console.error("did not set"));
     const data = result.data();
     if (data) response.json(`started the time:${data}`);
     else response.json("no game found.");
@@ -996,7 +1228,6 @@ export const testAiko = functions
       );
     }
   });
-
 
 //Get Pair Name of user (by UserName)
 export const checkIfUserHasPairs = functions
@@ -1613,8 +1844,6 @@ export const setUpRushGame = functions
     });
   });
 
-
-
 export const createRushGameForPair = functions.firestore
   .document("pairs/{pairName}")
   .onCreate(async (snap, context) => {
@@ -1628,24 +1857,21 @@ export const createRushGameForPair = functions.firestore
     const data1 = snap1.data();
     const data2 = snap2.data();
 
-    if (data1 &&data2) {
-
-        await db.collection("rushPlus").doc(pairName).set(
-            {
-              pairName: pairName,
-              playerOneJoined: false,
-              playerTwoJoined: false,
-              playerOne: pairData["members"][0],
-              playerTwo: pairData["members"][1],
-              iconOne: data1["userIcon"],
-              iconTwo: data2["userIcon"],
-            },
-            { merge: true }
-          );
+    if (data1 && data2) {
+      await db.collection("rushPlus").doc(pairName).set(
+        {
+          pairName: pairName,
+          playerOneJoined: false,
+          playerTwoJoined: false,
+          playerOne: pairData["members"][0],
+          playerTwo: pairData["members"][1],
+          iconOne: data1["userIcon"],
+          iconTwo: data2["userIcon"],
+        },
+        { merge: true }
+      );
     }
   });
-
-
 
 export const deleteUser = functions
   .region("asia-northeast1")
