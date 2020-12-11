@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import './swiper.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'dart:async';
 
 class Info extends StatefulWidget {
   @override
@@ -37,6 +38,17 @@ void changeToHours() {
 }
 
 class _InfoState extends State<Info> {
+  var _swipeLeftOpacity = 0.0;
+  var _swipeRightOpacity = 0.0;
+
+  void _setLeftCue(input) {
+    setState(() => _swipeLeftOpacity = input);
+  }
+
+  void _setRightCue(input) {
+    setState(() => _swipeRightOpacity = input);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -75,14 +87,18 @@ class _InfoState extends State<Info> {
                         child: FloatingActionButton(
                           heroTag: null,
                           onPressed: () {
+                            _setLeftCue(1.0);
+
                             print('you hate: ${movieDataTest[count]}');
-                            count++;
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => Swiper(),
-                                  maintainState: true,
-                                ));
+
+                            Future.delayed(Duration(milliseconds: 300), () {
+                              // 5s over, navigate to a new page
+                              count++;
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => Swiper()));
+                            });
                           },
                           tooltip: 'Do not want to watch',
                           child: Icon(Icons.cancel_outlined),
@@ -98,6 +114,7 @@ class _InfoState extends State<Info> {
                         child: FloatingActionButton(
                           heroTag: null,
                           onPressed: () {
+                            _setRightCue(1.0);
                             print('you liked: ${movieDataTest[count]}');
 
                             //request to firebase server to update likes
@@ -110,13 +127,14 @@ class _InfoState extends State<Info> {
                                 moviesSynopsis[count],
                                 movieGenre[count],
                                 movieRuntime[count]);
-                            count++;
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => Swiper(),
-                                  maintainState: true,
-                                ));
+                            Future.delayed(Duration(milliseconds: 300), () {
+                              // 5s over, navigate to a new page
+                              count++;
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => Swiper()));
+                            });
                           },
                           tooltip: 'Want to watch',
                           child: Icon(Icons.check),
@@ -232,6 +250,50 @@ class _InfoState extends State<Info> {
               // ),
             ],
           ),
+          Positioned(
+              //swipe cue dislike
+              left: 100,
+              bottom: 400,
+              child: Opacity(
+                  opacity: _swipeLeftOpacity,
+                  child: Container(
+                    height: 200,
+                    width: 200,
+                    child: FloatingActionButton(
+                      backgroundColor: Colors.red[900],
+                      heroTag: null,
+                      onPressed: () {
+                        print("pressed");
+                      },
+                      tooltip: 'Increment',
+                      child: Icon(Icons.cancel_outlined, size: 50),
+                      elevation: 2.0,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(100)),
+                    ),
+                  ))),
+          Positioned(
+              //swipe cue dislike
+              right: 100,
+              bottom: 400,
+              child: Opacity(
+                  opacity: _swipeRightOpacity,
+                  child: Container(
+                    height: 200,
+                    width: 200,
+                    child: FloatingActionButton(
+                      backgroundColor: Colors.green,
+                      heroTag: null,
+                      onPressed: () {
+                        print("pressed");
+                      },
+                      tooltip: 'Increment',
+                      child: Icon(Icons.check, size: 50),
+                      elevation: 2.0,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(100)),
+                    ),
+                  ))),
         ],
       ),
     );
