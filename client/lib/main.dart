@@ -98,7 +98,6 @@ var howManyMusic = 0;
 var howManyScifi = 0;
 var howManySuperHero = 0;
 var notification;
-var reversedCalled = false;
 
 // futureGay = fetchGay();
 // futureAnime = fetchAnime();
@@ -322,7 +321,7 @@ void getUserInfo() async {
     final response = await Dio().get(url);
     var matches = response.data['matchMovieData'];
     if (response.statusCode == 200) {
-      for (var i = 0; i < matches.length; i++) {
+      for (var i = matches.length - 1; i >= 0; i--) {
         //    movieDataTest.add(movies[i]["nfid"]);
         matchesSynopsis.add(matches[i]["synopsis"].replaceAll('&#39;', "'"));
         matchesYear.add(matches[i]["year"]);
