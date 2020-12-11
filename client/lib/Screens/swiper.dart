@@ -158,6 +158,8 @@ class _TinderswiperState extends State<Tinderswiper>
             ),
             painter: HeaderCurvedContainer(),
           ),
+          Text("Loading...", style: TextStyle(fontSize: 40)),
+          Image.asset("/assets/icons/icon-512x512-android.png"),
           Padding(
             padding: EdgeInsets.fromLTRB(0, 50, 0, 0),
             child: Column(
@@ -177,13 +179,15 @@ class _TinderswiperState extends State<Tinderswiper>
                         minHeight: MediaQuery.of(context).size.width * 1.599,
                         cardBuilder: (context, index) {
                           return Card(
+                            color: Color(0x00000000),
                             child: Container(
-                                // padding: EdgeInsets.all(20.0),
+                              // padding: EdgeInsets.all(20.0),
 
-                                child: Image.network(
-                              movieImagesTest[index],
-                              fit: BoxFit.fill,
-                            )),
+                              child: Image.network(
+                                movieImagesTest[index],
+                                fit: BoxFit.fill,
+                              ),
+                            ),
                             elevation: 0,
                           );
                         },

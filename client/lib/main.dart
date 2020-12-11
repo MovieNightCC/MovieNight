@@ -353,7 +353,7 @@ Future<Response> fetchGay() async {
           "https://asia-northeast1-movie-night-cc.cloudfunctions.net/getGayMovies");
       if (response.statusCode == 200) {
         var movies = response.data;
-        for (var i = 0; i < 50; i++) {
+        for (var i = 0; i < 80; i++) {
           gayList.add(movies[i]);
           gayNfid.add(movies[i]["nfid"]);
           gayGenre.add("LGBTQ");
@@ -380,7 +380,7 @@ Future<Response> fetchAnime() async {
           "https://asia-northeast1-movie-night-cc.cloudfunctions.net/getAnimeMovies");
       if (response.statusCode == 200) {
         var movies = response.data;
-        for (var i = 0; i < 50; i++) {
+        for (var i = 0; i < 80; i++) {
           // rushModeNfid.add(movies[i]["nfid"]);
           // rushModeSynopsis.add(movies[i]["synopsis"].replaceAll('&#39;', "'"));
           // rushModeYear.add(movies[i]["year"]);
@@ -417,7 +417,7 @@ Future<Response> fetchHorror() async {
           "https://asia-northeast1-movie-night-cc.cloudfunctions.net/getHorrorMovies");
       if (response.statusCode == 200) {
         var movies = response.data;
-        for (var i = 0; i < 50; i++) {
+        for (var i = 0; i < 80; i++) {
           horrorList.add(movies[i]);
           horrorNfid.add(movies[i]["nfid"]);
           horrorImages.add(movies[i]["img"]);
@@ -457,7 +457,7 @@ Future<Response> fetchRomance() async {
           "https://asia-northeast1-movie-night-cc.cloudfunctions.net/getRomanceMovies");
       if (response.statusCode == 200) {
         var movies = response.data;
-        for (var i = 0; i < 50; i++) {
+        for (var i = 0; i < 80; i++) {
           romanceList.add(movies[i]);
           romanceNfid.add(movies[i]["nfid"]);
           romanceGenre.add("Romance");
@@ -488,7 +488,7 @@ Future<Response> fetchMartialArts() async {
           "https://asia-northeast1-movie-night-cc.cloudfunctions.net/getMartialArtsMovies");
       if (response.statusCode == 200) {
         var movies = response.data;
-        for (var i = 0; i < 50; i++) {
+        for (var i = 0; i < 80; i++) {
           martialArtsNfid.add(movies[i]["nfid"]);
           martialArtsGenre.add("MartialArts");
           martialArtsImages.add(movies[i]["img"]);
@@ -519,7 +519,7 @@ Future<Response> fetchSuperHero() async {
           "https://asia-northeast1-movie-night-cc.cloudfunctions.net/getSuperHeroMovies");
       if (response.statusCode == 200) {
         var movies = response.data;
-        for (var i = 0; i < 50; i++) {
+        for (var i = 0; i < 80; i++) {
           superHeroNfid.add(movies[i]["nfid"]);
           superHeroGenre.add("Superhero");
           superHeroImages.add(movies[i]["img"]);
@@ -549,7 +549,7 @@ Future<Response> fetchScifi() async {
           "https://asia-northeast1-movie-night-cc.cloudfunctions.net/getScifiMovies");
       if (response.statusCode == 200) {
         var movies = response.data;
-        for (var i = 0; i < 50; i++) {
+        for (var i = 0; i < 80; i++) {
           scifiNfid.add(movies[i]["nfid"]);
           scifiGenre.add("Scifi");
           scifiImages.add(movies[i]["img"]);
@@ -579,7 +579,7 @@ Future<Response> fetchMusic() async {
           "https://asia-northeast1-movie-night-cc.cloudfunctions.net/getMusicMovies");
       if (response.statusCode == 200) {
         var movies = response.data;
-        for (var i = 0; i < 50; i++) {
+        for (var i = 0; i < 80; i++) {
           musicNfid.add(movies[i]["nfid"]);
           musicGenre.add("MusicInspired");
           musicImages.add(movies[i]["img"]);
@@ -609,7 +609,7 @@ Future<Response> fetchJapan() async {
           "https://asia-northeast1-movie-night-cc.cloudfunctions.net/getJapanMovies");
       if (response.statusCode == 200) {
         var movies = response.data;
-        for (var i = 0; i < 50; i++) {
+        for (var i = 0; i < 80; i++) {
           japanNfid.add(movies[i]["nfid"]);
           japanGenre.add("Japanese");
           japanImages.add(movies[i]["img"]);
@@ -639,7 +639,7 @@ Future<Response> fetchKorea() async {
           "https://asia-northeast1-movie-night-cc.cloudfunctions.net/getKoreaMovies");
       if (response.statusCode == 200) {
         var movies = response.data;
-        for (var i = 0; i < 50; i++) {
+        for (var i = 0; i < 80; i++) {
           koreaNfid.add(movies[i]["nfid"]);
           koreaGenre.add("Korean");
           koreaImages.add(movies[i]["img"]);

@@ -68,6 +68,7 @@ class _RushModeState extends State<RushMode> {
             ),
             painter: _HeaderCurvedContainer(),
           ),
+          Text("Loading...", style: TextStyle(fontSize: 40)),
           Column(
             children: [
               TimerWidget(),
@@ -89,6 +90,7 @@ class _RushModeState extends State<RushMode> {
                           cardBuilder: (context, index) {
                             print('index is $index');
                             return Card(
+                              color: Color(0x00000000),
                               child: Container(
                                   // padding: EdgeInsets.all(20.0),
                                   child: Image.network(
