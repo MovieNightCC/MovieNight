@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
+import 'package:movie_night/Screens/rushMode.dart';
 import 'package:movie_night/app-theme.dart';
 
 import 'dart:async';
@@ -17,9 +18,6 @@ import './movieMatchesInfo.dart';
 
 import 'package:http/http.dart' as http;
 
-var swipeLeftOpacity = 0.0;
-var swipeRightOpacity = 0.0;
-
 class Swiper extends StatefulWidget {
   static String routeName = "/swiper";
   _AppState createState() => _AppState();
@@ -27,14 +25,6 @@ class Swiper extends StatefulWidget {
 
 class _AppState extends State<Swiper> {
   Future<Response> futureMovie;
-
-  void showLeftCue() {
-    setState(() => swipeLeftOpacity = 1);
-  }
-
-  void showRightCue() {
-    setState(() => swipeRightOpacity = 1);
-  }
 
   @override
   void initState() {
@@ -158,15 +148,15 @@ class Tinderswiper extends StatefulWidget {
 class _TinderswiperState extends State<Tinderswiper>
     with TickerProviderStateMixin {
   int _currentIndex = 1;
-  var swipeLeftOpacity = 0.0;
-  var swipeRightOpacity = 0.0;
+  var _swipeLeftOpacity = 0.0;
+  var _swipeRightOpacity = 0.0;
 
-  void setLeftCue(input) {
-    setState(() => swipeLeftOpacity = input);
+  void _setLeftCue(input) {
+    setState(() => _swipeLeftOpacity = input);
   }
 
-  void setRightCue(input) {
-    setState(() => swipeRightOpacity = input);
+  void _setRightCue(input) {
+    setState(() => _swipeRightOpacity = input);
   }
 
   @override
@@ -219,17 +209,17 @@ class _TinderswiperState extends State<Tinderswiper>
                           /// Get swiping card's alignment
                           print(align.x);
                           if (align.x > -2.0 && align.x < 2.0) {
-                            setLeftCue(0.0);
-                            setRightCue(0.0);
+                            _setLeftCue(0.0);
+                            _setRightCue(0.0);
                             print("should not show");
                           } else if (align.x <= -5) {
-                            setLeftCue(1.0);
+                            _setLeftCue(1.0);
                           } else if (align.x <= -2) {
-                            setLeftCue(0.5);
+                            _setLeftCue(0.5);
                           } else if (align.x >= 5) {
-                            setRightCue(1.0);
+                            _setRightCue(1.0);
                           } else if (align.x >= 2) {
-                            setRightCue(0.5);
+                            _setRightCue(0.5);
                             print("should show FULL THING");
                           }
                         },
@@ -238,8 +228,8 @@ class _TinderswiperState extends State<Tinderswiper>
                           if (orientation == CardSwipeOrientation.RIGHT) {
                             //when liked
                             print('you liked: ${movieDataTest[count]}');
-                            setLeftCue(0.0);
-                            setRightCue(0.0);
+                            _setLeftCue(0.0);
+                            _setRightCue(0.0);
                             //request to firebase server to update likes
                             if (userPair != "") {
                               updateUser(
@@ -255,8 +245,8 @@ class _TinderswiperState extends State<Tinderswiper>
 
                             count++;
                           } else if (orientation == CardSwipeOrientation.LEFT) {
-                            setLeftCue(0.0);
-                            setRightCue(0.0);
+                            _setLeftCue(0.0);
+                            _setRightCue(0.0);
                             //when hated
                             print('you hate: ${movieDataTest[count]}');
                             count++;
@@ -278,7 +268,7 @@ class _TinderswiperState extends State<Tinderswiper>
               left: 40,
               bottom: 350,
               child: Opacity(
-                opacity: swipeLeftOpacity,
+                opacity: _swipeLeftOpacity,
                 child: FloatingActionButton(
                   backgroundColor: Colors.red[900],
                   heroTag: null,
@@ -297,7 +287,7 @@ class _TinderswiperState extends State<Tinderswiper>
               right: 40,
               bottom: 350,
               child: Opacity(
-                opacity: swipeRightOpacity,
+                opacity: _swipeRightOpacity,
                 child: FloatingActionButton(
                   backgroundColor: Colors.green,
                   heroTag: null,
