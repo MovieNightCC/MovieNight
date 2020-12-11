@@ -87,7 +87,7 @@ class _InfoState extends State<Info> {
                         child: FloatingActionButton(
                           heroTag: null,
                           onPressed: () {
-                            _setLeftCue(1.0);
+                            _setLeftCue(0.8);
 
                             print('you hate: ${movieDataTest[count]}');
 
@@ -114,7 +114,7 @@ class _InfoState extends State<Info> {
                         child: FloatingActionButton(
                           heroTag: null,
                           onPressed: () {
-                            _setRightCue(1.0);
+                            _setRightCue(0.8);
                             print('you liked: ${movieDataTest[count]}');
 
                             //request to firebase server to update likes
@@ -184,70 +184,6 @@ class _InfoState extends State<Info> {
                 child:
                     const Text('Go to Netflix', style: TextStyle(fontSize: 20)),
               ),
-              // Padding(
-              //   padding: EdgeInsets.fromLTRB(0, 30, 0, 0),
-              //   child: Row(
-              //       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              //       children: [
-              //         Positioned(
-              //           left: 40,
-              //           bottom: 20,
-              //           child: FloatingActionButton(
-              //             heroTag: null,
-              //             onPressed: () {
-              //               print('you hate: ${movieDataTest[count]}');
-              //               count++;
-              //               Navigator.push(
-              //                   context,
-              //                   MaterialPageRoute(
-              //                     builder: (context) => Swiper(),
-              //                     maintainState: true,
-              //                   ));
-              //             },
-              //             tooltip: 'Increment',
-              //             child: Icon(Icons.sentiment_very_dissatisfied),
-              //             elevation: 2.0,
-              //             shape: RoundedRectangleBorder(
-              //                 borderRadius: BorderRadius.circular(10)),
-              //             backgroundColor: Colors.red[900],
-              //           ),
-              //         ),
-              //         Positioned(
-              //           right: 80,
-              //           bottom: 20,
-              //           child: FloatingActionButton(
-              //             heroTag: null,
-              //             onPressed: () {
-              //               print('you liked: ${movieDataTest[count]}');
-
-              //               //request to firebase server to update likes
-              //               updateUser(
-              //                   movieDataTest[count],
-              //                   context,
-              //                   movieImagesTest[count],
-              //                   movieTitles[count],
-              //                   movieYear[count],
-              //                   moviesSynopsis[count],
-              //                   movieGenre[count],
-              //                   movieRuntime[count]);
-              //               count++;
-              //               Navigator.push(
-              //                   context,
-              //                   MaterialPageRoute(
-              //                     builder: (context) => Swiper(),
-              //                     maintainState: true,
-              //                   ));
-              //             },
-              //             tooltip: 'Increment',
-              //             child: Icon(Icons.sentiment_very_satisfied),
-              //             elevation: 2.0,
-              //             shape: RoundedRectangleBorder(
-              //                 borderRadius: BorderRadius.circular(10)),
-              //             backgroundColor: Colors.blue,
-              //           ),
-              //         ),
-              //       ]),
-              // ),
             ],
           ),
           Positioned(
