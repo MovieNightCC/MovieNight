@@ -26,9 +26,7 @@ class _RushTwoState extends State<RushTwo> {
         ),
         painter: HeaderCurvedContainer(),
       ),
-      Column(children: [
-        TimerWidget(),
-      ])
+      PlayerLobby()
     ]));
   }
 }
@@ -40,6 +38,18 @@ class TimerWidget extends StatefulWidget {
 class _TimerWidgetState extends State<TimerWidget> {
   Timer _timer;
   int _start = 3;
+
+  @override
+  void initState() {
+    startTimer();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _timer.cancel();
+    super.dispose();
+  }
 
   void startTimer() {
     if (_timer != null) {
@@ -65,13 +75,6 @@ class _TimerWidgetState extends State<TimerWidget> {
     }
   }
 
-  @override
-  void dispose() {
-    _timer.cancel();
-    _timer = null;
-    super.dispose();
-  }
-
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
@@ -81,41 +84,6 @@ class _TimerWidgetState extends State<TimerWidget> {
                 height: 1.5,
                 fontWeight: FontWeight.bold,
                 fontSize: 100)),
-        StreamBuilder(
-            stream: FirebaseFirestore.instance
-                .collection('rushPlus')
-                .doc(userPair)
-                .snapshots(),
-            builder: (BuildContext context,
-                AsyncSnapshot<DocumentSnapshot> snapshot) {
-              //print("ICON ONE" + snapshot.data["iconOne"]);
-              var playerOneJoined = snapshot.data["playerOneJoined"];
-              var playerTwoJoined = snapshot.data["playerTwoJoined"];
-              var playerOneIcon = snapshot.data["iconOne"];
-              var playerTwoIcon = snapshot.data["iconTwo"];
-
-              if (!snapshot.hasData) {
-                return LinearProgressIndicator();
-              } else if (playerOneJoined && playerTwoJoined) {
-                startTimer();
-                return Text("both players joined");
-              } else {
-                return Column(children: [
-                  Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        PicAndStatusColumn(
-                          showText(playerOneJoined),
-                          playerOneIcon,
-                        ),
-                        PicAndStatusColumn(
-                          showText(playerTwoJoined),
-                          playerTwoIcon,
-                        ),
-                      ]),
-                ]);
-              }
-            }),
       ],
     );
   }
@@ -155,5 +123,62 @@ class PicAndStatusColumn extends StatelessWidget {
         )
       ],
     );
+  }
+}
+
+class PlayerLobby extends StatefulWidget {
+  @override
+  _PlayerLobbyState createState() => _PlayerLobbyState();
+}
+
+class _PlayerLobbyState extends State<PlayerLobby> {
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder(
+        stream: FirebaseFirestore.instance
+            .collection('rushPlus')
+            .doc(userPair)
+            .snapshots(),
+        builder:
+            (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+          //print("ICON ONE" + snapshot.data["iconOne"]);
+          var playerOneJoined = snapshot.data["playerOneJoined"];
+          var playerTwoJoined = snapshot.data["playerTwoJoined"];
+          var playerOneIcon = snapshot.data["iconOne"];
+          var playerTwoIcon = snapshot.data["iconTwo"];
+
+          if (!snapshot.hasData) {
+            return LinearProgressIndicator();
+          } else if (playerOneJoined && playerTwoJoined) {
+            return Column(children: [
+              // Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
+              //   PicAndStatusColumn(
+              //     showText(playerOneJoined),
+              //     playerOneIcon,
+              //   ),
+              //   PicAndStatusColumn(
+              //     showText(playerTwoJoined),
+              //     playerTwoIcon,
+              //   ),
+              // ]),
+              TimerWidget(),
+              Text("Both Player Joined! Get Ready...",
+                  style: TextStyle(fontSize: 24)),
+            ]);
+          } else {
+            return Column(children: [
+              Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
+                PicAndStatusColumn(
+                  showText(playerOneJoined),
+                  playerOneIcon,
+                ),
+                PicAndStatusColumn(
+                  showText(playerTwoJoined),
+                  playerTwoIcon,
+                ),
+              ]),
+            ]);
+          }
+        });
   }
 }
