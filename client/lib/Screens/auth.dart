@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import './signinform.dart';
 
 class AuthenticationService {
   final FirebaseAuth _firebaseAuth;
@@ -14,13 +15,19 @@ class AuthenticationService {
   }
 
   // Sign in to with firebase authenticator
-  Future<bool> signIn({String email, String password}) async {
+  Future signIn({String email, String password}) async {
     try {
       await _firebaseAuth.signInWithEmailAndPassword(
           email: email, password: password);
       return true;
     } on FirebaseAuthException catch (e) {
-      return false;
+      if (e.code == 'user-not-found') {
+        print('No user found for that email.');
+        return 'No user found for that email.';
+      } else if (e.code == 'wrong-password') {
+        print('Wrong password provided for that user.');
+        return 'Wrong password provided for that user.';
+      }
     }
   }
 

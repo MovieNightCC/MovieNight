@@ -32,7 +32,7 @@ void filterPop(context) {
         return StatefulBuilder(builder: (context, setState) {
           return new AlertDialog(
             title: new Text("What you want to watch:",
-                style: TextStyle(color: Colors.white)),
+                style: TextStyle(color: Colors.pink)),
             content: Container(
               width: double.maxFinite,
               child: ListView(children: <Widget>[
@@ -320,7 +320,8 @@ void filterPop(context) {
             ),
             actions: <Widget>[
               new FlatButton(
-                  child: const Text("Confirm"),
+                  child: const Text("Confirm",
+                      style: TextStyle(color: Colors.pink)),
                   onPressed: () {
                     if (chosenGenre.length == 0) {
                       Navigator.push(

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
+import 'package:movie_night/Screens/rushMode.dart';
 import 'package:movie_night/app-theme.dart';
 
 import 'dart:async';
@@ -17,9 +18,6 @@ import './movieMatchesInfo.dart';
 
 import 'package:http/http.dart' as http;
 
-var swipeLeftOpacity = 0.0;
-var swipeRightOpacity = 0.0;
-
 class Swiper extends StatefulWidget {
   static String routeName = "/swiper";
   _AppState createState() => _AppState();
@@ -27,14 +25,6 @@ class Swiper extends StatefulWidget {
 
 class _AppState extends State<Swiper> {
   Future<Response> futureMovie;
-
-  void showLeftCue() {
-    setState(() => swipeLeftOpacity = 1);
-  }
-
-  void showRightCue() {
-    setState(() => swipeRightOpacity = 1);
-  }
 
   @override
   void initState() {
@@ -64,19 +54,6 @@ List<String> movieGenre = [];
 List<int> movieYear = [];
 List<int> movieRuntime = [];
 var counter = 0;
-
-void reverseList() {
-  matchesTitles = matchesTitles.reversed.toList();
-  matchesImage = matchesImage.reversed.toList();
-  matchesYear = matchesYear.reversed.toList();
-  matchesGenre = matchesGenre.reversed.toList();
-  matchesRuntime = matchesRuntime.reversed.toList();
-  matchesSynopsis = matchesSynopsis.reversed.toList();
-  matchesNfid = matchesNfid.reversed.toList();
-  hourListMatches = hourListMatches.reversed.toList();
-  minutesListMatches = minutesListMatches.reversed.toList();
-  reversedCalled = true;
-}
 
 void cutInHalf() {
   cutInHalfCalled = true;
@@ -133,12 +110,13 @@ void updateUser(
     showDialog(
         context: context,
         builder: (_) => new AlertDialog(
-              title: new Text("Alert", style: TextStyle(color: Colors.black)),
+              title: new Text("Alert", style: TextStyle(color: Colors.white)),
               content: new Text("You got a Match!",
-                  style: TextStyle(color: Colors.black)),
+                  style: TextStyle(color: Colors.white)),
               actions: <Widget>[
                 FlatButton(
-                  child: Text('Close me!'),
+                  child:
+                      Text('Close me!', style: TextStyle(color: Colors.pink)),
                   onPressed: () {
                     Navigator.of(context, rootNavigator: true).pop();
                   },
@@ -157,22 +135,19 @@ class Tinderswiper extends StatefulWidget {
 class _TinderswiperState extends State<Tinderswiper>
     with TickerProviderStateMixin {
   int _currentIndex = 1;
-  var swipeLeftOpacity = 0.0;
-  var swipeRightOpacity = 0.0;
+  var _swipeLeftOpacity = 0.0;
+  var _swipeRightOpacity = 0.0;
 
-  void setLeftCue(input) {
-    setState(() => swipeLeftOpacity = input);
+  void _setLeftCue(input) {
+    setState(() => _swipeLeftOpacity = input);
   }
 
-  void setRightCue(input) {
-    setState(() => swipeRightOpacity = input);
+  void _setRightCue(input) {
+    setState(() => _swipeRightOpacity = input);
   }
 
   @override
   Widget build(BuildContext context) {
-    if (reversedCalled == false) {
-      reverseList();
-    }
     CardController controller;
     return Scaffold(
         body: Stack(alignment: Alignment.center, children: [
@@ -183,6 +158,8 @@ class _TinderswiperState extends State<Tinderswiper>
             ),
             painter: HeaderCurvedContainer(),
           ),
+          Text("Loading...", style: TextStyle(fontSize: 40)),
+          Image.asset("/assets/icons/icon-512x512-android.png"),
           Padding(
             padding: EdgeInsets.fromLTRB(0, 50, 0, 0),
             child: Column(
@@ -202,13 +179,15 @@ class _TinderswiperState extends State<Tinderswiper>
                         minHeight: MediaQuery.of(context).size.width * 1.599,
                         cardBuilder: (context, index) {
                           return Card(
+                            color: Color(0x00000000),
                             child: Container(
-                                // padding: EdgeInsets.all(20.0),
+                              // padding: EdgeInsets.all(20.0),
 
-                                child: Image.network(
-                              movieImagesTest[index],
-                              fit: BoxFit.fill,
-                            )),
+                              child: Image.network(
+                                movieImagesTest[index],
+                                fit: BoxFit.fill,
+                              ),
+                            ),
                             elevation: 0,
                           );
                         },
@@ -218,17 +197,17 @@ class _TinderswiperState extends State<Tinderswiper>
                           /// Get swiping card's alignment
                           print(align.x);
                           if (align.x > -2.0 && align.x < 2.0) {
-                            setLeftCue(0.0);
-                            setRightCue(0.0);
+                            _setLeftCue(0.0);
+                            _setRightCue(0.0);
                             print("should not show");
                           } else if (align.x <= -5) {
-                            setLeftCue(1.0);
+                            _setLeftCue(1.0);
                           } else if (align.x <= -2) {
-                            setLeftCue(0.5);
+                            _setLeftCue(0.5);
                           } else if (align.x >= 5) {
-                            setRightCue(1.0);
+                            _setRightCue(1.0);
                           } else if (align.x >= 2) {
-                            setRightCue(0.5);
+                            _setRightCue(0.5);
                             print("should show FULL THING");
                           }
                         },
@@ -237,8 +216,8 @@ class _TinderswiperState extends State<Tinderswiper>
                           if (orientation == CardSwipeOrientation.RIGHT) {
                             //when liked
                             print('you liked: ${movieDataTest[count]}');
-                            setLeftCue(0.0);
-                            setRightCue(0.0);
+                            _setLeftCue(0.0);
+                            _setRightCue(0.0);
                             //request to firebase server to update likes
                             if (userPair != "") {
                               updateUser(
@@ -254,8 +233,8 @@ class _TinderswiperState extends State<Tinderswiper>
 
                             count++;
                           } else if (orientation == CardSwipeOrientation.LEFT) {
-                            setLeftCue(0.0);
-                            setRightCue(0.0);
+                            _setLeftCue(0.0);
+                            _setRightCue(0.0);
                             //when hated
                             print('you hate: ${movieDataTest[count]}');
                             count++;
@@ -275,17 +254,17 @@ class _TinderswiperState extends State<Tinderswiper>
           Positioned(
               //swipe cue dislike
               left: 40,
-              bottom: 250,
+              bottom: 350,
               child: Opacity(
-                opacity: swipeLeftOpacity,
+                opacity: _swipeLeftOpacity,
                 child: FloatingActionButton(
-                  backgroundColor: Colors.red,
+                  backgroundColor: Colors.red[900],
                   heroTag: null,
                   onPressed: () {
                     print("pressed");
                   },
                   tooltip: 'Increment',
-                  child: Icon(Icons.thumb_down, size: 50),
+                  child: Icon(Icons.cancel_outlined, size: 50),
                   elevation: 2.0,
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(100)),
@@ -294,17 +273,17 @@ class _TinderswiperState extends State<Tinderswiper>
           Positioned(
               //swipe cue dislike
               right: 40,
-              bottom: 250,
+              bottom: 350,
               child: Opacity(
-                opacity: swipeRightOpacity,
+                opacity: _swipeRightOpacity,
                 child: FloatingActionButton(
-                  backgroundColor: Colors.red,
+                  backgroundColor: Colors.green,
                   heroTag: null,
                   onPressed: () {
                     print("pressed");
                   },
                   tooltip: 'Increment',
-                  child: Icon(Icons.thumb_up, size: 50),
+                  child: Icon(Icons.check, size: 50),
                   elevation: 2.0,
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(100)),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:movie_night/Screens/onboard.dart';
 import 'package:provider/provider.dart';
 import '../sizeconfig.dart';
 import '../constants.dart';
@@ -7,6 +8,8 @@ import 'package:movie_night/screens/auth.dart';
 import 'package:url_launcher/url_launcher.dart';
 import './swiper.dart';
 import './onboard.dart';
+
+bool userOkay = true;
 
 class SignForm extends StatefulWidget {
   @override
@@ -71,19 +74,34 @@ class _SignFormState extends State<SignForm> {
             color: Colors.pink,
             onPressed: () async {
               if (_formKey.currentState.validate()) {
-                bool result;
+                var result;
                 _formKey.currentState.save();
                 result = await context.read<AuthenticationService>().signIn(
                       email: email,
                       password: password,
                     );
-                if (result) {
+                if (result == true) {
                   Navigator.pushNamed(context, Swiper.routeName);
                 } else {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => OnBoardScreen()));
+                  showDialog(
+                      context: context,
+                      builder: (_) => new AlertDialog(
+                            title: new Text("Alert",
+                                style: TextStyle(color: Colors.white)),
+                            content: new Text(result,
+                                style: TextStyle(color: Colors.white)),
+                            actions: <Widget>[
+                              FlatButton(
+                                child: Text('Close me!',
+                                    style: TextStyle(color: Colors.pink)),
+                                onPressed: () {
+                                  Navigator.of(context, rootNavigator: true)
+                                      .pop();
+                                },
+                              )
+                            ],
+                          ));
                 }
-                // Navigator.pushNamed(context, Swiper.routeName);
               }
             },
           ),

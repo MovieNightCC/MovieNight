@@ -25,6 +25,17 @@ class RushMode extends StatefulWidget {
 }
 
 class _RushModeState extends State<RushMode> {
+  var _swipeLeftOpacity = 0.0;
+  var _swipeRightOpacity = 0.0;
+
+  void _setLeftCue(input) {
+    setState(() => _swipeLeftOpacity = input);
+  }
+
+  void _setRightCue(input) {
+    setState(() => _swipeRightOpacity = input);
+  }
+
   @override
   CardController controller;
   Widget build(BuildContext context) {
@@ -57,6 +68,7 @@ class _RushModeState extends State<RushMode> {
             ),
             painter: _HeaderCurvedContainer(),
           ),
+          Text("Loading...", style: TextStyle(fontSize: 40)),
           Column(
             children: [
               TimerWidget(),
@@ -78,6 +90,7 @@ class _RushModeState extends State<RushMode> {
                           cardBuilder: (context, index) {
                             print('index is $index');
                             return Card(
+                              color: Color(0x00000000),
                               child: Container(
                                   // padding: EdgeInsets.all(20.0),
                                   child: Image.network(
@@ -88,9 +101,30 @@ class _RushModeState extends State<RushMode> {
                             );
                           },
                           cardController: controller = CardController(),
+                          swipeUpdateCallback:
+                              (DragUpdateDetails details, Alignment align) {
+                            /// Get swiping card's alignment
+                            print(align.x);
+                            if (align.x > -2.0 && align.x < 2.0) {
+                              _setLeftCue(0.0);
+                              _setRightCue(0.0);
+                              print("should not show");
+                            } else if (align.x <= -5) {
+                              _setLeftCue(1.0);
+                            } else if (align.x <= -2) {
+                              _setLeftCue(0.5);
+                            } else if (align.x >= 5) {
+                              _setRightCue(1.0);
+                            } else if (align.x >= 2) {
+                              _setRightCue(0.5);
+                              print("should show FULL THING");
+                            }
+                          },
                           swipeCompleteCallback:
                               (CardSwipeOrientation orientation, int index) {
                             if (orientation == CardSwipeOrientation.RIGHT) {
+                              _setLeftCue(0.0);
+                              _setRightCue(0.0);
                               //when liked
                               print('you liked: ${movieDataTest[count]}');
 
@@ -112,6 +146,8 @@ class _RushModeState extends State<RushMode> {
 
                             } else if (orientation ==
                                 CardSwipeOrientation.LEFT) {
+                              _setLeftCue(0.0);
+                              _setRightCue(0.0);
                               //when hated
                               print('you hate: ${movieDataTest[count]}');
                               count++;
@@ -126,6 +162,44 @@ class _RushModeState extends State<RushMode> {
               ),
             ],
           ),
+          Positioned(
+              //swipe cue dislike
+              left: 40,
+              bottom: 350,
+              child: Opacity(
+                opacity: _swipeLeftOpacity,
+                child: FloatingActionButton(
+                  backgroundColor: Colors.red[900],
+                  heroTag: null,
+                  onPressed: () {
+                    print("pressed");
+                  },
+                  tooltip: 'Increment',
+                  child: Icon(Icons.cancel_outlined, size: 50),
+                  elevation: 2.0,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(100)),
+                ),
+              )),
+          Positioned(
+              //swipe cue dislike
+              right: 40,
+              bottom: 350,
+              child: Opacity(
+                opacity: _swipeRightOpacity,
+                child: FloatingActionButton(
+                  backgroundColor: Colors.green,
+                  heroTag: null,
+                  onPressed: () {
+                    print("pressed");
+                  },
+                  tooltip: 'Increment',
+                  child: Icon(Icons.check, size: 50),
+                  elevation: 2.0,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(100)),
+                ),
+              )),
         ],
       ),
     );
