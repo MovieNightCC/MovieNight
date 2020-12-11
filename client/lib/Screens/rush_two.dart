@@ -116,13 +116,6 @@ class _TimerWidgetState extends State<TimerWidget> {
                 ]);
               }
             }),
-        FlatButton(
-          onPressed: () {
-            Navigator.push(
-                context, MaterialPageRoute(builder: (context) => RushMode()));
-          },
-          child: Text("press"),
-        ),
       ],
     );
   }
