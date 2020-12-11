@@ -203,7 +203,7 @@ class ProfilePicture extends StatefulWidget {
 
 class _ProfilePictureState extends State<ProfilePicture> {
   File _image; // Used only if you need a single picture
-  Object profileimg = NetworkImage(userIcon);
+  String profileimg = userIcon;
   @override
   Widget build(BuildContext context) {
 // Image Picker
@@ -241,7 +241,8 @@ class _ProfilePictureState extends State<ProfilePicture> {
         String imageURL = await uploadFile(_image);
 
         setState(() {
-          profileimg = NetworkImage(imageURL);
+          profileimg = imageURL;
+          userIcon = imageURL;
         });
         print('imageurl is: $imageURL');
         await ref.update({
@@ -253,9 +254,8 @@ class _ProfilePictureState extends State<ProfilePicture> {
         if (pickedFile != null) {
           _image = File(pickedFile.path);
           print("image is $_image");
-          profileimg =
-              // profileimg = Image.file(_image);
-              saveImages(_image, userRef);
+          //profileimg = Image.file(_image);
+          saveImages(_image, userRef);
         } else {
           print("image is $_image");
           print('No image selected.');
@@ -275,7 +275,7 @@ class _ProfilePictureState extends State<ProfilePicture> {
               color: Colors.white,
               image: DecorationImage(
                 fit: BoxFit.cover,
-                image: profileimg,
+                image: NetworkImage(profileimg),
               )),
         ),
         CircleAvatar(
