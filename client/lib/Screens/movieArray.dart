@@ -1,12 +1,12 @@
 //anime,horror,japan,korea
-List<Object> matches = [];
-List<String> matchesTitles = [];
-List<String> matchesSynopsis = [];
-List<String> matchesImage = [];
-List<String> matchesGenre = [];
-List<int> matchesYear = [];
-List<int> matchesRuntime = [];
-List<int> matchesNfid = [];
+// List<Object> matches = [];
+// List<String> matchesTitles = [];
+// List<String> matchesSynopsis = [];
+// List<String> matchesImage = [];
+// List<String> matchesGenre = [];
+// List<int> matchesYear = [];
+// List<int> matchesRuntime = [];
+// List<int> matchesNfid = [];
 
 List<Object> gayList = [];
 List<int> gayNfid = [];

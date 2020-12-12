@@ -108,7 +108,7 @@ var notification;
 var matchOriLength = 0;
 var cutInHalfCalled = false;
 var pairFetchCounter = 0;
-List fetchArr = [];
+// List fetchArr = [];
 
 class App extends StatefulWidget {
   _AppState createState() => _AppState();
@@ -235,8 +235,8 @@ class _AppState extends State<App> {
       Platform.isAndroid
           ? 'com.dfa.flutterchatdemo'
           : 'com.duytq.flutterchatdemo',
-      'Flutter chat demo',
-      'your channel description',
+      'Movie Night',
+      'Channel to update Match Info and Rush Mode',
       playSound: true,
       enableVibration: true,
       importance: Importance.max,
@@ -248,16 +248,9 @@ class _AppState extends State<App> {
         iOS: iOSPlatformChannelSpecifics);
 
     print(message);
-//    print(message['body'].toString());
-//    print(json.encode(message));
-
     await flutterLocalNotificationsPlugin.show(0, message['title'].toString(),
         message['body'].toString(), platformChannelSpecifics,
         payload: json.encode(message));
-
-//    await flutterLocalNotificationsPlugin.show(
-//        0, 'plain title', 'plain body', platformChannelSpecifics,
-//        payload: 'item x');
   }
 
   @override
@@ -287,7 +280,6 @@ class _AppState extends State<App> {
 
 void getUserInfo() async {
   print("getUserInfo is Called");
-  // try {
 //getting userInfo
   var url =
       'https://asia-northeast1-movie-night-cc.cloudfunctions.net/getUserByUserName?userName=$userName';
@@ -297,7 +289,6 @@ void getUserInfo() async {
   userPair = userdata["pairName"];
   displayName = userdata["name"];
   print("pairName is $userPair");
-  // if (userPair != "") {}
   howManyGay = userdata["recommendations"]["LGBTQ"].round();
   howManyAnime = userdata["recommendations"]["Anime"].round();
   howManyHorror = userdata["recommendations"]["Horror"].round();
@@ -313,38 +304,7 @@ void getUserInfo() async {
   print('got user info ${userdata["email"]} in ${userdata["pairName"]}');
   userIcon = userdata["userIcon"];
   print('got user info ${userdata["userIcon"]} in ${userdata["pairName"]}');
-
-//getting matches Info
-  if (matchesTitles.length == 0) {
-    var url =
-        'https://asia-northeast1-movie-night-cc.cloudfunctions.net/getPairByPairName?pairName=$userPair';
-    final response = await Dio().get(url);
-    var matches = response.data['matchMovieData'];
-    if (response.statusCode == 200) {
-      for (var i = matches.length - 1; i >= 0; i--) {
-        //    movieDataTest.add(movies[i]["nfid"]);
-        matchesSynopsis.add(matches[i]["synopsis"].replaceAll('&#39;', "'"));
-        matchesYear.add(matches[i]["year"]);
-        matchesRuntime.add(matches[i]["runtime"]);
-        matchesTitles.add(matches[i]['title'].replaceAll('&#39;', "'"));
-        matchesImage.add(matches[i]["img"]);
-        matchesGenre.add(matches[i]["genre"]);
-        matchesNfid.add(matches[i]["nfid"]);
-        matchOriLength += 1;
-        print("$matchesTitles");
-      }
-    }
-    print("match $matchesTitles");
-    fetchArr.add(matchOriLength);
-  }
-  // } catch (e) {
-  //   if (e is DioError) {
-  //     print('user info error or match movie fetching error!');
-  //   }
-  // }
 }
-
-//LGBTQ,anime,horror,japan,korea
 
 Future<Response> fetchGay() async {
   try {
@@ -381,13 +341,6 @@ Future<Response> fetchAnime() async {
       if (response.statusCode == 200) {
         var movies = response.data;
         for (var i = 0; i < 80; i++) {
-          // rushModeNfid.add(movies[i]["nfid"]);
-          // rushModeSynopsis.add(movies[i]["synopsis"].replaceAll('&#39;', "'"));
-          // rushModeYear.add(movies[i]["year"]);
-          // rushModeRuntime.add(movies[i]["runtime"]);
-          // rushModeGenre.add(movies[i]["genre"]);
-          // rushModeTitles.add(movies[i]['title'].replaceAll('&#39;', "'"));
-          // rushModeImages.add(movies[i]["img"]);
           animeNfid.add(movies[i]["nfid"]);
           animeImages.add(movies[i]["img"]);
           animeGenre.add("Anime");
@@ -398,8 +351,6 @@ Future<Response> fetchAnime() async {
         }
         return response;
       } else {
-        // If the server did not return a 200 OK response,
-        // then throw an exception.
         throw Exception('Failed to load album');
       }
     }
@@ -706,44 +657,6 @@ class AuthenticationWrapper extends StatelessWidget {
           builder: (context, snapshot) {
             // print('${movieDataTest.length} how many movies I have');
             if (snapshot.hasData) {
-              print("user Anime recommend $howManyAnime");
-              print("user gay recommend $howManyGay");
-              //push  $howManyAnime anime movies into movie array
-              //push the
-              print("anime movies ${animeNfid.length}");
-              // shuffle(animeNfid, animeImages, animeTitles, animeSynopsis,
-              //     animeYear, animeGenre, animeRuntime);
-              // shuffle(gayNfid, gayImages, gayTitles, gaySynopsis, gayYear,
-              //     gayGenre, gayRuntime);
-              // shuffle(romanceNfid, romanceImages, romanceTitles,
-              //     romanceSynopsis, romanceYear, romanceGenre, romanceRuntime);
-              // shuffle(musicNfid, musicImages, musicTitles, musicSynopsis,
-              //     musicYear, musicGenre, musicRuntime);
-              // shuffle(
-              //     martialArtsNfid,
-              //     martialArtsImages,
-              //     martialArtsTitles,
-              //     martialArtsSynopsis,
-              //     martialArtsYear,
-              //     martialArtsGenre,
-              //     martialArtsRuntime);
-              // shuffle(japanNfid, japanImages, japanTitles, japanSynopsis,
-              //     japanYear, japanGenre, japanRuntime);
-              // shuffle(koreaNfid, koreaImages, koreaTitles, koreaSynopsis,
-              //     koreaYear, koreaGenre, koreaRuntime);
-              // shuffle(horrorNfid, horrorImages, horrorTitles, horrorSynopsis,
-              //     horrorYear, horrorGenre, horrorRuntime);
-              // shuffle(scifiNfid, scifiImages, scifiTitles, scifiSynopsis,
-              //     scifiYear, scifiGenre, scifiRuntime);
-              // shuffle(
-              //     superHeroNfid,
-              //     superHeroImages,
-              //     superHeroTitles,
-              //     superHeroSynopsis,
-              //     superHeroYear,
-              //     superHeroGenre,
-              //     superHeroRuntime);
-
               for (var i = 0; i < howManyAnime; i++) {
                 movieDataTest.add(animeNfid[i]);
                 moviesSynopsis.add(animeSynopsis[i]);
@@ -836,10 +749,9 @@ class AuthenticationWrapper extends StatelessWidget {
                 movieImagesTest.add(superHeroImages[i]);
                 movieGenre.add("Superhero");
               }
+              print('movieRuntimeis $movieRuntime');
               shuffle(movieDataTest, movieImagesTest, movieTitles,
                   moviesSynopsis, movieYear, movieGenre, movieRuntime);
-              changeToHours();
-              changeToHoursMatches();
               return Swiper();
             } else if (snapshot.hasError) {
               return Text("${snapshot.error}");
