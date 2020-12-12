@@ -1116,18 +1116,18 @@ export const updateUserLikes = functions
   .region("asia-northeast1")
   .https.onRequest(async (request: any, response: any) => {
     //Adding to user
+    const movieGenre = request.query.genre;
+    const arr = JSON.parse(request.query.movieArr);
+
     const userRef = db.collection("users").doc(request.query.userName);
     const userResult = await userRef.get();
     const userData = userResult.data();
-    const arr = JSON.parse(request.query.movieArr);
-    const movieRef = db.collection("newAllMovies").doc(String(arr[0]));
+    const movieRef = db.collection("allMovies").doc(String(arr[0]));
     const movieResult = await movieRef.get();
     const movieData = movieResult.data();
-    const movieGenre = request.query.genre;
     const genreKey = `genreCount.${movieGenre}`;
 
     if (userData && movieData) {
-      //dummy check
       arr.map(async (netflixId: Number) => {
         await userRef.update({
           likes: admin.firestore.FieldValue.arrayUnion(netflixId),
@@ -1892,3 +1892,5 @@ export const deleteUser = functions
       response.send("delete matcherror!");
     }
   });
+
+

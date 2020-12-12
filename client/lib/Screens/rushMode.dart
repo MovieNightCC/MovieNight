@@ -124,23 +124,13 @@ class _RushModeState extends State<RushMode> {
                               _setRightCue(0.0);
                               //when liked
                               print('you liked: ${movieDataTest[count]}');
-
                               //request to firebase server to update likes
                               updateUser(
-                                  rushModeNfid[count],
-                                  context,
-                                  rushModeImages[count],
-                                  rushModeTitles[count],
-                                  rushModeYear[count],
-                                  rushModeSynopsis[count],
-                                  rushModeGenre[count],
-                                  rushModeRuntime[count]);
+                                rushModeNfid[count],
+                                context,
+                                rushModeGenre[count],
+                              );
                               count++;
-                              // print(movieDataTest[index].runtimeType);
-
-                              //  (?userName=<userName>&movieArr=<An Array of netflix IDs>)
-                              // response = await dio.post("/test", data: {"id": 12, "name": "wendu"});
-
                             } else if (orientation ==
                                 CardSwipeOrientation.LEFT) {
                               _setLeftCue(0.0);
