@@ -3,6 +3,12 @@ import './swiper.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'dart:async';
 
+String printDuration(Duration duration) {
+  String twoDigits(int n) => n.toString().padLeft(2, "0");
+  String twoDigitMinutes = twoDigits(duration.inMinutes.remainder(60));
+  return "${twoDigits(duration.inHours)}:$twoDigitMinutes";
+}
+
 class Info extends StatefulWidget {
   @override
   _InfoState createState() => _InfoState();
@@ -11,31 +17,31 @@ class Info extends StatefulWidget {
 var count = 0;
 List minutesList;
 List hourList;
-void changeToHours() {
-  hourList = [...movieRuntime];
-  minutesList = [];
-  for (var j = 0; j < movieRuntime.length; j++) {
-    hourList[j] = (hourList[j] / 3600).toInt();
-  }
-  for (var i = 0; i < movieRuntime.length; i++) {
-    if (movieRuntime[i] < 7200 && movieRuntime[i] > 3600) {
-      movieRuntime[i] = movieRuntime[i] - 3600;
-      movieRuntime[i] = (movieRuntime[i] / 60).toInt();
-      minutesList.add(movieRuntime[i]);
-    } else if (movieRuntime[i] < 3600) {
-      movieRuntime[i] = (movieRuntime[i] / 60).toInt();
-      minutesList.add(movieRuntime[i]);
-    } else if (movieRuntime[i] < 10800 && movieRuntime[i] > 7200) {
-      movieRuntime[i] = movieRuntime[i] - 7200;
-      movieRuntime[i] = (movieRuntime[i] / 60).toInt();
-      minutesList.add(movieRuntime[i]);
-    } else {
-      movieRuntime[i] = movieRuntime[i] - 10800;
-      movieRuntime[i] = (movieRuntime[i] / 60).toInt();
-      minutesList.add(movieRuntime[i]);
-    }
-  }
-}
+// void changeToHours() {
+//   hourList = [...movieRuntime];
+//   minutesList = [];
+//   for (var j = 0; j < movieRuntime.length; j++) {
+//     hourList[j] = (hourList[j] / 3600).toInt();
+//   }
+//   for (var i = 0; i < movieRuntime.length; i++) {
+//     if (movieRuntime[i] < 7200 && movieRuntime[i] > 3600) {
+//       movieRuntime[i] = movieRuntime[i] - 3600;
+//       movieRuntime[i] = (movieRuntime[i] / 60).toInt();
+//       minutesList.add(movieRuntime[i]);
+//     } else if (movieRuntime[i] < 3600) {
+//       movieRuntime[i] = (movieRuntime[i] / 60).toInt();
+//       minutesList.add(movieRuntime[i]);
+//     } else if (movieRuntime[i] < 10800 && movieRuntime[i] > 7200) {
+//       movieRuntime[i] = movieRuntime[i] - 7200;
+//       movieRuntime[i] = (movieRuntime[i] / 60).toInt();
+//       minutesList.add(movieRuntime[i]);
+//     } else {
+//       movieRuntime[i] = movieRuntime[i] - 10800;
+//       movieRuntime[i] = (movieRuntime[i] / 60).toInt();
+//       minutesList.add(movieRuntime[i]);
+//     }
+//   }
+// }
 
 class _InfoState extends State<Info> {
   var _swipeLeftOpacity = 0.0;
@@ -51,6 +57,7 @@ class _InfoState extends State<Info> {
 
   @override
   Widget build(BuildContext context) {
+    print('this movie runtime ${movieRuntime[count]}');
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.arrow_back),
@@ -119,14 +126,10 @@ class _InfoState extends State<Info> {
 
                             //request to firebase server to update likes
                             updateUser(
-                                movieDataTest[count],
-                                context,
-                                movieImagesTest[count],
-                                movieTitles[count],
-                                movieYear[count],
-                                moviesSynopsis[count],
-                                movieGenre[count],
-                                movieRuntime[count]);
+                              movieDataTest[count],
+                              context,
+                              movieGenre[count],
+                            );
                             Future.delayed(Duration(milliseconds: 300), () {
                               // 5s over, navigate to a new page
                               count++;
@@ -158,7 +161,8 @@ class _InfoState extends State<Info> {
                       height: 3.0,
                       fontWeight: FontWeight.bold,
                       fontSize: 20)),
-              Text('Runtime: ${hourList[count]}h ${minutesList[count]}m',
+              Text(
+                  'Runtime: ${printDuration(Duration(seconds: movieRuntime[count]))}',
                   style: TextStyle(
                       color: Colors.white,
                       height: 3.0,

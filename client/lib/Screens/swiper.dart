@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
-import 'package:movie_night/Screens/rushMode.dart';
-import 'package:movie_night/app-theme.dart';
-
 import 'dart:async';
 import 'package:http/http.dart' as http;
 import '../main.dart';
@@ -29,10 +26,6 @@ class _AppState extends State<Swiper> {
   @override
   void initState() {
     super.initState();
-    print("fetchArr $fetchArr");
-    if (fetchArr.length > 1 && cutInHalfCalled == false) {
-      cutInHalf();
-    }
   }
 
   Widget build(BuildContext context) {
@@ -55,58 +48,19 @@ List<int> movieYear = [];
 List<int> movieRuntime = [];
 var counter = 0;
 
-void cutInHalf() {
-  cutInHalfCalled = true;
-  print('cutinhalf is called');
-  print('matchorilength is $matchOriLength');
-  int halfLength = matchesTitles.length ~/ 2;
-  matchesTitles = matchesTitles.sublist(0, halfLength);
-  matchesImage = matchesImage.sublist(0, halfLength);
-  matchesYear = matchesYear.sublist(0, halfLength);
-  matchesGenre = matchesGenre.sublist(0, halfLength);
-  matchesRuntime = matchesRuntime.sublist(0, halfLength);
-  matchesSynopsis = matchesSynopsis.sublist(0, halfLength);
-  matchesNfid = matchesNfid.sublist(0, halfLength);
-}
-
-void makeHour() {
-  hourListMatches[0] = (hourListMatches[0] / 3600).toInt();
-  if (matchesRuntime[0] < 7200 && matchesRuntime[0] > 3600) {
-    matchesRuntime[0] = matchesRuntime[0] - 3600;
-    matchesRuntime[0] = matchesRuntime[0] ~/ 60;
-
-    minutesListMatches.add(matchesRuntime[0]);
-  } else if (matchesRuntime[0] < 3600) {
-    matchesRuntime[0] = matchesRuntime[0] ~/ 60;
-    minutesListMatches.add(matchesRuntime[0]);
-  } else {
-    matchesRuntime[0] = matchesRuntime[0] - 7200;
-    matchesRuntime[0] = matchesRuntime[0] ~/ 60;
-    minutesListMatches.add(matchesRuntime[0]);
-  }
-}
-
 void updateUser(
-    arrOfNfid, context, image, title, year, synopsis, genre, runtime) async {
+    // arrOfNfid, context, image, title, year, synopsis, genre, runtime
+    arrOfNfid,
+    context,
+    genre) async {
   print(userName);
+  print('$arrOfNfid');
+  print('$genre');
+
   var response = await http.get(
       "https://asia-northeast1-movie-night-cc.cloudfunctions.net/updateUserLikes?userName=$userName&movieArr=[$arrOfNfid]&genre=$genre");
   print(response.body);
   if (response.body == "match!") {
-    //push to matches array
-    print("old list $matchesTitles");
-    matchesTitles.insert(0, title);
-    matchesSynopsis.insert(0, synopsis);
-    matchesImage.insert(0, image);
-    matchesYear.insert(0, year);
-    matchesRuntime.insert(0, runtime);
-    hourListMatches.insert(0, runtime);
-    matchesNfid.insert(0, arrOfNfid);
-    matchesGenre.insert(0, genre);
-    print("new match nfid $matchesNfid");
-    print("new list $matchesTitles");
-
-    print("new list $matchesTitles");
     showDialog(
         context: context,
         builder: (_) => new AlertDialog(
@@ -123,7 +77,6 @@ void updateUser(
                 )
               ],
             ));
-    makeHour();
   }
 }
 
@@ -195,7 +148,6 @@ class _TinderswiperState extends State<Tinderswiper>
                         swipeUpdateCallback:
                             (DragUpdateDetails details, Alignment align) {
                           /// Get swiping card's alignment
-                          print(align.x);
                           if (align.x > -2.0 && align.x < 2.0) {
                             _setLeftCue(0.0);
                             _setRightCue(0.0);
@@ -221,14 +173,15 @@ class _TinderswiperState extends State<Tinderswiper>
                             //request to firebase server to update likes
                             if (userPair != "") {
                               updateUser(
-                                  movieDataTest[count],
-                                  context,
-                                  movieImagesTest[count],
-                                  movieTitles[count],
-                                  movieYear[count],
-                                  moviesSynopsis[count],
-                                  movieGenre[count],
-                                  movieRuntime[count]);
+                                movieDataTest[count],
+                                context,
+                                // movieImagesTest[count],
+                                // movieTitles[count],
+                                // movieYear[count],
+                                // moviesSynopsis[count],
+                                movieGenre[count],
+                                // movieRuntime[count]
+                              );
                             }
 
                             count++;
