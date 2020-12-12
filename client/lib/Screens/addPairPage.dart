@@ -41,7 +41,7 @@ class AddPairPage extends StatelessWidget {
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(50.0)),
             ),
-            onPressed: () {
+            onPressed: () async {
               // ignore: todo
               // check if user has a pair
               if (userPair == "") {
@@ -70,6 +70,7 @@ class AddPairPage extends StatelessWidget {
                 } else {
                   print("user exists form the pair");
                   _postNewPair();
+
                   Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -123,6 +124,7 @@ class AddPairPage extends StatelessWidget {
         "/createPair", queryParams);
 
     var response = await http.post(uri);
+    userPair = coupleName;
     print('response status: ${response.statusCode}');
     print('response body for creating a pair${response.body}');
   }

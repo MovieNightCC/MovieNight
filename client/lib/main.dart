@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:async';
 import 'dart:io';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -46,6 +47,9 @@ ThemeData _buildShrineTheme() {
       accentColorBrightness: Brightness.dark,
       canvasColor: Color(0xfffafafa),
       scaffoldBackgroundColor: Colors.black,
+      floatingActionButtonTheme: FloatingActionButtonThemeData(
+        foregroundColor: Colors.red,
+      ),
       bottomAppBarColor: Colors.pink,
       cardColor: Colors.purple,
       dividerColor: Colors.grey,
@@ -224,7 +228,10 @@ class _AppState extends State<App> {
   void configLocalNotification() {
     var initializationSettingsAndroid =
         AndroidInitializationSettings('app_icon');
-    var initializationSettingsIOS = IOSInitializationSettings();
+    var initializationSettingsIOS = IOSInitializationSettings(
+
+        //onDidReceiveLocalNotification: onDidReceiveLocalNotification
+        );
     var initializationSettings = InitializationSettings(
         android: initializationSettingsAndroid, iOS: initializationSettingsIOS);
     flutterLocalNotificationsPlugin.initialize(initializationSettings);

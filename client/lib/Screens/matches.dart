@@ -14,10 +14,10 @@ var current = 0;
 class _MatchesState extends State<Matches> {
   int _currentIndex = 2;
   // notify the snack bar when there is a change in match length
-
+  List matchesArray = [];
   @override
   Widget build(BuildContext context) {
-    print(matchesGenre);
+    // print(matchesGenre);
     return Scaffold(
       appBar: AppBar(
         title: const Text('Match History',
