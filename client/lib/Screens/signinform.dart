@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:movie_night/Screens/onboard.dart';
+import 'package:movie_night/main.dart';
 import 'package:provider/provider.dart';
 import '../sizeconfig.dart';
 import '../constants.dart';
@@ -81,7 +82,15 @@ class _SignFormState extends State<SignForm> {
                       password: password,
                     );
                 if (result == true) {
-                  Navigator.pushNamed(context, Swiper.routeName);
+                  Navigator.push(
+                          context, MaterialPageRoute(builder: (_) => App()))
+                      .then((value) => {setState(() {})});
+
+                  // Navigator.push(
+                  //     context,
+                  //     MaterialPageRoute(
+                  //         builder: (context) => App(), maintainState: false));
+                  // Navigator.pushNamed(context, Swiper.routeName);
                 } else {
                   showDialog(
                       context: context,
