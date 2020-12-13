@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>179841358060-v39bku0jsi3tthsj9l11q38ujm5r7nsn.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.179841358060-v39bku0jsi3tthsj9l11q38ujm5r7nsn</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>179841358060-hhgo3luesll9jqct6pl4v3kuroij6c9a.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyCPrdiN7T9ff58BwDb_g1YgaJQCn_nzpyQ</string>
+	<key>GCM_SENDER_ID</key>
+	<string>179841358060</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>movienight.cc.app</string>
+	<key>PROJECT_ID</key>
+	<string>movie-night-cc</string>
+	<key>STORAGE_BUCKET</key>
+	<string>movie-night-cc.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:179841358060:ios:f772229e25ef7c49b9adc9</string>
+	<key>DATABASE_URL</key>
+	<string>https://movie-night-cc.firebaseio.com</string>
+</dict>
+</plist>

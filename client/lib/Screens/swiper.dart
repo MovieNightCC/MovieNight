@@ -13,8 +13,6 @@ import './movieArray.dart';
 import './filterPopup.dart';
 import './movieMatchesInfo.dart';
 
-import 'package:http/http.dart' as http;
-
 class Swiper extends StatefulWidget {
   static String routeName = "/swiper";
   _AppState createState() => _AppState();
@@ -354,9 +352,6 @@ ThemeData _buildShrineTheme() {
       buttonColor: Colors.orange,
       toggleableActiveColor: Color(0xffd81b60),
       secondaryHeaderColor: Color(0xfffce4ec),
-      textSelectionColor: Color(0xfff48fb1),
-      cursorColor: Colors.pink,
-      textSelectionHandleColor: Color(0xfff06292),
       backgroundColor: Color(0xfff48fb1),
       dialogBackgroundColor: Colors.pink,
       indicatorColor: Color(0xffe91e63),

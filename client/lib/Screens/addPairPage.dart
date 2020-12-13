@@ -5,7 +5,6 @@ import 'package:http/http.dart' as http;
 
 import './profile.dart';
 
-bool userexists = false;
 String userNameOfPair = "";
 String coupleName = "";
 
@@ -41,14 +40,15 @@ class AddPairPage extends StatelessWidget {
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(50.0)),
             ),
-            onPressed: () {
+            onPressed: () async {
               // ignore: todo
               // check if user has a pair
               if (userPair == "") {
                 //check if the user name exists
-                _checkForUser();
+
                 print("called check for user");
-                if (userexists == false) {
+                // ignore: unrelated_type_equality_checks
+                if (_checkForUser() == false) {
                   print("does not exist");
                   showDialog(
                       context: context,
@@ -70,6 +70,7 @@ class AddPairPage extends StatelessWidget {
                 } else {
                   print("user exists form the pair");
                   _postNewPair();
+
                   Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -97,16 +98,16 @@ class AddPairPage extends StatelessWidget {
     );
   }
 
-  void _checkForUser() async {
+  Future<bool> _checkForUser() async {
     userNameOfPair = pairNameController.text.trim();
     var url =
         'https://asia-northeast1-movie-night-cc.cloudfunctions.net/getUserByUserName?userName=$userNameOfPair';
     final response = await Dio().get(url);
     print('response $response');
     if (response.data == false) {
-      userexists = false;
+      return false;
     } else {
-      userexists = true;
+      return true;
     }
   }
 
@@ -123,6 +124,7 @@ class AddPairPage extends StatelessWidget {
         "/createPair", queryParams);
 
     var response = await http.post(uri);
+    userPair = coupleName;
     print('response status: ${response.statusCode}');
     print('response body for creating a pair${response.body}');
   }
