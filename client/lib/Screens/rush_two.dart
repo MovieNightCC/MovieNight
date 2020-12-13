@@ -156,7 +156,8 @@ class _PlayerLobbyState extends State<PlayerLobby> {
                   style: TextStyle(fontSize: 24)),
             ]);
           } else {
-            return Column(children: [
+            return Center(
+                child: Column(children: [
               Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
                 PicAndStatusColumn(
                   showText(playerOneJoined),
@@ -167,7 +168,7 @@ class _PlayerLobbyState extends State<PlayerLobby> {
                   playerTwoIcon,
                 ),
               ]),
-            ]);
+            ]));
           }
         });
   }
