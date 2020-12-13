@@ -70,6 +70,7 @@ class AddPairPage extends StatelessWidget {
                 } else {
                   print("user exists form the pair");
                   _postNewPair();
+                  userPair = coupleName;
 
                   Navigator.push(
                       context,
@@ -124,7 +125,7 @@ class AddPairPage extends StatelessWidget {
         "/createPair", queryParams);
 
     var response = await http.post(uri);
-    userPair = coupleName;
+
     print('response status: ${response.statusCode}');
     print('response body for creating a pair${response.body}');
   }
