@@ -421,3 +421,4 @@ void joinRush() async {
       "https://asia-northeast1-movie-night-cc.cloudfunctions.net/joinRush?userName=$userName&pairName=$userPair");
   print(response.body);
 }
+//asdfasd
