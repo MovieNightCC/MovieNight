@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import './swiper.dart';
 import '../main.dart';
-import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import './rushMode.dart';
 

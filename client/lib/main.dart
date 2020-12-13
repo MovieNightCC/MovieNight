@@ -61,9 +61,6 @@ ThemeData _buildShrineTheme() {
       buttonColor: Colors.orange,
       toggleableActiveColor: Color(0xffd81b60),
       secondaryHeaderColor: Color(0xfffce4ec),
-      textSelectionColor: Color(0xfff48fb1),
-      cursorColor: Colors.pink,
-      textSelectionHandleColor: Color(0xfff06292),
       backgroundColor: Color(0xfff48fb1),
       dialogBackgroundColor: Colors.grey[900],
       indicatorColor: Color(0xffe91e63),
@@ -229,9 +226,12 @@ class _AppState extends State<App> {
     var initializationSettingsAndroid =
         AndroidInitializationSettings('app_icon');
     var initializationSettingsIOS = IOSInitializationSettings(
-
-        //onDidReceiveLocalNotification: onDidReceiveLocalNotification
-        );
+      defaultPresentAlert: true,
+      defaultPresentBadge: true,
+      requestAlertPermission: true,
+      requestBadgePermission: true,
+      //onDidReceiveLocalNotification: onDidReceiveLocalNotification
+    );
     var initializationSettings = InitializationSettings(
         android: initializationSettingsAndroid, iOS: initializationSettingsIOS);
     flutterLocalNotificationsPlugin.initialize(initializationSettings);
