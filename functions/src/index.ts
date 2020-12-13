@@ -1847,7 +1847,8 @@ export const setUpRushGame = functions
     });
   });
 
-export const createRushGameForPair = functions.region("asia-northeast1").firestore
+export const createRushGameForPair = functions
+  .region("asia-northeast1").firestore
   .document("pairs/{pairName}")
   .onCreate(async (snap, context) => {
     console.log("----------------start function--------------------");

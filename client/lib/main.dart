@@ -178,7 +178,7 @@ class _AppState extends State<App> {
   @override
   void initState() {
     super.initState();
-    // futureMovie = fetchMovie();
+
     futureGay = fetchGay();
     futureAnime = fetchAnime();
     futureHorror = fetchHorror();
