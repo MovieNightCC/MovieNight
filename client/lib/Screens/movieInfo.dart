@@ -17,31 +17,6 @@ class Info extends StatefulWidget {
 var count = 0;
 List minutesList;
 List hourList;
-// void changeToHours() {
-//   hourList = [...movieRuntime];
-//   minutesList = [];
-//   for (var j = 0; j < movieRuntime.length; j++) {
-//     hourList[j] = (hourList[j] / 3600).toInt();
-//   }
-//   for (var i = 0; i < movieRuntime.length; i++) {
-//     if (movieRuntime[i] < 7200 && movieRuntime[i] > 3600) {
-//       movieRuntime[i] = movieRuntime[i] - 3600;
-//       movieRuntime[i] = (movieRuntime[i] / 60).toInt();
-//       minutesList.add(movieRuntime[i]);
-//     } else if (movieRuntime[i] < 3600) {
-//       movieRuntime[i] = (movieRuntime[i] / 60).toInt();
-//       minutesList.add(movieRuntime[i]);
-//     } else if (movieRuntime[i] < 10800 && movieRuntime[i] > 7200) {
-//       movieRuntime[i] = movieRuntime[i] - 7200;
-//       movieRuntime[i] = (movieRuntime[i] / 60).toInt();
-//       minutesList.add(movieRuntime[i]);
-//     } else {
-//       movieRuntime[i] = movieRuntime[i] - 10800;
-//       movieRuntime[i] = (movieRuntime[i] / 60).toInt();
-//       minutesList.add(movieRuntime[i]);
-//     }
-//   }
-// }
 
 class _InfoState extends State<Info> {
   var _swipeLeftOpacity = 0.0;

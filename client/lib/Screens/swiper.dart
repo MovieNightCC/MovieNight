@@ -13,6 +13,7 @@ import './movieArray.dart';
 //import './rushMode.dart';
 import './filterPopup.dart';
 import './movieMatchesInfo.dart';
+import 'DummyMatches.dart';
 
 class Swiper extends StatefulWidget {
   static String routeName = "/swiper";
@@ -128,7 +129,7 @@ class _TinderswiperState extends State<Tinderswiper>
 // - Night-Club-70s
 // - Samarin
 // - TextMeOne
-          Image.asset("./assets/icons/loadingCool.gif"),
+          Image.asset('./assets/icons/loading.gif', scale: 1.5),
           Padding(
             padding: EdgeInsets.fromLTRB(0, 50, 0, 0),
             child: Column(
@@ -312,10 +313,13 @@ class _TinderswiperState extends State<Tinderswiper>
               _currentIndex = index;
             });
             if (_currentIndex == 2) {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => Matches(), maintainState: true));
+              if (userPair == "") {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => DummyMatches()));
+              } else {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => Matches()));
+              }
             }
             if (_currentIndex == 0) {
               Navigator.push(
