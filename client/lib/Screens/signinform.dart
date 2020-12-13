@@ -85,12 +85,6 @@ class _SignFormState extends State<SignForm> {
                   Navigator.push(
                           context, MaterialPageRoute(builder: (_) => App()))
                       .then((value) => {setState(() {})});
-
-                  // Navigator.push(
-                  //     context,
-                  //     MaterialPageRoute(
-                  //         builder: (context) => App(), maintainState: false));
-                  // Navigator.pushNamed(context, Swiper.routeName);
                 } else {
                   showDialog(
                       context: context,
