@@ -617,18 +617,6 @@ Future<Response> fetchKorea() async {
   }
 }
 
-// Future<Response> futureMovie;
-// Future<Response> futureGay;
-// Future<Response> futureAnime;
-// Future<Response> futureHorror;
-// Future<Response> futureJapan;
-// Future<Response> futureKorea;
-// Future<Response> futureRomance;
-// Future<Response> futureMusic;
-// Future<Response> futureSuperHero;
-// Future<Response> futureScifi;
-// Future<Response> futureMartialArts;
-
 class AuthenticationWrapper extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
