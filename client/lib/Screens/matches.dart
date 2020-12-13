@@ -29,6 +29,9 @@ class _MatchesState extends State<Matches> {
       builder:
           (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
         if (snapshot.hasError) return new Text('Error: ${snapshot.error}');
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Text("Loading");
+        }
         matchesMovieData = snapshot.data['matchMovieData'].reversed.toList();
         if (matchesMovieData.length != 0) {
           return Scaffold(
