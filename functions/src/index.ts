@@ -1847,14 +1847,15 @@ export const setUpRushGame = functions
     });
   });
 
+  // region("asia-northeast1")
 export const createRushGameForPair = functions.region("asia-northeast1").firestore
   .document("pairs/{pairName}")
   .onCreate(async (snap, context) => {
     console.log("----------------start function--------------------");
     const pairData = snap.data();
-    const pairName = pairData.pairName;
-    const user1Name = pairName["members"][0];
-    const user2Name = pairName["members"][1];
+    const pairName = pairData["pairName"];
+    const user1Name = pairData["members"][0];
+    const user2Name = pairData["members"][1];
     const snap1 = await db.collection("users").doc(user1Name).get();
     const snap2 = await db.collection("users").doc(user2Name).get();
     const data1 = snap1.data();
@@ -1866,8 +1867,8 @@ export const createRushGameForPair = functions.region("asia-northeast1").firesto
           pairName: pairName,
           playerOneJoined: false,
           playerTwoJoined: false,
-          playerOne: pairData["members"][0],
-          playerTwo: pairData["members"][1],
+          playerOne: user1Name,
+          playerTwo: user2Name,
           iconOne: data1["userIcon"],
           iconTwo: data2["userIcon"],
         },

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 import 'dart:async';
 import 'package:http/http.dart' as http;
+import 'package:neon/neon.dart';
 import '../main.dart';
 import './rush_two.dart';
 import './tinderCard.dart';
@@ -12,6 +13,7 @@ import './movieArray.dart';
 //import './rushMode.dart';
 import './filterPopup.dart';
 import './movieMatchesInfo.dart';
+import 'DummyMatches.dart';
 
 class Swiper extends StatefulWidget {
   static String routeName = "/swiper";
@@ -109,13 +111,31 @@ class _TinderswiperState extends State<Tinderswiper>
             ),
             painter: HeaderCurvedContainer(),
           ),
-          Text("Loading...", style: TextStyle(fontSize: 40)),
-          Image.asset("/assets/icons/icon-512x512-android.png"),
+          Positioned(
+              top: 25,
+              child: Neon(
+                text: 'Movie Night',
+                color: Colors.pink,
+                fontSize: 35,
+                font: NeonFont.Membra,
+                flickeringText: false,
+              )),
+//               - Automania
+// - Beon
+// - Cyberpunk
+// - LasEnter
+// - Membra
+// - Monoton
+// - Night-Club-70s
+// - Samarin
+// - TextMeOne
+          Image.asset('./assets/icons/loading.gif', scale: 1.5),
           Padding(
             padding: EdgeInsets.fromLTRB(0, 50, 0, 0),
             child: Column(
               children: [
                 Center(
+                  heightFactor: 1.1,
                   child: InkWell(
                     child: Container(
                       height: MediaQuery.of(context).size.height * 0.7,
@@ -125,9 +145,9 @@ class _TinderswiperState extends State<Tinderswiper>
                         stackNum: 10,
                         swipeEdge: 5.0,
                         maxWidth: MediaQuery.of(context).size.width * 0.9,
-                        maxHeight: MediaQuery.of(context).size.width * 1.6,
+                        maxHeight: MediaQuery.of(context).size.width * 1.75,
                         minWidth: MediaQuery.of(context).size.width * 0.899,
-                        minHeight: MediaQuery.of(context).size.width * 1.599,
+                        minHeight: MediaQuery.of(context).size.width * 1.7499,
                         cardBuilder: (context, index) {
                           return Card(
                             color: Color(0x00000000),
@@ -204,12 +224,12 @@ class _TinderswiperState extends State<Tinderswiper>
           ),
           Positioned(
               //swipe cue dislike
-              left: 40,
-              bottom: 350,
+              left: 10,
+              bottom: 320,
               child: Opacity(
                 opacity: _swipeLeftOpacity,
                 child: FloatingActionButton(
-                  backgroundColor: Colors.red[900],
+                  backgroundColor: Colors.red[500],
                   heroTag: null,
                   onPressed: () {
                     print("pressed");
@@ -222,9 +242,9 @@ class _TinderswiperState extends State<Tinderswiper>
                 ),
               )),
           Positioned(
-              //swipe cue dislike
-              right: 40,
-              bottom: 350,
+              //swipe cue like
+              right: 10,
+              bottom: 320,
               child: Opacity(
                 opacity: _swipeRightOpacity,
                 child: FloatingActionButton(
@@ -242,12 +262,11 @@ class _TinderswiperState extends State<Tinderswiper>
               )),
           Positioned(
             left: 80,
-            bottom: 40,
+            bottom: 20,
             child: FloatingActionButton(
-              backgroundColor: Colors.red,
+              backgroundColor: Colors.pinkAccent[700],
               heroTag: null,
               onPressed: () {
-                print('pressed');
                 joinRush();
                 Navigator.push(
                     context,
@@ -257,7 +276,7 @@ class _TinderswiperState extends State<Tinderswiper>
                     ));
               },
               tooltip: 'Go to Rush Mode',
-              child: Icon(Icons.fast_forward, size: 40),
+              child: Icon(Icons.fast_forward, size: 40, color: Colors.white),
               elevation: 2.0,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(100)),
@@ -265,13 +284,13 @@ class _TinderswiperState extends State<Tinderswiper>
           ),
           Positioned(
             right: 80,
-            bottom: 40,
+            bottom: 20,
             child: FloatingActionButton(
-              backgroundColor: Colors.yellow,
+              backgroundColor: Colors.deepPurple[300],
               heroTag: null,
               onPressed: () => filterPop(context),
               tooltip: 'Filter Movies',
-              child: Icon(Icons.settings, size: 40),
+              child: Icon(Icons.settings, size: 40, color: Colors.white),
               elevation: 2.0,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(100)),
@@ -281,7 +300,7 @@ class _TinderswiperState extends State<Tinderswiper>
         bottomNavigationBar: BottomNavigationBar(
           currentIndex: _currentIndex,
           type: BottomNavigationBarType.fixed,
-          backgroundColor: Colors.pink,
+          backgroundColor: Color(0xff412DB3),
           items: [
             BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
             BottomNavigationBarItem(
@@ -294,10 +313,13 @@ class _TinderswiperState extends State<Tinderswiper>
               _currentIndex = index;
             });
             if (_currentIndex == 2) {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => Matches(), maintainState: true));
+              if (userPair == "") {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => DummyMatches()));
+              } else {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => Matches()));
+              }
             }
             if (_currentIndex == 0) {
               Navigator.push(
@@ -315,7 +337,7 @@ class _TinderswiperState extends State<Tinderswiper>
 class HeaderCurvedContainer extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
-    Paint paint = Paint()..color = Colors.pink;
+    Paint paint = Paint()..color = Color(0xff412DB3);
     Path path = Path()
       ..relativeLineTo(0, 150)
       ..quadraticBezierTo(size.width / 2, 225, size.width, 150)

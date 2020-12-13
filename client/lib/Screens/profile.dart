@@ -4,7 +4,7 @@ import 'package:path/path.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
-
+import 'package:neon/neon.dart';
 import './addPairPage.dart';
 import './swiper.dart';
 import './auth.dart';
@@ -12,6 +12,7 @@ import './matches.dart';
 
 import 'package:provider/provider.dart';
 import '../main.dart';
+import 'DummyMatches.dart';
 
 class Profile extends StatefulWidget {
   static String routeName = "/splash";
@@ -38,76 +39,48 @@ class _ProfileState extends State<Profile> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Padding(
-                padding: EdgeInsets.all(30),
-                child: Text(
-                  "Profile",
-                  style: TextStyle(
-                      height: 1.5, fontWeight: FontWeight.bold, fontSize: 30),
-                ),
+                padding: EdgeInsets.all(25),
+                child: Positioned(
+                    top: 15,
+                    child: Neon(
+                      text: '$displayName',
+                      color: Colors.pink,
+                      fontSize: 35,
+                      font: NeonFont.Membra,
+                      flickeringText: false,
+                    )),
               ),
               ProfilePicture(),
-              profileInfo(),
-              Spacer(),
-              Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                FlatButton(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(50.0)),
+              UserInfoSection(),
+              Padding(
+                padding: EdgeInsets.all(10),
+                child:
+                    Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                  FlatButton(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(50.0)),
+                    ),
+                    child: Text(
+                      "Link with your partner",
+                      style: TextStyle(color: Colors.white),
+                    ),
+                    color: Color(0xffA058CB),
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => AddPairPage()));
+                    },
                   ),
-                  child: Text(
-                    "Link with your partner",
-                    style: TextStyle(color: Colors.white),
-                  ),
-                  color: Colors.pink,
-                  onPressed: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => AddPairPage()));
-                  },
-                ),
-              ]),
-              Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                FlatButton(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(50.0)),
-                  ),
-                  child: Text(
-                    "Delete Account",
-                    style: TextStyle(color: Colors.white),
-                  ),
-                  color: Colors.pink,
-                  onPressed: () {
-                    showDialog(
-                        context: context,
-                        builder: (_) => new AlertDialog(
-                              title: new Text("Alert",
-                                  style: TextStyle(color: Colors.white)),
-                              content: new Text("Are you sure?",
-                                  style: TextStyle(color: Colors.white)),
-                              actions: <Widget>[
-                                FlatButton(
-                                  child: Text('No, go back',
-                                      style: TextStyle(color: Colors.pink)),
-                                  onPressed: () {
-                                    Navigator.of(context, rootNavigator: true)
-                                        .pop();
-                                  },
-                                ),
-                                FlatButton(
-                                  child: Text('Yes, delete my account',
-                                      style: TextStyle(color: Colors.pink)),
-                                  onPressed: () {
-                                    //placeholder for delete user function
-                                  },
-                                )
-                              ],
-                            ));
-                  },
-                ),
-              ]),
-              Spacer(),
-              Positioned(
-                bottom: 30,
-                left: 10,
+                ]),
+              ),
+              Padding(
+                padding: EdgeInsets.all(10),
                 child: FlatButton(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(50.0)),
+                  ),
+                  color: Color(0xffA058CB),
                   onPressed: () {
                     context.read<AuthenticationService>().signOut();
 
@@ -115,11 +88,60 @@ class _ProfileState extends State<Profile> {
                         MaterialPageRoute(builder: (context) => App()));
                   },
                   child: Text(
-                    "SIGN OUT",
+                    "Sign Out",
                     style: TextStyle(),
                   ),
                 ),
-              )
+              ),
+              Padding(
+                  padding: EdgeInsets.only(top: 120),
+                  child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        FlatButton(
+                          shape: RoundedRectangleBorder(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(50.0)),
+                          ),
+                          child: Text(
+                            "Delete Account",
+                            style: TextStyle(color: Colors.white),
+                          ),
+                          color: Colors.red,
+                          onPressed: () {
+                            showDialog(
+                                context: context,
+                                builder: (_) => new AlertDialog(
+                                      title: new Text("Alert",
+                                          style:
+                                              TextStyle(color: Colors.white)),
+                                      content: new Text("Are you sure?",
+                                          style:
+                                              TextStyle(color: Colors.white)),
+                                      actions: <Widget>[
+                                        FlatButton(
+                                          child: Text('No, go back',
+                                              style: TextStyle(
+                                                  color: Colors.pink)),
+                                          onPressed: () {
+                                            Navigator.of(context,
+                                                    rootNavigator: true)
+                                                .pop();
+                                          },
+                                        ),
+                                        FlatButton(
+                                          child: Text('Yes, delete my account',
+                                              style: TextStyle(
+                                                  color: Colors.pink)),
+                                          onPressed: () {
+                                            //placeholder for delete user function
+                                          },
+                                        )
+                                      ],
+                                    ));
+                          },
+                        ),
+                      ])),
             ],
           ),
         ],
@@ -127,7 +149,7 @@ class _ProfileState extends State<Profile> {
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
         type: BottomNavigationBarType.fixed,
-        backgroundColor: Colors.pink,
+        backgroundColor: Color(0xffA058CB),
         items: [
           BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
           BottomNavigationBarItem(
@@ -144,8 +166,13 @@ class _ProfileState extends State<Profile> {
                 context, MaterialPageRoute(builder: (context) => Swiper()));
           }
           if (_currentIndex == 2) {
-            Navigator.push(
-                context, MaterialPageRoute(builder: (context) => Matches()));
+            if (userPair == "") {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => DummyMatches()));
+            } else {
+              Navigator.push(
+                  context, MaterialPageRoute(builder: (context) => Matches()));
+            }
           }
         },
       ),
@@ -156,34 +183,72 @@ class _ProfileState extends State<Profile> {
 Widget profileInfo() {
   return Column(
     children: <Widget>[
-      Text('Username: $displayName',
+      Text('$userEmail',
           style: TextStyle(
-              height: 3.0, fontWeight: FontWeight.bold, fontSize: 30)),
-      Text('Email: $userEmail',
+              height: 1.5, fontWeight: FontWeight.bold, fontSize: 20)),
+      Text('in $userPair',
           style: TextStyle(
-              height: 1.5, fontWeight: FontWeight.bold, fontSize: 30)),
-      Text('Pairname: $userPair',
-          style: TextStyle(
-              height: 1.5, fontWeight: FontWeight.bold, fontSize: 30)),
+              height: 1.5, fontWeight: FontWeight.bold, fontSize: 20)),
     ],
   );
 }
 
-Widget userInfoElement(String input) {
-  return Container(
-    child: Text(input,
-        style: TextStyle(
-            color: Colors.white,
-            fontSize: 14.0,
-            height: 2.0,
-            fontWeight: FontWeight.bold)),
-  );
+class UserInfoSection extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder<DocumentSnapshot>(
+        stream: FirebaseFirestore.instance
+            .collection('users')
+            .doc(userName)
+            .snapshots(),
+        builder:
+            (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+          if (snapshot.hasError) {
+            return Text("User does not exist");
+          }
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Text("Loading");
+          }
+          userPair = snapshot.data["pairName"];
+          if (userPair == "") {
+            return Column(
+              children: <Widget>[
+                Text('$userEmail',
+                    style: TextStyle(
+                        height: 1.5,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20)),
+                Text('currently not in a pair',
+                    style: TextStyle(
+                        height: 1.5,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20)),
+              ],
+            );
+          } else {
+            return Column(
+              children: <Widget>[
+                Text('$userEmail',
+                    style: TextStyle(
+                        height: 1.5,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20)),
+                Text('in $userPair',
+                    style: TextStyle(
+                        height: 1.5,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20)),
+              ],
+            );
+          }
+        });
+  }
 }
 
 class HeaderCurvedContainer extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
-    Paint paint = Paint()..color = Colors.pink;
+    Paint paint = Paint()..color = Color(0xffA058CB);
     Path path = Path()
       ..relativeLineTo(0, 150)
       ..quadraticBezierTo(size.width / 2, 225, size.width, 150)
@@ -279,7 +344,7 @@ class _ProfilePictureState extends State<ProfilePicture> {
               )),
         ),
         CircleAvatar(
-          backgroundColor: Colors.purple[100],
+          backgroundColor: Color(0xff5B38BA),
           child: IconButton(
             icon: Icon(
               Icons.edit,

@@ -130,9 +130,9 @@ class PushNotificationService {
         showDialog(
             context: context,
             builder: (_) => new AlertDialog(
-                  title:
-                      new Text("Alert", style: TextStyle(color: Colors.black)),
-                  content: new Text("$message",
+                  title: new Text("Alert",
+                      style: TextStyle(color: Colors.white12)),
+                  content: new Text(message['notification']['title'],
                       style: TextStyle(color: Colors.black)),
                   actions: <Widget>[
                     FlatButton(
@@ -616,18 +616,6 @@ Future<Response> fetchKorea() async {
     }
   }
 }
-
-// Future<Response> futureMovie;
-// Future<Response> futureGay;
-// Future<Response> futureAnime;
-// Future<Response> futureHorror;
-// Future<Response> futureJapan;
-// Future<Response> futureKorea;
-// Future<Response> futureRomance;
-// Future<Response> futureMusic;
-// Future<Response> futureSuperHero;
-// Future<Response> futureScifi;
-// Future<Response> futureMartialArts;
 
 class AuthenticationWrapper extends StatelessWidget {
   @override

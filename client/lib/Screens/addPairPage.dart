@@ -21,7 +21,7 @@ class AddPairPage extends StatelessWidget {
           TextField(
             controller: pairNameController,
             decoration: InputDecoration(
-              labelText: "Your partner's name",
+              labelText: "Your partner's email",
             ),
           ),
           Text("Link your partner's account here",
@@ -32,7 +32,8 @@ class AddPairPage extends StatelessWidget {
                   fontSize: 20)),
           TextField(
             controller: coupleNameController,
-            decoration: InputDecoration(labelText: "Define your Team's name"),
+            decoration:
+                InputDecoration(labelText: "Enter a nickname for your pair"),
           ),
           Spacer(),
           RaisedButton(
@@ -70,6 +71,7 @@ class AddPairPage extends StatelessWidget {
                 } else {
                   print("user exists form the pair");
                   _postNewPair();
+                  userPair = coupleName;
 
                   Navigator.push(
                       context,
@@ -100,6 +102,9 @@ class AddPairPage extends StatelessWidget {
 
   Future<bool> _checkForUser() async {
     userNameOfPair = pairNameController.text.trim();
+    print(userNameOfPair);
+    userNameOfPair = userNameOfPair.substring(0, userNameOfPair.indexOf("@"));
+    print(userNameOfPair);
     var url =
         'https://asia-northeast1-movie-night-cc.cloudfunctions.net/getUserByUserName?userName=$userNameOfPair';
     final response = await Dio().get(url);
@@ -124,7 +129,7 @@ class AddPairPage extends StatelessWidget {
         "/createPair", queryParams);
 
     var response = await http.post(uri);
-    userPair = coupleName;
+
     print('response status: ${response.statusCode}');
     print('response body for creating a pair${response.body}');
   }
