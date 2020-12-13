@@ -30,7 +30,7 @@ class _MatchesState extends State<Matches> {
           (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
         if (snapshot.hasError) return new Text('Error: ${snapshot.error}');
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Text("Loading");
+          return Image.asset('./assets/icons/loading.gif', scale: 1.5);
         }
         matchesMovieData = snapshot.data['matchMovieData'].reversed.toList();
         if (matchesMovieData.length != 0) {
@@ -92,6 +92,7 @@ class _MatchesState extends State<Matches> {
             bottomNavigationBar: BottomNavigationBar(
               currentIndex: _currentIndex,
               type: BottomNavigationBarType.fixed,
+              selectedItemColor: Colors.pink,
               backgroundColor: Color(0xff3424AF),
               items: [
                 BottomNavigationBarItem(

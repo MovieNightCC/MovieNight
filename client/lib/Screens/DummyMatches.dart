@@ -76,6 +76,7 @@ class _DummyMatchesState extends State<DummyMatches> {
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
         type: BottomNavigationBarType.fixed,
+        selectedItemColor: Colors.pink,
         backgroundColor: Colors.pink,
         items: [
           BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),

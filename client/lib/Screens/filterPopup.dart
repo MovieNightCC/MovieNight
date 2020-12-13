@@ -31,7 +31,7 @@ void filterPop(context) {
       builder: (context) {
         return StatefulBuilder(builder: (context, setState) {
           return new AlertDialog(
-            title: new Text("What you want to watch:",
+            title: new Text("What do you want to watch:",
                 style: TextStyle(color: Colors.pink)),
             content: Container(
               width: double.maxFinite,
