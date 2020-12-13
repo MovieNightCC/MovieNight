@@ -121,9 +121,6 @@ class PushNotificationService {
   PushNotificationService(this._fcm);
 
   Future initialise(context) async {
-    // If you want to test the push notification locally,
-    // you need to get the token and input to the Firebase console
-    // https://console.firebase.google.com/project/YOUR_PROJECT_ID/notification/compose
     String token = await _fcm.getToken();
     print("FirebaseMessaging token: $token");
 
@@ -179,16 +176,16 @@ class _AppState extends State<App> {
   void initState() {
     super.initState();
     // futureMovie = fetchMovie();
-    futureGay = fetchGay();
-    futureAnime = fetchAnime();
-    futureHorror = fetchHorror();
-    futureJapan = fetchJapan();
-    futureKorea = fetchKorea();
-    futureRomance = fetchRomance();
-    futureScifi = fetchScifi();
-    futureMartialArts = fetchMartialArts();
-    futureSuperHero = fetchSuperHero();
-    futureMusic = fetchMusic();
+    // futureGay = fetchGay();
+    // futureAnime = fetchAnime();
+    // futureHorror = fetchHorror();
+    // futureJapan = fetchJapan();
+    // futureKorea = fetchKorea();
+    // futureRomance = fetchRomance();
+    // futureScifi = fetchScifi();
+    // futureMartialArts = fetchMartialArts();
+    // futureSuperHero = fetchSuperHero();
+    // futureMusic = fetchMusic();
     registerNotification();
     configLocalNotification();
   }
@@ -621,16 +618,16 @@ Future<Response> fetchKorea() async {
 }
 
 // Future<Response> futureMovie;
-Future<Response> futureGay;
-Future<Response> futureAnime;
-Future<Response> futureHorror;
-Future<Response> futureJapan;
-Future<Response> futureKorea;
-Future<Response> futureRomance;
-Future<Response> futureMusic;
-Future<Response> futureSuperHero;
-Future<Response> futureScifi;
-Future<Response> futureMartialArts;
+// Future<Response> futureGay;
+// Future<Response> futureAnime;
+// Future<Response> futureHorror;
+// Future<Response> futureJapan;
+// Future<Response> futureKorea;
+// Future<Response> futureRomance;
+// Future<Response> futureMusic;
+// Future<Response> futureSuperHero;
+// Future<Response> futureScifi;
+// Future<Response> futureMartialArts;
 
 class AuthenticationWrapper extends StatelessWidget {
   @override
@@ -649,17 +646,16 @@ class AuthenticationWrapper extends StatelessWidget {
         theme: _kShrineTheme,
         home: FutureBuilder(
           future: Future.wait([
-            // futureMovie,
-            futureGay,
-            futureAnime,
-            futureHorror,
-            futureJapan,
-            futureKorea,
-            futureRomance,
-            futureScifi,
-            futureMartialArts,
-            futureSuperHero,
-            futureMusic,
+            fetchGay(),
+            fetchAnime(),
+            fetchHorror(),
+            fetchJapan(),
+            fetchKorea(),
+            fetchRomance(),
+            fetchScifi(),
+            fetchMartialArts(),
+            fetchSuperHero(),
+            fetchMusic(),
           ]),
           builder: (context, snapshot) {
             // print('${movieDataTest.length} how many movies I have');
