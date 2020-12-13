@@ -58,29 +58,32 @@ class _MatchesState extends State<Matches> {
                   ),
                   painter: HeaderCurvedContainer(),
                 ),
-                Center(
-                  child: GridView.count(
-                    childAspectRatio: 0.70,
-                    crossAxisCount: 2,
-                    children: List.generate(matchesMovieData.length, (index) {
-                      return InkWell(
-                        child: Column(
-                          children: [
-                            Image.network(matchesMovieData[index]["img"]),
-                          ],
-                        ),
-                        onTap: () {
-                          current = index;
-                          print("current $current");
-                          Navigator.push(
-                              context,
-                              new MaterialPageRoute(
-                                  builder: (context) => MatchInfo()));
-                        },
-                      );
-                    }),
+                Padding(
+                  padding: EdgeInsets.only(top: 27.0),
+                  child: Center(
+                    child: GridView.count(
+                      childAspectRatio: 0.70,
+                      crossAxisCount: 2,
+                      children: List.generate(matchesMovieData.length, (index) {
+                        return InkWell(
+                          child: Column(
+                            children: [
+                              Image.network(matchesMovieData[index]["img"]),
+                            ],
+                          ),
+                          onTap: () {
+                            current = index;
+                            print("current $current");
+                            Navigator.push(
+                                context,
+                                new MaterialPageRoute(
+                                    builder: (context) => MatchInfo()));
+                          },
+                        );
+                      }),
+                    ),
                   ),
-                ),
+                )
               ],
             ),
             bottomNavigationBar: BottomNavigationBar(
