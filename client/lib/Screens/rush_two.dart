@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import './swiper.dart';
 import '../main.dart';
-import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import './rushMode.dart';
 
@@ -151,16 +151,6 @@ class _PlayerLobbyState extends State<PlayerLobby> {
             return LinearProgressIndicator();
           } else if (playerOneJoined && playerTwoJoined) {
             return Column(children: [
-              // Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
-              //   PicAndStatusColumn(
-              //     showText(playerOneJoined),
-              //     playerOneIcon,
-              //   ),
-              //   PicAndStatusColumn(
-              //     showText(playerTwoJoined),
-              //     playerTwoIcon,
-              //   ),
-              // ]),
               TimerWidget(),
               Text("Both Player Joined! Get Ready...",
                   style: TextStyle(fontSize: 24)),

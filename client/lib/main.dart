@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:async';
 import 'dart:io';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -46,6 +47,9 @@ ThemeData _buildShrineTheme() {
       accentColorBrightness: Brightness.dark,
       canvasColor: Color(0xfffafafa),
       scaffoldBackgroundColor: Colors.black,
+      floatingActionButtonTheme: FloatingActionButtonThemeData(
+        foregroundColor: Colors.red,
+      ),
       bottomAppBarColor: Colors.pink,
       cardColor: Colors.purple,
       dividerColor: Colors.grey,
@@ -57,9 +61,6 @@ ThemeData _buildShrineTheme() {
       buttonColor: Colors.orange,
       toggleableActiveColor: Color(0xffd81b60),
       secondaryHeaderColor: Color(0xfffce4ec),
-      textSelectionColor: Color(0xfff48fb1),
-      cursorColor: Colors.pink,
-      textSelectionHandleColor: Color(0xfff06292),
       backgroundColor: Color(0xfff48fb1),
       dialogBackgroundColor: Colors.grey[900],
       indicatorColor: Color(0xffe91e63),
@@ -120,9 +121,6 @@ class PushNotificationService {
   PushNotificationService(this._fcm);
 
   Future initialise(context) async {
-    // If you want to test the push notification locally,
-    // you need to get the token and input to the Firebase console
-    // https://console.firebase.google.com/project/YOUR_PROJECT_ID/notification/compose
     String token = await _fcm.getToken();
     print("FirebaseMessaging token: $token");
 
@@ -178,16 +176,16 @@ class _AppState extends State<App> {
   void initState() {
     super.initState();
     // futureMovie = fetchMovie();
-    futureGay = fetchGay();
-    futureAnime = fetchAnime();
-    futureHorror = fetchHorror();
-    futureJapan = fetchJapan();
-    futureKorea = fetchKorea();
-    futureRomance = fetchRomance();
-    futureScifi = fetchScifi();
-    futureMartialArts = fetchMartialArts();
-    futureSuperHero = fetchSuperHero();
-    futureMusic = fetchMusic();
+    // futureGay = fetchGay();
+    // futureAnime = fetchAnime();
+    // futureHorror = fetchHorror();
+    // futureJapan = fetchJapan();
+    // futureKorea = fetchKorea();
+    // futureRomance = fetchRomance();
+    // futureScifi = fetchScifi();
+    // futureMartialArts = fetchMartialArts();
+    // futureSuperHero = fetchSuperHero();
+    // futureMusic = fetchMusic();
     registerNotification();
     configLocalNotification();
   }
@@ -224,7 +222,13 @@ class _AppState extends State<App> {
   void configLocalNotification() {
     var initializationSettingsAndroid =
         AndroidInitializationSettings('app_icon');
-    var initializationSettingsIOS = IOSInitializationSettings();
+    var initializationSettingsIOS = IOSInitializationSettings(
+      defaultPresentAlert: true,
+      defaultPresentBadge: true,
+      requestAlertPermission: true,
+      requestBadgePermission: true,
+      //onDidReceiveLocalNotification: onDidReceiveLocalNotification
+    );
     var initializationSettings = InitializationSettings(
         android: initializationSettingsAndroid, iOS: initializationSettingsIOS);
     flutterLocalNotificationsPlugin.initialize(initializationSettings);
@@ -614,16 +618,16 @@ Future<Response> fetchKorea() async {
 }
 
 // Future<Response> futureMovie;
-Future<Response> futureGay;
-Future<Response> futureAnime;
-Future<Response> futureHorror;
-Future<Response> futureJapan;
-Future<Response> futureKorea;
-Future<Response> futureRomance;
-Future<Response> futureMusic;
-Future<Response> futureSuperHero;
-Future<Response> futureScifi;
-Future<Response> futureMartialArts;
+// Future<Response> futureGay;
+// Future<Response> futureAnime;
+// Future<Response> futureHorror;
+// Future<Response> futureJapan;
+// Future<Response> futureKorea;
+// Future<Response> futureRomance;
+// Future<Response> futureMusic;
+// Future<Response> futureSuperHero;
+// Future<Response> futureScifi;
+// Future<Response> futureMartialArts;
 
 class AuthenticationWrapper extends StatelessWidget {
   @override
@@ -642,17 +646,16 @@ class AuthenticationWrapper extends StatelessWidget {
         theme: _kShrineTheme,
         home: FutureBuilder(
           future: Future.wait([
-            // futureMovie,
-            futureGay,
-            futureAnime,
-            futureHorror,
-            futureJapan,
-            futureKorea,
-            futureRomance,
-            futureScifi,
-            futureMartialArts,
-            futureSuperHero,
-            futureMusic,
+            fetchGay(),
+            fetchAnime(),
+            fetchHorror(),
+            fetchJapan(),
+            fetchKorea(),
+            fetchRomance(),
+            fetchScifi(),
+            fetchMartialArts(),
+            fetchSuperHero(),
+            fetchMusic(),
           ]),
           builder: (context, snapshot) {
             // print('${movieDataTest.length} how many movies I have');
