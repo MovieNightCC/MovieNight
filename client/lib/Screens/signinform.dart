@@ -87,7 +87,7 @@ class _SignFormState extends State<SignForm> {
                       context: context,
                       builder: (_) => new AlertDialog(
                             title: new Text("Alert",
-                                style: TextStyle(color: Colors.white)),
+                                style: TextStyle(color: Colors.grey[900])),
                             content: new Text(result,
                                 style: TextStyle(color: Colors.white)),
                             actions: <Widget>[

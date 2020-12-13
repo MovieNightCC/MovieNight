@@ -41,44 +41,44 @@ class AddPairPage extends StatelessWidget {
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(50.0)),
             ),
-            onPressed: () async {
+            onPressed: () {
               // ignore: todo
               // check if user has a pair
               if (userPair == "") {
                 //check if the user name exists
-
                 print("called check for user");
                 // ignore: unrelated_type_equality_checks
-                if (_checkForUser() == false) {
-                  print("does not exist");
-                  showDialog(
-                      context: context,
-                      builder: (_) => new AlertDialog(
-                            title: new Text("Alert",
-                                style: TextStyle(color: Colors.black)),
-                            content: new Text("User does not exist!",
-                                style: TextStyle(color: Colors.black)),
-                            actions: <Widget>[
-                              FlatButton(
-                                child: Text('Close me!'),
-                                onPressed: () {
-                                  Navigator.of(context, rootNavigator: true)
-                                      .pop();
-                                },
-                              )
-                            ],
-                          ));
-                } else {
-                  print("user exists form the pair");
-                  _postNewPair();
-                  userPair = coupleName;
-
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => Profile(),
-                          maintainState: true));
-                }
+                _checkForUser().then((result) {
+                  if (!result) {
+                    print("does not exist");
+                    showDialog(
+                        context: context,
+                        builder: (_) => new AlertDialog(
+                              title: new Text("Alert",
+                                  style: TextStyle(color: Colors.grey[900])),
+                              content: new Text("User does not exist!",
+                                  style: TextStyle(color: Colors.white)),
+                              actions: <Widget>[
+                                FlatButton(
+                                  child: Text('Close me!'),
+                                  onPressed: () {
+                                    Navigator.of(context, rootNavigator: true)
+                                        .pop();
+                                  },
+                                )
+                              ],
+                            ));
+                  } else {
+                    print("user exists form the pair");
+                    _postNewPair();
+                    userPair = coupleName;
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => Profile(),
+                            maintainState: true));
+                  }
+                });
               }
             },
             child: Text("Add Partner"),
@@ -106,10 +106,10 @@ class AddPairPage extends StatelessWidget {
     userNameOfPair = userNameOfPair.substring(0, userNameOfPair.indexOf("@"));
     print(userNameOfPair);
     var url =
-        'https://asia-northeast1-movie-night-cc.cloudfunctions.net/getUserByUserName?userName=$userNameOfPair';
+        'https://asia-northeast1-movie-night-cc.cloudfunctions.net/checkValidUser?userName=$userNameOfPair';
     final response = await Dio().get(url);
-    print('response $response');
-    if (response.data == false) {
+    print('response ${response.data}');
+    if (response.data == "false" || response.data == false) {
       return false;
     } else {
       return true;

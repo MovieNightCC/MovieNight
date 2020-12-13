@@ -131,7 +131,7 @@ class PushNotificationService {
             context: context,
             builder: (_) => new AlertDialog(
                   title: new Text("Alert",
-                      style: TextStyle(color: Colors.white12)),
+                      style: TextStyle(color: Colors.grey[900])),
                   content: new Text(message['notification']['title'],
                       style: TextStyle(color: Colors.black)),
                   actions: <Widget>[
