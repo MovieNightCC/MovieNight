@@ -64,7 +64,8 @@ void updateUser(
     showDialog(
         context: context,
         builder: (_) => new AlertDialog(
-              title: new Text("Alert", style: TextStyle(color: Colors.white)),
+              title:
+                  new Text("Alert", style: TextStyle(color: Colors.grey[900])),
               content: new Text("You got a Match!",
                   style: TextStyle(color: Colors.white)),
               actions: <Widget>[
