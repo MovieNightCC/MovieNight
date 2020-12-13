@@ -51,7 +51,7 @@ class _ProfileState extends State<Profile> {
                     )),
               ),
               ProfilePicture(),
-              profileInfo(),
+              UserInfoSection(),
               Padding(
                 padding: EdgeInsets.all(10),
                 child:
@@ -193,15 +193,56 @@ Widget profileInfo() {
   );
 }
 
-Widget userInfoElement(String input) {
-  return Container(
-    child: Text(input,
-        style: TextStyle(
-            color: Colors.white,
-            fontSize: 14.0,
-            height: 2.0,
-            fontWeight: FontWeight.bold)),
-  );
+class UserInfoSection extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder<DocumentSnapshot>(
+        stream: FirebaseFirestore.instance
+            .collection('users')
+            .doc(userName)
+            .snapshots(),
+        builder:
+            (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+          if (snapshot.hasError) {
+            return Text("User does not exist");
+          }
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Text("Loading");
+          }
+          userPair = snapshot.data["pairName"];
+          if (userPair == "") {
+            return Column(
+              children: <Widget>[
+                Text('$userEmail',
+                    style: TextStyle(
+                        height: 1.5,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20)),
+                Text('currently not in a pair',
+                    style: TextStyle(
+                        height: 1.5,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20)),
+              ],
+            );
+          } else {
+            return Column(
+              children: <Widget>[
+                Text('$userEmail',
+                    style: TextStyle(
+                        height: 1.5,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20)),
+                Text('in $userPair',
+                    style: TextStyle(
+                        height: 1.5,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20)),
+              ],
+            );
+          }
+        });
+  }
 }
 
 class HeaderCurvedContainer extends CustomPainter {
