@@ -234,11 +234,6 @@ final ThemeData movieNightTheme = ThemeData(
     opacity: 1,
     size: 24,
   ),
-  accentIconTheme: IconThemeData(
-    color: Color(0xffffffff),
-    opacity: 1,
-    size: 24,
-  ),
   sliderTheme: SliderThemeData(
     activeTrackColor: null,
     inactiveTrackColor: null,

@@ -7,11 +7,9 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:overlay_support/overlay_support.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-
 import 'package:provider/provider.dart';
 import 'routes.dart';
 import 'package:dio/dio.dart';
@@ -63,7 +61,7 @@ ThemeData _buildShrineTheme() {
       cursorColor: Colors.pink,
       textSelectionHandleColor: Color(0xfff06292),
       backgroundColor: Color(0xfff48fb1),
-      dialogBackgroundColor: Colors.pink,
+      dialogBackgroundColor: Colors.grey[900],
       indicatorColor: Color(0xffe91e63),
       hintColor: Colors.pinkAccent,
       errorColor: Colors.purple[900],
@@ -151,10 +149,6 @@ class PushNotificationService {
         notification = PushNotificationMessage(
           title: message['notification']['title'],
           body: message['notification']['body'],
-        );
-        showSimpleNotification(
-          Container(child: Text(notification.body)),
-          position: NotificationPosition.top,
         );
       },
       onLaunch: (Map<String, dynamic> message) async {

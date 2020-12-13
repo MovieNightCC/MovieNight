@@ -30,7 +30,6 @@ dependencies:
   firebase_messaging: ^7.0.3
   flutter_local_notifications: ^3.0.2
   fluttertoast: ^7.1.5
-  overlay_support: ^1.0.5
   cloud_firestore: ^0.14.0+2
   image_picker: ^0.6.7+14
   google_sign_in: ^4.5.3

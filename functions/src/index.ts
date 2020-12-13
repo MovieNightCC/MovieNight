@@ -1,10 +1,7 @@
 import * as functions from "firebase-functions";
 import * as admin from "firebase-admin";
 const unirest = require("unirest");
-// import { UserRecord } from "firebase-functions/lib/providers/auth";
 
-// const axios = require('axios')
-// const cors = require("cors")({ origin: true });
 
 admin.initializeApp();
 const db = admin.firestore();
@@ -159,6 +156,7 @@ export const rushStatusTracker = functions.firestore
     return null;
   });
 
+
 export const joinRush = functions
   .region("asia-northeast1")
   .https.onRequest(async (request: any, response) => {
@@ -226,7 +224,6 @@ export const endGame = functions
     const data = snapShot.data();
     response.send(data);
   });
-
 
 export const userRecommendAlgo = functions.firestore
   .document("users/{docId}")
@@ -1000,39 +997,6 @@ export const testAiko = functions
     }
   });
 
-// //query ?userName=<userName>&movieArr=[4243423,234234234,234423234]
-// export const simpleUpdateUserLike = functions
-//   .region("asia-northeast1")
-//   .https.onRequest(async (request: any, response) => {
-//     //Adding to user
-//     const userRef = db.collection("users").doc(request.query.userName);
-//     const userResult = await userRef.get();
-//     const userData = userResult.data();
-//     const arr = JSON.parse(request.query.movieArr);
-//     arr.map(async (netflixId: Number) => {
-//       await userRef.update({
-//         likes: admin.firestore.FieldValue.arrayUnion(netflixId),
-//       });
-//     });
-//     response.send(userData);
-//   });
-
-// //query ?pairName=<userName>&movieArr=[4243423,234234234,234423234]
-// export const simpleUpdatePairMatches = functions
-//   .region("asia-northeast1")
-//   .https.onRequest(async (request: any, response) => {
-//     //Adding to user
-//     const pairRef = db.collection("pairs").doc(request.query.pairName);
-//     const pairResult = await pairRef.get();
-//     const pairData = pairResult.data();
-//     const arr = JSON.parse(request.query.movieArr);
-//     arr.map(async (netflixId: Number) => {
-//       await pairRef.update({
-//         matches: admin.firestore.FieldValue.arrayUnion(netflixId),
-//       });
-//     });
-//     response.send(pairData);
-//   });
 
 //Get Pair Name of user (by UserName)
 export const checkIfUserHasPairs = functions
@@ -1649,16 +1613,7 @@ export const setUpRushGame = functions
     });
   });
 
-//   export const cloudFuncExample = functions.firestore
-// .document("pairs/{pairName}")
-// .onUpdate(async (change, context) => {
-//   console.log("----------------start function--------------------");
-//   const oldPairData = change.before.data();
-//   const newPairData = change.after.data();
-//   const user1Name = oldPairData["members"][0];
-//   const user2Name = oldPairData["members"][1];
 
-// });
 
 export const createRushGameForPair = functions.firestore
   .document("pairs/{pairName}")
@@ -1666,17 +1621,31 @@ export const createRushGameForPair = functions.firestore
     console.log("----------------start function--------------------");
     const pairData = snap.data();
     const pairName = pairData.pairName;
-    await db.collection("rushPlus").doc(pairName).set(
-      {
-        pairName: pairName,
-        playerOneJoined: false,
-        playerTwoJoined: false,
-        playerOne: pairData["members"][0],
-        playerTwo: pairData["members"][1],
-      },
-      { merge: true }
-    );
+    const user1Name = pairName["members"][0];
+    const user2Name = pairName["members"][1];
+    const snap1 = await db.collection("user").doc(user1Name).get();
+    const snap2 = await db.collection("user").doc(user2Name).get();
+    const data1 = snap1.data();
+    const data2 = snap2.data();
+
+    if (data1 &&data2) {
+
+        await db.collection("rushPlus").doc(pairName).set(
+            {
+              pairName: pairName,
+              playerOneJoined: false,
+              playerTwoJoined: false,
+              playerOne: pairData["members"][0],
+              playerTwo: pairData["members"][1],
+              iconOne: data1["userIcon"],
+              iconTwo: data2["userIcon"],
+            },
+            { merge: true }
+          );
+    }
   });
+
+
 
 export const deleteUser = functions
   .region("asia-northeast1")
