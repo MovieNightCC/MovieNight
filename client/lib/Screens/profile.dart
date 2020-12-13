@@ -4,7 +4,7 @@ import 'package:path/path.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
-
+import 'package:neon/neon.dart';
 import './addPairPage.dart';
 import './swiper.dart';
 import './auth.dart';
@@ -38,12 +38,16 @@ class _ProfileState extends State<Profile> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Padding(
-                padding: EdgeInsets.all(30),
-                child: Text(
-                  "Profile",
-                  style: TextStyle(
-                      height: 1.5, fontWeight: FontWeight.bold, fontSize: 30),
-                ),
+                padding: EdgeInsets.all(25),
+                child: Positioned(
+                    top: 15,
+                    child: Neon(
+                      text: 'Profile',
+                      color: Colors.pink,
+                      fontSize: 35,
+                      font: NeonFont.Membra,
+                      flickeringText: false,
+                    )),
               ),
               ProfilePicture(),
               profileInfo(),
@@ -57,7 +61,7 @@ class _ProfileState extends State<Profile> {
                     "Link with your partner",
                     style: TextStyle(color: Colors.white),
                   ),
-                  color: Colors.pink,
+                  color: Color(0xffA058CB),
                   onPressed: () {
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) => AddPairPage()));
@@ -73,7 +77,7 @@ class _ProfileState extends State<Profile> {
                     "Delete Account",
                     style: TextStyle(color: Colors.white),
                   ),
-                  color: Colors.pink,
+                  color: Color(0xffA058CB),
                   onPressed: () {
                     showDialog(
                         context: context,
@@ -127,7 +131,7 @@ class _ProfileState extends State<Profile> {
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
         type: BottomNavigationBarType.fixed,
-        backgroundColor: Colors.pink,
+        backgroundColor: Color(0xffA058CB),
         items: [
           BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
           BottomNavigationBarItem(
@@ -183,7 +187,7 @@ Widget userInfoElement(String input) {
 class HeaderCurvedContainer extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
-    Paint paint = Paint()..color = Colors.pink;
+    Paint paint = Paint()..color = Color(0xffA058CB);
     Path path = Path()
       ..relativeLineTo(0, 150)
       ..quadraticBezierTo(size.width / 2, 225, size.width, 150)
@@ -279,7 +283,7 @@ class _ProfilePictureState extends State<ProfilePicture> {
               )),
         ),
         CircleAvatar(
-          backgroundColor: Colors.purple[100],
+          backgroundColor: Color(0xff5B38BA),
           child: IconButton(
             icon: Icon(
               Icons.edit,

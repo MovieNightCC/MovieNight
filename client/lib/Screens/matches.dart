@@ -5,6 +5,7 @@ import './movieArray.dart';
 import './movieMatchesInfo.dart';
 import './swiper.dart';
 import './profile.dart';
+import 'package:neon/neon.dart';
 
 class Matches extends StatefulWidget {
   @override
@@ -32,12 +33,19 @@ class _MatchesState extends State<Matches> {
         if (matchesMovieData.length != 0) {
           return Scaffold(
             appBar: AppBar(
-              title: const Text('Match History',
-                  style: TextStyle(
-                      height: 1.5, fontWeight: FontWeight.bold, fontSize: 30)),
+              titleSpacing: 10.0,
+              title: Padding(
+                  padding: EdgeInsets.only(top: 27.0),
+                  child: Neon(
+                    text: 'Matches',
+                    color: Colors.pink,
+                    fontSize: 35,
+                    font: NeonFont.Membra,
+                    flickeringText: false,
+                  )),
               automaticallyImplyLeading: false,
               centerTitle: true,
-              backgroundColor: Colors.pink,
+              backgroundColor: Color(0xff3424AF),
               elevation: 0,
             ),
             body: Stack(
@@ -78,7 +86,7 @@ class _MatchesState extends State<Matches> {
             bottomNavigationBar: BottomNavigationBar(
               currentIndex: _currentIndex,
               type: BottomNavigationBarType.fixed,
-              backgroundColor: Colors.pink,
+              backgroundColor: Color(0xff3424AF),
               items: [
                 BottomNavigationBarItem(
                     icon: Icon(Icons.person), label: 'Profile'),
@@ -117,7 +125,7 @@ class _MatchesState extends State<Matches> {
 class HeaderCurvedContainer extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
-    Paint paint = Paint()..color = Colors.pink;
+    Paint paint = Paint()..color = Color(0xff3424AF);
     Path path = Path()
       ..relativeLineTo(0, 70)
       ..quadraticBezierTo(size.width / 2, 150, size.width, 70)
