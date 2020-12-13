@@ -20,26 +20,6 @@ class _MatchesState extends State<Matches> {
   List matchesArray = [];
   @override
   Widget build(BuildContext context) {
-<<<<<<< HEAD
-    // print(matchesGenre);
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Match History',
-            style: TextStyle(
-                height: 1.5, fontWeight: FontWeight.bold, fontSize: 30)),
-        automaticallyImplyLeading: false,
-        centerTitle: true,
-        backgroundColor: Colors.pink,
-        elevation: 0,
-      ),
-      body: Stack(
-        alignment: Alignment.center,
-        children: [
-          CustomPaint(
-            child: Container(
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height,
-=======
     return new StreamBuilder(
       stream: FirebaseFirestore.instance
           .collection('pairs')
@@ -59,7 +39,6 @@ class _MatchesState extends State<Matches> {
               centerTitle: true,
               backgroundColor: Colors.pink,
               elevation: 0,
->>>>>>> 715dc3c30a0afeef5e9a02f2e1cd265f5d4fa6b4
             ),
             body: Stack(
               alignment: Alignment.center,

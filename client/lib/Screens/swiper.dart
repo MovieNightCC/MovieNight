@@ -1,9 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
-<<<<<<< HEAD
-
-=======
->>>>>>> 715dc3c30a0afeef5e9a02f2e1cd265f5d4fa6b4
 import 'dart:async';
 import 'package:http/http.dart' as http;
 import '../main.dart';
