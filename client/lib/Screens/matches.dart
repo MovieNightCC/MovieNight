@@ -128,29 +128,7 @@ class _MatchesState extends State<Matches> {
                   ),
                   painter: HeaderCurvedContainer(),
                 ),
-                Center(
-                  child: GridView.count(
-                    childAspectRatio: 0.70,
-                    crossAxisCount: 2,
-                    children: List.generate(matchesMovieData.length, (index) {
-                      return InkWell(
-                        child: Column(
-                          children: [
-                            Image.network(matchesMovieData[index]["img"]),
-                          ],
-                        ),
-                        onTap: () {
-                          current = index;
-                          print("current $current");
-                          Navigator.push(
-                              context,
-                              new MaterialPageRoute(
-                                  builder: (context) => MatchInfo()));
-                        },
-                      );
-                    }),
-                  ),
-                ),
+                Center(child: Text("Go to Swiper to start getting matches."))
               ],
             ),
             bottomNavigationBar: BottomNavigationBar(

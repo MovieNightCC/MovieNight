@@ -67,7 +67,10 @@ class _RushModeState extends State<RushMode> {
             ),
             painter: _HeaderCurvedContainer(),
           ),
-          Text("Loading...", style: TextStyle(fontSize: 40)),
+          Image.asset(
+            './assets/icons/loading.gif',
+            scale: 1.5,
+          ),
           Column(
             children: [
               TimerWidget(),

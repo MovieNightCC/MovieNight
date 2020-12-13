@@ -1856,8 +1856,8 @@ export const createRushGameForPair = functions
     const pairName = pairData.pairName;
     const user1Name = pairName["members"][0];
     const user2Name = pairName["members"][1];
-    const snap1 = await db.collection("user").doc(user1Name).get();
-    const snap2 = await db.collection("user").doc(user2Name).get();
+    const snap1 = await db.collection("users").doc(user1Name).get();
+    const snap2 = await db.collection("users").doc(user2Name).get();
     const data1 = snap1.data();
     const data2 = snap2.data();
 

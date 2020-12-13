@@ -12,6 +12,7 @@ import './matches.dart';
 
 import 'package:provider/provider.dart';
 import '../main.dart';
+import 'DummyMatches.dart';
 
 class Profile extends StatefulWidget {
   static String routeName = "/splash";
@@ -144,8 +145,13 @@ class _ProfileState extends State<Profile> {
                 context, MaterialPageRoute(builder: (context) => Swiper()));
           }
           if (_currentIndex == 2) {
-            Navigator.push(
-                context, MaterialPageRoute(builder: (context) => Matches()));
+            if (userPair == "") {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => DummyMatches()));
+            } else {
+              Navigator.push(
+                  context, MaterialPageRoute(builder: (context) => Matches()));
+            }
           }
         },
       ),
