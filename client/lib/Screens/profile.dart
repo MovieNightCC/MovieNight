@@ -1,5 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:movie_night/screens/onboardsplash.dart';
 import 'package:path/path.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -9,8 +11,10 @@ import './addPairPage.dart';
 import './swiper.dart';
 import './auth.dart';
 import './matches.dart';
-
+import 'package:http/http.dart' as http;
+import 'package:movie_night/main.dart';
 import 'package:provider/provider.dart';
+
 import '../main.dart';
 import 'DummyMatches.dart';
 
@@ -115,7 +119,8 @@ class _ProfileState extends State<Profile> {
                                       title: new Text("Alert",
                                           style:
                                               TextStyle(color: Colors.white)),
-                                      content: new Text("Are you sure?",
+                                      content: new Text(
+                                          "Are you sure? Deleting your account will also delete your connection with your partner?",
                                           style:
                                               TextStyle(color: Colors.white)),
                                       actions: <Widget>[
@@ -135,6 +140,13 @@ class _ProfileState extends State<Profile> {
                                                   color: Colors.pink)),
                                           onPressed: () {
                                             //placeholder for delete user function
+                                            _deleteUser();
+                                            Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (_) =>
+                                                        SplashScreen())).then(
+                                                (value) => {setState(() {})});
                                           },
                                         )
                                       ],
@@ -178,6 +190,14 @@ class _ProfileState extends State<Profile> {
       ),
     );
   }
+}
+
+void _deleteUser() async {
+  var targetUser = FirebaseAuth.instance.currentUser;
+  var userId = targetUser.uid;
+  await http.get(
+      "https://asia-northeast1-movie-night-cc.cloudfunctions.net/deleteUser?userName=$userName&uid=$userId");
+  print('response');
 }
 
 Widget profileInfo() {
