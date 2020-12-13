@@ -92,6 +92,7 @@ class _MatchesState extends State<Matches> {
             bottomNavigationBar: BottomNavigationBar(
               currentIndex: _currentIndex,
               type: BottomNavigationBarType.fixed,
+              selectedItemColor: Colors.pink,
               backgroundColor: Color(0xff3424AF),
               items: [
                 BottomNavigationBarItem(

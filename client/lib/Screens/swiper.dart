@@ -320,6 +320,7 @@ class _TinderswiperState extends State<Tinderswiper>
           ),
         ]),
         bottomNavigationBar: BottomNavigationBar(
+          selectedItemColor: Colors.pink,
           currentIndex: _currentIndex,
           type: BottomNavigationBarType.fixed,
           backgroundColor: Color(0xff412DB3),

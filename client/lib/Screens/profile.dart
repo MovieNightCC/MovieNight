@@ -161,6 +161,7 @@ class _ProfileState extends State<Profile> {
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
         type: BottomNavigationBarType.fixed,
+        selectedItemColor: Colors.pink,
         backgroundColor: Color(0xffA058CB),
         items: [
           BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
