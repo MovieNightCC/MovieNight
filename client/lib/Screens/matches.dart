@@ -126,7 +126,7 @@ class _MatchesState extends State<Matches> {
                       height: 1.5, fontWeight: FontWeight.bold, fontSize: 30)),
               automaticallyImplyLeading: false,
               centerTitle: true,
-              backgroundColor: Colors.pink,
+              backgroundColor: Color(0xff3424AF),
               elevation: 0,
             ),
             body: Stack(
@@ -145,7 +145,7 @@ class _MatchesState extends State<Matches> {
             bottomNavigationBar: BottomNavigationBar(
               currentIndex: _currentIndex,
               type: BottomNavigationBarType.fixed,
-              backgroundColor: Colors.pink,
+              backgroundColor: Color(0xff3424AF),
               items: [
                 BottomNavigationBarItem(
                     icon: Icon(Icons.person), label: 'Profile'),

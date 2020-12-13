@@ -1881,14 +1881,45 @@ export const deleteUser = functions
   .region("asia-northeast1")
   .https.onRequest(async (request: any, response) => {
     try {
-      //Adding to user
+      const uid = request.query.uid;
       const userRef = db.collection("users").doc(request.query.userName);
-
-      if (userRef) {
-        await userRef.delete();
-
-        response.send("deleted!");
+      const userSnap = await userRef.get();
+      const userData = userSnap.data();
+      
+      if (userRef && userData) {
+        const pairName = userData["pairName"];
+        if (pairName === "") {
+          await userRef.delete();
+        } else {
+          const pairRef = db.collection("pairs").doc(pairName);
+          const pairSnap = await pairRef.get();
+          const pairData = pairSnap.data();
+          if (pairData) {
+            const member = pairData["members"];
+            const mem1=member[0];
+            const mem2=member[1];
+            const rushRef = db.collection("rushPlus").doc(pairName);
+            await rushRef.delete();
+            await pairRef.delete();
+            if (request.query.userName === mem1) {
+              const mem2Ref = db.collection("users").doc(mem2);
+              await mem2Ref.update({
+                pairName:"",
+              });
+              await userRef.delete();
+            }
+            if (request.query.userName === mem2) {
+              const mem1Ref = db.collection("users").doc(mem1);
+              await mem1Ref.update({
+                pairName:"",
+              });
+              await userRef.delete();
+            }
+          }
+        }
       }
+      await admin.auth().deleteUser(uid);
+
     } catch {
       response.send("delete matcherror!");
     }
