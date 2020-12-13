@@ -29,6 +29,9 @@ class _MatchesState extends State<Matches> {
       builder:
           (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
         if (snapshot.hasError) return new Text('Error: ${snapshot.error}');
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Image.asset('./assets/icons/loading.gif', scale: 1.5);
+        }
         matchesMovieData = snapshot.data['matchMovieData'].reversed.toList();
         if (matchesMovieData.length != 0) {
           return Scaffold(

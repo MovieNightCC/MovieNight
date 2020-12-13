@@ -1,5 +1,4 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import './signinform.dart';
 
 class AuthenticationService {
   final FirebaseAuth _firebaseAuth;
@@ -40,6 +39,21 @@ class AuthenticationService {
       return "Signed up";
     } on FirebaseAuthException catch (e) {
       return e.message;
+    }
+  }
+
+  Future<String> deleteUser() async {
+    try {
+      await _firebaseAuth.currentUser.delete();
+      return "deleted";
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'requires-recent-login') {
+        print(
+            'The user must reauthenticate before this operation can be executed.');
+        return "user must be logged in";
+      } else {
+        return "unable to delete user";
+      }
     }
   }
 }
