@@ -1,4 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:movie_night/main.dart';
 import './movieArray.dart';
 import './movieMatchesInfo.dart';
 import './swiper.dart';
@@ -10,6 +12,7 @@ class Matches extends StatefulWidget {
 }
 
 var current = 0;
+List matchesMovieData = [];
 
 class _MatchesState extends State<Matches> {
   int _currentIndex = 2;
@@ -17,6 +20,7 @@ class _MatchesState extends State<Matches> {
   List matchesArray = [];
   @override
   Widget build(BuildContext context) {
+<<<<<<< HEAD
     // print(matchesGenre);
     return Scaffold(
       appBar: AppBar(
@@ -35,65 +39,98 @@ class _MatchesState extends State<Matches> {
             child: Container(
               width: MediaQuery.of(context).size.width,
               height: MediaQuery.of(context).size.height,
+=======
+    return new StreamBuilder(
+      stream: FirebaseFirestore.instance
+          .collection('pairs')
+          .doc(userPair)
+          .snapshots(),
+      builder:
+          (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+        if (snapshot.hasError) return new Text('Error: ${snapshot.error}');
+        matchesMovieData = snapshot.data['matchMovieData'].reversed.toList();
+        if (matchesMovieData.length != 0) {
+          return Scaffold(
+            appBar: AppBar(
+              title: const Text('Match History',
+                  style: TextStyle(
+                      height: 1.5, fontWeight: FontWeight.bold, fontSize: 30)),
+              automaticallyImplyLeading: false,
+              centerTitle: true,
+              backgroundColor: Colors.pink,
+              elevation: 0,
+>>>>>>> 715dc3c30a0afeef5e9a02f2e1cd265f5d4fa6b4
             ),
-            painter: HeaderCurvedContainer(),
-          ),
-          Center(
-            child: GridView.count(
-              childAspectRatio: 0.70,
-              // Create a grid with 2 columns. If you change the scrollDirection to
-              // horizontal, this produces 2 rows.
-              crossAxisCount: 2,
-              // Generate 100 widgets that display their index in the List.
-              children: List.generate(matchesTitles.length, (index) {
-                return InkWell(
-                  child: Column(
-                    children: [
-                      Image.network(matchesImage[index]),
-                    ],
+            body: Stack(
+              alignment: Alignment.center,
+              children: [
+                CustomPaint(
+                  child: Container(
+                    width: MediaQuery.of(context).size.width,
+                    height: MediaQuery.of(context).size.height,
                   ),
-                  onTap: () {
-                    current = index;
-                    Navigator.push(
-                        context,
-                        new MaterialPageRoute(
-                            builder: (context) => MatchInfo()));
-                  },
-                );
-              }),
+                  painter: HeaderCurvedContainer(),
+                ),
+                Center(
+                  child: GridView.count(
+                    childAspectRatio: 0.70,
+                    crossAxisCount: 2,
+                    children: List.generate(matchesMovieData.length, (index) {
+                      return InkWell(
+                        child: Column(
+                          children: [
+                            Image.network(matchesMovieData[index]["img"]),
+                          ],
+                        ),
+                        onTap: () {
+                          current = index;
+                          print("current $current");
+                          Navigator.push(
+                              context,
+                              new MaterialPageRoute(
+                                  builder: (context) => MatchInfo()));
+                        },
+                      );
+                    }),
+                  ),
+                ),
+              ],
             ),
-          ),
-        ],
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _currentIndex,
-        type: BottomNavigationBarType.fixed,
-        backgroundColor: Colors.pink,
-        items: [
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.local_movies_outlined), label: 'Swipe'),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.local_fire_department), label: 'Matches'),
-        ],
-        onTap: (index) {
-          setState(() {
-            _currentIndex = index;
-          });
-          if (_currentIndex == 1) {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => Swiper(), maintainState: true));
-          }
-          if (_currentIndex == 0) {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => Profile(), maintainState: true));
-          }
-        },
-      ),
+            bottomNavigationBar: BottomNavigationBar(
+              currentIndex: _currentIndex,
+              type: BottomNavigationBarType.fixed,
+              backgroundColor: Colors.pink,
+              items: [
+                BottomNavigationBarItem(
+                    icon: Icon(Icons.person), label: 'Profile'),
+                BottomNavigationBarItem(
+                    icon: Icon(Icons.local_movies_outlined), label: 'Swipe'),
+                BottomNavigationBarItem(
+                    icon: Icon(Icons.local_fire_department), label: 'Matches'),
+              ],
+              onTap: (index) {
+                setState(() {
+                  _currentIndex = index;
+                });
+                if (_currentIndex == 1) {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => Swiper(), maintainState: true));
+                }
+                if (_currentIndex == 0) {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => Profile(),
+                          maintainState: true));
+                }
+              },
+            ),
+          );
+        }
+        return Center(child: CircularProgressIndicator());
+      },
     );
   }
 }

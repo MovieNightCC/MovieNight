@@ -14,39 +14,16 @@ void deleteMatch(nfid) async {
   print(nfid);
   var response = await http.get(
       "https://asia-northeast1-movie-night-cc.cloudfunctions.net/deleteMatch?pairName=$userPair&nfid=$nfid");
-
   print(response.body);
 }
 
 List minutesListMatches;
 List hourListMatches;
-void changeToHoursMatches() {
-  hourListMatches = [...matchesRuntime];
-  minutesListMatches = [];
-  for (var j = 0; j < matchesRuntime.length; j++) {
-    hourListMatches[j] = (hourListMatches[j] / 3600).toInt();
-  }
-  for (var i = 0; i < matchesRuntime.length; i++) {
-    if (matchesRuntime[i] < 7200 && matchesRuntime[i] > 3600) {
-      matchesRuntime[i] = matchesRuntime[i] - 3600;
-      matchesRuntime[i] = matchesRuntime[i] ~/ 60;
-      minutesListMatches.add(matchesRuntime[i]);
-    } else if (matchesRuntime[i] < 3600) {
-      matchesRuntime[i] = matchesRuntime[i] ~/ 60;
 
-      minutesListMatches.add(matchesRuntime[i]);
-    } else if (matchesRuntime[i] < 10800 && matchesRuntime[i] > 7200) {
-      matchesRuntime[i] = matchesRuntime[i] - 7200;
-      matchesRuntime[i] = matchesRuntime[i] ~/ 60;
-
-      minutesListMatches.add(matchesRuntime[i]);
-    } else {
-      matchesRuntime[i] = matchesRuntime[i] - 10800;
-      matchesRuntime[i] = matchesRuntime[i] ~/ 60;
-
-      minutesListMatches.add(matchesRuntime[i]);
-    }
-  }
+String printDuration(Duration duration) {
+  String twoDigits(int n) => n.toString().padLeft(2, "0");
+  String twoDigitMinutes = twoDigits(duration.inMinutes.remainder(60));
+  return "${twoDigits(duration.inHours)}:$twoDigitMinutes";
 }
 
 class _MatchInfoState extends State<MatchInfo> {
@@ -74,36 +51,39 @@ class _MatchInfoState extends State<MatchInfo> {
             padding: const EdgeInsets.all(50),
             children: [
               Image.network(
-                matchesImage[current],
+                matchesMovieData[current]['img'],
                 scale: 0.55,
               ),
-              Text('Title: ${matchesTitles[current]}',
+              Text(
+                  'Title: ${matchesMovieData[current]['title'].replaceAll('&#39;', "'")}',
                   style: TextStyle(
                       color: Colors.white,
                       height: 3.0,
                       fontWeight: FontWeight.bold,
                       fontSize: 20)),
-              Text('Genre: ${matchesGenre[current]}',
+              Text('Genre: ${matchesMovieData[current]['genre']}',
                   style: TextStyle(
                       color: Colors.white,
                       height: 2.0,
                       fontWeight: FontWeight.bold,
                       fontSize: 20)),
               Text(
-                  'Runtime: ${hourListMatches[current]}h ${minutesListMatches[current]}m',
+                  'Runtime: ${printDuration(Duration(seconds: matchesMovieData[current]['runtime']))}',
+                  // 'Runtime: ${hourListMatches[current]}h ${minutesListMatches[current]}m',
                   style: TextStyle(
                       color: Colors.white,
                       height: 2.0,
                       fontWeight: FontWeight.bold,
                       fontSize: 20)),
-              Text('Synopsis: ${matchesSynopsis[current]}',
+              Text(
+                  'Synopsis: ${matchesMovieData[current]['synopsis'].replaceAll('&#39;', "'")}',
                   style: TextStyle(
                       color: Colors.white,
                       height: 1.5,
                       fontWeight: FontWeight.bold,
                       fontSize: 20)),
               Text(
-                'Release Year: ${matchesYear[current]}',
+                'Release Year: ${matchesMovieData[current]['year']}',
                 style: TextStyle(
                     color: Colors.white,
                     height: 2.0,
@@ -112,23 +92,23 @@ class _MatchInfoState extends State<MatchInfo> {
               ), //matchesNfid,
               RaisedButton(
                 onPressed: () => launch(
-                    'https://www.netflix.com/title/${matchesNfid[current]}'),
+                    'https://www.netflix.com/title/${matchesMovieData[current]['nfid']}'),
                 child:
                     const Text('Go to Netflix', style: TextStyle(fontSize: 20)),
               ),
               RaisedButton(
                 color: Colors.red[900],
                 onPressed: () => {
-                  deleteMatch(matchesNfid[current]),
-                  matchesTitles.remove(matchesTitles[current]),
-                  matchesSynopsis.remove(matchesSynopsis[current]),
-                  matchesImage.remove(matchesImage[current]),
-                  matchesYear.remove(matchesYear[current]),
-                  matchesGenre.remove(matchesGenre[current]),
-                  matchesRuntime.remove(matchesRuntime[current]),
-                  hourListMatches.remove(hourListMatches[current]),
-                  minutesListMatches.remove(minutesListMatches[current]),
-                  matchesNfid.remove(matchesNfid[current]),
+                  deleteMatch(matchesMovieData[current]['nfid']),
+                  // matchesTitles.remove(matchesTitles[current]),
+                  // matchesSynopsis.remove(matchesSynopsis[current]),
+                  // matchesImage.remove(matchesImage[current]),
+                  // matchesYear.remove(matchesYear[current]),
+                  // matchesGenre.remove(matchesGenre[current]),
+                  // matchesRuntime.remove(matchesRuntime[current]),
+                  // hourListMatches.remove(hourListMatches[current]),
+                  // minutesListMatches.remove(minutesListMatches[current]),
+                  // matchesNfid.remove(matchesNfid[current]),
                   Navigator.push(
                       context,
                       MaterialPageRoute(
