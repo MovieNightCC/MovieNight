@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:movie_night/main.dart';
-import './movieArray.dart';
 import './movieMatchesInfo.dart';
 import './swiper.dart';
 import './profile.dart';
@@ -30,7 +29,68 @@ class _MatchesState extends State<Matches> {
           (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
         if (snapshot.hasError) return new Text('Error: ${snapshot.error}');
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Text("Loading");
+          return Scaffold(
+            appBar: AppBar(
+              titleSpacing: 10.0,
+              title: Padding(
+                  padding: EdgeInsets.only(top: 27.0),
+                  child: Neon(
+                    text: 'Matches',
+                    color: Colors.pink,
+                    fontSize: 35,
+                    font: NeonFont.Membra,
+                    flickeringText: false,
+                  )),
+              automaticallyImplyLeading: false,
+              centerTitle: true,
+              backgroundColor: Color(0xff3424AF),
+              elevation: 0,
+            ),
+            body: Stack(
+              alignment: Alignment.center,
+              children: [
+                CustomPaint(
+                  child: Container(
+                    width: MediaQuery.of(context).size.width,
+                    height: MediaQuery.of(context).size.height,
+                  ),
+                  painter: HeaderCurvedContainer(),
+                ),
+                Center(child: Text("Go to Swiper to start getting matches."))
+              ],
+            ),
+            bottomNavigationBar: BottomNavigationBar(
+              currentIndex: _currentIndex,
+              type: BottomNavigationBarType.fixed,
+              backgroundColor: Colors.pink,
+              items: [
+                BottomNavigationBarItem(
+                    icon: Icon(Icons.person), label: 'Profile'),
+                BottomNavigationBarItem(
+                    icon: Icon(Icons.local_movies_outlined), label: 'Swipe'),
+                BottomNavigationBarItem(
+                    icon: Icon(Icons.local_fire_department), label: 'Matches'),
+              ],
+              onTap: (index) {
+                setState(() {
+                  _currentIndex = index;
+                });
+                if (_currentIndex == 1) {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => Swiper(), maintainState: true));
+                }
+                if (_currentIndex == 0) {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => Profile(),
+                          maintainState: true));
+                }
+              },
+            ),
+          );
         }
         matchesMovieData = snapshot.data['matchMovieData'].reversed.toList();
         if (matchesMovieData.length != 0) {
@@ -124,12 +184,19 @@ class _MatchesState extends State<Matches> {
         } else {
           return Scaffold(
             appBar: AppBar(
-              title: const Text('Match History',
-                  style: TextStyle(
-                      height: 1.5, fontWeight: FontWeight.bold, fontSize: 30)),
+              titleSpacing: 10.0,
+              title: Padding(
+                  padding: EdgeInsets.only(top: 27.0),
+                  child: Neon(
+                    text: 'Matches',
+                    color: Colors.pink,
+                    fontSize: 35,
+                    font: NeonFont.Membra,
+                    flickeringText: false,
+                  )),
               automaticallyImplyLeading: false,
               centerTitle: true,
-              backgroundColor: Colors.pink,
+              backgroundColor: Color(0xff3424AF),
               elevation: 0,
             ),
             body: Stack(

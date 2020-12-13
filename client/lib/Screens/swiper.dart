@@ -10,7 +10,6 @@ import './matches.dart';
 import './profile.dart';
 import './movieInfo.dart';
 import './movieArray.dart';
-//import './rushMode.dart';
 import './filterPopup.dart';
 import './movieMatchesInfo.dart';
 import 'DummyMatches.dart';
@@ -112,7 +111,7 @@ class _TinderswiperState extends State<Tinderswiper>
             painter: HeaderCurvedContainer(),
           ),
           Positioned(
-              top: 25,
+              top: 43,
               child: Neon(
                 text: 'Movie Night',
                 color: Colors.pink,

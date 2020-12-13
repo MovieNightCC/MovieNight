@@ -43,7 +43,7 @@ class _ProfileState extends State<Profile> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Padding(
-                padding: EdgeInsets.all(25),
+                padding: EdgeInsets.all(50),
                 child: Positioned(
                     top: 15,
                     child: Neon(
@@ -141,6 +141,7 @@ class _ProfileState extends State<Profile> {
                                           onPressed: () {
                                             //placeholder for delete user function
                                             _deleteUser();
+
                                             Navigator.push(
                                                 context,
                                                 MaterialPageRoute(
