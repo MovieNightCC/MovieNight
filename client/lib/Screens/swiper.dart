@@ -267,13 +267,34 @@ class _TinderswiperState extends State<Tinderswiper>
               backgroundColor: Colors.pinkAccent[700],
               heroTag: null,
               onPressed: () {
-                joinRush();
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => RushTwo(),
-                      maintainState: true,
-                    ));
+                if (userPair == "") {
+                  showDialog(
+                      context: context,
+                      builder: (_) => new AlertDialog(
+                            title: new Text("Alert",
+                                style: TextStyle(color: Colors.grey[900])),
+                            content: new Text("Add a partner to use RushMode!",
+                                style: TextStyle(color: Colors.white)),
+                            actions: <Widget>[
+                              FlatButton(
+                                child: Text('Close me!',
+                                    style: TextStyle(color: Colors.pink)),
+                                onPressed: () {
+                                  Navigator.of(context, rootNavigator: true)
+                                      .pop();
+                                },
+                              )
+                            ],
+                          ));
+                } else {
+                  joinRush();
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => RushTwo(),
+                        maintainState: true,
+                      ));
+                }
               },
               tooltip: 'Go to Rush Mode',
               child: Icon(Icons.fast_forward, size: 40, color: Colors.white),
