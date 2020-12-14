@@ -37,14 +37,14 @@ class _MatchesState extends State<Matches> {
                   padding: EdgeInsets.only(top: 27.0),
                   child: Neon(
                     text: 'Matches',
-                    color: Colors.pink,
-                    fontSize: 35,
+                    color: Colors.purple,
+                    fontSize: 24,
                     font: NeonFont.Membra,
                     flickeringText: false,
                   )),
               automaticallyImplyLeading: false,
               centerTitle: true,
-              backgroundColor: Color(0xff3424AF),
+              backgroundColor: Colors.pink,
               elevation: 0,
             ),
             body: Stack(
@@ -63,7 +63,8 @@ class _MatchesState extends State<Matches> {
             bottomNavigationBar: BottomNavigationBar(
               currentIndex: _currentIndex,
               type: BottomNavigationBarType.fixed,
-              backgroundColor: Color(0xff3424AF),
+              selectedItemColor: Colors.white,
+              backgroundColor: Colors.pink,
               items: [
                 BottomNavigationBarItem(
                     icon: Icon(Icons.person), label: 'Profile'),
@@ -103,13 +104,13 @@ class _MatchesState extends State<Matches> {
                   child: Neon(
                     text: 'Matches',
                     color: Colors.pink,
-                    fontSize: 35,
+                    fontSize: 24,
                     font: NeonFont.Membra,
                     flickeringText: false,
                   )),
               automaticallyImplyLeading: false,
               centerTitle: true,
-              backgroundColor: Color(0xff3424AF),
+              backgroundColor: Colors.pink,
               elevation: 0,
             ),
             body: Stack(
@@ -153,8 +154,8 @@ class _MatchesState extends State<Matches> {
             bottomNavigationBar: BottomNavigationBar(
               currentIndex: _currentIndex,
               type: BottomNavigationBarType.fixed,
-              selectedItemColor: Colors.pink,
-              backgroundColor: Color(0xff3424AF),
+              selectedItemColor: Colors.white,
+              backgroundColor: Colors.pink,
               items: [
                 BottomNavigationBarItem(
                     icon: Icon(Icons.person), label: 'Profile'),
@@ -188,14 +189,14 @@ class _MatchesState extends State<Matches> {
             appBar: AppBar(
               title: Neon(
                 text: 'Matches',
-                color: Colors.pink,
-                fontSize: 35,
+                color: Colors.purple,
+                fontSize: 24,
                 font: NeonFont.Membra,
                 flickeringText: false,
               ),
               automaticallyImplyLeading: false,
               centerTitle: true,
-              backgroundColor: Color(0xff3424AF),
+              backgroundColor: Colors.pink,
               elevation: 0,
             ),
             body: Stack(
@@ -214,7 +215,8 @@ class _MatchesState extends State<Matches> {
             bottomNavigationBar: BottomNavigationBar(
               currentIndex: _currentIndex,
               type: BottomNavigationBarType.fixed,
-              backgroundColor: Color(0xff3424AF),
+              selectedItemColor: Colors.white,
+              backgroundColor: Colors.pink,
               items: [
                 BottomNavigationBarItem(
                     icon: Icon(Icons.person), label: 'Profile'),
@@ -252,7 +254,7 @@ class _MatchesState extends State<Matches> {
 class HeaderCurvedContainer extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
-    Paint paint = Paint()..color = Color(0xff3424AF);
+    Paint paint = Paint()..color = Colors.pink;
     Path path = Path()
       ..relativeLineTo(0, 70)
       ..quadraticBezierTo(size.width / 2, 150, size.width, 70)

@@ -65,6 +65,9 @@ node_modules/
 # dotenv environment variables file
 .env
 
+<<<<<<< HEAD
+.external_assets
+=======
 client/ios/Flutter/Generated.xcconfig
 
 client/ios/Flutter/flutter_export_environment.sh
@@ -72,3 +75,4 @@ client/ios/Flutter/flutter_export_environment.sh
 client/pubspec.lock
 
 /movie-night-cc-firebase-adminsdk-e46ic-612ea46f27.json
+>>>>>>> b1b81dfae60eda1ba608df595721eb4b4f719f5f

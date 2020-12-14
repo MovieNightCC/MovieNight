@@ -91,13 +91,14 @@ class _MatchInfoState extends State<MatchInfo> {
                     fontSize: 20),
               ), //matchesNfid,
               RaisedButton(
+                color: Colors.red[900],
                 onPressed: () => launch(
                     'https://www.netflix.com/title/${matchesMovieData[current]['nfid']}'),
                 child:
                     const Text('Go to Netflix', style: TextStyle(fontSize: 20)),
               ),
               RaisedButton(
-                color: Colors.red[900],
+                color: Colors.deepPurple,
                 onPressed: () => {
                   deleteMatch(matchesMovieData[current]['nfid']),
                   // matchesTitles.remove(matchesTitles[current]),

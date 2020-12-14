@@ -15,12 +15,23 @@ class _BodyState extends State<Body> {
   int currentPage = 0;
   List<Map<String, String>> splashData = [
     {
-      "text": "Welcome to Movie Night, Let’s start!",
+      "text": "Let's get started, \n swipe right to learn more.",
       "image": "assets/img/App-logo.png"
     },
-    {"text": "Find a movie you both LOVE", "image": "assets/img/bored.jpg"},
     {
-      "text": "In a few swipes you will be ready for movie night",
+      "text": "To mark a movie you don't want to watch \n SWIPE the movie to the LEFT",
+      "image": "assets/img/swipe-left.jpg"
+    },
+    {
+      "text": "If that's a movie you want to watch \n Swipe the movie to the RIGHT",
+      "image": "assets/img/swipe-right.jpg"
+    },
+    {
+      "text": "If you want to find a movie to watch right now \n Use the RUSH MODE ",
+      "image": "assets/img/rush-mode.png"
+    },
+    {
+      "text": "Let's get started with Movie Night \n Click on Sign Up",
       "image": "assets/img/Movienight1.png"
     },
   ];
@@ -112,12 +123,13 @@ class SplashContent extends StatelessWidget {
         Text(
           "Movie Night",
           style: TextStyle(
+            
               fontSize: getProportionateScreenWidth(36), color: Colors.pink),
         ),
         Text(
           text,
           textAlign: TextAlign.center,
-          style: TextStyle(color: Colors.purple),
+          style: TextStyle(color: Colors.white),
         ),
         Spacer(flex: 2),
         Image.asset(

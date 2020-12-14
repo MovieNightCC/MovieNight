@@ -748,7 +748,9 @@ class AuthenticationWrapper extends StatelessWidget {
               return Text("${snapshot.error}");
             }
             // By default, show a loading spinner.
-            return Center(child: CircularProgressIndicator());
+            return Image.asset('./assets/icons/loader-movie-night.gif',
+                scale: 1.0);
+            //Center(child: CircularProgressIndicator());
           },
         ),
         routes: routes,

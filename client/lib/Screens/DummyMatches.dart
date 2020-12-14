@@ -23,8 +23,8 @@ class _DummyMatchesState extends State<DummyMatches> {
       appBar: AppBar(
         title: Neon(
           text: 'Matches',
-          color: Colors.pink,
-          fontSize: 35,
+          color: Colors.purple,
+          fontSize: 24,
           font: NeonFont.Membra,
           flickeringText: false,
         ),
@@ -81,7 +81,7 @@ class _DummyMatchesState extends State<DummyMatches> {
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
         type: BottomNavigationBarType.fixed,
-        selectedItemColor: Colors.pink,
+        selectedItemColor: Colors.white,
         backgroundColor: Colors.pink,
         items: [
           BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
