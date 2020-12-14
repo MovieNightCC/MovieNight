@@ -5,6 +5,7 @@ import 'signinscaffold.dart';
 import '../sizeconfig.dart';
 import './signinscaffold.dart';
 import './signupscaffold.dart';
+import 'package:neon/neon.dart';
 
 class Body extends StatefulWidget {
   @override
@@ -13,26 +14,27 @@ class Body extends StatefulWidget {
 
 class _BodyState extends State<Body> {
   int currentPage = 0;
+
   List<Map<String, String>> splashData = [
     {
-      "text": "Let's get started, \n swipe right to learn more.",
-      "image": "assets/img/App-logo.png"
+      "text": "Let's get started, swipe right to learn more.",
+      "image": "assets/icons/icon-512x512-android.png",
     },
     {
-      "text": "To mark a movie you don't want to watch \n SWIPE the movie to the LEFT",
+      "text": "If you don't like as movie SWIPE the movie to the LEFT",
       "image": "assets/img/swipe-left.jpg"
     },
     {
-      "text": "If that's a movie you want to watch \n Swipe the movie to the RIGHT",
+      "text": "If you want to watch a movie, SWIPE the movie to the RIGHT",
       "image": "assets/img/swipe-right.jpg"
     },
     {
-      "text": "If you want to find a movie to watch right now \n Use the RUSH MODE ",
+      "text": "Find your movie to watch tonight in a hurry with the Rush Mode ",
       "image": "assets/img/rush-mode.png"
     },
     {
-      "text": "Let's get started with Movie Night \n Click on Sign Up",
-      "image": "assets/img/Movienight1.png"
+      "text": "Let's get started with Movie Night Click on Sign Up",
+      "image": "assets/img/opening.png"
     },
   ];
   @override
@@ -51,10 +53,8 @@ class _BodyState extends State<Body> {
                   });
                 },
                 itemCount: splashData.length,
-                itemBuilder: (context, index) => SplashContent(
-                  image: splashData[index]["image"],
-                  text: splashData[index]['text'],
-                ),
+                itemBuilder: (context, index) => SplashInfo(
+                    splashData[index]["text"], splashData[index]["image"]),
               ),
             ),
             Expanded(
@@ -73,7 +73,11 @@ class _BodyState extends State<Body> {
                       ),
                       child: Text(
                         "Sign Up",
-                        style: TextStyle(color: Colors.white),
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontFamily: 'Open Sans',
+                            height: 1.0,
+                            fontSize: 20),
                       ),
                       color: Colors.pink,
                       onPressed: () {
@@ -86,15 +90,19 @@ class _BodyState extends State<Body> {
                     ),
                     Spacer(),
                     GestureDetector(
-                      onTap: () =>
-                          Navigator.pushNamed(context, SignInScreen.routeName),
-                      child: Text(
-                        "Already a user ? Sign in",
-                        style: TextStyle(
-                            color: Colors.white,
-                            decoration: TextDecoration.underline),
-                      ),
-                    ),
+                        onTap: () => Navigator.pushNamed(
+                            context, SignInScreen.routeName),
+                        child: Align(
+                          alignment: Alignment.center,
+                          child: Text(
+                            "Already a user ? Sign in",
+                            style: TextStyle(
+                                color: Colors.white,
+                                decoration: TextDecoration.underline,
+                                fontFamily: 'Open Sans',
+                                fontSize: 15),
+                          ),
+                        )),
                     Spacer(),
                   ],
                 ),
@@ -121,12 +129,6 @@ class SplashContent extends StatelessWidget {
       children: <Widget>[
         Spacer(),
         Text(
-          "Movie Night",
-          style: TextStyle(
-            
-              fontSize: getProportionateScreenWidth(36), color: Colors.pink),
-        ),
-        Text(
           text,
           textAlign: TextAlign.center,
           style: TextStyle(color: Colors.white),
@@ -137,6 +139,45 @@ class SplashContent extends StatelessWidget {
           height: getProportionateScreenHeight(265),
           width: getProportionateScreenWidth(235),
         ),
+      ],
+    );
+  }
+}
+
+class SplashInfo extends StatelessWidget {
+  final String label;
+  final String imageIcon;
+  const SplashInfo(this.label, this.imageIcon);
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Padding(
+            padding: EdgeInsets.fromLTRB(5, 2, 5, 0),
+            child: Neon(
+              text: 'Movie Night',
+              color: Colors.pink,
+              fontSize: 32,
+              font: NeonFont.Membra,
+              flickeringText: false,
+            )),
+        Padding(
+          padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
+          child: Text(
+            label,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.w500,
+              fontFamily: 'Open Sans',
+            ),
+          ),
+        ),
+        Image.asset(
+          imageIcon,
+          height: MediaQuery.of(context).size.height * 0.3,
+        )
       ],
     );
   }

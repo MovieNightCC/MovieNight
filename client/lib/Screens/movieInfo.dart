@@ -47,7 +47,7 @@ class _InfoState extends State<Info> {
           Opacity(
             opacity: 0.22,
             child: Image.network(movieImagesTest[count],
-                height: MediaQuery.of(context).size.height * 0.85,
+                height: MediaQuery.of(context).size.height * 1.0,
                 // width: 100,
                 fit: BoxFit.fitWidth),
           ),
@@ -96,7 +96,7 @@ class _InfoState extends State<Info> {
                           // fontWeight: FontWeight.bold,
                           fontSize: 15))),
               Padding(
-                padding: EdgeInsets.fromLTRB(0, 10, 0, 20),
+                padding: EdgeInsets.fromLTRB(0, 10, 0, 60),
                 child: Text(
                   'Release Year: ${movieYear[count]}',
                   style: TextStyle(
@@ -108,92 +108,87 @@ class _InfoState extends State<Info> {
                       fontSize: 15),
                 ),
               ),
-              Padding(
-                padding: EdgeInsets.fromLTRB(0, 20, 0, 30),
+              Positioned(
+                bottom: MediaQuery.of(context).size.height * 0.15,
                 child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      Positioned(
-                        left: 40,
-                        bottom: 20,
-                        child: FloatingActionButton(
-                          heroTag: null,
-                          onPressed: () {
-                            _setLeftCue(1.0);
-                            print('you hate: ${movieDataTest[count]}');
-                            Future.delayed(Duration(milliseconds: 300), () {
-                              // 5s over, navigate to a new page
-                              count++;
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => Swiper()));
-                            });
-                          },
-                          tooltip: 'Do not want to watch',
-                          child: Icon(Icons.cancel_outlined),
-                          elevation: 2.0,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(100)),
-                          backgroundColor: Colors.red[900],
-                        ),
+                      FloatingActionButton(
+                        heroTag: null,
+                        onPressed: () {
+                          _setLeftCue(1.0);
+                          print('you hate: ${movieDataTest[count]}');
+                          Future.delayed(Duration(milliseconds: 300), () {
+                            // 5s over, navigate to a new page
+                            count++;
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => Swiper()));
+                          });
+                        },
+                        tooltip: 'Do not want to watch',
+                        child: Icon(Icons.cancel_outlined),
+                        elevation: 2.0,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(100)),
+                        backgroundColor: Colors.red[900],
                       ),
-                      Positioned(
-                        right: 80,
-                        bottom: 20,
-                        child: FloatingActionButton(
-                          heroTag: null,
-                          onPressed: () {
-                            _setRightCue(1.0);
-                            print('you liked: ${movieDataTest[count]}');
+                      FloatingActionButton(
+                        heroTag: null,
+                        onPressed: () {
+                          _setRightCue(1.0);
+                          print('you liked: ${movieDataTest[count]}');
 
-                            //request to firebase server to update likes
-                            updateUser(
-                              movieDataTest[count],
-                              context,
-                              movieGenre[count],
-                            );
-                            Future.delayed(Duration(milliseconds: 300), () {
-                              // 5s over, navigate to a new page
-                              count++;
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => Swiper()));
-                            });
-                          },
-                          tooltip: 'Want to watch',
-                          child: Icon(Icons.check),
-                          elevation: 2.0,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(100)),
-                          backgroundColor: Colors.green,
-                        ),
+                          //request to firebase server to update likes
+                          updateUser(
+                            movieDataTest[count],
+                            context,
+                            movieGenre[count],
+                          );
+                          Future.delayed(Duration(milliseconds: 300), () {
+                            // 5s over, navigate to a new page
+                            count++;
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => Swiper()));
+                          });
+                        },
+                        tooltip: 'Want to watch',
+                        child: Icon(Icons.check),
+                        elevation: 2.0,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(100)),
+                        backgroundColor: Colors.green,
                       ),
                     ]),
               ),
-              RaisedButton(
-                color: Colors.red[900],
-                onPressed: () => launch(
-                    'https://www.netflix.com/title/${movieDataTest[count]}'),
-                child: const Text('Go to Netflix',
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontFamily: 'Open Sans',
-                    )),
+              Padding(
+                padding: EdgeInsets.fromLTRB(0, 20, 0, 20),
+                child: RaisedButton(
+                  color: Colors.red[900],
+                  onPressed: () => launch(
+                      'https://www.netflix.com/title/${movieDataTest[count]}'),
+                  child: const Text('Go to Netflix',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontFamily: 'Open Sans',
+                      )),
+                ),
               ),
             ],
           ),
           Positioned(
               //swipe cue dislike
-              left: 100,
-              bottom: 250,
+              // left: MediaQuery.of(context).size.width * 0.5,
+              bottom: 450,
               child: AnimatedOpacity(
                   duration: Duration(milliseconds: 200),
                   opacity: _swipeLeftOpacity,
                   child: Container(
-                    height: 200,
-                    width: 200,
+                    height: 150,
+                    width: 150,
                     child: FloatingActionButton(
                       backgroundColor: Colors.red[900],
                       heroTag: null,
@@ -207,14 +202,14 @@ class _InfoState extends State<Info> {
                   ))),
           Positioned(
               //swipe cue dislike
-              right: 100,
-              bottom: 250,
+              // right: 100,
+              bottom: 450,
               child: AnimatedOpacity(
                   duration: Duration(milliseconds: 200),
                   opacity: _swipeRightOpacity,
                   child: Container(
-                    height: 200,
-                    width: 200,
+                    height: 150,
+                    width: 150,
                     child: FloatingActionButton(
                       backgroundColor: Colors.green,
                       heroTag: null,

@@ -43,7 +43,7 @@ class _MatchInfoState extends State<MatchInfo> {
           Opacity(
             opacity: 0.2,
             child: Image.network(matchesMovieData[current]['img'],
-                height: MediaQuery.of(context).size.height * 0.85,
+                height: MediaQuery.of(context).size.height * 1.0,
                 // width: 100,
                 fit: BoxFit.fitWidth),
           ),

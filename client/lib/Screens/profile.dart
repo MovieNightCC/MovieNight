@@ -98,6 +98,7 @@ class _ProfileState extends State<Profile> {
                               showDialog(
                                   context: context,
                                   builder: (_) => new AlertDialog(
+                                        backgroundColor: Colors.grey[900],
                                         title: new Text("Alert",
                                             style: TextStyle(
                                                 color: Colors.grey[900])),
@@ -109,7 +110,7 @@ class _ProfileState extends State<Profile> {
                                           FlatButton(
                                             child: Text('No, go back',
                                                 style: TextStyle(
-                                                    color: Colors.pink)),
+                                                    color: Colors.purple)),
                                             onPressed: () {
                                               Navigator.of(context,
                                                       rootNavigator: true)
