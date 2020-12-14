@@ -52,7 +52,7 @@ class _InfoState extends State<Info> {
             painter: _HeaderCurvedContainer(),
           ),
           ListView(
-            padding: const EdgeInsets.all(50),
+            padding: const EdgeInsets.all(35),
             children: [
               Image.network(
                 movieImagesTest[count],
@@ -124,38 +124,49 @@ class _InfoState extends State<Info> {
                       ),
                     ]),
               ),
-              Text('${movieTitles[count]}',
-                  style: TextStyle(
-                      color: Colors.white,
-                      //height: 3.0,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 25)),
-              Text('Genre: ${movieGenre[count]}',
+              Padding(
+                  padding: EdgeInsets.fromLTRB(0, 0, 0, 10),
+                  child: Text('${movieTitles[count]}',
+                      style: TextStyle(
+                          color: Colors.white,
+                          //height: 3.0,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 35))),
+              Padding(
+                  padding: EdgeInsets.fromLTRB(0, 0, 0, 2),
+                  child: Text('${moviesSynopsis[count]}',
+                      style: TextStyle(
+                          color: Colors.white,
+                          height: 1.5,
+                          //fontWeight:// FontWeight.bold,
+                          fontSize: 15))),
+              Padding(
+                  padding: EdgeInsets.fromLTRB(0, 0, 0, 2),
+                  child: Text('Genre: ${movieGenre[count]}',
+                      style: TextStyle(
+                          color: Colors.white,
+                          height: 1.5,
+                          // fontWeight: FontWeight.bold,
+                          fontSize: 15))),
+              Padding(
+                  padding: EdgeInsets.fromLTRB(0, 0, 0, 2),
+                  child: Text(
+                      'Runtime: ${printDuration(Duration(seconds: movieRuntime[count]))}',
+                      style: TextStyle(
+                          color: Colors.white,
+                          height: 1.5,
+                          // fontWeight: FontWeight.bold,
+                          fontSize: 15))),
+              Padding(
+                padding: EdgeInsets.fromLTRB(0, 0, 0, 15),
+                child: Text(
+                  'Release Year: ${movieYear[count]}',
                   style: TextStyle(
                       color: Colors.white,
                       height: 1.5,
                       // fontWeight: FontWeight.bold,
-                      fontSize: 15)),
-              Text(
-                  'Runtime: ${printDuration(Duration(seconds: movieRuntime[count]))}',
-                  style: TextStyle(
-                      color: Colors.white,
-                      height: 1.5,
-                      // fontWeight: FontWeight.bold,
-                      fontSize: 15)),
-              Text('Synopsis: ${moviesSynopsis[count]}',
-                  style: TextStyle(
-                      color: Colors.white,
-                      height: 1.5,
-                      //fontWeight:// FontWeight.bold,
-                      fontSize: 15)),
-              Text(
-                'Release Year: ${movieYear[count]}',
-                style: TextStyle(
-                    color: Colors.white,
-                    height: 1.5,
-                    // fontWeight: FontWeight.bold,
-                    fontSize: 15),
+                      fontSize: 15),
+                ),
               ),
               RaisedButton(
                 onPressed: () => launch(

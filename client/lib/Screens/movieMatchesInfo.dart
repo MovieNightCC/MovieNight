@@ -54,42 +54,52 @@ class _MatchInfoState extends State<MatchInfo> {
                 matchesMovieData[current]['img'],
                 scale: 0.55,
               ),
-              Text(
-                  'Title: ${matchesMovieData[current]['title'].replaceAll('&#39;', "'")}',
-                  style: TextStyle(
-                      color: Colors.white,
-                      height: 3.0,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20)),
-              Text('Genre: ${matchesMovieData[current]['genre']}',
-                  style: TextStyle(
-                      color: Colors.white,
-                      height: 2.0,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20)),
-              Text(
-                  'Runtime: ${printDuration(Duration(seconds: matchesMovieData[current]['runtime']))}',
-                  // 'Runtime: ${hourListMatches[current]}h ${minutesListMatches[current]}m',
-                  style: TextStyle(
-                      color: Colors.white,
-                      height: 2.0,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20)),
-              Text(
-                  'Synopsis: ${matchesMovieData[current]['synopsis'].replaceAll('&#39;', "'")}',
+              Padding(
+                  padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
+                  child: Text(
+                      'Title: ${matchesMovieData[current]['title'].replaceAll('&#39;', "'")}',
+                      style: TextStyle(
+                          color: Colors.white,
+                          //height: 3.0,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 35))),
+              Padding(
+                  padding: EdgeInsets.fromLTRB(0, 0, 0, 2),
+                  child: Text(
+                      '${matchesMovieData[current]['synopsis'].replaceAll('&#39;', "'")}',
+                      style: TextStyle(
+                          color: Colors.white,
+                          height: 1.5,
+                          //fontWeight:// FontWeight.bold,
+                          fontSize: 15))),
+              Padding(
+                  padding: EdgeInsets.fromLTRB(0, 0, 0, 2),
+                  child: Text('Genre: ${matchesMovieData[current]['genre']}',
+                      style: TextStyle(
+                          color: Colors.white,
+                          height: 1.5,
+                          // fontWeight: FontWeight.bold,
+                          fontSize: 15))),
+              Padding(
+                  padding: EdgeInsets.fromLTRB(0, 0, 0, 2),
+                  child: Text(
+                      'Runtime: ${printDuration(Duration(seconds: matchesMovieData[current]['runtime']))}',
+                      style: TextStyle(
+                          color: Colors.white,
+                          height: 1.5,
+                          // fontWeight: FontWeight.bold,
+                          fontSize: 15))),
+              Padding(
+                padding: EdgeInsets.fromLTRB(0, 0, 0, 15),
+                child: Text(
+                  'Release Year: ${matchesMovieData[current]['year']}',
                   style: TextStyle(
                       color: Colors.white,
                       height: 1.5,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20)),
-              Text(
-                'Release Year: ${matchesMovieData[current]['year']}',
-                style: TextStyle(
-                    color: Colors.white,
-                    height: 2.0,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 20),
-              ), //matchesNfid,
+                      // fontWeight: FontWeight.bold,
+                      fontSize: 15),
+                ),
+              ),
               RaisedButton(
                 onPressed: () => launch(
                     'https://www.netflix.com/title/${matchesMovieData[current]['nfid']}'),
@@ -114,8 +124,7 @@ class _MatchInfoState extends State<MatchInfo> {
                       MaterialPageRoute(
                           builder: (context) => Matches(), maintainState: true))
                 },
-                child: const Text('Remove from Matches',
-                    style: TextStyle(fontSize: 20)),
+                child: const Text('Delete', style: TextStyle(fontSize: 20)),
               ),
             ],
           ),
