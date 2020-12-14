@@ -64,7 +64,8 @@ void updateUser(
     showDialog(
         context: context,
         builder: (_) => new AlertDialog(
-              title: new Text("Alert", style: TextStyle(color: Colors.white)),
+              title:
+                  new Text("Alert", style: TextStyle(color: Colors.grey[900])),
               content: new Text("You got a Match!",
                   style: TextStyle(color: Colors.white)),
               actions: <Widget>[
@@ -267,13 +268,34 @@ class _TinderswiperState extends State<Tinderswiper>
               backgroundColor: Colors.pinkAccent[700],
               heroTag: null,
               onPressed: () {
-                joinRush();
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => RushTwo(),
-                      maintainState: true,
-                    ));
+                if (userPair == "") {
+                  showDialog(
+                      context: context,
+                      builder: (_) => new AlertDialog(
+                            title: new Text("Alert",
+                                style: TextStyle(color: Colors.grey[900])),
+                            content: new Text("Add a partner to use RushMode!",
+                                style: TextStyle(color: Colors.white)),
+                            actions: <Widget>[
+                              FlatButton(
+                                child: Text('Close me!',
+                                    style: TextStyle(color: Colors.pink)),
+                                onPressed: () {
+                                  Navigator.of(context, rootNavigator: true)
+                                      .pop();
+                                },
+                              )
+                            ],
+                          ));
+                } else {
+                  joinRush();
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => RushTwo(),
+                        maintainState: true,
+                      ));
+                }
               },
               tooltip: 'Go to Rush Mode',
               child: Icon(Icons.fast_forward, size: 40, color: Colors.white),
@@ -298,6 +320,7 @@ class _TinderswiperState extends State<Tinderswiper>
           ),
         ]),
         bottomNavigationBar: BottomNavigationBar(
+          selectedItemColor: Colors.pink,
           currentIndex: _currentIndex,
           type: BottomNavigationBarType.fixed,
           backgroundColor: Color(0xff412DB3),
@@ -399,3 +422,4 @@ void joinRush() async {
       "https://asia-northeast1-movie-night-cc.cloudfunctions.net/joinRush?userName=$userName&pairName=$userPair");
   print(response.body);
 }
+//asdfasd

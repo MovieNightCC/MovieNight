@@ -117,8 +117,8 @@ class _ProfileState extends State<Profile> {
                                 context: context,
                                 builder: (_) => new AlertDialog(
                                       title: new Text("Alert",
-                                          style:
-                                              TextStyle(color: Colors.white)),
+                                          style: TextStyle(
+                                              color: Colors.grey[900])),
                                       content: new Text(
                                           "Are you sure? Deleting your account will also delete your connection with your partner?",
                                           style:
@@ -161,6 +161,7 @@ class _ProfileState extends State<Profile> {
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
         type: BottomNavigationBarType.fixed,
+        selectedItemColor: Colors.pink,
         backgroundColor: Color(0xffA058CB),
         items: [
           BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),

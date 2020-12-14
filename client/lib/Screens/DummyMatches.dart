@@ -6,6 +6,7 @@ import './movieMatchesInfo.dart';
 import './swiper.dart';
 import './profile.dart';
 import 'addPairPage.dart';
+import 'package:neon/neon.dart';
 
 class DummyMatches extends StatefulWidget {
   @override
@@ -20,9 +21,13 @@ class _DummyMatchesState extends State<DummyMatches> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Match History',
-            style: TextStyle(
-                height: 1.5, fontWeight: FontWeight.bold, fontSize: 40)),
+        title: Neon(
+          text: 'Matches',
+          color: Colors.pink,
+          fontSize: 35,
+          font: NeonFont.Membra,
+          flickeringText: false,
+        ),
         automaticallyImplyLeading: false,
         centerTitle: true,
         backgroundColor: Colors.pink,
@@ -76,6 +81,7 @@ class _DummyMatchesState extends State<DummyMatches> {
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
         type: BottomNavigationBarType.fixed,
+        selectedItemColor: Colors.pink,
         backgroundColor: Colors.pink,
         items: [
           BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),

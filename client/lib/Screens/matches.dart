@@ -153,6 +153,7 @@ class _MatchesState extends State<Matches> {
             bottomNavigationBar: BottomNavigationBar(
               currentIndex: _currentIndex,
               type: BottomNavigationBarType.fixed,
+              selectedItemColor: Colors.pink,
               backgroundColor: Color(0xff3424AF),
               items: [
                 BottomNavigationBarItem(
@@ -185,9 +186,13 @@ class _MatchesState extends State<Matches> {
         } else {
           return Scaffold(
             appBar: AppBar(
-              title: const Text('Match History',
-                  style: TextStyle(
-                      height: 1.5, fontWeight: FontWeight.bold, fontSize: 30)),
+              title: Neon(
+                text: 'Matches',
+                color: Colors.pink,
+                fontSize: 35,
+                font: NeonFont.Membra,
+                flickeringText: false,
+              ),
               automaticallyImplyLeading: false,
               centerTitle: true,
               backgroundColor: Color(0xff3424AF),

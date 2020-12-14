@@ -1,10 +1,11 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import './swiper.dart';
+import './rushMode.dart';
 import '../main.dart';
+import 'package:neon/neon.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import './rushMode.dart';
 
 String userPictureURL = "https://i.imgur.com/BoN9kdC.png";
 
@@ -108,8 +109,8 @@ class PicAndStatusColumn extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         new Container(
-            width: 100.0,
-            height: 100.0,
+            width: 150.0,
+            height: 150.0,
             decoration: new BoxDecoration(
                 shape: BoxShape.circle,
                 image: new DecorationImage(
@@ -156,19 +157,48 @@ class _PlayerLobbyState extends State<PlayerLobby> {
                   style: TextStyle(fontSize: 24)),
             ]);
           } else {
-            return Center(
-                child: Column(children: [
-              Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
-                PicAndStatusColumn(
-                  showText(playerOneJoined),
-                  playerOneIcon,
-                ),
-                PicAndStatusColumn(
-                  showText(playerTwoJoined),
-                  playerTwoIcon,
-                ),
-              ]),
-            ]));
+            return Stack(
+              children: [
+                Center(
+                    child: Column(children: [
+                  Padding(
+                    padding: EdgeInsets.only(top: 27.0),
+                    child: Neon(
+                      text: 'Rush Mode',
+                      color: Colors.pink,
+                      fontSize: 40,
+                      font: NeonFont.Membra,
+                      flickeringText: false,
+                    ),
+                  ),
+                  Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        PicAndStatusColumn(
+                          showText(playerOneJoined),
+                          playerOneIcon,
+                        ),
+                        PicAndStatusColumn(
+                          showText(playerTwoJoined),
+                          playerTwoIcon,
+                        ),
+                      ]),
+                ])),
+                Positioned(
+                    right: 80,
+                    bottom: 70,
+                    child: FloatingActionButton(
+                      child: Icon(Icons.arrow_back),
+                      backgroundColor: Colors.deepPurple[300],
+                      onPressed: () {
+                        endRush().then((value) {
+                          print("end rush done!");
+                          Navigator.pop(context);
+                        });
+                      },
+                    ))
+              ],
+            );
           }
         });
   }

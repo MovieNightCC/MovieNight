@@ -69,7 +69,7 @@ class _InfoState extends State<Info> {
                         child: FloatingActionButton(
                           heroTag: null,
                           onPressed: () {
-                            _setLeftCue(1.0);
+                            _setLeftCue(0.8);
 
                             print('you hate: ${movieDataTest[count]}');
 
@@ -96,7 +96,7 @@ class _InfoState extends State<Info> {
                         child: FloatingActionButton(
                           heroTag: null,
                           onPressed: () {
-                            _setRightCue(1.0);
+                            _setRightCue(0.8);
                             print('you liked: ${movieDataTest[count]}');
 
                             //request to firebase server to update likes
