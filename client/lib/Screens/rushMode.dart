@@ -18,6 +18,12 @@ List<String> rushModeGenre = [];
 List<int> rushModeYear = [];
 List<int> rushModeRuntime = [];
 
+Future<void> endRush() async {
+  var response = await http.get(
+      "https://asia-northeast1-movie-night-cc.cloudfunctions.net/endGame?pairName=$userPair");
+  print(response.body);
+}
+
 class RushMode extends StatefulWidget {
   @override
   _RushModeState createState() => _RushModeState();
@@ -232,12 +238,6 @@ class _TimerWidgetState extends State<TimerWidget> {
     super.dispose();
   }
 
-  void endRush() async {
-    var response = await http.get(
-        "https://asia-northeast1-movie-night-cc.cloudfunctions.net/endGame?pairName=$userPair");
-    print(response.body);
-  }
-
   void startTimer() {
     if (_timer != null) {
       _timer.cancel();
@@ -247,7 +247,9 @@ class _TimerWidgetState extends State<TimerWidget> {
         if (mounted) {
           setState(() {
             if (_start < 1) {
-              endRush();
+              endRush().then((value) {
+                print("done!");
+              });
               dispose();
               Navigator.push(
                   context,
