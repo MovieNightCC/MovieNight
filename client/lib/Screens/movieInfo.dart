@@ -45,7 +45,7 @@ class _InfoState extends State<Info> {
         alignment: Alignment.center,
         children: [
           Opacity(
-            opacity: 0.3,
+            opacity: 0.22,
             child: Image.network(movieImagesTest[count],
                 height: MediaQuery.of(context).size.height * 0.85,
                 // width: 100,
@@ -55,26 +55,32 @@ class _InfoState extends State<Info> {
             padding: const EdgeInsets.all(35),
             children: [
               Padding(
-                  padding: EdgeInsets.fromLTRB(0, 100, 0, 20),
+                  padding: EdgeInsets.fromLTRB(0, 60, 0, 20),
                   child: Text('${movieTitles[count]}',
                       style: TextStyle(
+                          fontWeight: FontWeight.w900,
                           color: Colors.white,
-                          //height: 3.0,
-                          fontWeight: FontWeight.bold,
+                          fontFamily: 'Open Sans',
+                          height: 1.5,
+                          // fontWeight: FontWeight.bold,
                           fontSize: 35))),
               Padding(
                   padding: EdgeInsets.fromLTRB(0, 0, 0, 2),
                   child: Text('${moviesSynopsis[count]}',
                       style: TextStyle(
+                          fontWeight: FontWeight.w300,
                           color: Colors.white,
+                          fontFamily: 'Open Sans',
                           height: 1.5,
-                          //fontWeight:// FontWeight.bold,
-                          fontSize: 15))),
+                          // fontWeight: FontWeight.bold,
+                          fontSize: 17))),
               Padding(
                   padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
                   child: Text('Genre: ${movieGenre[count]}',
                       style: TextStyle(
+                          fontWeight: FontWeight.w300,
                           color: Colors.white,
+                          fontFamily: 'Open Sans',
                           height: 1.5,
                           // fontWeight: FontWeight.bold,
                           fontSize: 15))),
@@ -83,7 +89,9 @@ class _InfoState extends State<Info> {
                   child: Text(
                       'Runtime: ${printDuration(Duration(seconds: movieRuntime[count]))}',
                       style: TextStyle(
+                          fontWeight: FontWeight.w300,
                           color: Colors.white,
+                          fontFamily: 'Open Sans',
                           height: 1.5,
                           // fontWeight: FontWeight.bold,
                           fontSize: 15))),
@@ -92,14 +100,16 @@ class _InfoState extends State<Info> {
                 child: Text(
                   'Release Year: ${movieYear[count]}',
                   style: TextStyle(
+                      fontWeight: FontWeight.w300,
                       color: Colors.white,
+                      fontFamily: 'Open Sans',
                       height: 1.5,
                       // fontWeight: FontWeight.bold,
                       fontSize: 15),
                 ),
               ),
               Padding(
-                padding: EdgeInsets.fromLTRB(0, 20, 0, 20),
+                padding: EdgeInsets.fromLTRB(0, 20, 0, 30),
                 child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
@@ -165,8 +175,11 @@ class _InfoState extends State<Info> {
               RaisedButton(
                 onPressed: () => launch(
                     'https://www.netflix.com/title/${movieDataTest[count]}'),
-                child:
-                    const Text('Go to Netflix', style: TextStyle(fontSize: 20)),
+                child: const Text('Go to Netflix',
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontFamily: 'Open Sans',
+                    )),
               ),
             ],
           ),

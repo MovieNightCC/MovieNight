@@ -41,7 +41,7 @@ class _MatchInfoState extends State<MatchInfo> {
         alignment: Alignment.center,
         children: [
           Opacity(
-            opacity: 0.3,
+            opacity: 0.2,
             child: Image.network(matchesMovieData[current]['img'],
                 height: MediaQuery.of(context).size.height * 0.85,
                 // width: 100,
@@ -56,8 +56,8 @@ class _MatchInfoState extends State<MatchInfo> {
                       '${matchesMovieData[current]['title'].replaceAll('&#39;', "'")}',
                       style: TextStyle(
                           color: Colors.white,
-                          //height: 3.0,
-                          fontWeight: FontWeight.bold,
+                          fontWeight: FontWeight.w900,
+                          fontFamily: 'Open Sans',
                           fontSize: 35))),
               Padding(
                   padding: EdgeInsets.fromLTRB(0, 0, 0, 2),
@@ -66,15 +66,20 @@ class _MatchInfoState extends State<MatchInfo> {
                       style: TextStyle(
                           color: Colors.white,
                           height: 1.5,
+                          fontWeight: FontWeight.w300,
                           //fontWeight:// FontWeight.bold,
-                          fontSize: 15))),
+                          fontFamily: 'Open Sans',
+                          fontSize: 17))),
               Padding(
                   padding: EdgeInsets.fromLTRB(0, 10, 0, 2),
                   child: Text('Genre: ${matchesMovieData[current]['genre']}',
                       style: TextStyle(
                           color: Colors.white,
                           height: 1.5,
+                          fontWeight: FontWeight.w300,
+
                           // fontWeight: FontWeight.bold,
+                          fontFamily: 'Open Sans',
                           fontSize: 15))),
               Padding(
                   padding: EdgeInsets.fromLTRB(0, 10, 0, 2),
@@ -83,7 +88,10 @@ class _MatchInfoState extends State<MatchInfo> {
                       style: TextStyle(
                           color: Colors.white,
                           height: 1.5,
+                          fontWeight: FontWeight.w300,
+
                           // fontWeight: FontWeight.bold,
+                          fontFamily: 'Open Sans',
                           fontSize: 15))),
               Padding(
                 padding: EdgeInsets.fromLTRB(0, 10, 0, 15),
@@ -93,6 +101,8 @@ class _MatchInfoState extends State<MatchInfo> {
                       color: Colors.white,
                       height: 1.5,
                       // fontWeight: FontWeight.bold,
+                      fontFamily: 'Open Sans',
+                      fontWeight: FontWeight.w300,
                       fontSize: 15),
                 ),
               ),
@@ -101,28 +111,29 @@ class _MatchInfoState extends State<MatchInfo> {
                     'https://www.netflix.com/title/${matchesMovieData[current]['nfid']}'),
                 child: const Text('Go to Netflix',
                     style: TextStyle(
+                      fontWeight: FontWeight.w300,
+
+                      // fontWeight: FontWeight.bold,
                       fontSize: 20,
+                      fontFamily: 'Open Sans',
                     )),
               ),
               RaisedButton(
                 color: Colors.red[900],
                 onPressed: () => {
                   deleteMatch(matchesMovieData[current]['nfid']),
-                  // matchesTitles.remove(matchesTitles[current]),
-                  // matchesSynopsis.remove(matchesSynopsis[current]),
-                  // matchesImage.remove(matchesImage[current]),
-                  // matchesYear.remove(matchesYear[current]),
-                  // matchesGenre.remove(matchesGenre[current]),
-                  // matchesRuntime.remove(matchesRuntime[current]),
-                  // hourListMatches.remove(hourListMatches[current]),
-                  // minutesListMatches.remove(minutesListMatches[current]),
-                  // matchesNfid.remove(matchesNfid[current]),
                   Navigator.push(
                       context,
                       MaterialPageRoute(
                           builder: (context) => Matches(), maintainState: true))
                 },
-                child: const Text('Delete', style: TextStyle(fontSize: 20)),
+                child: const Text('Delete',
+                    style: TextStyle(
+                      fontSize: 20, fontWeight: FontWeight.w300,
+
+                      // fontWeight: FontWeight.bold,
+                      fontFamily: 'Open Sans',
+                    )),
               ),
             ],
           ),
