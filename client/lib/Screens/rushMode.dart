@@ -73,10 +73,7 @@ class _RushModeState extends State<RushMode> {
             ),
             painter: _HeaderCurvedContainer(),
           ),
-          Image.asset(
-            './assets/icons/loading.gif',
-            scale: 1.5,
-          ),
+          Positioned(bottom: 40, child: Image.asset('./assets/img/fire.gif')),
           Column(
             children: [
               TimerWidget(),
