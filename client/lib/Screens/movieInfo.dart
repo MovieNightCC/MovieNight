@@ -124,38 +124,38 @@ class _InfoState extends State<Info> {
                       ),
                     ]),
               ),
-              Text('Title: ${movieTitles[count]}',
+              Text('${movieTitles[count]}',
                   style: TextStyle(
                       color: Colors.white,
                       //height: 3.0,
                       fontWeight: FontWeight.bold,
-                      fontSize: 20)),
+                      fontSize: 25)),
               Text('Genre: ${movieGenre[count]}',
                   style: TextStyle(
                       color: Colors.white,
-                      height: 3.0,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20)),
+                      height: 1.5,
+                      // fontWeight: FontWeight.bold,
+                      fontSize: 15)),
               Text(
                   'Runtime: ${printDuration(Duration(seconds: movieRuntime[count]))}',
                   style: TextStyle(
                       color: Colors.white,
-                      height: 3.0,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20)),
+                      height: 1.5,
+                      // fontWeight: FontWeight.bold,
+                      fontSize: 15)),
               Text('Synopsis: ${moviesSynopsis[count]}',
                   style: TextStyle(
                       color: Colors.white,
                       height: 1.5,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20)),
+                      //fontWeight:// FontWeight.bold,
+                      fontSize: 15)),
               Text(
                 'Release Year: ${movieYear[count]}',
                 style: TextStyle(
                     color: Colors.white,
-                    height: 2.5,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 20),
+                    height: 1.5,
+                    // fontWeight: FontWeight.bold,
+                    fontSize: 15),
               ),
               RaisedButton(
                 onPressed: () => launch(
