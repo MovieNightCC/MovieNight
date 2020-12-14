@@ -302,12 +302,16 @@ class _ProfilePictureState extends State<ProfilePicture> {
       if (gallery) {
         pickedFile = await picker.getImage(
           source: ImageSource.gallery,
+          maxHeight: MediaQuery.of(context).size.width / 2,
+          maxWidth: MediaQuery.of(context).size.width / 2,
         );
       }
       // Otherwise open camera to get new photo
       else {
         pickedFile = await picker.getImage(
           source: ImageSource.camera,
+          maxHeight: MediaQuery.of(context).size.width / 2,
+          maxWidth: MediaQuery.of(context).size.width / 2,
         );
       }
 
