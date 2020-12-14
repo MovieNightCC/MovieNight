@@ -57,28 +57,29 @@ class _ProfileState extends State<Profile> {
               ),
               ProfilePicture(),
               UserInfoSection(),
-              Padding(
-                padding: EdgeInsets.all(10),
-                child:
-                    Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                  FlatButton(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(50.0)),
-                    ),
-                    child: Text(
-                      "Link with your partner",
-                      style: TextStyle(color: Colors.white),
-                    ),
-                    color: Color(0xffA058CB),
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => AddPairPage()));
-                    },
-                  ),
-                ]),
-              ),
+              LinkToPairButton(),
+              // Padding(
+              //   padding: EdgeInsets.all(10),
+              //   child:
+              //       Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+              //     FlatButton(
+              //       shape: RoundedRectangleBorder(
+              //         borderRadius: BorderRadius.all(Radius.circular(50.0)),
+              //       ),
+              //       child: Text(
+              //         "Link with your partner",
+              //         style: TextStyle(color: Colors.white),
+              //       ),
+              //       color: Color(0xffA058CB),
+              //       onPressed: () {
+              //         Navigator.push(
+              //             context,
+              //             MaterialPageRoute(
+              //                 builder: (context) => AddPairPage()));
+              //       },
+              //     ),
+              //   ]),
+              // ),
               Padding(
                 padding: EdgeInsets.all(10),
                 child: FlatButton(
@@ -384,5 +385,34 @@ class _ProfilePictureState extends State<ProfilePicture> {
         ),
       ],
     );
+  }
+}
+
+class LinkToPairButton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    if (userPair == "") {
+      return Padding(
+        padding: EdgeInsets.all(10),
+        child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+          FlatButton(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(50.0)),
+            ),
+            child: Text(
+              "Link with your partner",
+              style: TextStyle(color: Colors.white),
+            ),
+            color: Color(0xffA058CB),
+            onPressed: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => AddPairPage()));
+            },
+          ),
+        ]),
+      );
+    } else {
+      return Container(height: 0, width: 0);
+    }
   }
 }

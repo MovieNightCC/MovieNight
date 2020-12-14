@@ -44,22 +44,26 @@ class _InfoState extends State<Info> {
       body: Stack(
         alignment: Alignment.center,
         children: [
-          CustomPaint(
-            child: Container(
+          Opacity(
+            opacity: 0.2,
+            child: Image.network(
+              movieImagesTest[count],
               width: MediaQuery.of(context).size.width,
               height: MediaQuery.of(context).size.height,
             ),
-            painter: _HeaderCurvedContainer(),
           ),
+          // CustomPaint(
+          //   child: Container(
+          //     width: MediaQuery.of(context).size.width,
+          //     height: MediaQuery.of(context).size.height,
+          //   ),
+          //   painter: _HeaderCurvedContainer(),
+          // ),
           ListView(
             padding: const EdgeInsets.all(35),
             children: [
-              Image.network(
-                movieImagesTest[count],
-                scale: 0.55,
-              ),
               Padding(
-                padding: EdgeInsets.fromLTRB(0, 20, 0, 30),
+                padding: EdgeInsets.fromLTRB(0, 70, 0, 30),
                 child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
