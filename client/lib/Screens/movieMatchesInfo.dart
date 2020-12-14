@@ -21,7 +21,7 @@ List minutesListMatches;
 List hourListMatches;
 
 String printDuration(Duration duration) {
-  String twoDigits(int n) => n.toString().padLeft(2, "0");
+  String twoDigits(int n) => n.toString();
   String twoDigitMinutes = twoDigits(duration.inMinutes.remainder(60));
   return "${twoDigits(duration.inHours)}:$twoDigitMinutes";
 }
@@ -107,6 +107,7 @@ class _MatchInfoState extends State<MatchInfo> {
                 ),
               ),
               RaisedButton(
+                color: Colors.red[900],
                 onPressed: () => launch(
                     'https://www.netflix.com/title/${matchesMovieData[current]['nfid']}'),
                 child: const Text('Go to Netflix',
@@ -119,7 +120,7 @@ class _MatchInfoState extends State<MatchInfo> {
                     )),
               ),
               RaisedButton(
-                color: Colors.red[900],
+                color: Colors.deepPurple,
                 onPressed: () => {
                   deleteMatch(matchesMovieData[current]['nfid']),
                   Navigator.push(

@@ -49,8 +49,8 @@ class _ProfileState extends State<Profile> {
                     top: 15,
                     child: Neon(
                       text: '$displayName',
-                      color: Colors.pink,
-                      fontSize: 35,
+                      color: Colors.purple,
+                      fontSize: 24,
                       font: NeonFont.Membra,
                       flickeringText: false,
                     )),
@@ -58,28 +58,6 @@ class _ProfileState extends State<Profile> {
               ProfilePicture(),
               UserInfoSection(),
               LinkToPairButton(),
-              // Padding(
-              //   padding: EdgeInsets.all(10),
-              //   child:
-              //       Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-              //     FlatButton(
-              //       shape: RoundedRectangleBorder(
-              //         borderRadius: BorderRadius.all(Radius.circular(50.0)),
-              //       ),
-              //       child: Text(
-              //         "Link with your partner",
-              //         style: TextStyle(color: Colors.white),
-              //       ),
-              //       color: Color(0xffA058CB),
-              //       onPressed: () {
-              //         Navigator.push(
-              //             context,
-              //             MaterialPageRoute(
-              //                 builder: (context) => AddPairPage()));
-              //       },
-              //     ),
-              //   ]),
-              // ),
               Padding(
                 padding: EdgeInsets.all(10),
                 child: FlatButton(
@@ -170,8 +148,8 @@ class _ProfileState extends State<Profile> {
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
         type: BottomNavigationBarType.fixed,
-        selectedItemColor: Colors.pink,
-        backgroundColor: Color(0xffA058CB),
+        selectedItemColor: Colors.white,
+        backgroundColor: Colors.pink,
         items: [
           BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
           BottomNavigationBarItem(
@@ -278,7 +256,7 @@ class UserInfoSection extends StatelessWidget {
 class HeaderCurvedContainer extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
-    Paint paint = Paint()..color = Color(0xffA058CB);
+    Paint paint = Paint()..color = Colors.pink;
     Path path = Path()
       ..relativeLineTo(0, 150)
       ..quadraticBezierTo(size.width / 2, 225, size.width, 150)
@@ -369,7 +347,7 @@ class _ProfilePictureState extends State<ProfilePicture> {
           width: MediaQuery.of(context).size.width / 2,
           height: MediaQuery.of(context).size.width / 2,
           decoration: BoxDecoration(
-              border: Border.all(color: Colors.white, width: 5),
+              border: Border.all(color: Color(0xff412DB3), width: 5),
               shape: BoxShape.circle,
               color: Colors.white,
               image: DecorationImage(

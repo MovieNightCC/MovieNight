@@ -115,8 +115,8 @@ class _TinderswiperState extends State<Tinderswiper>
               top: 43,
               child: Neon(
                 text: 'Movie Night',
-                color: Colors.pink,
-                fontSize: 35,
+                color: Colors.purple,
+                fontSize: 24,
                 font: NeonFont.Membra,
                 flickeringText: false,
               )),
@@ -129,7 +129,8 @@ class _TinderswiperState extends State<Tinderswiper>
 // - Night-Club-70s
 // - Samarin
 // - TextMeOne
-          Image.asset('./assets/icons/loading.gif', scale: 1.5),
+          Image.asset('./assets/icons/loader-movie-night.gif', scale: 1.0),
+          //CircularProgressIndicator(backgroundColor: Colors.pink),
           Padding(
             padding: EdgeInsets.fromLTRB(0, 50, 0, 0),
             child: Column(
@@ -264,7 +265,7 @@ class _TinderswiperState extends State<Tinderswiper>
             left: 80,
             bottom: 20,
             child: FloatingActionButton(
-              backgroundColor: Colors.pinkAccent[700],
+              backgroundColor: Colors.pink,
               heroTag: null,
               onPressed: () {
                 if (userPair == "") {
@@ -307,7 +308,7 @@ class _TinderswiperState extends State<Tinderswiper>
             right: 80,
             bottom: 20,
             child: FloatingActionButton(
-              backgroundColor: Colors.deepPurple[300],
+              backgroundColor: Color(0xff412DB3),
               heroTag: null,
               onPressed: () => filterPop(context),
               tooltip: 'Filter Movies',
@@ -319,10 +320,10 @@ class _TinderswiperState extends State<Tinderswiper>
           ),
         ]),
         bottomNavigationBar: BottomNavigationBar(
-          selectedItemColor: Colors.pink,
+          selectedItemColor: Colors.white,
           currentIndex: _currentIndex,
           type: BottomNavigationBarType.fixed,
-          backgroundColor: Color(0xff412DB3),
+          backgroundColor: Colors.pink,
           items: [
             BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
             BottomNavigationBarItem(
@@ -359,7 +360,7 @@ class _TinderswiperState extends State<Tinderswiper>
 class HeaderCurvedContainer extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
-    Paint paint = Paint()..color = Color(0xff412DB3);
+    Paint paint = Paint()..color = Colors.pink;
     Path path = Path()
       ..relativeLineTo(0, 150)
       ..quadraticBezierTo(size.width / 2, 225, size.width, 150)
