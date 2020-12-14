@@ -45,25 +45,61 @@ class _InfoState extends State<Info> {
         alignment: Alignment.center,
         children: [
           Opacity(
-            opacity: 0.2,
-            child: Image.network(
-              movieImagesTest[count],
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height,
-            ),
+            opacity: 0.3,
+            child: Image.network(movieImagesTest[count],
+                height: MediaQuery.of(context).size.height * 0.85,
+                // width: 100,
+                fit: BoxFit.fitWidth),
           ),
-          // CustomPaint(
-          //   child: Container(
-          //     width: MediaQuery.of(context).size.width,
-          //     height: MediaQuery.of(context).size.height,
-          //   ),
-          //   painter: _HeaderCurvedContainer(),
-          // ),
           ListView(
             padding: const EdgeInsets.all(35),
             children: [
               Padding(
-                padding: EdgeInsets.fromLTRB(0, 70, 0, 30),
+                  padding: EdgeInsets.fromLTRB(0, 100, 0, 20),
+                  child: Text('${movieTitles[count]}',
+                      style: TextStyle(
+                          color: Colors.white,
+                          //height: 3.0,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 35))),
+              Padding(
+                  padding: EdgeInsets.fromLTRB(0, 0, 0, 2),
+                  child: Text('${moviesSynopsis[count]}',
+                      style: TextStyle(
+                          color: Colors.white,
+                          height: 1.5,
+                          //fontWeight:// FontWeight.bold,
+                          fontSize: 15))),
+              Padding(
+                  padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
+                  child: Text('Genre: ${movieGenre[count]}',
+                      style: TextStyle(
+                          color: Colors.white,
+                          height: 1.5,
+                          // fontWeight: FontWeight.bold,
+                          fontSize: 15))),
+              Padding(
+                  padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
+                  child: Text(
+                      'Runtime: ${printDuration(Duration(seconds: movieRuntime[count]))}',
+                      style: TextStyle(
+                          color: Colors.white,
+                          height: 1.5,
+                          // fontWeight: FontWeight.bold,
+                          fontSize: 15))),
+              Padding(
+                padding: EdgeInsets.fromLTRB(0, 10, 0, 20),
+                child: Text(
+                  'Release Year: ${movieYear[count]}',
+                  style: TextStyle(
+                      color: Colors.white,
+                      height: 1.5,
+                      // fontWeight: FontWeight.bold,
+                      fontSize: 15),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.fromLTRB(0, 20, 0, 20),
                 child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
@@ -73,10 +109,8 @@ class _InfoState extends State<Info> {
                         child: FloatingActionButton(
                           heroTag: null,
                           onPressed: () {
-                            _setLeftCue(0.8);
-
+                            _setLeftCue(1.0);
                             print('you hate: ${movieDataTest[count]}');
-
                             Future.delayed(Duration(milliseconds: 300), () {
                               // 5s over, navigate to a new page
                               count++;
@@ -100,7 +134,7 @@ class _InfoState extends State<Info> {
                         child: FloatingActionButton(
                           heroTag: null,
                           onPressed: () {
-                            _setRightCue(0.8);
+                            _setRightCue(1.0);
                             print('you liked: ${movieDataTest[count]}');
 
                             //request to firebase server to update likes
@@ -128,50 +162,6 @@ class _InfoState extends State<Info> {
                       ),
                     ]),
               ),
-              Padding(
-                  padding: EdgeInsets.fromLTRB(0, 0, 0, 10),
-                  child: Text('${movieTitles[count]}',
-                      style: TextStyle(
-                          color: Colors.white,
-                          //height: 3.0,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 35))),
-              Padding(
-                  padding: EdgeInsets.fromLTRB(0, 0, 0, 2),
-                  child: Text('${moviesSynopsis[count]}',
-                      style: TextStyle(
-                          color: Colors.white,
-                          height: 1.5,
-                          //fontWeight:// FontWeight.bold,
-                          fontSize: 15))),
-              Padding(
-                  padding: EdgeInsets.fromLTRB(0, 0, 0, 2),
-                  child: Text('Genre: ${movieGenre[count]}',
-                      style: TextStyle(
-                          color: Colors.white,
-                          height: 1.5,
-                          // fontWeight: FontWeight.bold,
-                          fontSize: 15))),
-              Padding(
-                  padding: EdgeInsets.fromLTRB(0, 0, 0, 2),
-                  child: Text(
-                      'Runtime: ${printDuration(Duration(seconds: movieRuntime[count]))}',
-                      style: TextStyle(
-                          color: Colors.white,
-                          height: 1.5,
-                          // fontWeight: FontWeight.bold,
-                          fontSize: 15))),
-              Padding(
-                padding: EdgeInsets.fromLTRB(0, 0, 0, 15),
-                child: Text(
-                  'Release Year: ${movieYear[count]}',
-                  style: TextStyle(
-                      color: Colors.white,
-                      height: 1.5,
-                      // fontWeight: FontWeight.bold,
-                      fontSize: 15),
-                ),
-              ),
               RaisedButton(
                 onPressed: () => launch(
                     'https://www.netflix.com/title/${movieDataTest[count]}'),
@@ -183,8 +173,9 @@ class _InfoState extends State<Info> {
           Positioned(
               //swipe cue dislike
               left: 100,
-              bottom: 400,
-              child: Opacity(
+              bottom: 250,
+              child: AnimatedOpacity(
+                  duration: Duration(milliseconds: 200),
                   opacity: _swipeLeftOpacity,
                   child: Container(
                     height: 200,
@@ -192,9 +183,7 @@ class _InfoState extends State<Info> {
                     child: FloatingActionButton(
                       backgroundColor: Colors.red[900],
                       heroTag: null,
-                      onPressed: () {
-                        print("pressed");
-                      },
+                      onPressed: () {},
                       tooltip: 'Increment',
                       child: Icon(Icons.cancel_outlined, size: 50),
                       elevation: 2.0,
@@ -205,8 +194,9 @@ class _InfoState extends State<Info> {
           Positioned(
               //swipe cue dislike
               right: 100,
-              bottom: 400,
-              child: Opacity(
+              bottom: 250,
+              child: AnimatedOpacity(
+                  duration: Duration(milliseconds: 200),
                   opacity: _swipeRightOpacity,
                   child: Container(
                     height: 200,

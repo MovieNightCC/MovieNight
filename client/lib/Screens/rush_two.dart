@@ -1,10 +1,12 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import './swiper.dart';
+import './rushMode.dart';
 import '../main.dart';
+import 'package:neon/neon.dart';
+import '../sizeconfig.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import './rushMode.dart';
 
 String userPictureURL = "https://i.imgur.com/BoN9kdC.png";
 
@@ -65,7 +67,7 @@ class _TimerWidgetState extends State<TimerWidget> {
                   context,
                   MaterialPageRoute(
                       builder: (context) => RushMode(), maintainState: true));
-              _start = 3;
+              _start = 5;
             } else {
               _start = _start - 1;
             }
@@ -83,7 +85,8 @@ class _TimerWidgetState extends State<TimerWidget> {
                 color: Colors.amberAccent,
                 height: 1.5,
                 fontWeight: FontWeight.bold,
-                fontSize: 100)),
+                fontFamily: 'Open Sans',
+                fontSize: 200)),
       ],
     );
   }
@@ -108,8 +111,8 @@ class PicAndStatusColumn extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         new Container(
-            width: 100.0,
-            height: 100.0,
+            width: 150.0,
+            height: 150.0,
             decoration: new BoxDecoration(
                 shape: BoxShape.circle,
                 image: new DecorationImage(
@@ -118,7 +121,12 @@ class PicAndStatusColumn extends StatelessWidget {
           margin: const EdgeInsets.only(top: 8),
           child: Text(
             label,
-            style: TextStyle(fontSize: 12, fontWeight: FontWeight.w400),
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.w900,
+              fontStyle: FontStyle.italic,
+              fontFamily: 'Open Sans',
+            ),
           ),
         )
       ],
@@ -134,6 +142,8 @@ class PlayerLobby extends StatefulWidget {
 class _PlayerLobbyState extends State<PlayerLobby> {
   @override
   Widget build(BuildContext context) {
+    SizeConfig().init(context);
+
     return StreamBuilder(
         stream: FirebaseFirestore.instance
             .collection('rushPlus')
@@ -150,25 +160,80 @@ class _PlayerLobbyState extends State<PlayerLobby> {
           if (!snapshot.hasData) {
             return LinearProgressIndicator();
           } else if (playerOneJoined && playerTwoJoined) {
-            return Column(children: [
-              TimerWidget(),
-              Text("Both Player Joined! Get Ready...",
-                  style: TextStyle(fontSize: 24)),
-            ]);
-          } else {
-            return Center(
-                child: Column(children: [
-              Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
-                PicAndStatusColumn(
-                  showText(playerOneJoined),
-                  playerOneIcon,
-                ),
-                PicAndStatusColumn(
-                  showText(playerTwoJoined),
-                  playerTwoIcon,
-                ),
-              ]),
+            return Scaffold(
+                body: Stack(children: [
+              Positioned(
+                  bottom: 20, child: Image.asset('./assets/img/fire.gif')),
+              Center(
+                  // heightFactor: 1.5,
+                  child: Column(children: [
+                TimerWidget(),
+                Text("Both Player Joined!\nGet Ready...",
+                    style: TextStyle(
+                      fontSize: 30,
+                      fontWeight: FontWeight.w900,
+                      fontStyle: FontStyle.italic,
+                      fontFamily: 'Open Sans',
+                    )),
+              ]))
             ]));
+          } else {
+            return Stack(
+              children: [
+                Center(
+                    child: Column(children: [
+                  Padding(
+                    padding: EdgeInsets.only(top: 27.0),
+                    child: Neon(
+                      text: 'Rush Mode',
+                      color: Colors.pink,
+                      fontSize: 40,
+                      font: NeonFont.Membra,
+                      flickeringText: false,
+                    ),
+                  ),
+                  Padding(
+                      padding: EdgeInsets.only(top: 15.0),
+                      child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            PicAndStatusColumn(
+                              showText(playerOneJoined),
+                              playerOneIcon,
+                            ),
+                            PicAndStatusColumn(
+                              showText(playerTwoJoined),
+                              playerTwoIcon,
+                            ),
+                          ])),
+                ])),
+                Positioned(
+                    bottom: MediaQuery.of(context).size.height * 0.25,
+                    child: Align(
+                        alignment: Alignment.center,
+                        child: Text(
+                            "Syncrhonized.\n1 set of movies.\n30 seconds.\nGet Ready.",
+                            style: TextStyle(
+                                fontWeight: FontWeight.w900,
+                                fontStyle: FontStyle.italic,
+                                fontFamily: 'Open Sans',
+                                height: 1.5,
+                                fontSize: 40)))),
+                Positioned(
+                    right: 80,
+                    bottom: 70,
+                    child: FloatingActionButton(
+                      child: Icon(Icons.arrow_back),
+                      backgroundColor: Colors.deepPurple[300],
+                      onPressed: () {
+                        endRush().then((value) {
+                          print("end rush done!");
+                          Navigator.pop(context);
+                        });
+                      },
+                    ))
+              ],
+            );
           }
         });
   }

@@ -40,24 +40,20 @@ class _MatchInfoState extends State<MatchInfo> {
       body: Stack(
         alignment: Alignment.center,
         children: [
-          CustomPaint(
-            child: Container(
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height,
-            ),
-            painter: HeaderCurvedContainer(),
+          Opacity(
+            opacity: 0.3,
+            child: Image.network(matchesMovieData[current]['img'],
+                height: MediaQuery.of(context).size.height * 0.85,
+                // width: 100,
+                fit: BoxFit.fitWidth),
           ),
           ListView(
             padding: const EdgeInsets.all(50),
             children: [
-              Image.network(
-                matchesMovieData[current]['img'],
-                scale: 0.55,
-              ),
               Padding(
-                  padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
+                  padding: EdgeInsets.fromLTRB(0, 100, 0, 20),
                   child: Text(
-                      'Title: ${matchesMovieData[current]['title'].replaceAll('&#39;', "'")}',
+                      '${matchesMovieData[current]['title'].replaceAll('&#39;', "'")}',
                       style: TextStyle(
                           color: Colors.white,
                           //height: 3.0,
@@ -73,7 +69,7 @@ class _MatchInfoState extends State<MatchInfo> {
                           //fontWeight:// FontWeight.bold,
                           fontSize: 15))),
               Padding(
-                  padding: EdgeInsets.fromLTRB(0, 0, 0, 2),
+                  padding: EdgeInsets.fromLTRB(0, 10, 0, 2),
                   child: Text('Genre: ${matchesMovieData[current]['genre']}',
                       style: TextStyle(
                           color: Colors.white,
@@ -81,7 +77,7 @@ class _MatchInfoState extends State<MatchInfo> {
                           // fontWeight: FontWeight.bold,
                           fontSize: 15))),
               Padding(
-                  padding: EdgeInsets.fromLTRB(0, 0, 0, 2),
+                  padding: EdgeInsets.fromLTRB(0, 10, 0, 2),
                   child: Text(
                       'Runtime: ${printDuration(Duration(seconds: matchesMovieData[current]['runtime']))}',
                       style: TextStyle(
@@ -90,7 +86,7 @@ class _MatchInfoState extends State<MatchInfo> {
                           // fontWeight: FontWeight.bold,
                           fontSize: 15))),
               Padding(
-                padding: EdgeInsets.fromLTRB(0, 0, 0, 15),
+                padding: EdgeInsets.fromLTRB(0, 10, 0, 15),
                 child: Text(
                   'Release Year: ${matchesMovieData[current]['year']}',
                   style: TextStyle(
@@ -103,8 +99,10 @@ class _MatchInfoState extends State<MatchInfo> {
               RaisedButton(
                 onPressed: () => launch(
                     'https://www.netflix.com/title/${matchesMovieData[current]['nfid']}'),
-                child:
-                    const Text('Go to Netflix', style: TextStyle(fontSize: 20)),
+                child: const Text('Go to Netflix',
+                    style: TextStyle(
+                      fontSize: 20,
+                    )),
               ),
               RaisedButton(
                 color: Colors.red[900],
