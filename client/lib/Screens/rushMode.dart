@@ -73,7 +73,8 @@ class _RushModeState extends State<RushMode> {
             ),
             painter: _HeaderCurvedContainer(),
           ),
-          CircularProgressIndicator(backgroundColor: Colors.pink),
+          Image.asset('./assets/icons/loader-movie-night.gif', scale: 1.5),
+          //CircularProgressIndicator(backgroundColor: Colors.pink),
           Column(
             children: [
               TimerWidget(),

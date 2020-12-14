@@ -165,8 +165,8 @@ class _PlayerLobbyState extends State<PlayerLobby> {
                     padding: EdgeInsets.only(top: 27.0),
                     child: Neon(
                       text: 'Rush Mode',
-                      color: Colors.pink,
-                      fontSize: 40,
+                      color: Colors.purple,
+                      fontSize: 30,
                       font: NeonFont.Membra,
                       flickeringText: false,
                     ),
@@ -189,7 +189,7 @@ class _PlayerLobbyState extends State<PlayerLobby> {
                     bottom: 70,
                     child: FloatingActionButton(
                       child: Icon(Icons.arrow_back),
-                      backgroundColor: Colors.deepPurple[300],
+                      backgroundColor: Colors.pink,
                       onPressed: () {
                         endRush().then((value) {
                           print("end rush done!");

@@ -48,7 +48,7 @@ class _ProfileState extends State<Profile> {
                     top: 15,
                     child: Neon(
                       text: '$displayName',
-                      color: Colors.pink,
+                      color: Colors.purple,
                       fontSize: 24
                       ,
                       font: NeonFont.Membra,
@@ -162,8 +162,8 @@ class _ProfileState extends State<Profile> {
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
         type: BottomNavigationBarType.fixed,
-        selectedItemColor: Colors.pink,
-        backgroundColor: Color(0xff412DB3),
+        selectedItemColor: Colors.white,
+        backgroundColor: Colors.pink,
         items: [
           BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
           BottomNavigationBarItem(
@@ -270,7 +270,7 @@ class UserInfoSection extends StatelessWidget {
 class HeaderCurvedContainer extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
-    Paint paint = Paint()..color = Color(0xff412DB3);
+    Paint paint = Paint()..color = Colors.pink;
     Path path = Path()
       ..relativeLineTo(0, 150)
       ..quadraticBezierTo(size.width / 2, 225, size.width, 150)

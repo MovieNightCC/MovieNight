@@ -158,6 +158,7 @@ class _InfoState extends State<Info> {
                     fontSize: 20),
               ),
               RaisedButton(
+                color: Colors.red[900],
                 onPressed: () => launch(
                     'https://www.netflix.com/title/${movieDataTest[count]}'),
                 child:
