@@ -362,15 +362,15 @@ class SignUpBody extends StatelessWidget {
                 SizedBox(height: SizeConfig.screenHeight * 0.08),
                 SignForm(),
                 SizedBox(height: SizeConfig.screenHeight * 0.08),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    SocalCard(
-                      icon: "assets/icons/google-icon.svg",
-                      press: () {},
-                    ),
-                  ],
-                ),
+                // Row(
+                //   mainAxisAlignment: MainAxisAlignment.center,
+                //   children: [
+                //     SocalCard(
+                //       icon: "assets/icons/google-icon.svg",
+                //       press: () {},
+                //     ),
+                //   ],
+                // ),
                 SizedBox(height: getProportionateScreenHeight(20)),
                 //NoAccountText(),
               ],

@@ -49,6 +49,26 @@ class AddPairPage extends StatelessWidget {
                 print("called check for user");
                 // ignore: unrelated_type_equality_checks
                 _checkForUser().then((result) {
+                  if (result == 69) {
+                    showDialog(
+                        context: context,
+                        builder: (_) => new AlertDialog(
+                              title: new Text("Alert",
+                                  style: TextStyle(color: Colors.grey[900])),
+                              content: new Text(
+                                  "Please enter a valid email address.",
+                                  style: TextStyle(color: Colors.white)),
+                              actions: <Widget>[
+                                FlatButton(
+                                  child: Text('Close me!'),
+                                  onPressed: () {
+                                    Navigator.of(context, rootNavigator: true)
+                                        .pop();
+                                  },
+                                )
+                              ],
+                            ));
+                  }
                   if (!result) {
                     print("does not exist");
                     showDialog(
@@ -100,8 +120,11 @@ class AddPairPage extends StatelessWidget {
     );
   }
 
-  Future<bool> _checkForUser() async {
+  Future _checkForUser() async {
     userNameOfPair = pairNameController.text.trim();
+    if (userNameOfPair.indexOf('@') == -1 || userNameOfPair == "") {
+      return 69;
+    }
     print(userNameOfPair);
     userNameOfPair = userNameOfPair.substring(0, userNameOfPair.indexOf("@"));
     print(userNameOfPair);

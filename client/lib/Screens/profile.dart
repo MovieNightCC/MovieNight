@@ -121,7 +121,7 @@ class _ProfileState extends State<Profile> {
                                           style: TextStyle(
                                               color: Colors.grey[900])),
                                       content: new Text(
-                                          "Are you sure? Deleting your account will also delete your connection with your partner?",
+                                          "Are you sure? Deleting your account will also delete your connection with your partner.",
                                           style:
                                               TextStyle(color: Colors.white)),
                                       actions: <Widget>[
@@ -142,6 +142,9 @@ class _ProfileState extends State<Profile> {
                                           onPressed: () {
                                             //placeholder for delete user function
                                             _deleteUser();
+                                            Navigator.of(context,
+                                                    rootNavigator: true)
+                                                .pop();
                                             Navigator.push(
                                                 context,
                                                 MaterialPageRoute(

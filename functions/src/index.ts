@@ -1943,3 +1943,12 @@ export const deleteUser = functions
     });
     response.json("success");
   });
+
+  export const finishTutorial = functions
+  .region("asia-northeast1")
+  .https.onRequest(async (request: any, response) => {
+    const userRef = db.collection("users").doc(request.query.userName);
+    await userRef.update({
+      firstTime:false,
+    })
+  });
