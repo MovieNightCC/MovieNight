@@ -1,6 +1,13 @@
 import 'package:flutter/material.dart';
 import './swiper.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'dart:async';
+
+String printDuration(Duration duration) {
+  String twoDigits(int n) => n.toString().padLeft(2, "0");
+  String twoDigitMinutes = twoDigits(duration.inMinutes.remainder(60));
+  return "${twoDigits(duration.inHours)}:$twoDigitMinutes";
+}
 
 class Info extends StatefulWidget {
   @override
@@ -10,35 +17,22 @@ class Info extends StatefulWidget {
 var count = 0;
 List minutesList;
 List hourList;
-void changeToHours() {
-  hourList = [...movieRuntime];
-  minutesList = [];
-  for (var j = 0; j < movieRuntime.length; j++) {
-    hourList[j] = (hourList[j] / 3600).toInt();
-  }
-  for (var i = 0; i < movieRuntime.length; i++) {
-    if (movieRuntime[i] < 7200 && movieRuntime[i] > 3600) {
-      movieRuntime[i] = movieRuntime[i] - 3600;
-      movieRuntime[i] = (movieRuntime[i] / 60).toInt();
-      minutesList.add(movieRuntime[i]);
-    } else if (movieRuntime[i] < 3600) {
-      movieRuntime[i] = (movieRuntime[i] / 60).toInt();
-      minutesList.add(movieRuntime[i]);
-    } else if (movieRuntime[i] < 10800 && movieRuntime[i] > 7200) {
-      movieRuntime[i] = movieRuntime[i] - 7200;
-      movieRuntime[i] = (movieRuntime[i] / 60).toInt();
-      minutesList.add(movieRuntime[i]);
-    } else {
-      movieRuntime[i] = movieRuntime[i] - 10800;
-      movieRuntime[i] = (movieRuntime[i] / 60).toInt();
-      minutesList.add(movieRuntime[i]);
-    }
-  }
-}
 
 class _InfoState extends State<Info> {
+  var _swipeLeftOpacity = 0.0;
+  var _swipeRightOpacity = 0.0;
+
+  void _setLeftCue(input) {
+    setState(() => _swipeLeftOpacity = input);
+  }
+
+  void _setRightCue(input) {
+    setState(() => _swipeRightOpacity = input);
+  }
+
   @override
   Widget build(BuildContext context) {
+    print('this movie runtime ${movieRuntime[count]}');
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.arrow_back),
@@ -75,14 +69,18 @@ class _InfoState extends State<Info> {
                         child: FloatingActionButton(
                           heroTag: null,
                           onPressed: () {
+                            _setLeftCue(0.8);
+
                             print('you hate: ${movieDataTest[count]}');
-                            count++;
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => Swiper(),
-                                  maintainState: true,
-                                ));
+
+                            Future.delayed(Duration(milliseconds: 300), () {
+                              // 5s over, navigate to a new page
+                              count++;
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => Swiper()));
+                            });
                           },
                           tooltip: 'Do not want to watch',
                           child: Icon(Icons.cancel_outlined),
@@ -98,25 +96,23 @@ class _InfoState extends State<Info> {
                         child: FloatingActionButton(
                           heroTag: null,
                           onPressed: () {
+                            _setRightCue(0.8);
                             print('you liked: ${movieDataTest[count]}');
 
                             //request to firebase server to update likes
                             updateUser(
-                                movieDataTest[count],
-                                context,
-                                movieImagesTest[count],
-                                movieTitles[count],
-                                movieYear[count],
-                                moviesSynopsis[count],
-                                movieGenre[count],
-                                movieRuntime[count]);
-                            count++;
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => Swiper(),
-                                  maintainState: true,
-                                ));
+                              movieDataTest[count],
+                              context,
+                              movieGenre[count],
+                            );
+                            Future.delayed(Duration(milliseconds: 300), () {
+                              // 5s over, navigate to a new page
+                              count++;
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => Swiper()));
+                            });
                           },
                           tooltip: 'Want to watch',
                           child: Icon(Icons.check),
@@ -140,7 +136,8 @@ class _InfoState extends State<Info> {
                       height: 3.0,
                       fontWeight: FontWeight.bold,
                       fontSize: 20)),
-              Text('Runtime: ${hourList[count]}h ${minutesList[count]}m',
+              Text(
+                  'Runtime: ${printDuration(Duration(seconds: movieRuntime[count]))}',
                   style: TextStyle(
                       color: Colors.white,
                       height: 3.0,
@@ -166,72 +163,52 @@ class _InfoState extends State<Info> {
                 child:
                     const Text('Go to Netflix', style: TextStyle(fontSize: 20)),
               ),
-              // Padding(
-              //   padding: EdgeInsets.fromLTRB(0, 30, 0, 0),
-              //   child: Row(
-              //       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              //       children: [
-              //         Positioned(
-              //           left: 40,
-              //           bottom: 20,
-              //           child: FloatingActionButton(
-              //             heroTag: null,
-              //             onPressed: () {
-              //               print('you hate: ${movieDataTest[count]}');
-              //               count++;
-              //               Navigator.push(
-              //                   context,
-              //                   MaterialPageRoute(
-              //                     builder: (context) => Swiper(),
-              //                     maintainState: true,
-              //                   ));
-              //             },
-              //             tooltip: 'Increment',
-              //             child: Icon(Icons.sentiment_very_dissatisfied),
-              //             elevation: 2.0,
-              //             shape: RoundedRectangleBorder(
-              //                 borderRadius: BorderRadius.circular(10)),
-              //             backgroundColor: Colors.red[900],
-              //           ),
-              //         ),
-              //         Positioned(
-              //           right: 80,
-              //           bottom: 20,
-              //           child: FloatingActionButton(
-              //             heroTag: null,
-              //             onPressed: () {
-              //               print('you liked: ${movieDataTest[count]}');
-
-              //               //request to firebase server to update likes
-              //               updateUser(
-              //                   movieDataTest[count],
-              //                   context,
-              //                   movieImagesTest[count],
-              //                   movieTitles[count],
-              //                   movieYear[count],
-              //                   moviesSynopsis[count],
-              //                   movieGenre[count],
-              //                   movieRuntime[count]);
-              //               count++;
-              //               Navigator.push(
-              //                   context,
-              //                   MaterialPageRoute(
-              //                     builder: (context) => Swiper(),
-              //                     maintainState: true,
-              //                   ));
-              //             },
-              //             tooltip: 'Increment',
-              //             child: Icon(Icons.sentiment_very_satisfied),
-              //             elevation: 2.0,
-              //             shape: RoundedRectangleBorder(
-              //                 borderRadius: BorderRadius.circular(10)),
-              //             backgroundColor: Colors.blue,
-              //           ),
-              //         ),
-              //       ]),
-              // ),
             ],
           ),
+          Positioned(
+              //swipe cue dislike
+              left: 100,
+              bottom: 400,
+              child: Opacity(
+                  opacity: _swipeLeftOpacity,
+                  child: Container(
+                    height: 200,
+                    width: 200,
+                    child: FloatingActionButton(
+                      backgroundColor: Colors.red[900],
+                      heroTag: null,
+                      onPressed: () {
+                        print("pressed");
+                      },
+                      tooltip: 'Increment',
+                      child: Icon(Icons.cancel_outlined, size: 50),
+                      elevation: 2.0,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(100)),
+                    ),
+                  ))),
+          Positioned(
+              //swipe cue dislike
+              right: 100,
+              bottom: 400,
+              child: Opacity(
+                  opacity: _swipeRightOpacity,
+                  child: Container(
+                    height: 200,
+                    width: 200,
+                    child: FloatingActionButton(
+                      backgroundColor: Colors.green,
+                      heroTag: null,
+                      onPressed: () {
+                        print("pressed");
+                      },
+                      tooltip: 'Increment',
+                      child: Icon(Icons.check, size: 50),
+                      elevation: 2.0,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(100)),
+                    ),
+                  ))),
         ],
       ),
     );

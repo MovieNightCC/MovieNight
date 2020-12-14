@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:async';
 import 'dart:io';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -46,6 +47,9 @@ ThemeData _buildShrineTheme() {
       accentColorBrightness: Brightness.dark,
       canvasColor: Color(0xfffafafa),
       scaffoldBackgroundColor: Colors.black,
+      floatingActionButtonTheme: FloatingActionButtonThemeData(
+        foregroundColor: Colors.red,
+      ),
       bottomAppBarColor: Colors.pink,
       cardColor: Colors.purple,
       dividerColor: Colors.grey,
@@ -57,9 +61,6 @@ ThemeData _buildShrineTheme() {
       buttonColor: Colors.orange,
       toggleableActiveColor: Color(0xffd81b60),
       secondaryHeaderColor: Color(0xfffce4ec),
-      textSelectionColor: Color(0xfff48fb1),
-      cursorColor: Colors.pink,
-      textSelectionHandleColor: Color(0xfff06292),
       backgroundColor: Color(0xfff48fb1),
       dialogBackgroundColor: Colors.grey[900],
       indicatorColor: Color(0xffe91e63),
@@ -98,7 +99,6 @@ var howManyMusic = 0;
 var howManyScifi = 0;
 var howManySuperHero = 0;
 var notification;
-var reversedCalled = false;
 
 // futureGay = fetchGay();
 // futureAnime = fetchAnime();
@@ -109,7 +109,7 @@ var reversedCalled = false;
 var matchOriLength = 0;
 var cutInHalfCalled = false;
 var pairFetchCounter = 0;
-List fetchArr = [];
+// List fetchArr = [];
 
 class App extends StatefulWidget {
   _AppState createState() => _AppState();
@@ -121,9 +121,6 @@ class PushNotificationService {
   PushNotificationService(this._fcm);
 
   Future initialise(context) async {
-    // If you want to test the push notification locally,
-    // you need to get the token and input to the Firebase console
-    // https://console.firebase.google.com/project/YOUR_PROJECT_ID/notification/compose
     String token = await _fcm.getToken();
     print("FirebaseMessaging token: $token");
 
@@ -133,9 +130,9 @@ class PushNotificationService {
         showDialog(
             context: context,
             builder: (_) => new AlertDialog(
-                  title:
-                      new Text("Alert", style: TextStyle(color: Colors.black)),
-                  content: new Text("$message",
+                  title: new Text("Alert",
+                      style: TextStyle(color: Colors.grey[900])),
+                  content: new Text(message['notification']['title'],
                       style: TextStyle(color: Colors.black)),
                   actions: <Widget>[
                     FlatButton(
@@ -179,16 +176,16 @@ class _AppState extends State<App> {
   void initState() {
     super.initState();
     // futureMovie = fetchMovie();
-    futureGay = fetchGay();
-    futureAnime = fetchAnime();
-    futureHorror = fetchHorror();
-    futureJapan = fetchJapan();
-    futureKorea = fetchKorea();
-    futureRomance = fetchRomance();
-    futureScifi = fetchScifi();
-    futureMartialArts = fetchMartialArts();
-    futureSuperHero = fetchSuperHero();
-    futureMusic = fetchMusic();
+    // futureGay = fetchGay();
+    // futureAnime = fetchAnime();
+    // futureHorror = fetchHorror();
+    // futureJapan = fetchJapan();
+    // futureKorea = fetchKorea();
+    // futureRomance = fetchRomance();
+    // futureScifi = fetchScifi();
+    // futureMartialArts = fetchMartialArts();
+    // futureSuperHero = fetchSuperHero();
+    // futureMusic = fetchMusic();
     registerNotification();
     configLocalNotification();
   }
@@ -225,7 +222,13 @@ class _AppState extends State<App> {
   void configLocalNotification() {
     var initializationSettingsAndroid =
         AndroidInitializationSettings('app_icon');
-    var initializationSettingsIOS = IOSInitializationSettings();
+    var initializationSettingsIOS = IOSInitializationSettings(
+      defaultPresentAlert: true,
+      defaultPresentBadge: true,
+      requestAlertPermission: true,
+      requestBadgePermission: true,
+      //onDidReceiveLocalNotification: onDidReceiveLocalNotification
+    );
     var initializationSettings = InitializationSettings(
         android: initializationSettingsAndroid, iOS: initializationSettingsIOS);
     flutterLocalNotificationsPlugin.initialize(initializationSettings);
@@ -236,8 +239,8 @@ class _AppState extends State<App> {
       Platform.isAndroid
           ? 'com.dfa.flutterchatdemo'
           : 'com.duytq.flutterchatdemo',
-      'Flutter chat demo',
-      'your channel description',
+      'Movie Night',
+      'Channel to update Match Info and Rush Mode',
       playSound: true,
       enableVibration: true,
       importance: Importance.max,
@@ -249,16 +252,9 @@ class _AppState extends State<App> {
         iOS: iOSPlatformChannelSpecifics);
 
     print(message);
-//    print(message['body'].toString());
-//    print(json.encode(message));
-
     await flutterLocalNotificationsPlugin.show(0, message['title'].toString(),
         message['body'].toString(), platformChannelSpecifics,
         payload: json.encode(message));
-
-//    await flutterLocalNotificationsPlugin.show(
-//        0, 'plain title', 'plain body', platformChannelSpecifics,
-//        payload: 'item x');
   }
 
   @override
@@ -288,7 +284,6 @@ class _AppState extends State<App> {
 
 void getUserInfo() async {
   print("getUserInfo is Called");
-  // try {
 //getting userInfo
   var url =
       'https://asia-northeast1-movie-night-cc.cloudfunctions.net/getUserByUserName?userName=$userName';
@@ -298,7 +293,6 @@ void getUserInfo() async {
   userPair = userdata["pairName"];
   displayName = userdata["name"];
   print("pairName is $userPair");
-  // if (userPair != "") {}
   howManyGay = userdata["recommendations"]["LGBTQ"].round();
   howManyAnime = userdata["recommendations"]["Anime"].round();
   howManyHorror = userdata["recommendations"]["Horror"].round();
@@ -314,38 +308,7 @@ void getUserInfo() async {
   print('got user info ${userdata["email"]} in ${userdata["pairName"]}');
   userIcon = userdata["userIcon"];
   print('got user info ${userdata["userIcon"]} in ${userdata["pairName"]}');
-
-//getting matches Info
-  if (matchesTitles.length == 0) {
-    var url =
-        'https://asia-northeast1-movie-night-cc.cloudfunctions.net/getPairByPairName?pairName=$userPair';
-    final response = await Dio().get(url);
-    var matches = response.data['matchMovieData'];
-    if (response.statusCode == 200) {
-      for (var i = 0; i < matches.length; i++) {
-        //    movieDataTest.add(movies[i]["nfid"]);
-        matchesSynopsis.add(matches[i]["synopsis"].replaceAll('&#39;', "'"));
-        matchesYear.add(matches[i]["year"]);
-        matchesRuntime.add(matches[i]["runtime"]);
-        matchesTitles.add(matches[i]['title'].replaceAll('&#39;', "'"));
-        matchesImage.add(matches[i]["img"]);
-        matchesGenre.add(matches[i]["genre"]);
-        matchesNfid.add(matches[i]["nfid"]);
-        matchOriLength += 1;
-        print("$matchesTitles");
-      }
-    }
-    print("match $matchesTitles");
-    fetchArr.add(matchOriLength);
-  }
-  // } catch (e) {
-  //   if (e is DioError) {
-  //     print('user info error or match movie fetching error!');
-  //   }
-  // }
 }
-
-//LGBTQ,anime,horror,japan,korea
 
 Future<Response> fetchGay() async {
   try {
@@ -354,7 +317,7 @@ Future<Response> fetchGay() async {
           "https://asia-northeast1-movie-night-cc.cloudfunctions.net/getGayMovies");
       if (response.statusCode == 200) {
         var movies = response.data;
-        for (var i = 0; i < 50; i++) {
+        for (var i = 0; i < 80; i++) {
           gayList.add(movies[i]);
           gayNfid.add(movies[i]["nfid"]);
           gayGenre.add("LGBTQ");
@@ -381,14 +344,7 @@ Future<Response> fetchAnime() async {
           "https://asia-northeast1-movie-night-cc.cloudfunctions.net/getAnimeMovies");
       if (response.statusCode == 200) {
         var movies = response.data;
-        for (var i = 0; i < 50; i++) {
-          // rushModeNfid.add(movies[i]["nfid"]);
-          // rushModeSynopsis.add(movies[i]["synopsis"].replaceAll('&#39;', "'"));
-          // rushModeYear.add(movies[i]["year"]);
-          // rushModeRuntime.add(movies[i]["runtime"]);
-          // rushModeGenre.add(movies[i]["genre"]);
-          // rushModeTitles.add(movies[i]['title'].replaceAll('&#39;', "'"));
-          // rushModeImages.add(movies[i]["img"]);
+        for (var i = 0; i < 80; i++) {
           animeNfid.add(movies[i]["nfid"]);
           animeImages.add(movies[i]["img"]);
           animeGenre.add("Anime");
@@ -399,8 +355,6 @@ Future<Response> fetchAnime() async {
         }
         return response;
       } else {
-        // If the server did not return a 200 OK response,
-        // then throw an exception.
         throw Exception('Failed to load album');
       }
     }
@@ -418,7 +372,7 @@ Future<Response> fetchHorror() async {
           "https://asia-northeast1-movie-night-cc.cloudfunctions.net/getHorrorMovies");
       if (response.statusCode == 200) {
         var movies = response.data;
-        for (var i = 0; i < 50; i++) {
+        for (var i = 0; i < 80; i++) {
           horrorList.add(movies[i]);
           horrorNfid.add(movies[i]["nfid"]);
           horrorImages.add(movies[i]["img"]);
@@ -458,7 +412,7 @@ Future<Response> fetchRomance() async {
           "https://asia-northeast1-movie-night-cc.cloudfunctions.net/getRomanceMovies");
       if (response.statusCode == 200) {
         var movies = response.data;
-        for (var i = 0; i < 50; i++) {
+        for (var i = 0; i < 80; i++) {
           romanceList.add(movies[i]);
           romanceNfid.add(movies[i]["nfid"]);
           romanceGenre.add("Romance");
@@ -489,7 +443,7 @@ Future<Response> fetchMartialArts() async {
           "https://asia-northeast1-movie-night-cc.cloudfunctions.net/getMartialArtsMovies");
       if (response.statusCode == 200) {
         var movies = response.data;
-        for (var i = 0; i < 50; i++) {
+        for (var i = 0; i < 80; i++) {
           martialArtsNfid.add(movies[i]["nfid"]);
           martialArtsGenre.add("MartialArts");
           martialArtsImages.add(movies[i]["img"]);
@@ -520,7 +474,7 @@ Future<Response> fetchSuperHero() async {
           "https://asia-northeast1-movie-night-cc.cloudfunctions.net/getSuperHeroMovies");
       if (response.statusCode == 200) {
         var movies = response.data;
-        for (var i = 0; i < 50; i++) {
+        for (var i = 0; i < 80; i++) {
           superHeroNfid.add(movies[i]["nfid"]);
           superHeroGenre.add("Superhero");
           superHeroImages.add(movies[i]["img"]);
@@ -550,7 +504,7 @@ Future<Response> fetchScifi() async {
           "https://asia-northeast1-movie-night-cc.cloudfunctions.net/getScifiMovies");
       if (response.statusCode == 200) {
         var movies = response.data;
-        for (var i = 0; i < 50; i++) {
+        for (var i = 0; i < 80; i++) {
           scifiNfid.add(movies[i]["nfid"]);
           scifiGenre.add("Scifi");
           scifiImages.add(movies[i]["img"]);
@@ -580,7 +534,7 @@ Future<Response> fetchMusic() async {
           "https://asia-northeast1-movie-night-cc.cloudfunctions.net/getMusicMovies");
       if (response.statusCode == 200) {
         var movies = response.data;
-        for (var i = 0; i < 50; i++) {
+        for (var i = 0; i < 80; i++) {
           musicNfid.add(movies[i]["nfid"]);
           musicGenre.add("MusicInspired");
           musicImages.add(movies[i]["img"]);
@@ -610,7 +564,7 @@ Future<Response> fetchJapan() async {
           "https://asia-northeast1-movie-night-cc.cloudfunctions.net/getJapanMovies");
       if (response.statusCode == 200) {
         var movies = response.data;
-        for (var i = 0; i < 50; i++) {
+        for (var i = 0; i < 80; i++) {
           japanNfid.add(movies[i]["nfid"]);
           japanGenre.add("Japanese");
           japanImages.add(movies[i]["img"]);
@@ -640,7 +594,7 @@ Future<Response> fetchKorea() async {
           "https://asia-northeast1-movie-night-cc.cloudfunctions.net/getKoreaMovies");
       if (response.statusCode == 200) {
         var movies = response.data;
-        for (var i = 0; i < 50; i++) {
+        for (var i = 0; i < 80; i++) {
           koreaNfid.add(movies[i]["nfid"]);
           koreaGenre.add("Korean");
           koreaImages.add(movies[i]["img"]);
@@ -663,18 +617,6 @@ Future<Response> fetchKorea() async {
   }
 }
 
-// Future<Response> futureMovie;
-Future<Response> futureGay;
-Future<Response> futureAnime;
-Future<Response> futureHorror;
-Future<Response> futureJapan;
-Future<Response> futureKorea;
-Future<Response> futureRomance;
-Future<Response> futureMusic;
-Future<Response> futureSuperHero;
-Future<Response> futureScifi;
-Future<Response> futureMartialArts;
-
 class AuthenticationWrapper extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -692,59 +634,20 @@ class AuthenticationWrapper extends StatelessWidget {
         theme: _kShrineTheme,
         home: FutureBuilder(
           future: Future.wait([
-            // futureMovie,
-            futureGay,
-            futureAnime,
-            futureHorror,
-            futureJapan,
-            futureKorea,
-            futureRomance,
-            futureScifi,
-            futureMartialArts,
-            futureSuperHero,
-            futureMusic,
+            fetchGay(),
+            fetchAnime(),
+            fetchHorror(),
+            fetchJapan(),
+            fetchKorea(),
+            fetchRomance(),
+            fetchScifi(),
+            fetchMartialArts(),
+            fetchSuperHero(),
+            fetchMusic(),
           ]),
           builder: (context, snapshot) {
             // print('${movieDataTest.length} how many movies I have');
             if (snapshot.hasData) {
-              print("user Anime recommend $howManyAnime");
-              print("user gay recommend $howManyGay");
-              //push  $howManyAnime anime movies into movie array
-              //push the
-              print("anime movies ${animeNfid.length}");
-              // shuffle(animeNfid, animeImages, animeTitles, animeSynopsis,
-              //     animeYear, animeGenre, animeRuntime);
-              // shuffle(gayNfid, gayImages, gayTitles, gaySynopsis, gayYear,
-              //     gayGenre, gayRuntime);
-              // shuffle(romanceNfid, romanceImages, romanceTitles,
-              //     romanceSynopsis, romanceYear, romanceGenre, romanceRuntime);
-              // shuffle(musicNfid, musicImages, musicTitles, musicSynopsis,
-              //     musicYear, musicGenre, musicRuntime);
-              // shuffle(
-              //     martialArtsNfid,
-              //     martialArtsImages,
-              //     martialArtsTitles,
-              //     martialArtsSynopsis,
-              //     martialArtsYear,
-              //     martialArtsGenre,
-              //     martialArtsRuntime);
-              // shuffle(japanNfid, japanImages, japanTitles, japanSynopsis,
-              //     japanYear, japanGenre, japanRuntime);
-              // shuffle(koreaNfid, koreaImages, koreaTitles, koreaSynopsis,
-              //     koreaYear, koreaGenre, koreaRuntime);
-              // shuffle(horrorNfid, horrorImages, horrorTitles, horrorSynopsis,
-              //     horrorYear, horrorGenre, horrorRuntime);
-              // shuffle(scifiNfid, scifiImages, scifiTitles, scifiSynopsis,
-              //     scifiYear, scifiGenre, scifiRuntime);
-              // shuffle(
-              //     superHeroNfid,
-              //     superHeroImages,
-              //     superHeroTitles,
-              //     superHeroSynopsis,
-              //     superHeroYear,
-              //     superHeroGenre,
-              //     superHeroRuntime);
-
               for (var i = 0; i < howManyAnime; i++) {
                 movieDataTest.add(animeNfid[i]);
                 moviesSynopsis.add(animeSynopsis[i]);
@@ -837,10 +740,9 @@ class AuthenticationWrapper extends StatelessWidget {
                 movieImagesTest.add(superHeroImages[i]);
                 movieGenre.add("Superhero");
               }
+              print('movieRuntimeis $movieRuntime');
               shuffle(movieDataTest, movieImagesTest, movieTitles,
                   moviesSynopsis, movieYear, movieGenre, movieRuntime);
-              changeToHours();
-              changeToHoursMatches();
               return Swiper();
             } else if (snapshot.hasError) {
               return Text("${snapshot.error}");

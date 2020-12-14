@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
-import 'package:movie_night/app-theme.dart';
-
 import 'dart:async';
 import 'package:http/http.dart' as http;
+import 'package:neon/neon.dart';
 import '../main.dart';
 import './rush_two.dart';
 import './tinderCard.dart';
@@ -14,11 +13,7 @@ import './movieArray.dart';
 //import './rushMode.dart';
 import './filterPopup.dart';
 import './movieMatchesInfo.dart';
-
-import 'package:http/http.dart' as http;
-
-var swipeLeftOpacity = 0.0;
-var swipeRightOpacity = 0.0;
+import 'DummyMatches.dart';
 
 class Swiper extends StatefulWidget {
   static String routeName = "/swiper";
@@ -28,21 +23,9 @@ class Swiper extends StatefulWidget {
 class _AppState extends State<Swiper> {
   Future<Response> futureMovie;
 
-  void showLeftCue() {
-    setState(() => swipeLeftOpacity = 1);
-  }
-
-  void showRightCue() {
-    setState(() => swipeRightOpacity = 1);
-  }
-
   @override
   void initState() {
     super.initState();
-    print("fetchArr $fetchArr");
-    if (fetchArr.length > 1 && cutInHalfCalled == false) {
-      cutInHalf();
-    }
   }
 
   Widget build(BuildContext context) {
@@ -65,75 +48,24 @@ List<int> movieYear = [];
 List<int> movieRuntime = [];
 var counter = 0;
 
-void reverseList() {
-  matchesTitles = matchesTitles.reversed.toList();
-  matchesImage = matchesImage.reversed.toList();
-  matchesYear = matchesYear.reversed.toList();
-  matchesGenre = matchesGenre.reversed.toList();
-  matchesRuntime = matchesRuntime.reversed.toList();
-  matchesSynopsis = matchesSynopsis.reversed.toList();
-  matchesNfid = matchesNfid.reversed.toList();
-  hourListMatches = hourListMatches.reversed.toList();
-  minutesListMatches = minutesListMatches.reversed.toList();
-  reversedCalled = true;
-}
-
-void cutInHalf() {
-  cutInHalfCalled = true;
-  print('cutinhalf is called');
-  print('matchorilength is $matchOriLength');
-  int halfLength = matchesTitles.length ~/ 2;
-  matchesTitles = matchesTitles.sublist(0, halfLength);
-  matchesImage = matchesImage.sublist(0, halfLength);
-  matchesYear = matchesYear.sublist(0, halfLength);
-  matchesGenre = matchesGenre.sublist(0, halfLength);
-  matchesRuntime = matchesRuntime.sublist(0, halfLength);
-  matchesSynopsis = matchesSynopsis.sublist(0, halfLength);
-  matchesNfid = matchesNfid.sublist(0, halfLength);
-}
-
-void makeHour() {
-  hourListMatches[0] = (hourListMatches[0] / 3600).toInt();
-  if (matchesRuntime[0] < 7200 && matchesRuntime[0] > 3600) {
-    matchesRuntime[0] = matchesRuntime[0] - 3600;
-    matchesRuntime[0] = matchesRuntime[0] ~/ 60;
-
-    minutesListMatches.add(matchesRuntime[0]);
-  } else if (matchesRuntime[0] < 3600) {
-    matchesRuntime[0] = matchesRuntime[0] ~/ 60;
-    minutesListMatches.add(matchesRuntime[0]);
-  } else {
-    matchesRuntime[0] = matchesRuntime[0] - 7200;
-    matchesRuntime[0] = matchesRuntime[0] ~/ 60;
-    minutesListMatches.add(matchesRuntime[0]);
-  }
-}
-
 void updateUser(
-    arrOfNfid, context, image, title, year, synopsis, genre, runtime) async {
+    // arrOfNfid, context, image, title, year, synopsis, genre, runtime
+    arrOfNfid,
+    context,
+    genre) async {
   print(userName);
+  print('$arrOfNfid');
+  print('$genre');
+
   var response = await http.get(
       "https://asia-northeast1-movie-night-cc.cloudfunctions.net/updateUserLikes?userName=$userName&movieArr=[$arrOfNfid]&genre=$genre");
   print(response.body);
   if (response.body == "match!") {
-    //push to matches array
-    print("old list $matchesTitles");
-    matchesTitles.insert(0, title);
-    matchesSynopsis.insert(0, synopsis);
-    matchesImage.insert(0, image);
-    matchesYear.insert(0, year);
-    matchesRuntime.insert(0, runtime);
-    hourListMatches.insert(0, runtime);
-    matchesNfid.insert(0, arrOfNfid);
-    matchesGenre.insert(0, genre);
-    print("new match nfid $matchesNfid");
-    print("new list $matchesTitles");
-
-    print("new list $matchesTitles");
     showDialog(
         context: context,
         builder: (_) => new AlertDialog(
-              title: new Text("Alert", style: TextStyle(color: Colors.white)),
+              title:
+                  new Text("Alert", style: TextStyle(color: Colors.grey[900])),
               content: new Text("You got a Match!",
                   style: TextStyle(color: Colors.white)),
               actions: <Widget>[
@@ -146,7 +78,6 @@ void updateUser(
                 )
               ],
             ));
-    makeHour();
   }
 }
 
@@ -158,22 +89,19 @@ class Tinderswiper extends StatefulWidget {
 class _TinderswiperState extends State<Tinderswiper>
     with TickerProviderStateMixin {
   int _currentIndex = 1;
-  var swipeLeftOpacity = 0.0;
-  var swipeRightOpacity = 0.0;
+  var _swipeLeftOpacity = 0.0;
+  var _swipeRightOpacity = 0.0;
 
-  void setLeftCue(input) {
-    setState(() => swipeLeftOpacity = input);
+  void _setLeftCue(input) {
+    setState(() => _swipeLeftOpacity = input);
   }
 
-  void setRightCue(input) {
-    setState(() => swipeRightOpacity = input);
+  void _setRightCue(input) {
+    setState(() => _swipeRightOpacity = input);
   }
 
   @override
   Widget build(BuildContext context) {
-    if (reversedCalled == false) {
-      reverseList();
-    }
     CardController controller;
     return Scaffold(
         body: Stack(alignment: Alignment.center, children: [
@@ -184,11 +112,32 @@ class _TinderswiperState extends State<Tinderswiper>
             ),
             painter: HeaderCurvedContainer(),
           ),
+          Positioned(
+              top: 25,
+              child: Neon(
+                text: 'Movie Night',
+                color: Colors.pink,
+                fontSize: 24,
+                font: NeonFont.Membra,
+                flickeringText: false,
+              )),
+//               - Automania
+// - Beon
+// - Cyberpunk
+// - LasEnter
+// - Membra
+// - Monoton
+// - Night-Club-70s
+// - Samarin
+// - TextMeOne
+          //Image.asset('./assets/icons/loading.gif', scale: 1.5),
+          CircularProgressIndicator(backgroundColor: Colors.pink),
           Padding(
             padding: EdgeInsets.fromLTRB(0, 50, 0, 0),
             child: Column(
               children: [
                 Center(
+                  heightFactor: 1.1,
                   child: InkWell(
                     child: Container(
                       height: MediaQuery.of(context).size.height * 0.7,
@@ -198,18 +147,20 @@ class _TinderswiperState extends State<Tinderswiper>
                         stackNum: 10,
                         swipeEdge: 5.0,
                         maxWidth: MediaQuery.of(context).size.width * 0.9,
-                        maxHeight: MediaQuery.of(context).size.width * 1.6,
+                        maxHeight: MediaQuery.of(context).size.width * 1.75,
                         minWidth: MediaQuery.of(context).size.width * 0.899,
-                        minHeight: MediaQuery.of(context).size.width * 1.599,
+                        minHeight: MediaQuery.of(context).size.width * 1.7499,
                         cardBuilder: (context, index) {
                           return Card(
+                            color: Color(0x00000000),
                             child: Container(
-                                // padding: EdgeInsets.all(20.0),
+                              // padding: EdgeInsets.all(20.0),
 
-                                child: Image.network(
-                              movieImagesTest[index],
-                              fit: BoxFit.fill,
-                            )),
+                              child: Image.network(
+                                movieImagesTest[index],
+                                fit: BoxFit.fill,
+                              ),
+                            ),
                             elevation: 0,
                           );
                         },
@@ -217,19 +168,18 @@ class _TinderswiperState extends State<Tinderswiper>
                         swipeUpdateCallback:
                             (DragUpdateDetails details, Alignment align) {
                           /// Get swiping card's alignment
-                          print(align.x);
                           if (align.x > -2.0 && align.x < 2.0) {
-                            setLeftCue(0.0);
-                            setRightCue(0.0);
+                            _setLeftCue(0.0);
+                            _setRightCue(0.0);
                             print("should not show");
                           } else if (align.x <= -5) {
-                            setLeftCue(1.0);
+                            _setLeftCue(1.0);
                           } else if (align.x <= -2) {
-                            setLeftCue(0.5);
+                            _setLeftCue(0.5);
                           } else if (align.x >= 5) {
-                            setRightCue(1.0);
+                            _setRightCue(1.0);
                           } else if (align.x >= 2) {
-                            setRightCue(0.5);
+                            _setRightCue(0.5);
                             print("should show FULL THING");
                           }
                         },
@@ -238,25 +188,26 @@ class _TinderswiperState extends State<Tinderswiper>
                           if (orientation == CardSwipeOrientation.RIGHT) {
                             //when liked
                             print('you liked: ${movieDataTest[count]}');
-                            setLeftCue(0.0);
-                            setRightCue(0.0);
+                            _setLeftCue(0.0);
+                            _setRightCue(0.0);
                             //request to firebase server to update likes
                             if (userPair != "") {
                               updateUser(
-                                  movieDataTest[count],
-                                  context,
-                                  movieImagesTest[count],
-                                  movieTitles[count],
-                                  movieYear[count],
-                                  moviesSynopsis[count],
-                                  movieGenre[count],
-                                  movieRuntime[count]);
+                                movieDataTest[count],
+                                context,
+                                // movieImagesTest[count],
+                                // movieTitles[count],
+                                // movieYear[count],
+                                // moviesSynopsis[count],
+                                movieGenre[count],
+                                // movieRuntime[count]
+                              );
                             }
 
                             count++;
                           } else if (orientation == CardSwipeOrientation.LEFT) {
-                            setLeftCue(0.0);
-                            setRightCue(0.0);
+                            _setLeftCue(0.0);
+                            _setRightCue(0.0);
                             //when hated
                             print('you hate: ${movieDataTest[count]}');
                             count++;
@@ -275,12 +226,12 @@ class _TinderswiperState extends State<Tinderswiper>
           ),
           Positioned(
               //swipe cue dislike
-              left: 40,
-              bottom: 350,
+              left: 10,
+              bottom: 320,
               child: Opacity(
-                opacity: swipeLeftOpacity,
+                opacity: _swipeLeftOpacity,
                 child: FloatingActionButton(
-                  backgroundColor: Colors.red[900],
+                  backgroundColor: Colors.red[500],
                   heroTag: null,
                   onPressed: () {
                     print("pressed");
@@ -293,11 +244,11 @@ class _TinderswiperState extends State<Tinderswiper>
                 ),
               )),
           Positioned(
-              //swipe cue dislike
-              right: 40,
-              bottom: 350,
+              //swipe cue like
+              right: 10,
+              bottom: 320,
               child: Opacity(
-                opacity: swipeRightOpacity,
+                opacity: _swipeRightOpacity,
                 child: FloatingActionButton(
                   backgroundColor: Colors.green,
                   heroTag: null,
@@ -313,22 +264,42 @@ class _TinderswiperState extends State<Tinderswiper>
               )),
           Positioned(
             left: 80,
-            bottom: 40,
+            bottom: 20,
             child: FloatingActionButton(
-              backgroundColor: Colors.red,
+              backgroundColor: Colors.pinkAccent[700],
               heroTag: null,
               onPressed: () {
-                print('pressed');
-                joinRush();
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => RushTwo(),
-                      maintainState: true,
-                    ));
+                if (userPair == "") {
+                  showDialog(
+                      context: context,
+                      builder: (_) => new AlertDialog(
+                            title: new Text("Alert",
+                                style: TextStyle(color: Colors.grey[900])),
+                            content: new Text("Add a partner to use RushMode!",
+                                style: TextStyle(color: Colors.white)),
+                            actions: <Widget>[
+                              FlatButton(
+                                child: Text('Close me!',
+                                    style: TextStyle(color: Colors.pink)),
+                                onPressed: () {
+                                  Navigator.of(context, rootNavigator: true)
+                                      .pop();
+                                },
+                              )
+                            ],
+                          ));
+                } else {
+                  joinRush();
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => RushTwo(),
+                        maintainState: true,
+                      ));
+                }
               },
               tooltip: 'Go to Rush Mode',
-              child: Icon(Icons.fast_forward, size: 40),
+              child: Icon(Icons.fast_forward, size: 40, color: Colors.white),
               elevation: 2.0,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(100)),
@@ -336,13 +307,13 @@ class _TinderswiperState extends State<Tinderswiper>
           ),
           Positioned(
             right: 80,
-            bottom: 40,
+            bottom: 20,
             child: FloatingActionButton(
-              backgroundColor: Colors.yellow,
+              backgroundColor: Color(0xff412DB3),
               heroTag: null,
               onPressed: () => filterPop(context),
               tooltip: 'Filter Movies',
-              child: Icon(Icons.settings, size: 40),
+              child: Icon(Icons.settings, size: 40, color: Colors.white),
               elevation: 2.0,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(100)),
@@ -350,9 +321,10 @@ class _TinderswiperState extends State<Tinderswiper>
           ),
         ]),
         bottomNavigationBar: BottomNavigationBar(
+          selectedItemColor: Colors.pink,
           currentIndex: _currentIndex,
           type: BottomNavigationBarType.fixed,
-          backgroundColor: Colors.pink,
+          backgroundColor: Color(0xff412DB3),
           items: [
             BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
             BottomNavigationBarItem(
@@ -365,10 +337,13 @@ class _TinderswiperState extends State<Tinderswiper>
               _currentIndex = index;
             });
             if (_currentIndex == 2) {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => Matches(), maintainState: true));
+              if (userPair == "") {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => DummyMatches()));
+              } else {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => Matches()));
+              }
             }
             if (_currentIndex == 0) {
               Navigator.push(
@@ -386,7 +361,7 @@ class _TinderswiperState extends State<Tinderswiper>
 class HeaderCurvedContainer extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
-    Paint paint = Paint()..color = Colors.pink;
+    Paint paint = Paint()..color = Color(0xff412DB3);
     Path path = Path()
       ..relativeLineTo(0, 150)
       ..quadraticBezierTo(size.width / 2, 225, size.width, 150)
@@ -423,9 +398,6 @@ ThemeData _buildShrineTheme() {
       buttonColor: Colors.orange,
       toggleableActiveColor: Color(0xffd81b60),
       secondaryHeaderColor: Color(0xfffce4ec),
-      textSelectionColor: Color(0xfff48fb1),
-      cursorColor: Colors.pink,
-      textSelectionHandleColor: Color(0xfff06292),
       backgroundColor: Color(0xfff48fb1),
       dialogBackgroundColor: Colors.pink,
       indicatorColor: Color(0xffe91e63),
@@ -451,3 +423,4 @@ void joinRush() async {
       "https://asia-northeast1-movie-night-cc.cloudfunctions.net/joinRush?userName=$userName&pairName=$userPair");
   print(response.body);
 }
+//asdfasd

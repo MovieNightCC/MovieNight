@@ -5,7 +5,6 @@ import 'package:http/http.dart' as http;
 
 import './profile.dart';
 
-bool userexists = false;
 String userNameOfPair = "";
 String coupleName = "";
 
@@ -22,7 +21,7 @@ class AddPairPage extends StatelessWidget {
           TextField(
             controller: pairNameController,
             decoration: InputDecoration(
-              labelText: "Your partner's name",
+              labelText: "Your partner's email",
             ),
           ),
           Text("Link your partner's account here",
@@ -33,7 +32,8 @@ class AddPairPage extends StatelessWidget {
                   fontSize: 20)),
           TextField(
             controller: coupleNameController,
-            decoration: InputDecoration(labelText: "Define your Team's name"),
+            decoration:
+                InputDecoration(labelText: "Enter a nickname for your pair"),
           ),
           Spacer(),
           RaisedButton(
@@ -46,36 +46,39 @@ class AddPairPage extends StatelessWidget {
               // check if user has a pair
               if (userPair == "") {
                 //check if the user name exists
-                _checkForUser();
                 print("called check for user");
-                if (userexists == false) {
-                  print("does not exist");
-                  showDialog(
-                      context: context,
-                      builder: (_) => new AlertDialog(
-                            title: new Text("Alert",
-                                style: TextStyle(color: Colors.black)),
-                            content: new Text("User does not exist!",
-                                style: TextStyle(color: Colors.black)),
-                            actions: <Widget>[
-                              FlatButton(
-                                child: Text('Close me!'),
-                                onPressed: () {
-                                  Navigator.of(context, rootNavigator: true)
-                                      .pop();
-                                },
-                              )
-                            ],
-                          ));
-                } else {
-                  print("user exists form the pair");
-                  _postNewPair();
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => Profile(),
-                          maintainState: true));
-                }
+                // ignore: unrelated_type_equality_checks
+                _checkForUser().then((result) {
+                  if (!result) {
+                    print("does not exist");
+                    showDialog(
+                        context: context,
+                        builder: (_) => new AlertDialog(
+                              title: new Text("Alert",
+                                  style: TextStyle(color: Colors.grey[900])),
+                              content: new Text("User does not exist!",
+                                  style: TextStyle(color: Colors.white)),
+                              actions: <Widget>[
+                                FlatButton(
+                                  child: Text('Close me!'),
+                                  onPressed: () {
+                                    Navigator.of(context, rootNavigator: true)
+                                        .pop();
+                                  },
+                                )
+                              ],
+                            ));
+                  } else {
+                    print("user exists form the pair");
+                    _postNewPair();
+                    userPair = coupleName;
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => Profile(),
+                            maintainState: true));
+                  }
+                });
               }
             },
             child: Text("Add Partner"),
@@ -97,16 +100,19 @@ class AddPairPage extends StatelessWidget {
     );
   }
 
-  void _checkForUser() async {
+  Future<bool> _checkForUser() async {
     userNameOfPair = pairNameController.text.trim();
+    print(userNameOfPair);
+    userNameOfPair = userNameOfPair.substring(0, userNameOfPair.indexOf("@"));
+    print(userNameOfPair);
     var url =
-        'https://asia-northeast1-movie-night-cc.cloudfunctions.net/getUserByUserName?userName=$userNameOfPair';
+        'https://asia-northeast1-movie-night-cc.cloudfunctions.net/checkValidUser?userName=$userNameOfPair';
     final response = await Dio().get(url);
-    print('response $response');
-    if (response.data == false) {
-      userexists = false;
+    print('response ${response.data}');
+    if (response.data == "false" || response.data == false) {
+      return false;
     } else {
-      userexists = true;
+      return true;
     }
   }
 
@@ -123,6 +129,7 @@ class AddPairPage extends StatelessWidget {
         "/createPair", queryParams);
 
     var response = await http.post(uri);
+
     print('response status: ${response.statusCode}');
     print('response body for creating a pair${response.body}');
   }

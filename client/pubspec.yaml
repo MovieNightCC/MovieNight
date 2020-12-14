@@ -24,6 +24,7 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_tindercard: ^0.2.0
+  neon: ^0.0.1
   firebase_core: ^0.5.2+1
   firebase_auth: ^0.18.0+1
   firebase_storage: ^5.2.0

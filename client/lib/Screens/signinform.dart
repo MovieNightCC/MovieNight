@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:movie_night/Screens/onboard.dart';
+import 'package:movie_night/main.dart';
 import 'package:provider/provider.dart';
 import '../sizeconfig.dart';
 import '../constants.dart';
@@ -7,6 +8,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:movie_night/screens/auth.dart';
 import 'package:url_launcher/url_launcher.dart';
 import './swiper.dart';
+import './onboard.dart';
 
 bool userOkay = true;
 
@@ -80,13 +82,15 @@ class _SignFormState extends State<SignForm> {
                       password: password,
                     );
                 if (result == true) {
-                  Navigator.pushNamed(context, Swiper.routeName);
+                  Navigator.push(
+                          context, MaterialPageRoute(builder: (_) => App()))
+                      .then((value) => {setState(() {})});
                 } else {
                   showDialog(
                       context: context,
                       builder: (_) => new AlertDialog(
                             title: new Text("Alert",
-                                style: TextStyle(color: Colors.white)),
+                                style: TextStyle(color: Colors.grey[900])),
                             content: new Text(result,
                                 style: TextStyle(color: Colors.white)),
                             actions: <Widget>[
