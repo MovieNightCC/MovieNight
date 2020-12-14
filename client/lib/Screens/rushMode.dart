@@ -74,8 +74,8 @@ class _RushModeState extends State<RushMode> {
             painter: _HeaderCurvedContainer(),
           ),
           Image.asset(
-            './assets/icons/loading.gif',
-            scale: 1.5,
+            './assets/img/fire.gif',
+            scale: 2.0,
           ),
           Column(
             children: [

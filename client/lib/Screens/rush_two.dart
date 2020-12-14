@@ -4,6 +4,7 @@ import './swiper.dart';
 import './rushMode.dart';
 import '../main.dart';
 import 'package:neon/neon.dart';
+import '../sizeconfig.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -135,6 +136,8 @@ class PlayerLobby extends StatefulWidget {
 class _PlayerLobbyState extends State<PlayerLobby> {
   @override
   Widget build(BuildContext context) {
+    SizeConfig().init(context);
+
     return StreamBuilder(
         stream: FirebaseFirestore.instance
             .collection('rushPlus')
@@ -151,11 +154,16 @@ class _PlayerLobbyState extends State<PlayerLobby> {
           if (!snapshot.hasData) {
             return LinearProgressIndicator();
           } else if (playerOneJoined && playerTwoJoined) {
-            return Column(children: [
-              TimerWidget(),
-              Text("Both Player Joined! Get Ready...",
-                  style: TextStyle(fontSize: 24)),
-            ]);
+            return Stack(
+              alignment: Alignment.center,
+              children: [
+                Column(children: [
+                  TimerWidget(),
+                  Text("Both Player Joined! Get Ready...",
+                      style: TextStyle(fontSize: 24)),
+                ])
+              ],
+            );
           } else {
             return Stack(
               children: [
@@ -184,6 +192,15 @@ class _PlayerLobbyState extends State<PlayerLobby> {
                         ),
                       ]),
                 ])),
+                Align(
+                    alignment: Alignment.center,
+                    child: Text(
+                        "Syncrhonized\nSame movies\n30 seconds.\nGet Ready.",
+                        style: TextStyle(
+                            fontWeight: FontWeight.w900,
+                            fontStyle: FontStyle.italic,
+                            fontFamily: 'Open Sans',
+                            fontSize: 40))),
                 Positioned(
                     right: 80,
                     bottom: 70,
