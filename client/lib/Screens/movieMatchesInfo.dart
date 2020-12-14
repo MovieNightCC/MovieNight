@@ -40,83 +40,101 @@ class _MatchInfoState extends State<MatchInfo> {
       body: Stack(
         alignment: Alignment.center,
         children: [
-          CustomPaint(
-            child: Container(
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height,
-            ),
-            painter: HeaderCurvedContainer(),
+          Opacity(
+            opacity: 0.2,
+            child: Image.network(matchesMovieData[current]['img'],
+                height: MediaQuery.of(context).size.height * 1.0,
+                // width: 100,
+                fit: BoxFit.fitWidth),
           ),
           ListView(
             padding: const EdgeInsets.all(50),
             children: [
-              Image.network(
-                matchesMovieData[current]['img'],
-                scale: 0.55,
-              ),
-              Text(
-                  'Title: ${matchesMovieData[current]['title'].replaceAll('&#39;', "'")}',
-                  style: TextStyle(
-                      color: Colors.white,
-                      height: 3.0,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20)),
-              Text('Genre: ${matchesMovieData[current]['genre']}',
-                  style: TextStyle(
-                      color: Colors.white,
-                      height: 2.0,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20)),
-              Text(
-                  'Runtime: ${printDuration(Duration(seconds: matchesMovieData[current]['runtime']))}',
-                  // 'Runtime: ${hourListMatches[current]}h ${minutesListMatches[current]}m',
-                  style: TextStyle(
-                      color: Colors.white,
-                      height: 2.0,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20)),
-              Text(
-                  'Synopsis: ${matchesMovieData[current]['synopsis'].replaceAll('&#39;', "'")}',
+              Padding(
+                  padding: EdgeInsets.fromLTRB(0, 100, 0, 20),
+                  child: Text(
+                      '${matchesMovieData[current]['title'].replaceAll('&#39;', "'")}',
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w900,
+                          fontFamily: 'Open Sans',
+                          fontSize: 35))),
+              Padding(
+                  padding: EdgeInsets.fromLTRB(0, 0, 0, 2),
+                  child: Text(
+                      '${matchesMovieData[current]['synopsis'].replaceAll('&#39;', "'")}',
+                      style: TextStyle(
+                          color: Colors.white,
+                          height: 1.5,
+                          fontWeight: FontWeight.w300,
+                          //fontWeight:// FontWeight.bold,
+                          fontFamily: 'Open Sans',
+                          fontSize: 17))),
+              Padding(
+                  padding: EdgeInsets.fromLTRB(0, 10, 0, 2),
+                  child: Text('Genre: ${matchesMovieData[current]['genre']}',
+                      style: TextStyle(
+                          color: Colors.white,
+                          height: 1.5,
+                          fontWeight: FontWeight.w300,
+
+                          // fontWeight: FontWeight.bold,
+                          fontFamily: 'Open Sans',
+                          fontSize: 15))),
+              Padding(
+                  padding: EdgeInsets.fromLTRB(0, 10, 0, 2),
+                  child: Text(
+                      'Runtime: ${printDuration(Duration(seconds: matchesMovieData[current]['runtime']))}',
+                      style: TextStyle(
+                          color: Colors.white,
+                          height: 1.5,
+                          fontWeight: FontWeight.w300,
+
+                          // fontWeight: FontWeight.bold,
+                          fontFamily: 'Open Sans',
+                          fontSize: 15))),
+              Padding(
+                padding: EdgeInsets.fromLTRB(0, 10, 0, 15),
+                child: Text(
+                  'Release Year: ${matchesMovieData[current]['year']}',
                   style: TextStyle(
                       color: Colors.white,
                       height: 1.5,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20)),
-              Text(
-                'Release Year: ${matchesMovieData[current]['year']}',
-                style: TextStyle(
-                    color: Colors.white,
-                    height: 2.0,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 20),
-              ), //matchesNfid,
+                      // fontWeight: FontWeight.bold,
+                      fontFamily: 'Open Sans',
+                      fontWeight: FontWeight.w300,
+                      fontSize: 15),
+                ),
+              ),
               RaisedButton(
                 color: Colors.red[900],
                 onPressed: () => launch(
                     'https://www.netflix.com/title/${matchesMovieData[current]['nfid']}'),
-                child:
-                    const Text('Go to Netflix', style: TextStyle(fontSize: 20)),
+                child: const Text('Go to Netflix',
+                    style: TextStyle(
+                      fontWeight: FontWeight.w300,
+
+                      // fontWeight: FontWeight.bold,
+                      fontSize: 20,
+                      fontFamily: 'Open Sans',
+                    )),
               ),
               RaisedButton(
                 color: Colors.deepPurple,
                 onPressed: () => {
                   deleteMatch(matchesMovieData[current]['nfid']),
-                  // matchesTitles.remove(matchesTitles[current]),
-                  // matchesSynopsis.remove(matchesSynopsis[current]),
-                  // matchesImage.remove(matchesImage[current]),
-                  // matchesYear.remove(matchesYear[current]),
-                  // matchesGenre.remove(matchesGenre[current]),
-                  // matchesRuntime.remove(matchesRuntime[current]),
-                  // hourListMatches.remove(hourListMatches[current]),
-                  // minutesListMatches.remove(minutesListMatches[current]),
-                  // matchesNfid.remove(matchesNfid[current]),
                   Navigator.push(
                       context,
                       MaterialPageRoute(
                           builder: (context) => Matches(), maintainState: true))
                 },
-                child: const Text('Remove from Matches',
-                    style: TextStyle(fontSize: 20)),
+                child: const Text('Delete',
+                    style: TextStyle(
+                      fontSize: 20, fontWeight: FontWeight.w300,
+
+                      // fontWeight: FontWeight.bold,
+                      fontFamily: 'Open Sans',
+                    )),
               ),
             ],
           ),

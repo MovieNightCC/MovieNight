@@ -183,7 +183,7 @@ class _PlayerLobbyState extends State<PlayerLobby> {
                 Center(
                     child: Column(children: [
                   Padding(
-                    padding: EdgeInsets.only(top: 27.0),
+                    padding: EdgeInsets.only(top: 65),
                     child: Neon(
                       text: 'Rush Mode',
                       color: Colors.purple,
@@ -193,7 +193,7 @@ class _PlayerLobbyState extends State<PlayerLobby> {
                     ),
                   ),
                   Padding(
-                      padding: EdgeInsets.only(top: 15.0),
+                      padding: EdgeInsets.only(top: 50.0),
                       child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
@@ -206,19 +206,12 @@ class _PlayerLobbyState extends State<PlayerLobby> {
                               playerTwoIcon,
                             ),
                           ])),
+                  Padding(
+                      padding: EdgeInsets.only(top: 80),
+                      child: Image.asset(
+                          './assets/icons/loader-movie-night.gif',
+                          scale: .6)),
                 ])),
-                Positioned(
-                    bottom: MediaQuery.of(context).size.height * 0.25,
-                    child: Align(
-                        alignment: Alignment.center,
-                        child: Text(
-                            "Syncrhonized.\n1 set of movies.\n30 seconds.\nGet Ready.",
-                            style: TextStyle(
-                                fontWeight: FontWeight.w900,
-                                fontStyle: FontStyle.italic,
-                                fontFamily: 'Open Sans',
-                                height: 1.5,
-                                fontSize: 40)))),
                 Positioned(
                     right: 80,
                     bottom: 70,

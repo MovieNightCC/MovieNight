@@ -29,7 +29,8 @@ class _ProfileState extends State<Profile> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
+      body: SafeArea(
+          child: Stack(
         alignment: Alignment.center,
         children: [
           CustomPaint(
@@ -43,42 +44,20 @@ class _ProfileState extends State<Profile> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Padding(
-                padding: EdgeInsets.all(25),
+                padding: EdgeInsets.only(top: 30),
                 child: Positioned(
                     top: 15,
                     child: Neon(
                       text: '$displayName',
                       color: Colors.purple,
-                      fontSize: 24
-                      ,
+                      fontSize: 24,
                       font: NeonFont.Membra,
                       flickeringText: false,
                     )),
               ),
               ProfilePicture(),
               UserInfoSection(),
-              Padding(
-                padding: EdgeInsets.all(10),
-                child:
-                    Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                  FlatButton(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(50.0)),
-                    ),
-                    child: Text(
-                      "Link with your partner",
-                      style: TextStyle(color: Colors.white),
-                    ),
-                    color: Colors.pink,
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => AddPairPage()));
-                    },
-                  ),
-                ]),
-              ),
+              LinkToPairButton(),
               Padding(
                 padding: EdgeInsets.all(10),
                 child: FlatButton(
@@ -99,69 +78,74 @@ class _ProfileState extends State<Profile> {
                 ),
               ),
               Padding(
-                  padding: EdgeInsets.only(top: 120),
+                  padding: EdgeInsets.only(top: 10),
                   child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        FlatButton(
-                          shape: RoundedRectangleBorder(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(50.0)),
+                        SafeArea(
+                          bottom: true,
+                          child: FlatButton(
+                            shape: RoundedRectangleBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(50.0)),
+                            ),
+                            child: Text(
+                              "Delete Account",
+                              style: TextStyle(color: Colors.white),
+                            ),
+                            color: Colors.red,
+                            onPressed: () {
+                              showDialog(
+                                  context: context,
+                                  builder: (_) => new AlertDialog(
+                                        backgroundColor: Colors.grey[900],
+                                        title: new Text("Alert",
+                                            style: TextStyle(
+                                                color: Colors.grey[900])),
+                                        content: new Text(
+                                            "Are you sure? Deleting your account will also delete your connection with your partner?",
+                                            style:
+                                                TextStyle(color: Colors.white)),
+                                        actions: <Widget>[
+                                          FlatButton(
+                                            child: Text('No, go back',
+                                                style: TextStyle(
+                                                    color: Colors.purple)),
+                                            onPressed: () {
+                                              Navigator.of(context,
+                                                      rootNavigator: true)
+                                                  .pop();
+                                            },
+                                          ),
+                                          FlatButton(
+                                            child: Text(
+                                                'Yes, delete my account',
+                                                style: TextStyle(
+                                                    color: Colors.pink)),
+                                            onPressed: () {
+                                              //placeholder for delete user function
+                                              _deleteUser();
+                                              Navigator.of(context,
+                                                      rootNavigator: true)
+                                                  .pop();
+                                              Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (_) =>
+                                                          SplashScreen())).then(
+                                                  (value) => {setState(() {})});
+                                            },
+                                          )
+                                        ],
+                                      ));
+                            },
                           ),
-                          child: Text(
-                            "Delete Account",
-                            style: TextStyle(color: Colors.white),
-                          ),
-                          color: Colors.red,
-                          onPressed: () {
-                            showDialog(
-                                context: context,
-                                builder: (_) => new AlertDialog(
-                                      title: new Text("Alert",
-                                          style: TextStyle(
-                                              color: Colors.grey[900])),
-                                      content: new Text(
-                                          "Are you sure? Deleting your account will also delete your connection with your partner.",
-                                          style:
-                                              TextStyle(color: Colors.white)),
-                                      actions: <Widget>[
-                                        FlatButton(
-                                          child: Text('No, go back',
-                                              style: TextStyle(
-                                                  color: Colors.pink)),
-                                          onPressed: () {
-                                            Navigator.of(context,
-                                                    rootNavigator: true)
-                                                .pop();
-                                          },
-                                        ),
-                                        FlatButton(
-                                          child: Text('Yes, delete my account',
-                                              style: TextStyle(
-                                                  color: Colors.pink)),
-                                          onPressed: () {
-                                            //placeholder for delete user function
-                                            _deleteUser();
-                                            Navigator.of(context,
-                                                    rootNavigator: true)
-                                                .pop();
-                                            Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                    builder: (_) =>
-                                                        SplashScreen())).then(
-                                                (value) => {setState(() {})});
-                                          },
-                                        )
-                                      ],
-                                    ));
-                          },
-                        ),
+                        )
                       ])),
             ],
           ),
         ],
-      ),
+      )),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
         type: BottomNavigationBarType.fixed,
@@ -360,7 +344,7 @@ class _ProfilePictureState extends State<ProfilePicture> {
     return Column(
       children: [
         Container(
-          padding: EdgeInsets.all(10.0),
+          padding: EdgeInsets.all(1.0),
           width: MediaQuery.of(context).size.width / 2,
           height: MediaQuery.of(context).size.width / 2,
           decoration: BoxDecoration(
@@ -386,5 +370,34 @@ class _ProfilePictureState extends State<ProfilePicture> {
         ),
       ],
     );
+  }
+}
+
+class LinkToPairButton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    if (userPair == "") {
+      return Padding(
+        padding: EdgeInsets.all(10),
+        child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+          FlatButton(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(50.0)),
+            ),
+            child: Text(
+              "Link with your partner",
+              style: TextStyle(color: Colors.white),
+            ),
+            color: Color(0xffA058CB),
+            onPressed: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => AddPairPage()));
+            },
+          ),
+        ]),
+      );
+    } else {
+      return Container(height: 0, width: 0);
+    }
   }
 }

@@ -133,10 +133,11 @@ class PushNotificationService {
                   title: new Text("Alert",
                       style: TextStyle(color: Colors.grey[900])),
                   content: new Text(message['notification']['title'],
-                      style: TextStyle(color: Colors.black)),
+                      style: TextStyle(color: Colors.white)),
                   actions: <Widget>[
                     FlatButton(
-                      child: Text('Close me!'),
+                      child: Text('Close me!',
+                          style: TextStyle(color: Colors.pink)),
                       onPressed: () {
                         Navigator.of(context, rootNavigator: true).pop();
                       },

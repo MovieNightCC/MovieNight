@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:movie_night/main.dart';
-import './movieArray.dart';
 import './movieMatchesInfo.dart';
 import './swiper.dart';
 import './profile.dart';
@@ -187,13 +186,16 @@ class _MatchesState extends State<Matches> {
         } else {
           return Scaffold(
             appBar: AppBar(
-              title: Neon(
-                text: 'Matches',
-                color: Colors.purple,
-                fontSize: 24,
-                font: NeonFont.Membra,
-                flickeringText: false,
-              ),
+              titleSpacing: 10.0,
+              title: Padding(
+                  padding: EdgeInsets.only(top: 27.0),
+                  child: Neon(
+                    text: 'Matches',
+                    color: Colors.purple,
+                    fontSize: 35,
+                    font: NeonFont.Membra,
+                    flickeringText: false,
+                  )),
               automaticallyImplyLeading: false,
               centerTitle: true,
               backgroundColor: Colors.pink,

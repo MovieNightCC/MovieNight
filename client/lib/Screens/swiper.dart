@@ -10,7 +10,6 @@ import './matches.dart';
 import './profile.dart';
 import './movieInfo.dart';
 import './movieArray.dart';
-//import './rushMode.dart';
 import './filterPopup.dart';
 import './movieMatchesInfo.dart';
 import 'DummyMatches.dart';
@@ -60,25 +59,25 @@ void updateUser(
   var response = await http.get(
       "https://asia-northeast1-movie-night-cc.cloudfunctions.net/updateUserLikes?userName=$userName&movieArr=[$arrOfNfid]&genre=$genre");
   print(response.body);
-  if (response.body == "match!") {
-    showDialog(
-        context: context,
-        builder: (_) => new AlertDialog(
-              title:
-                  new Text("Alert", style: TextStyle(color: Colors.grey[900])),
-              content: new Text("You got a Match!",
-                  style: TextStyle(color: Colors.white)),
-              actions: <Widget>[
-                FlatButton(
-                  child:
-                      Text('Close me!', style: TextStyle(color: Colors.pink)),
-                  onPressed: () {
-                    Navigator.of(context, rootNavigator: true).pop();
-                  },
-                )
-              ],
-            ));
-  }
+  // if (response.body == "match!") {
+  //   showDialog(
+  //       context: context,
+  //       builder: (_) => new AlertDialog(
+  //             title:
+  //                 new Text("Alert", style: TextStyle(color: Colors.grey[900])),
+  //             content: new Text("You got a Match!",
+  //                 style: TextStyle(color: Colors.white)),
+  //             actions: <Widget>[
+  //               FlatButton(
+  //                 child:
+  //                     Text('Close me!', style: TextStyle(color: Colors.pink)),
+  //                 onPressed: () {
+  //                   Navigator.of(context, rootNavigator: true).pop();
+  //                 },
+  //               )
+  //             ],
+  //           ));
+  // }
 }
 
 class Tinderswiper extends StatefulWidget {
@@ -113,7 +112,7 @@ class _TinderswiperState extends State<Tinderswiper>
             painter: HeaderCurvedContainer(),
           ),
           Positioned(
-              top: 25,
+              top: 43,
               child: Neon(
                 text: 'Movie Night',
                 color: Colors.purple,
