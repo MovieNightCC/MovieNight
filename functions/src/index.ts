@@ -1050,6 +1050,7 @@ export const createUser = functions
       },
       userIcon:
         "https://firebasestorage.googleapis.com/v0/b/movie-night-cc.appspot.com/o/default_avatar.jpg?alt=media&token=f7cbf25b-ad42-42f8-959e-fb39cce30817",
+      firstTime: true,
     };
     const userCollection = db.collection("users");
     const userRef = userCollection.doc(userUserName);
@@ -1926,3 +1927,19 @@ export const deleteUser = functions
   });
 
 
+
+
+  export const setUpFirstTime = functions
+  .region("asia-northeast1")
+  .https.onRequest(async (_, response) => {
+    // const allMoviesObj: { [key: string]: Object } = {};
+    const userRef = db.collection("users");
+    const snapshot = await userRef.get();
+
+    snapshot.forEach(async (doc) => {
+      await doc.ref.update({
+        firstTime: true,
+      });
+    });
+    response.json("success");
+  });
