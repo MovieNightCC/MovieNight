@@ -207,10 +207,10 @@ class _PlayerLobbyState extends State<PlayerLobby> {
                             ),
                           ])),
                   Padding(
-                      padding: EdgeInsets.only(top: 80),
+                      padding: EdgeInsets.only(top: 40),
                       child: Image.asset(
                           './assets/icons/loader-movie-night.gif',
-                          scale: .6)),
+                          scale: 1.0)),
                 ])),
                 Positioned(
                     right: 80,

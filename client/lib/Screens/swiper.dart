@@ -59,25 +59,25 @@ void updateUser(
   var response = await http.get(
       "https://asia-northeast1-movie-night-cc.cloudfunctions.net/updateUserLikes?userName=$userName&movieArr=[$arrOfNfid]&genre=$genre");
   print(response.body);
-  // if (response.body == "match!") {
-  //   showDialog(
-  //       context: context,
-  //       builder: (_) => new AlertDialog(
-  //             title:
-  //                 new Text("Alert", style: TextStyle(color: Colors.grey[900])),
-  //             content: new Text("You got a Match!",
-  //                 style: TextStyle(color: Colors.white)),
-  //             actions: <Widget>[
-  //               FlatButton(
-  //                 child:
-  //                     Text('Close me!', style: TextStyle(color: Colors.pink)),
-  //                 onPressed: () {
-  //                   Navigator.of(context, rootNavigator: true).pop();
-  //                 },
-  //               )
-  //             ],
-  //           ));
-  // }
+  if (response.body == "match!") {
+    showDialog(
+        context: context,
+        builder: (_) => new AlertDialog(
+              title:
+                  new Text("Alert", style: TextStyle(color: Colors.grey[900])),
+              content: new Text("You got a Match!",
+                  style: TextStyle(color: Colors.white)),
+              actions: <Widget>[
+                FlatButton(
+                  child:
+                      Text('Close me!', style: TextStyle(color: Colors.pink)),
+                  onPressed: () {
+                    Navigator.of(context, rootNavigator: true).pop();
+                  },
+                )
+              ],
+            ));
+  }
 }
 
 class Tinderswiper extends StatefulWidget {
@@ -422,4 +422,3 @@ void joinRush() async {
       "https://asia-northeast1-movie-night-cc.cloudfunctions.net/joinRush?userName=$userName&pairName=$userPair");
   print(response.body);
 }
-//asdfasd
