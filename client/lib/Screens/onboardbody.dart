@@ -159,7 +159,7 @@ class SplashInfo extends StatelessWidget {
               text: 'Movie Night',
               color: Colors.pink,
               fontSize: 32,
-              font: NeonFont.Membra,
+              font: NeonFont.Beon,
               flickeringText: false,
             )),
         Padding(
