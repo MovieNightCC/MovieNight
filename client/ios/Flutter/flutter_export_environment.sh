@@ -1,12 +1,12 @@
 #!/bin/sh
 # This is a generated file; do not edit or check into version control.
-export "FLUTTER_ROOT=/Users/mrcheezits/dev/flutter"
-export "FLUTTER_APPLICATION_PATH=/Users/mrcheezits/dev/stageApp/MovieNight/client"
-export "FLUTTER_TARGET=/Users/mrcheezits/dev/stageApp/MovieNight/client/lib/main.dart"
+export "FLUTTER_ROOT=/usr/local/Caskroom/flutter/1.22.4/flutter"
+export "FLUTTER_APPLICATION_PATH=/Users/kenny01123/CCimmersive/MovieNight/client"
+export "FLUTTER_TARGET=/Users/kenny01123/CCimmersive/MovieNight/client/lib/main.dart"
 export "FLUTTER_BUILD_DIR=build"
 export "SYMROOT=${SOURCE_ROOT}/../build/ios"
 export "OTHER_LDFLAGS=$(inherited) -framework Flutter"
-export "FLUTTER_FRAMEWORK_DIR=/Users/mrcheezits/dev/flutter/bin/cache/artifacts/engine/ios"
+export "FLUTTER_FRAMEWORK_DIR=/usr/local/Caskroom/flutter/1.22.4/flutter/bin/cache/artifacts/engine/ios"
 export "FLUTTER_BUILD_NAME=1.6.0"
 export "FLUTTER_BUILD_NUMBER=6"
 export "DART_OBFUSCATION=false"

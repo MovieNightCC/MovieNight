@@ -188,7 +188,7 @@ class _PlayerLobbyState extends State<PlayerLobby> {
                       text: 'Rush Mode',
                       color: Colors.purple,
                       fontSize: 30,
-                      font: NeonFont.Membra,
+                      font: NeonFont.Beon,
                       flickeringText: false,
                     ),
                   ),
