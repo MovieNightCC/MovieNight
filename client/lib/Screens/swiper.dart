@@ -9,9 +9,7 @@ import './tinderCard.dart';
 import './matches.dart';
 import './profile.dart';
 import './movieInfo.dart';
-import './movieArray.dart';
 import './filterPopup.dart';
-import './movieMatchesInfo.dart';
 import 'DummyMatches.dart';
 
 class Swiper extends StatefulWidget {
@@ -102,24 +100,26 @@ class _TinderswiperState extends State<Tinderswiper>
   @override
   Widget build(BuildContext context) {
     CardController controller;
-    return Scaffold(
-        body: Stack(alignment: Alignment.center, children: [
-          CustomPaint(
-            child: Container(
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height,
-            ),
-            painter: HeaderCurvedContainer(),
-          ),
-          Positioned(
-              top: 20,
-              child: Neon(
-                text: 'Movie Night',
-                color: Colors.purple,
-                fontSize: 50,
-                font: NeonFont.Beon,
-                flickeringText: false,
-              )),
+    return SafeArea(
+        child: Scaffold(
+            body: Stack(alignment: Alignment.center, children: [
+              CustomPaint(
+                child: Container(
+                  width: MediaQuery.of(context).size.width,
+                  height: MediaQuery.of(context).size.height,
+                ),
+                painter: HeaderCurvedContainer(),
+              ),
+              Positioned(
+                  // top: 0,
+                  top: MediaQuery.of(context).size.height * 0.02,
+                  child: Neon(
+                    text: 'Movie Night',
+                    color: Colors.purple,
+                    fontSize: 50,
+                    font: NeonFont.Beon,
+                    flickeringText: false,
+                  )),
 //               - Automania
 // - Beon
 // - Cyberpunk
@@ -129,231 +129,240 @@ class _TinderswiperState extends State<Tinderswiper>
 // - Night-Club-70s
 // - Samarin
 // - TextMeOne
-          Image.asset('./assets/icons/loader-movie-night.gif', scale: 1.0),
-          //CircularProgressIndicator(backgroundColor: Colors.pink),
-          Padding(
-            padding: EdgeInsets.fromLTRB(0, 50, 0, 0),
-            child: Column(
-              children: [
-                Center(
-                  heightFactor: 1.1,
-                  child: InkWell(
-                    child: Container(
-                      height: MediaQuery.of(context).size.height * 0.7,
-                      child: TinderSwapCard(
-                        orientation: AmassOrientation.TOP,
-                        totalNum: 100,
-                        stackNum: 10,
-                        swipeEdge: 5.0,
-                        maxWidth: MediaQuery.of(context).size.width * 0.9,
-                        maxHeight: MediaQuery.of(context).size.width * 1.75,
-                        minWidth: MediaQuery.of(context).size.width * 0.899,
-                        minHeight: MediaQuery.of(context).size.width * 1.7499,
-                        cardBuilder: (context, index) {
-                          return Card(
-                            color: Color(0x00000000),
-                            child: Container(
-                              // padding: EdgeInsets.all(20.0),
+              Image.asset('./assets/icons/loader-movie-night.gif', scale: 1.0),
+              //CircularProgressIndicator(backgroundColor: Colors.pink),
+              Padding(
+                padding: EdgeInsets.fromLTRB(0, 50, 0, 0),
+                child: Column(
+                  children: [
+                    Center(
+                      heightFactor: 1.1,
+                      child: InkWell(
+                        child: Container(
+                          height: MediaQuery.of(context).size.height * 0.7,
+                          child: TinderSwapCard(
+                            orientation: AmassOrientation.TOP,
+                            totalNum: 100,
+                            stackNum: 10,
+                            swipeEdge: 5.0,
+                            maxWidth: MediaQuery.of(context).size.width * 0.9,
+                            maxHeight: MediaQuery.of(context).size.width * 1.75,
+                            minWidth: MediaQuery.of(context).size.width * 0.899,
+                            minHeight:
+                                MediaQuery.of(context).size.width * 1.7499,
+                            cardBuilder: (context, index) {
+                              return Card(
+                                color: Color(0x00000000),
+                                child: Container(
+                                  // padding: EdgeInsets.all(20.0),
 
-                              child: Image.network(
-                                movieImagesTest[index],
-                                fit: BoxFit.fill,
-                              ),
-                            ),
-                            elevation: 0,
-                          );
-                        },
-                        cardController: controller = CardController(),
-                        swipeUpdateCallback:
-                            (DragUpdateDetails details, Alignment align) {
-                          /// Get swiping card's alignment
-                          if (align.x > -2.0 && align.x < 2.0) {
-                            _setLeftCue(0.0);
-                            _setRightCue(0.0);
-                            print("should not show");
-                          } else if (align.x <= -5) {
-                            _setLeftCue(1.0);
-                          } else if (align.x <= -2) {
-                            _setLeftCue(0.5);
-                          } else if (align.x >= 5) {
-                            _setRightCue(1.0);
-                          } else if (align.x >= 2) {
-                            _setRightCue(0.5);
-                            print("should show FULL THING");
-                          }
-                        },
-                        swipeCompleteCallback:
-                            (CardSwipeOrientation orientation, int index) {
-                          if (orientation == CardSwipeOrientation.RIGHT) {
-                            //when liked
-                            print('you liked: ${movieDataTest[count]}');
-                            _setLeftCue(0.0);
-                            _setRightCue(0.0);
-                            //request to firebase server to update likes
-                            if (userPair != "") {
-                              updateUser(
-                                movieDataTest[count],
-                                context,
-                                // movieImagesTest[count],
-                                // movieTitles[count],
-                                // movieYear[count],
-                                // moviesSynopsis[count],
-                                movieGenre[count],
-                                // movieRuntime[count]
+                                  child: Image.network(
+                                    movieImagesTest[index],
+                                    fit: BoxFit.fill,
+                                  ),
+                                ),
+                                elevation: 0,
                               );
-                            }
+                            },
+                            cardController: controller = CardController(),
+                            swipeUpdateCallback:
+                                (DragUpdateDetails details, Alignment align) {
+                              /// Get swiping card's alignment
+                              if (align.x > -2.0 && align.x < 2.0) {
+                                _setLeftCue(0.0);
+                                _setRightCue(0.0);
+                                print("should not show");
+                              } else if (align.x <= -5) {
+                                _setLeftCue(1.0);
+                              } else if (align.x <= -2) {
+                                _setLeftCue(0.5);
+                              } else if (align.x >= 5) {
+                                _setRightCue(1.0);
+                              } else if (align.x >= 2) {
+                                _setRightCue(0.5);
+                                print("should show FULL THING");
+                              }
+                            },
+                            swipeCompleteCallback:
+                                (CardSwipeOrientation orientation, int index) {
+                              if (orientation == CardSwipeOrientation.RIGHT) {
+                                //when liked
+                                print('you liked: ${movieDataTest[count]}');
+                                _setLeftCue(0.0);
+                                _setRightCue(0.0);
+                                //request to firebase server to update likes
+                                if (userPair != "") {
+                                  updateUser(
+                                    movieDataTest[count],
+                                    context,
+                                    // movieImagesTest[count],
+                                    // movieTitles[count],
+                                    // movieYear[count],
+                                    // moviesSynopsis[count],
+                                    movieGenre[count],
+                                    // movieRuntime[count]
+                                  );
+                                }
 
-                            count++;
-                          } else if (orientation == CardSwipeOrientation.LEFT) {
-                            _setLeftCue(0.0);
-                            _setRightCue(0.0);
-                            //when hated
-                            print('you hate: ${movieDataTest[count]}');
-                            count++;
-                          }
+                                count++;
+                              } else if (orientation ==
+                                  CardSwipeOrientation.LEFT) {
+                                _setLeftCue(0.0);
+                                _setRightCue(0.0);
+                                //when hated
+                                print('you hate: ${movieDataTest[count]}');
+                                count++;
+                              }
+                            },
+                          ),
+                        ),
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              new MaterialPageRoute(
+                                  builder: (context) => Info()));
                         },
                       ),
                     ),
-                    onTap: () {
-                      Navigator.push(context,
-                          new MaterialPageRoute(builder: (context) => Info()));
-                    },
-                  ),
+                  ],
                 ),
-              ],
-            ),
-          ),
-          Positioned(
-              //swipe cue dislike
-              left: 10,
-              bottom: 320,
-              child: Opacity(
-                opacity: _swipeLeftOpacity,
+              ),
+              Positioned(
+                  //swipe cue dislike
+                  left: 10,
+                  bottom: 320,
+                  child: Opacity(
+                    opacity: _swipeLeftOpacity,
+                    child: FloatingActionButton(
+                      backgroundColor: Colors.red[500],
+                      heroTag: null,
+                      onPressed: () {
+                        print("pressed");
+                      },
+                      tooltip: 'Increment',
+                      child: Icon(Icons.cancel_outlined, size: 50),
+                      elevation: 2.0,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(100)),
+                    ),
+                  )),
+              Positioned(
+                  //swipe cue like
+                  right: 10,
+                  bottom: 320,
+                  child: Opacity(
+                    opacity: _swipeRightOpacity,
+                    child: FloatingActionButton(
+                      backgroundColor: Colors.green,
+                      heroTag: null,
+                      onPressed: () {
+                        print("pressed");
+                      },
+                      tooltip: 'Increment',
+                      child: Icon(Icons.check, size: 50),
+                      elevation: 2.0,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(100)),
+                    ),
+                  )),
+              Positioned(
+                left: 80,
+                bottom: 20,
                 child: FloatingActionButton(
-                  backgroundColor: Colors.red[500],
+                  backgroundColor: Colors.pink,
                   heroTag: null,
                   onPressed: () {
-                    print("pressed");
-                  },
-                  tooltip: 'Increment',
-                  child: Icon(Icons.cancel_outlined, size: 50),
-                  elevation: 2.0,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(100)),
-                ),
-              )),
-          Positioned(
-              //swipe cue like
-              right: 10,
-              bottom: 320,
-              child: Opacity(
-                opacity: _swipeRightOpacity,
-                child: FloatingActionButton(
-                  backgroundColor: Colors.green,
-                  heroTag: null,
-                  onPressed: () {
-                    print("pressed");
-                  },
-                  tooltip: 'Increment',
-                  child: Icon(Icons.check, size: 50),
-                  elevation: 2.0,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(100)),
-                ),
-              )),
-          Positioned(
-            left: 80,
-            bottom: 20,
-            child: FloatingActionButton(
-              backgroundColor: Colors.pink,
-              heroTag: null,
-              onPressed: () {
-                if (userPair == "") {
-                  showDialog(
-                      context: context,
-                      builder: (_) => new AlertDialog(
-                            title: new Text("Alert",
-                                style: TextStyle(color: Colors.grey[900])),
-                            content: new Text("Add a partner to use RushMode!",
-                                style: TextStyle(color: Colors.white)),
-                            actions: <Widget>[
-                              FlatButton(
-                                child: Text('Close me!',
-                                    style: TextStyle(color: Colors.pink)),
-                                onPressed: () {
-                                  Navigator.of(context, rootNavigator: true)
-                                      .pop();
-                                },
-                              )
-                            ],
+                    if (userPair == "") {
+                      showDialog(
+                          context: context,
+                          builder: (_) => new AlertDialog(
+                                title: new Text("Alert",
+                                    style: TextStyle(color: Colors.grey[900])),
+                                content: new Text(
+                                    "Add a partner to use RushMode!",
+                                    style: TextStyle(color: Colors.white)),
+                                actions: <Widget>[
+                                  FlatButton(
+                                    child: Text('Close me!',
+                                        style: TextStyle(color: Colors.pink)),
+                                    onPressed: () {
+                                      Navigator.of(context, rootNavigator: true)
+                                          .pop();
+                                    },
+                                  )
+                                ],
+                              ));
+                    } else {
+                      joinRush();
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => RushTwo(),
+                            maintainState: true,
                           ));
-                } else {
-                  joinRush();
+                    }
+                  },
+                  tooltip: 'Go to Rush Mode',
+                  child:
+                      Icon(Icons.fast_forward, size: 40, color: Colors.white),
+                  elevation: 2.0,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(100)),
+                ),
+              ),
+              Positioned(
+                right: 80,
+                bottom: 20,
+                child: FloatingActionButton(
+                  backgroundColor: Color(0xff412DB3),
+                  heroTag: null,
+                  onPressed: () => filterPop(context),
+                  tooltip: 'Filter Movies',
+                  child: Icon(Icons.settings, size: 40, color: Colors.white),
+                  elevation: 2.0,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(100)),
+                ),
+              ),
+            ]),
+            bottomNavigationBar: BottomNavigationBar(
+              selectedItemColor: Colors.white,
+              currentIndex: _currentIndex,
+              type: BottomNavigationBarType.fixed,
+              backgroundColor: Colors.pink,
+              items: [
+                BottomNavigationBarItem(
+                    icon: Icon(Icons.person), label: 'Profile'),
+                BottomNavigationBarItem(
+                    icon: Icon(Icons.local_movies_outlined), label: 'Swipe'),
+                BottomNavigationBarItem(
+                    icon: Icon(Icons.local_fire_department), label: 'Matches'),
+              ],
+              onTap: (index) {
+                setState(() {
+                  _currentIndex = index;
+                });
+                if (_currentIndex == 2) {
+                  if (userPair == "") {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => DummyMatches()));
+                  } else {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => Matches()));
+                  }
+                }
+                if (_currentIndex == 0) {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => RushTwo(),
+                        builder: (context) => Profile(),
                         maintainState: true,
                       ));
                 }
               },
-              tooltip: 'Go to Rush Mode',
-              child: Icon(Icons.fast_forward, size: 40, color: Colors.white),
-              elevation: 2.0,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(100)),
-            ),
-          ),
-          Positioned(
-            right: 80,
-            bottom: 20,
-            child: FloatingActionButton(
-              backgroundColor: Color(0xff412DB3),
-              heroTag: null,
-              onPressed: () => filterPop(context),
-              tooltip: 'Filter Movies',
-              child: Icon(Icons.settings, size: 40, color: Colors.white),
-              elevation: 2.0,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(100)),
-            ),
-          ),
-        ]),
-        bottomNavigationBar: BottomNavigationBar(
-          selectedItemColor: Colors.white,
-          currentIndex: _currentIndex,
-          type: BottomNavigationBarType.fixed,
-          backgroundColor: Colors.pink,
-          items: [
-            BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
-            BottomNavigationBarItem(
-                icon: Icon(Icons.local_movies_outlined), label: 'Swipe'),
-            BottomNavigationBarItem(
-                icon: Icon(Icons.local_fire_department), label: 'Matches'),
-          ],
-          onTap: (index) {
-            setState(() {
-              _currentIndex = index;
-            });
-            if (_currentIndex == 2) {
-              if (userPair == "") {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => DummyMatches()));
-              } else {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => Matches()));
-              }
-            }
-            if (_currentIndex == 0) {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => Profile(),
-                    maintainState: true,
-                  ));
-            }
-          },
-        ));
+            )));
   }
 }
 

@@ -185,7 +185,7 @@ export const joinRush = functions
 
 export const helloWorld = functions
   .region("asia-northeast1")
-  .https.onRequest(async (request: any, response) => {
+  .https.onRequest(async (request, response) => {
     functions.logger.info("Hello logs!", { structuredData: true });
     response.send("Hello from Firebase!");
   });

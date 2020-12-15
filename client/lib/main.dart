@@ -145,9 +145,8 @@ class PushNotificationService {
                   ],
                 ));
         notification = PushNotificationMessage(
-          title: message['notification']['title'],
-          body: message['notification']['body'],
-        );
+            title: "You got a Match!",
+            body: "Go to Matches to see what you have!");
       },
       onLaunch: (Map<String, dynamic> message) async {
         print("onLaunch: $message");
