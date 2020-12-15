@@ -25,26 +25,22 @@ dependencies:
     sdk: flutter
   flutter_tindercard: ^0.2.0
   neon: ^0.0.1
-  firebase_core: ^0.5.2+1
-  firebase_auth: ^0.18.0+1
+  firebase_core: ^0.5.3
+  firebase_auth: ^0.18.4+1
   firebase_storage: ^5.2.0
   firebase_messaging: ^7.0.3
+  firebase_analytics: ^6.3.0
+  firebase_image: ^0.3.0
   flutter_local_notifications: ^3.0.2
   fluttertoast: ^7.1.5
-  cloud_firestore: ^0.14.0+2
-  image_picker: ^0.6.7+14
-  google_sign_in: ^4.5.3
+  cloud_firestore: ^0.14.4
+  image_picker: ^0.6.7+15
   dio: ^3.0.10
   flutter_svg: ^0.18.0
-  flushbar: ^1.5.0
-  cloud_functions: "^0.7.1"
-  smart_select: ^4.3.2
   url_launcher: ^5.7.10
   path: ^1.7.0
   http: ^0.12.2
   provider: ^4.3.2+2
-  firebase_image: ^0.3.0
-  flutter_phoenix: ^0.1.0
   flutter_launcher_icons: ^0.8.1
   flutter_native_splash: ^0.1.9
 

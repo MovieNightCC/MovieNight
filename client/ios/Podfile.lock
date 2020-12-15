@@ -212,11 +212,6 @@ PODS:
     - abseil/base/base_internal
     - abseil/base/config
     - abseil/meta/type_traits
-  - AppAuth (1.4.0):
-    - AppAuth/Core (= 1.4.0)
-    - AppAuth/ExternalUserAgent (= 1.4.0)
-  - AppAuth/Core (1.4.0)
-  - AppAuth/ExternalUserAgent (1.4.0)
   - BoringSSL-GRPC (0.0.7):
     - BoringSSL-GRPC/Implementation (= 0.0.7)
     - BoringSSL-GRPC/Interface (= 0.0.7)
@@ -228,28 +223,30 @@ PODS:
     - Firebase/Firestore (~> 6.33.0)
     - firebase_core
     - Flutter
-  - cloud_functions (0.7.2):
-    - Firebase/CoreOnly (~> 6.33.0)
-    - Firebase/Functions (~> 6.33.0)
-    - firebase_core
-    - Flutter
+  - Firebase/Analytics (6.33.0):
+    - Firebase/Core
   - Firebase/Auth (6.33.0):
     - Firebase/CoreOnly
     - FirebaseAuth (~> 6.9.2)
+  - Firebase/Core (6.33.0):
+    - Firebase/CoreOnly
+    - FirebaseAnalytics (= 6.8.3)
   - Firebase/CoreOnly (6.33.0):
     - FirebaseCore (= 6.10.3)
   - Firebase/Firestore (6.33.0):
     - Firebase/CoreOnly
     - FirebaseFirestore (~> 1.18.0)
-  - Firebase/Functions (6.33.0):
-    - Firebase/CoreOnly
-    - FirebaseFunctions (~> 2.9.0)
   - Firebase/Messaging (6.33.0):
     - Firebase/CoreOnly
     - FirebaseMessaging (~> 4.7.0)
   - Firebase/Storage (6.33.0):
     - Firebase/CoreOnly
     - FirebaseStorage (~> 3.9.0)
+  - firebase_analytics (6.3.0):
+    - Firebase/Analytics (~> 6.33.0)
+    - Firebase/CoreOnly (~> 6.33.0)
+    - firebase_core
+    - Flutter
   - firebase_auth (0.18.4-1):
     - Firebase/Auth (~> 6.33.0)
     - Firebase/CoreOnly (~> 6.33.0)
@@ -268,6 +265,15 @@ PODS:
     - Firebase/Storage (~> 6.33.0)
     - firebase_core
     - Flutter
+  - FirebaseAnalytics (6.8.3):
+    - FirebaseCore (~> 6.10)
+    - FirebaseInstallations (~> 1.6)
+    - GoogleAppMeasurement (= 6.8.3)
+    - GoogleUtilities/AppDelegateSwizzler (~> 6.7)
+    - GoogleUtilities/MethodSwizzler (~> 6.7)
+    - GoogleUtilities/Network (~> 6.7)
+    - "GoogleUtilities/NSData+zlib (~> 6.7)"
+    - nanopb (~> 1.30906.0)
   - FirebaseAuth (6.9.2):
     - FirebaseCore (~> 6.10)
     - GoogleUtilities/AppDelegateSwizzler (~> 6.7)
@@ -294,9 +300,6 @@ PODS:
     - "gRPC-C++ (~> 1.28.0)"
     - leveldb-library (~> 1.22)
     - nanopb (~> 1.30906.0)
-  - FirebaseFunctions (2.9.0):
-    - FirebaseCore (~> 6.10)
-    - GTMSessionFetcher/Core (~> 1.1)
   - FirebaseInstallations (1.7.0):
     - FirebaseCore (~> 6.10)
     - GoogleUtilities/Environment (~> 6.7)
@@ -327,15 +330,14 @@ PODS:
   - FMDB (2.7.5):
     - FMDB/standard (= 2.7.5)
   - FMDB/standard (2.7.5)
-  - google_sign_in (0.0.1):
-    - Flutter
-    - GoogleSignIn (~> 5.0)
+  - GoogleAppMeasurement (6.8.3):
+    - GoogleUtilities/AppDelegateSwizzler (~> 6.7)
+    - GoogleUtilities/MethodSwizzler (~> 6.7)
+    - GoogleUtilities/Network (~> 6.7)
+    - "GoogleUtilities/NSData+zlib (~> 6.7)"
+    - nanopb (~> 1.30906.0)
   - GoogleDataTransport (7.5.1):
     - nanopb (~> 1.30906.0)
-  - GoogleSignIn (5.0.2):
-    - AppAuth (~> 1.2)
-    - GTMAppAuth (~> 1.0)
-    - GTMSessionFetcher/Core (~> 1.1)
   - GoogleUtilities/AppDelegateSwizzler (6.7.2):
     - GoogleUtilities/Environment
     - GoogleUtilities/Logger
@@ -344,6 +346,8 @@ PODS:
     - PromisesObjC (~> 1.2)
   - GoogleUtilities/Logger (6.7.2):
     - GoogleUtilities/Environment
+  - GoogleUtilities/MethodSwizzler (6.7.2):
+    - GoogleUtilities/Logger
   - GoogleUtilities/Network (6.7.2):
     - GoogleUtilities/Logger
     - "GoogleUtilities/NSData+zlib"
@@ -377,14 +381,7 @@ PODS:
     - BoringSSL-GRPC (= 0.0.7)
     - gRPC-Core/Interface (= 1.28.2)
   - gRPC-Core/Interface (1.28.2)
-  - GTMAppAuth (1.1.0):
-    - AppAuth/Core (~> 1.4)
-    - GTMSessionFetcher (~> 1.4)
-  - GTMSessionFetcher (1.5.0):
-    - GTMSessionFetcher/Full (= 1.5.0)
   - GTMSessionFetcher/Core (1.5.0)
-  - GTMSessionFetcher/Full (1.5.0):
-    - GTMSessionFetcher/Core (= 1.5.0)
   - image_picker (0.0.1):
     - Flutter
   - leveldb-library (1.22)
@@ -406,7 +403,12 @@ PODS:
 
 DEPENDENCIES:
   - cloud_firestore (from `.symlinks/plugins/cloud_firestore/ios`)
-  - cloud_functions (from `.symlinks/plugins/cloud_functions/ios`)
+  - Firebase/Analytics
+  - Firebase/Auth
+  - Firebase/Firestore
+  - Firebase/Messaging
+  - Firebase/Storage
+  - firebase_analytics (from `.symlinks/plugins/firebase_analytics/ios`)
   - firebase_auth (from `.symlinks/plugins/firebase_auth/ios`)
   - firebase_core (from `.symlinks/plugins/firebase_core/ios`)
   - firebase_messaging (from `.symlinks/plugins/firebase_messaging/ios`)
@@ -414,7 +416,6 @@ DEPENDENCIES:
   - Flutter (from `Flutter`)
   - flutter_local_notifications (from `.symlinks/plugins/flutter_local_notifications/ios`)
   - fluttertoast (from `.symlinks/plugins/fluttertoast/ios`)
-  - google_sign_in (from `.symlinks/plugins/google_sign_in/ios`)
   - image_picker (from `.symlinks/plugins/image_picker/ios`)
   - path_provider (from `.symlinks/plugins/path_provider/ios`)
   - sqflite (from `.symlinks/plugins/sqflite/ios`)
@@ -423,25 +424,23 @@ DEPENDENCIES:
 SPEC REPOS:
   trunk:
     - abseil
-    - AppAuth
     - BoringSSL-GRPC
     - Firebase
+    - FirebaseAnalytics
     - FirebaseAuth
     - FirebaseCore
     - FirebaseCoreDiagnostics
     - FirebaseFirestore
-    - FirebaseFunctions
     - FirebaseInstallations
     - FirebaseInstanceID
     - FirebaseMessaging
     - FirebaseStorage
     - FMDB
+    - GoogleAppMeasurement
     - GoogleDataTransport
-    - GoogleSignIn
     - GoogleUtilities
     - "gRPC-C++"
     - gRPC-Core
-    - GTMAppAuth
     - GTMSessionFetcher
     - leveldb-library
     - nanopb
@@ -452,8 +451,8 @@ SPEC REPOS:
 EXTERNAL SOURCES:
   cloud_firestore:
     :path: ".symlinks/plugins/cloud_firestore/ios"
-  cloud_functions:
-    :path: ".symlinks/plugins/cloud_functions/ios"
+  firebase_analytics:
+    :path: ".symlinks/plugins/firebase_analytics/ios"
   firebase_auth:
     :path: ".symlinks/plugins/firebase_auth/ios"
   firebase_core:
@@ -468,8 +467,6 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/flutter_local_notifications/ios"
   fluttertoast:
     :path: ".symlinks/plugins/fluttertoast/ios"
-  google_sign_in:
-    :path: ".symlinks/plugins/google_sign_in/ios"
   image_picker:
     :path: ".symlinks/plugins/image_picker/ios"
   path_provider:
@@ -481,20 +478,19 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   abseil: 6c8eb7892aefa08d929b39f9bb108e5367e3228f
-  AppAuth: 31bcec809a638d7bd2f86ea8a52bd45f6e81e7c7
   BoringSSL-GRPC: 8edf627ee524575e2f8d19d56f068b448eea3879
   cloud_firestore: b8c0e15fa49dfff87c2817d288b577e5dca2df13
-  cloud_functions: 322f7aacaf0d6736d4365a0d33eb93e74c0469a6
   Firebase: 8db6f2d1b2c5e2984efba4949a145875a8f65fe5
+  firebase_analytics: 36a619088c46224900829f14f4daa71585693a6f
   firebase_auth: d5159db3873478d1ac839af7b10d2f831516136a
   firebase_core: 5d6a02f3d85acd5f8321c2d6d62877626a670659
   firebase_messaging: 0aea2cd5885b65e19ede58ee3507f485c992cc75
   firebase_storage: a023e199edb807d8481c8aa722c8516f462ffab2
+  FirebaseAnalytics: 5dd088bd2e67bb9d13dbf792d1164ceaf3052193
   FirebaseAuth: c92d49ada7948d1a23466e3db17bc4c2039dddc3
   FirebaseCore: d889d9e12535b7f36ac8bfbf1713a0836a3012cd
   FirebaseCoreDiagnostics: 770ac5958e1372ce67959ae4b4f31d8e127c3ac1
   FirebaseFirestore: adff4877869ca91a11250cc0989a6cd56bad163f
-  FirebaseFunctions: 27518fdd14d8b3a849e2443f921cd1b471ab7acd
   FirebaseInstallations: 466c7b4d1f58fe16707693091da253726a731ed2
   FirebaseInstanceID: bd3ffc24367f901a43c063b36c640b345a4a5dd1
   FirebaseMessaging: 5eca4ef173de76253352511aafef774caa1cba2a
@@ -503,13 +499,11 @@ SPEC CHECKSUMS:
   flutter_local_notifications: 0c0b1ae97e741e1521e4c1629a459d04b9aec743
   fluttertoast: 6122fa75143e992b1d3470f61000f591a798cc58
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
-  google_sign_in: 6bd214b9c154f881422f5fe27b66aaa7bbd580cc
+  GoogleAppMeasurement: 966e88df9d19c15715137bb2ddaf52373f111436
   GoogleDataTransport: f56af7caa4ed338dc8e138a5d7c5973e66440833
-  GoogleSignIn: 7137d297ddc022a7e0aa4619c86d72c909fa7213
   GoogleUtilities: 7f2f5a07f888cdb145101d6042bc4422f57e70b3
   "gRPC-C++": 13d8ccef97d5c3c441b7e3c529ef28ebee86fad2
   gRPC-Core: 4afa11bfbedf7cdecd04de535a9e046893404ed5
-  GTMAppAuth: 197a8dabfea5d665224aa00d17f164fc2248dab9
   GTMSessionFetcher: b3503b20a988c4e20cc189aa798fd18220133f52
   image_picker: 9c3312491f862b28d21ecd8fdf0ee14e601b3f09
   leveldb-library: 55d93ee664b4007aac644a782d11da33fba316f7
@@ -521,6 +515,6 @@ SPEC CHECKSUMS:
   Toast: 91b396c56ee72a5790816f40d3a94dd357abc196
   url_launcher: 6fef411d543ceb26efce54b05a0a40bfd74cbbef
 
-PODFILE CHECKSUM: aafe91acc616949ddb318b77800a7f51bffa2a4c
+PODFILE CHECKSUM: 77a5e0ec5d3897aa61b8f233e890d7942f5bb10b
 
 COCOAPODS: 1.10.0

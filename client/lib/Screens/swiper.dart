@@ -112,19 +112,19 @@ class _TinderswiperState extends State<Tinderswiper>
             painter: HeaderCurvedContainer(),
           ),
           Positioned(
-              top: 43,
+              top: 20,
               child: Neon(
                 text: 'Movie Night',
                 color: Colors.purple,
-                fontSize: 24,
-                font: NeonFont.Membra,
+                fontSize: 50,
+                font: NeonFont.Beon,
                 flickeringText: false,
               )),
 //               - Automania
 // - Beon
 // - Cyberpunk
 // - LasEnter
-// - Membra
+// - Beon
 // - Monoton
 // - Night-Club-70s
 // - Samarin

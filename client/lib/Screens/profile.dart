@@ -40,24 +40,32 @@ class _ProfileState extends State<Profile> {
             ),
             painter: HeaderCurvedContainer(),
           ),
+          Positioned(
+              top: MediaQuery.of(context).size.height * 0.02,
+              child: Neon(
+                text: '$displayName',
+                color: Colors.purple,
+                fontSize: 50,
+                font: NeonFont.Beon,
+                flickeringText: false,
+              )),
+          Positioned(
+            top: MediaQuery.of(context).size.height * 0.45,
+            child: UserInfoSection(),
+          ),
           Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Padding(
-                padding: EdgeInsets.fromLTRB(0, 30, 0, 20),
-                child: Positioned(
-                    top: 15,
-                    child: Neon(
-                      text: '$displayName',
-                      color: Colors.purple,
-                      fontSize: 24,
-                      font: NeonFont.Membra,
-                      flickeringText: false,
-                    )),
+                padding: EdgeInsets.only(
+                    top: MediaQuery.of(context).size.height * 0.1),
+                child: ProfilePicture(),
               ),
-              ProfilePicture(),
-              UserInfoSection(),
-              LinkToPairButton(),
+              Padding(
+                padding: EdgeInsets.only(
+                    top: MediaQuery.of(context).size.height * 0.2),
+                child: LinkToPairButton(),
+              ),
               Padding(
                 padding: EdgeInsets.all(10),
                 child: FlatButton(
@@ -194,10 +202,18 @@ Widget profileInfo() {
     children: <Widget>[
       Text('$userEmail',
           style: TextStyle(
-              height: 1.5, fontWeight: FontWeight.bold, fontSize: 20)),
+              height: 1.5,
+              fontWeight: FontWeight.w900,
+              color: Colors.white,
+              fontFamily: 'Open Sans',
+              fontSize: 20)),
       Text('in $userPair',
           style: TextStyle(
-              height: 1.5, fontWeight: FontWeight.bold, fontSize: 20)),
+              height: 1.5,
+              fontWeight: FontWeight.w900,
+              color: Colors.white,
+              fontFamily: 'Open Sans',
+              fontSize: 20)),
     ],
   );
 }
@@ -215,9 +231,9 @@ class UserInfoSection extends StatelessWidget {
           if (snapshot.hasError) {
             return Text("User does not exist");
           }
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Text("Loading");
-          }
+          // if (snapshot.connectionState == ConnectionState.waiting) {
+          //   return Container();
+          // }
           userPair = snapshot.data["pairName"];
           if (userPair == "") {
             return Column(
@@ -229,6 +245,7 @@ class UserInfoSection extends StatelessWidget {
                     style: TextStyle(
                         height: 1.5,
                         fontWeight: FontWeight.bold,
+                        fontFamily: 'Open Sans',
                         fontSize: 20)),
               ],
             );

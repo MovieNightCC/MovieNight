@@ -6,6 +6,7 @@ import './swiper.dart';
 import './tinderCard.dart';
 import './movieInfo.dart';
 import './filterPopup.dart';
+import 'package:neon/neon.dart';
 
 //https://www.netflix.com/title/80191740?preventIntent=true
 //https://www.netflix.com/jp-en/title/70080038?preventIntent=true
@@ -54,15 +55,6 @@ class _RushModeState extends State<RushMode> {
                   builder: (context) => Swiper(), maintainState: true));
         },
       ),
-      appBar: AppBar(
-        backgroundColor: Colors.pink,
-        title: const Text('Rush Mode!',
-            style: TextStyle(
-                height: 1.5, fontWeight: FontWeight.bold, fontSize: 30)),
-        automaticallyImplyLeading: false,
-        centerTitle: true,
-        elevation: 0,
-      ),
       body: Stack(
         alignment: Alignment.center,
         children: [
@@ -74,87 +66,82 @@ class _RushModeState extends State<RushMode> {
             painter: _HeaderCurvedContainer(),
           ),
           Image.asset('./assets/icons/loader-movie-night.gif', scale: 1.5),
-          //CircularProgressIndicator(backgroundColor: Colors.pink),
-          Column(
-            children: [
-              TimerWidget(),
-              Column(
-                children: [
-                  Center(
-                    child: InkWell(
+          Positioned(
+            top: MediaQuery.of(context).size.height * 0.02,
+            child: TimerWidget(),
+          ),
+          Positioned(
+            child: Padding(
+              padding: EdgeInsets.only(
+                  top: MediaQuery.of(context).size.height * 0.15),
+              child: Container(
+                height: MediaQuery.of(context).size.height * 0.7,
+                child: TinderSwapCard(
+                  orientation: AmassOrientation.TOP,
+                  totalNum: 100,
+                  stackNum: 2,
+                  swipeEdge: 5.0,
+                  maxWidth: MediaQuery.of(context).size.width * 0.9,
+                  maxHeight: MediaQuery.of(context).size.width * 1.6,
+                  minWidth: MediaQuery.of(context).size.width * 0.899,
+                  minHeight: MediaQuery.of(context).size.width * 1.599,
+                  cardBuilder: (context, index) {
+                    return Card(
+                      color: Color(0x00000000),
                       child: Container(
-                        height: MediaQuery.of(context).size.height * 0.7,
-                        child: TinderSwapCard(
-                          orientation: AmassOrientation.TOP,
-                          totalNum: 100,
-                          stackNum: 2,
-                          swipeEdge: 5.0,
-                          maxWidth: MediaQuery.of(context).size.width * 0.9,
-                          maxHeight: MediaQuery.of(context).size.width * 1.6,
-                          minWidth: MediaQuery.of(context).size.width * 0.899,
-                          minHeight: MediaQuery.of(context).size.width * 1.599,
-                          cardBuilder: (context, index) {
-                            return Card(
-                              color: Color(0x00000000),
-                              child: Container(
-                                  // padding: EdgeInsets.all(20.0),
-                                  child: Image.network(
-                                rushModeImages[index],
-                                fit: BoxFit.fill,
-                              )),
-                              elevation: 0,
-                            );
-                          },
-                          cardController: controller = CardController(),
-                          swipeUpdateCallback:
-                              (DragUpdateDetails details, Alignment align) {
-                            /// Get swiping card's alignment
-                            print(align.x);
-                            if (align.x > -2.0 && align.x < 2.0) {
-                              _setLeftCue(0.0);
-                              _setRightCue(0.0);
-                            } else if (align.x <= -5) {
-                              _setLeftCue(1.0);
-                            } else if (align.x <= -2) {
-                              _setLeftCue(0.5);
-                            } else if (align.x >= 5) {
-                              _setRightCue(1.0);
-                            } else if (align.x >= 2) {
-                              _setRightCue(0.5);
-                              print("should show FULL THING");
-                            }
-                          },
-                          swipeCompleteCallback:
-                              (CardSwipeOrientation orientation, int index) {
-                            if (orientation == CardSwipeOrientation.RIGHT) {
-                              _setLeftCue(0.0);
-                              _setRightCue(0.0);
-                              //when liked
-                              print('you liked: ${movieDataTest[count]}');
-                              //request to firebase server to update likes
-                              updateUser(
-                                rushModeNfid[count],
-                                context,
-                                rushModeGenre[count],
-                              );
-                              count++;
-                            } else if (orientation ==
-                                CardSwipeOrientation.LEFT) {
-                              _setLeftCue(0.0);
-                              _setRightCue(0.0);
-                              //when hated
-                              print('you hate: ${movieDataTest[count]}');
-                              count++;
-                              print(chosenGenre);
-                            }
-                          },
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
+                          // padding: EdgeInsets.all(20.0),
+                          child: Image.network(
+                        rushModeImages[index],
+                        fit: BoxFit.fill,
+                      )),
+                      elevation: 0,
+                    );
+                  },
+                  cardController: controller = CardController(),
+                  swipeUpdateCallback:
+                      (DragUpdateDetails details, Alignment align) {
+                    /// Get swiping card's alignment
+                    print(align.x);
+                    if (align.x > -2.0 && align.x < 2.0) {
+                      _setLeftCue(0.0);
+                      _setRightCue(0.0);
+                    } else if (align.x <= -5) {
+                      _setLeftCue(1.0);
+                    } else if (align.x <= -2) {
+                      _setLeftCue(0.5);
+                    } else if (align.x >= 5) {
+                      _setRightCue(1.0);
+                    } else if (align.x >= 2) {
+                      _setRightCue(0.5);
+                      print("should show FULL THING");
+                    }
+                  },
+                  swipeCompleteCallback:
+                      (CardSwipeOrientation orientation, int index) {
+                    if (orientation == CardSwipeOrientation.RIGHT) {
+                      _setLeftCue(0.0);
+                      _setRightCue(0.0);
+                      //when liked
+                      print('you liked: ${movieDataTest[count]}');
+                      //request to firebase server to update likes
+                      updateUser(
+                        rushModeNfid[count],
+                        context,
+                        rushModeGenre[count],
+                      );
+                      count++;
+                    } else if (orientation == CardSwipeOrientation.LEFT) {
+                      _setLeftCue(0.0);
+                      _setRightCue(0.0);
+                      //when hated
+                      print('you hate: ${movieDataTest[count]}');
+                      count++;
+                      print(chosenGenre);
+                    }
+                  },
+                ),
               ),
-            ],
+            ),
           ),
           Positioned(
               //swipe cue dislike
@@ -222,7 +209,7 @@ class TimerWidget extends StatefulWidget {
 
 class _TimerWidgetState extends State<TimerWidget> {
   Timer _timer;
-  int _start = 15;
+  int _start = 20;
 
   @override
   void initState() {
@@ -266,9 +253,13 @@ class _TimerWidgetState extends State<TimerWidget> {
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
-        Text("$_start",
-            style: TextStyle(
-                height: 1.5, fontWeight: FontWeight.bold, fontSize: 100))
+        Neon(
+          text: "$_start",
+          color: Colors.purple,
+          fontSize: 100,
+          font: NeonFont.Beon,
+          flickeringText: false,
+        ),
       ],
     );
   }

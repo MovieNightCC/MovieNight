@@ -25,7 +25,7 @@ class _DummyMatchesState extends State<DummyMatches> {
           text: 'Matches',
           color: Colors.purple,
           fontSize: 24,
-          font: NeonFont.Membra,
+          font: NeonFont.Beon,
           flickeringText: false,
         ),
         automaticallyImplyLeading: false,
