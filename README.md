@@ -2,10 +2,7 @@
 <p align="center"><img width="400" src="./client/assets/icons/icon-512x512-ios.png" alt="App logo"></p>
 
 <p align="center">
-<img  src="https://img.shields.io/twitter/url?url=https%3A%2F%2Fgithub.com%2FMovieNightCC%2FMovieNight
-" alt="tweet">
 <img  src="https://img.shields.io/github/stars/MovieNightCC/MovieNight" alt="starts">
-<img  src="	https://img.shields.io/github/issues/MovieNightCC/MovieNight" alt="issues">
 </p>
 <h1>Table of Content</h1>
 <h4><a href="#intro"> 1.Introduction </a></h4>
