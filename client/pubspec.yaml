@@ -1,10 +1,8 @@
 name: movie_night
 description: Find a movie to watch with your partner tonight
-
 # The following line prevents the package from being accidentally published to
 # pub.dev using `pub publish`. This is preferred for private packages.
 publish_to: "none" # Remove this line if you wish to publish to pub.dev
-
 # The following defines the version and build number for your application.
 # A version number is three numbers separated by dots, like 1.2.43
 # followed by an optional build number separated by a +.
@@ -25,32 +23,26 @@ dependencies:
     sdk: flutter
   flutter_tindercard: ^0.2.0
   neon: ^0.0.1
-  firebase_core: ^0.5.2+1
-  firebase_auth: ^0.18.0+1
+  firebase_core: ^0.5.3
+  firebase_auth: ^0.18.4+1
   firebase_storage: ^5.2.0
   firebase_messaging: ^7.0.3
+  firebase_analytics: ^6.3.0
+  firebase_image: ^0.3.0
   flutter_local_notifications: ^3.0.2
   fluttertoast: ^7.1.5
-  cloud_firestore: ^0.14.0+2
-  image_picker: ^0.6.7+14
-  google_sign_in: ^4.5.3
+  cloud_firestore: ^0.14.4
+  image_picker: ^0.6.7+15
   dio: ^3.0.10
   flutter_svg: ^0.18.0
-  flushbar: ^1.5.0
-  cloud_functions: "^0.7.1"
-  smart_select: ^4.3.2
   url_launcher: ^5.7.10
   path: ^1.7.0
   http: ^0.12.2
   provider: ^4.3.2+2
-  firebase_image: ^0.3.0
-  flutter_phoenix: ^0.1.0
   flutter_launcher_icons: ^0.8.1
   flutter_native_splash: ^0.1.9
-
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
-
   #flutter_icons:
   #  image_path: "assets/images/icon-128x128.png"
   #image_path_android: assets/icons/icon-512x512-android.png
@@ -59,29 +51,24 @@ dependencies:
   #ios: true # can specify file name here e.g. "My-Launcher-Icon"
   #adaptive_icon_background: "assets/images/christmas-background.png" # only available for Android 8.0 devices and above
   #adaptive_icon_foreground: "assets/images/icon-foreground-432x432.png" # only available for Android 8.0 devices and above
-
 dev_dependencies:
   flutter_test:
     sdk: flutter
-
 flutter_native_splash:
   image: "assets/img/App-logo.png"
   color: "000000"
-  ios: false
-
 flutter_icons:
   android: true
+  ios: true
   image_path: "assets/icons/icon-512x512-android.png"
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
-
 # The following section is specific to Flutter.
 flutter:
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
-
   # To add assets to your application, add an assets section, like this:
   # assets:
   #   - images/a_dot_burr.jpeg
@@ -89,13 +76,10 @@ flutter:
   assets:
     - assets/img/
     - assets/icons/
-
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
-
   # For details regarding adding assets from package dependencies, see
   # https://flutter.dev/assets-and-images/#from-packages
-
   # To add custom fonts to your application, add a fonts section here,
   # in this "flutter" section. Each entry in this list should have a
   # "family" key with the font family name, and a "fonts" key with a

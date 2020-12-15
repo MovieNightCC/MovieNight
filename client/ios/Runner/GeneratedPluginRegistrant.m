@@ -10,10 +10,10 @@
 @import cloud_firestore;
 #endif
 
-#if __has_include(<cloud_functions/FLTFirebaseFunctionsPlugin.h>)
-#import <cloud_functions/FLTFirebaseFunctionsPlugin.h>
+#if __has_include(<firebase_analytics/FLTFirebaseAnalyticsPlugin.h>)
+#import <firebase_analytics/FLTFirebaseAnalyticsPlugin.h>
 #else
-@import cloud_functions;
+@import firebase_analytics;
 #endif
 
 #if __has_include(<firebase_auth/FLTFirebaseAuthPlugin.h>)
@@ -52,12 +52,6 @@
 @import fluttertoast;
 #endif
 
-#if __has_include(<google_sign_in/FLTGoogleSignInPlugin.h>)
-#import <google_sign_in/FLTGoogleSignInPlugin.h>
-#else
-@import google_sign_in;
-#endif
-
 #if __has_include(<image_picker/FLTImagePickerPlugin.h>)
 #import <image_picker/FLTImagePickerPlugin.h>
 #else
@@ -86,14 +80,13 @@
 
 + (void)registerWithRegistry:(NSObject<FlutterPluginRegistry>*)registry {
   [FLTFirebaseFirestorePlugin registerWithRegistrar:[registry registrarForPlugin:@"FLTFirebaseFirestorePlugin"]];
-  [FLTFirebaseFunctionsPlugin registerWithRegistrar:[registry registrarForPlugin:@"FLTFirebaseFunctionsPlugin"]];
+  [FLTFirebaseAnalyticsPlugin registerWithRegistrar:[registry registrarForPlugin:@"FLTFirebaseAnalyticsPlugin"]];
   [FLTFirebaseAuthPlugin registerWithRegistrar:[registry registrarForPlugin:@"FLTFirebaseAuthPlugin"]];
   [FLTFirebaseCorePlugin registerWithRegistrar:[registry registrarForPlugin:@"FLTFirebaseCorePlugin"]];
   [FLTFirebaseMessagingPlugin registerWithRegistrar:[registry registrarForPlugin:@"FLTFirebaseMessagingPlugin"]];
   [FLTFirebaseStoragePlugin registerWithRegistrar:[registry registrarForPlugin:@"FLTFirebaseStoragePlugin"]];
   [FlutterLocalNotificationsPlugin registerWithRegistrar:[registry registrarForPlugin:@"FlutterLocalNotificationsPlugin"]];
   [FluttertoastPlugin registerWithRegistrar:[registry registrarForPlugin:@"FluttertoastPlugin"]];
-  [FLTGoogleSignInPlugin registerWithRegistrar:[registry registrarForPlugin:@"FLTGoogleSignInPlugin"]];
   [FLTImagePickerPlugin registerWithRegistrar:[registry registrarForPlugin:@"FLTImagePickerPlugin"]];
   [FLTPathProviderPlugin registerWithRegistrar:[registry registrarForPlugin:@"FLTPathProviderPlugin"]];
   [SqflitePlugin registerWithRegistrar:[registry registrarForPlugin:@"SqflitePlugin"]];
