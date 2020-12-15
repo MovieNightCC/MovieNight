@@ -155,7 +155,6 @@ class _ProfileState extends State<Profile> {
         ],
       )),
       bottomNavigationBar: BottomNavigationBar(
-        elevation: 0,
         currentIndex: _currentIndex,
         type: BottomNavigationBarType.fixed,
         selectedItemColor: Colors.white,
