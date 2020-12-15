@@ -187,8 +187,8 @@ class _InfoState extends State<Info> {
                   duration: Duration(milliseconds: 200),
                   opacity: _swipeLeftOpacity,
                   child: Container(
-                    height: 150,
-                    width: 150,
+                    height: MediaQuery.of(context).size.width * 0.5,
+                    width: MediaQuery.of(context).size.width * 0.5,
                     child: FloatingActionButton(
                       backgroundColor: Colors.red[900],
                       heroTag: null,
@@ -201,15 +201,13 @@ class _InfoState extends State<Info> {
                     ),
                   ))),
           Positioned(
-              //swipe cue dislike
-              // right: 100,
               bottom: 450,
               child: AnimatedOpacity(
                   duration: Duration(milliseconds: 200),
                   opacity: _swipeRightOpacity,
                   child: Container(
-                    height: 150,
-                    width: 150,
+                    height: MediaQuery.of(context).size.width * 0.5,
+                    width: MediaQuery.of(context).size.width * 0.5,
                     child: FloatingActionButton(
                       backgroundColor: Colors.green,
                       heroTag: null,
