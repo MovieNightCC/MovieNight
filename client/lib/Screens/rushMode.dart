@@ -222,7 +222,7 @@ class TimerWidget extends StatefulWidget {
 
 class _TimerWidgetState extends State<TimerWidget> {
   Timer _timer;
-  int _start = 10;
+  int _start = 15;
 
   @override
   void initState() {
