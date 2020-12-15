@@ -44,7 +44,7 @@ class _ProfileState extends State<Profile> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Padding(
-                padding: EdgeInsets.only(top: 30),
+                padding: EdgeInsets.fromLTRB(0, 30, 0, 20),
                 child: Positioned(
                     top: 15,
                     child: Neon(
@@ -224,9 +224,7 @@ class UserInfoSection extends StatelessWidget {
               children: <Widget>[
                 Text('$userEmail',
                     style: TextStyle(
-                        height: 1.5,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 20)),
+                        height: 3, fontWeight: FontWeight.bold, fontSize: 20)),
                 Text('currently not in a pair',
                     style: TextStyle(
                         height: 1.5,

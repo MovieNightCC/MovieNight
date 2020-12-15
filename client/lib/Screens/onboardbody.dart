@@ -21,7 +21,7 @@ class _BodyState extends State<Body> {
       "image": "assets/icons/icon-512x512-android.png",
     },
     {
-      "text": "If you don't like as movie SWIPE the movie to the LEFT",
+      "text": "If you don't like the movie, SWIPE the movie to the LEFT",
       "image": "assets/img/swipe-left.jpg"
     },
     {
@@ -29,11 +29,11 @@ class _BodyState extends State<Body> {
       "image": "assets/img/swipe-right.jpg"
     },
     {
-      "text": "Find your movie to watch tonight in a hurry with the Rush Mode ",
+      "text": "Find a movie to watch tonight in a hurry with Rush Mode",
       "image": "assets/img/rush-mode.png"
     },
     {
-      "text": "Let's get started with Movie Night Click on Sign Up",
+      "text": "Let's get started with Movie Night\nClick on Sign Up",
       "image": "assets/img/opening.png"
     },
   ];
