@@ -54,16 +54,14 @@ export const sendMatchNotification = functions.region("asia-northeast1").firesto
         if (data1 && data2) {
           try {
             if (data1.pushToken) {
-              await admin.messaging().sendToDevice(data1.pushToken, payload);
-              console.log("pushed to user1");
+              return admin.messaging().sendToDevice(data1.pushToken, payload);
             }
             if (data2.pushToken) {
-              await admin.messaging().sendToDevice(data2.pushToken, payload);
-              console.log("pushed to user2");
+              return admin.messaging().sendToDevice(data2.pushToken, payload);
             }
           } catch {
-            console.log("error!");
-          }
+              return null;
+                    }
         }
       }
     }
@@ -1849,7 +1847,7 @@ export const setUpRushGame = functions
   });
 
   // region("asia-northeast1")
-export const createRushGameForPair = functions.region("asia-northeast1").firestore
+export const createRushGameForPair = functions.firestore
   .document("pairs/{pairName}")
   .onCreate(async (snap, context) => {
     console.log("----------------start function--------------------");
@@ -1863,7 +1861,7 @@ export const createRushGameForPair = functions.region("asia-northeast1").firesto
     const data2 = snap2.data();
 
     if (data1 && data2) {
-      await db.collection("rushPlus").doc(pairName).set(
+      return db.collection("rushPlus").doc(pairName).set(
         {
           pairName: pairName,
           playerOneJoined: false,
@@ -1876,6 +1874,7 @@ export const createRushGameForPair = functions.region("asia-northeast1").firesto
         { merge: true }
       );
     }
+    return null;
   });
 
 export const deleteUser = functions
