@@ -28,6 +28,7 @@ import './screens/rushMode.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  // / await SharedPreferences.getInstance();
   await Firebase.initializeApp();
   runApp(
     App(),
@@ -145,9 +146,8 @@ class PushNotificationService {
                   ],
                 ));
         notification = PushNotificationMessage(
-          title: message['notification']['title'],
-          body: message['notification']['body'],
-        );
+            title: "You got a Match!",
+            body: "Go to Matches to see what you have!");
       },
       onLaunch: (Map<String, dynamic> message) async {
         print("onLaunch: $message");

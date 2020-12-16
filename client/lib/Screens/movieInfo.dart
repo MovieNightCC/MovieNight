@@ -181,7 +181,6 @@ class _InfoState extends State<Info> {
           ),
           Positioned(
               //swipe cue dislike
-              // left: MediaQuery.of(context).size.width * 0.5,
               bottom: 450,
               child: AnimatedOpacity(
                   duration: Duration(milliseconds: 200),

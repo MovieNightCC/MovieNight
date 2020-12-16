@@ -29,7 +29,8 @@ class _MatchesState extends State<Matches> {
           (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
         if (snapshot.hasError) return new Text('Error: ${snapshot.error}');
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Scaffold(
+          return SafeArea(
+              child: Scaffold(
             appBar: AppBar(
               titleSpacing: 10.0,
               title: Padding(
@@ -37,7 +38,7 @@ class _MatchesState extends State<Matches> {
                   child: Neon(
                     text: 'Matches',
                     color: Colors.purple,
-                    fontSize: 24,
+                    fontSize: 50,
                     font: NeonFont.Beon,
                     flickeringText: false,
                   )),
@@ -91,19 +92,20 @@ class _MatchesState extends State<Matches> {
                 }
               },
             ),
-          );
+          ));
         }
         matchesMovieData = snapshot.data['matchMovieData'].reversed.toList();
         if (matchesMovieData.length != 0) {
-          return Scaffold(
+          return SafeArea(
+              child: Scaffold(
             appBar: AppBar(
               titleSpacing: 10.0,
               title: Padding(
-                  padding: EdgeInsets.only(top: 27.0),
+                  padding: EdgeInsets.fromLTRB(0, 27, 0, 10),
                   child: Neon(
                     text: 'Matches',
-                    color: Colors.pink,
-                    fontSize: 24,
+                    color: Colors.purple,
+                    fontSize: 50,
                     font: NeonFont.Beon,
                     flickeringText: false,
                   )),
@@ -182,9 +184,10 @@ class _MatchesState extends State<Matches> {
                 }
               },
             ),
-          );
+          ));
         } else {
-          return Scaffold(
+          return SafeArea(
+              child: Scaffold(
             appBar: AppBar(
               titleSpacing: 10.0,
               title: Padding(
@@ -192,7 +195,7 @@ class _MatchesState extends State<Matches> {
                   child: Neon(
                     text: 'Matches',
                     color: Colors.purple,
-                    fontSize: 35,
+                    fontSize: 50,
                     font: NeonFont.Beon,
                     flickeringText: false,
                   )),
@@ -246,7 +249,7 @@ class _MatchesState extends State<Matches> {
                 }
               },
             ),
-          );
+          ));
         }
       },
     );
