@@ -18,8 +18,8 @@ Upon opening the App, you need to register your account. In order to get the ful
 <h3><b>Swiper:</b></h3>
 Swiper consists of different movies from the Netflix JP database. If you swipe right (✅like) a movie, it will be recorded in the FireStore database which has two effects: 
 <br>
-<p>  1.Our <b>Recommendation Algorithm</b> Reacts to the user's habits and updates your movie feed using an algorithm based on the <a href="https://en.wikipedia.org/wiki/Distance_matrix">distance matrix</a>.
-<p>  2.Our <b>Matches Mechanism</b> that tracks if you and your partner (in a pair 👽👽) has a match.
+<p>  1. Our <b>Recommendation Algorithm</b> Reacts to the user's habits and updates your movie feed using an algorithm based on the <a href="https://en.wikipedia.org/wiki/Distance_matrix">distance matrix</a>.
+<p>  2. Our <b>Matches Mechanism</b> that tracks if you and your partner (in a pair 👽👽) has a match.
 
 When you have a match, you will see an alert box if you are the second swiper; or a notification message, if you are the first swiper and do not currently have the app open.
 
@@ -49,7 +49,7 @@ Firestore database and flutter front-end connections
 </p>
 <p> <a href="https://github.com/dhequex">Jose M. Torres</a> UI/UX developer: UI Design, User Authentication and Android build
 </p>
-<p> <a href="https://github.com/alexdang1993374">Alex Dang</a>Front-End developer: mobile front-end logic
+<p> <a href="https://github.com/alexdang1993374">Alex Dang</a> Front-End developer: mobile front-end logic
 </p>
 
 <br>
