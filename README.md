@@ -25,20 +25,20 @@ When you have a match, you will see an alert box if you are the second swiper; o
 
 If you click on the movie poster, you can see the details of a movie including title, synopsis, genre and runtime. From the Movie Info screen you can also like ✅ or dislike ❌ a movie as well see detailed movie information on Netflix.
 
-<h3><b>Genre Filter:</b></h3>
+<h3><b>Genre Filter:⚙️</b></h3>
 You can also click on the filter button to filter movies by genre. We have over 10 genres: Sci-Fi, romance, Horror and many more. The user can choose to see multiple genres in their feed.
-<h3><b>Rush Mode:</b></h3>
+<h3><b>Rush Mode:🚄</b></h3>
 Rush Mode is for people who want to find a movie to watch fast ⚡️. Pairs who still have no match can use this feature to make a decision. In this mode, you and your partner will have a 30-seconds swiping session synchronously with the same movies provided.
-<h3><b>Matches:</b></h3>
+<h3><b>Matches:✅ ✅</b></h3>
 in Matches you can see all the past match you and your partner has made. You can click on the movie poster to see the movie info, and inside you can delete the  movie (which deletes it from your list of match history).
-<h3><b>Profile:</b></h3>
+<h3><b>Profile:🙂</b></h3>
 in Profile, you can see you user information and what pair you belong to. You can also upload your own profile picture, which will be shown in the rush mode screen. from the profile screen you can also link with your pair.
-<h1 id="tech_stack">Tech Stack</h1>
+<h1 id="tech_stack">Tech Stack📱</h1>
 Front-end: Flutter <br>
 Back-end: Firebase Firestore, Firebase Storage, Firebase Cloud Messaging
 Platform: iOS (Still in the deployment process) and Android (https://play.google.com/store/apps/details?id=movienight.cc.app)
 
-<h1 id="contacts">Contact Us</h1>
+<h1 id="contacts">Contact Us📬</h1>
 For questions and support please contact the developers: <br><br>
 <p><a href="https://github.com/OnigiriJack">Jack Fowler</a> 
 Mobile front-end logic and iOS build
