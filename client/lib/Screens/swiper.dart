@@ -61,16 +61,19 @@ void updateUser(
     showDialog(
         context: context,
         builder: (_) => new AlertDialog(
+              backgroundColor: Colors.grey[900],
               title:
                   new Text("Alert", style: TextStyle(color: Colors.grey[900])),
               content: new Text("You got a Match!",
                   style: TextStyle(color: Colors.white)),
               actions: <Widget>[
                 FlatButton(
-                  child:
-                      Text('Close me!', style: TextStyle(color: Colors.pink)),
+                  child: Text('Go to Matches',
+                      style: TextStyle(color: Colors.pink)),
                   onPressed: () {
                     Navigator.of(context, rootNavigator: true).pop();
+                    // Navigator.push(context,
+                    //     MaterialPageRoute(builder: (context) => Matches()));
                   },
                 )
               ],
@@ -431,3 +434,4 @@ void joinRush() async {
       "https://asia-northeast1-movie-night-cc.cloudfunctions.net/joinRush?userName=$userName&pairName=$userPair");
   print(response.body);
 }
+//asdfasd

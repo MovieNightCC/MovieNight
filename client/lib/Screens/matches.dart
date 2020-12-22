@@ -101,7 +101,7 @@ class _MatchesState extends State<Matches> {
             appBar: AppBar(
               titleSpacing: 10.0,
               title: Padding(
-                  padding: EdgeInsets.only(top: 27.0),
+                  padding: EdgeInsets.fromLTRB(0, 27, 0, 10),
                   child: Neon(
                     text: 'Matches',
                     color: Colors.purple,

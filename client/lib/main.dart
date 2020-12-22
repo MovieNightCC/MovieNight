@@ -28,6 +28,7 @@ import './screens/rushMode.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  // / await SharedPreferences.getInstance();
   await Firebase.initializeApp();
   runApp(
     App(),
