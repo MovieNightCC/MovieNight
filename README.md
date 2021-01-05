@@ -11,7 +11,7 @@
 <h4><a href="#contacts">4. Contact Us </a></h4>
 <h1 id="intro">Introduction</h1>
 Movie Night is a Movie-swiping app to bring you a seamless and painless Movie Night Experience.
-
+The App is available on Google Play store: (https://play.google.com/store/apps/details?id=movienight.cc.app)
 <h1 id="user_guide">User Guide</h1>
 <h3><b>User Registration:</b></h3>
 Upon opening the App, you need to register your account. In order to get the full Movie Night Experience the user should connect with a pair who already has a Movie Night account.
@@ -36,7 +36,7 @@ in Profile, you can see you user information and what pair you belong to. You ca
 <h1 id="tech_stack">Tech Stack📱</h1>
 Front-end: Flutter <br>
 Back-end: Firebase Firestore, Firebase Storage, Firebase Cloud Messaging
-Platform: iOS (Still in the deployment process) and Android (https://play.google.com/store/apps/details?id=movienight.cc.app)
+Platform: Android 
 
 <h1 id="contacts">Contact Us📬</h1>
 For questions and support please contact the developers: <br><br>
