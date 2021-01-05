@@ -10,8 +10,8 @@
 <h4><a href="#tech_stack"> 3. Tech Stack </a></h4>
 <h4><a href="#contacts">4. Contact Us </a></h4>
 <h1 id="intro">Introduction</h1>
-Movie Night is a Movie-swiping app to bring you a seamless and painless Movie Night Experience.
-The App is available on Google Play store: (https://play.google.com/store/apps/details?id=movienight.cc.app)
+Movie Night is a Movie-swiping app to bring you a seamless and painless Movie Night Experience. <br/>
+The App is available on Google Play store: https://play.google.com/store/apps/details?id=movienight.cc.app
 <h1 id="user_guide">User Guide</h1>
 <h3><b>User Registration:</b></h3>
 Upon opening the App, you need to register your account. In order to get the full Movie Night Experience the user should connect with a pair who already has a Movie Night account.
