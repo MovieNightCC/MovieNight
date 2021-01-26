@@ -34,8 +34,8 @@ in Matches you can see all the past match you and your partner has made. You can
 <h3><b>Profile:🙂</b></h3>
 in Profile, you can see you user information and what pair you belong to. You can also upload your own profile picture, which will be shown in the rush mode screen. from the profile screen you can also link with your pair.
 <h1 id="tech_stack">Tech Stack📱</h1>
-Front-end: Flutter <br>
-Back-end: Firebase Firestore, Firebase Storage, Firebase Cloud Messaging
+Front-end: Dart, Flutter <br>
+Back-end: Typscript(Node.js), Firebase Firestore, Firebase Cloud Messaging, Firebase Storage, Firebase Cloud Messaging
 Platform: Android 
 
 <h1 id="contacts">Contact Us📬</h1>
