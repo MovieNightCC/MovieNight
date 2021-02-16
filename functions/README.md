@@ -1,4 +1,4 @@
-# how to use the Cloud Functions
+# How to use the Cloud Functions
 
 Use the URL provided by firestore to access the functons
 
